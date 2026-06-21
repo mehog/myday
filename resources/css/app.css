@@ -1,0 +1,78 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+.invitation-theme {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+
+.invitation-heading {
+    font-family: var(--font-heading);
+}
+
+.invitation-body {
+    font-family: var(--font-body);
+}
+
+.invitation-section {
+    scroll-margin-top: 2rem;
+}
+
+.invitation-fade-in {
+    animation: invitationFadeIn 0.8s ease-out both;
+}
+
+@keyframes invitationFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.rsvp-btn-yes {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    border: 1px solid var(--color-primary);
+}
+
+.rsvp-btn-yes:hover {
+    background-color: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+}
+
+.rsvp-btn-no {
+    background-color: transparent;
+    color: var(--color-text);
+    border: 1px solid color-mix(in srgb, var(--color-text) 30%, transparent);
+}
+
+.rsvp-btn-no:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.countdown-unit {
+    transition: transform 0.3s ease;
+}
+
+.countdown-unit:hover {
+    transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .invitation-fade-in {
+        animation: none;
+    }
+}
