@@ -86,4 +86,28 @@ class WeddingEvent extends Model
     {
         return $this->link_mode === LinkMode::TokenOnly;
     }
+
+    public function getYoutubeEmbedUrlAttribute(): ?string
+    {
+        if (! $this->music_url) {
+            return null;
+        }
+
+        $url = $this->music_url;
+        $videoId = null;
+
+        if (preg_match('#youtube\.com/embed/([a-zA-Z0-9_-]{11})#', $url, $matches)) {
+            $videoId = $matches[1];
+        } elseif (preg_match('#youtu\.be/([a-zA-Z0-9_-]{11})#', $url, $matches)) {
+            $videoId = $matches[1];
+        } elseif (preg_match('#[?&]v=([a-zA-Z0-9_-]{11})#', $url, $matches)) {
+            $videoId = $matches[1];
+        }
+
+        if (! $videoId) {
+            return null;
+        }
+
+        return "https://www.youtube.com/embed/{$videoId}?autoplay=0&controls=1&rel=0&modestbranding=1&fs=0&iv_load_policy=3";
+    }
 }

@@ -112,7 +112,7 @@ class WeddingEventSeeder extends Seeder
                 'location_lng' => $lng,
                 'theme' => $theme,
                 'link_mode' => LinkMode::Public,
-                'music_url' => 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+                'music_url' => 'https://www.youtube.com/watch?v=450p7goxZqg',
                 'rsvp_deadline' => now()->addMonths(3),
                 'is_active' => true,
             ]

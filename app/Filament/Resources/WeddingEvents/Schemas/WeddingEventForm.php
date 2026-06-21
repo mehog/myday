@@ -54,8 +54,10 @@ class WeddingEventForm
                             ->disk('public')
                             ->columnSpanFull(),
                         TextInput::make('music_url')
+                            ->label('YouTube URL')
                             ->url()
-                            ->maxLength(255)
+                            ->maxLength(500)
+                            ->helperText('Zalijepite YouTube link pjesme (npr. https://www.youtube.com/watch?v=... ili https://youtu.be/...)')
                             ->columnSpanFull(),
                     ]),
                 Section::make('Location')

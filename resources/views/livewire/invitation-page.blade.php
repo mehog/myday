@@ -17,7 +17,7 @@
                 @include('components.invitation.gallery', ['event' => $event])
             @endif
 
-            @if ($event->music_url)
+            @if ($event->youtube_embed_url)
                 @include('components.invitation.music-player', ['event' => $event])
             @endif
 
