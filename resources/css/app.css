@@ -76,3 +76,78 @@
         animation: none;
     }
 }
+
+/* Landing page */
+.landing-page {
+    background-color: #1a1208;
+    color: #faf6ee;
+}
+
+.landing-heading {
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.landing-body {
+    font-family: 'Lora', serif;
+}
+
+.landing-section {
+    scroll-margin-top: 5rem;
+}
+
+.landing-fade-in {
+    animation: invitationFadeIn 0.8s ease-out both;
+}
+
+.landing-btn-primary {
+    background-color: #c9a227;
+    color: #1a1208;
+    border: 1px solid #c9a227;
+}
+
+.landing-btn-primary:hover {
+    background-color: #a8841a;
+    border-color: #a8841a;
+}
+
+.landing-btn-secondary {
+    background-color: transparent;
+    color: #faf6ee;
+    border: 1px solid color-mix(in srgb, #faf6ee 30%, transparent);
+}
+
+.landing-btn-secondary:hover {
+    border-color: #c9a227;
+    color: #c9a227;
+}
+
+.landing-input {
+    border-radius: 0.75rem;
+    border: 1px solid color-mix(in srgb, #faf6ee 10%, transparent);
+    background-color: #2a1f0f;
+    padding: 0.75rem 1rem;
+    color: #faf6ee;
+}
+
+.landing-input::placeholder {
+    color: #d4c4a8;
+}
+
+.landing-input:focus {
+    outline: none;
+    border-color: #c9a227;
+}
+
+.landing-card {
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.landing-card:hover {
+    border-color: color-mix(in srgb, #c9a227 30%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .landing-fade-in {
+        animation: none;
+    }
+}
