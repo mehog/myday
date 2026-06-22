@@ -17,7 +17,6 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
@@ -130,25 +129,14 @@ class GuestsRelationManager extends RelationManager
                     ->modalHeading($this->trans('mark_sent'))
                     ->icon('heroicon-o-check-circle')
                     ->color('gray')
-                    ->fillForm(fn (): array => [
-                        'mark_as_sent' => true,
-                    ])
                     ->form([
                         Select::make('invite_platform')
                             ->label($this->trans('platform'))
                             ->options(collect(InvitePlatform::cases())->mapWithKeys(fn (InvitePlatform $platform) => [$platform->value => $platform->label()]))
                             ->required()
                             ->native(false),
-                        Toggle::make('mark_as_sent')
-                            ->label($this->trans('mark_as_sent'))
-                            ->default(true)
-                            ->required(),
                     ])
                     ->action(function (array $data, Guest $record): void {
-                        if (! ($data['mark_as_sent'] ?? false)) {
-                            return;
-                        }
-
                         $record->update([
                             'invite_sent_at' => now(),
                             'invite_platform' => $data['invite_platform'],

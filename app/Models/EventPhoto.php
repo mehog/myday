@@ -14,6 +14,7 @@ class EventPhoto extends Model
     protected $fillable = [
         'wedding_event_id',
         'path',
+        'title',
         'sort_order',
     ];
 

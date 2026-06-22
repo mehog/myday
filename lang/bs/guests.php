@@ -13,7 +13,6 @@ return [
     'close' => 'Zatvori',
     'message' => 'Poruka',
     'platform' => 'Platforma',
-    'mark_as_sent' => 'Označi kao poslano',
     'guest_marked_sent' => 'Gost označen kao poslan',
 
     'import_csv' => 'Uvezi CSV',

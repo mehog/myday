@@ -29,6 +29,11 @@ class EventPhotosRelationManager extends RelationManager
                     ->directory('event-photos')
                     ->disk(config('filesystems.media_disk'))
                     ->required(),
+                TextInput::make('title')
+                    ->label('Title')
+                    ->maxLength(255)
+                    ->placeholder('npr. Dvorana, Vrt, Parking')
+                    ->helperText('Optional. Shown below the photo on the invitation.'),
                 TextInput::make('sort_order')
                     ->numeric()
                     ->default(0)
@@ -45,6 +50,9 @@ class EventPhotosRelationManager extends RelationManager
             ->columns([
                 ImageColumn::make('path')
                     ->disk(config('filesystems.media_disk')),
+                TextColumn::make('title')
+                    ->placeholder('—')
+                    ->searchable(),
                 TextColumn::make('sort_order')
                     ->sortable(),
             ])
