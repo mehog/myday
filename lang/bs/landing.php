@@ -12,26 +12,26 @@ return [
     'hero_cta_demo' => 'Pogledaj demo',
     'hero_cta_order' => 'Naruči pozivnicu',
 
-    'benefits_title' => 'Zašto digitalna pozivnica?',
-    'benefits_subtitle' => 'Kada jednom isprobate, više nema povratka na običnu sliku.',
+    'benefits_title' => 'Ono što slika ne može',
+    'benefits_subtitle' => 'Svaki gost dobija pozivnicu sa svojim imenom. Vi vidite ko je potvrdio. I sve to šaljete direktno iz panela.',
 
-    'benefit_1_title' => 'Više prostora za priču',
-    'benefit_1_text' => 'Na web pozivnici ima mjesta za detalje, emociju i plan dana. Slika je samo jedan kadar.',
+    'benefit_1_title' => 'Svaki gost dobija svoje ime',
+    'benefit_1_text' => 'Pošaljite svakom gostu personalizovani link — čim otvori pozivnicu, njegovo ime je već tu. Nema zbrke, nema anonimnosti.',
 
-    'benefit_2_title' => 'Kvalitet se ne gubi',
-    'benefit_2_text' => 'Svaki put kad proslijedite sliku — kvalitet opada. Web pozivnica uvijek izgleda savršeno.',
+    'benefit_2_title' => 'Šaljete direktno iz panela',
+    'benefit_2_text' => 'WhatsApp, Viber ili Telegram — odaberite platformu i pošaljite pozivnicu direktno. Bez kopiranja linkova, bez zaboravljenih gostiju.',
 
-    'benefit_3_title' => 'Gosti potvrđuju dolazak',
-    'benefit_3_text' => 'Gosti potvrđuju prisustvo direktno na pozivnici. Vi imate spisak u realnom vremenu.',
+    'benefit_3_title' => 'Potvrde stižu u realnom vremenu',
+    'benefit_3_text' => 'Svaki RSVP odgovor se odmah pojavljuje u vašem panelu. Znate tačno ko dolazi, ko ne — i ko još nije odgovorio.',
 
-    'benefit_4_title' => 'Uvijek ažurno',
-    'benefit_4_text' => 'Došlo do izmjene? Ne šaljete novu pozivnicu — izmjene se automatski prikazuju gostima.',
+    'benefit_4_title' => 'Izmjena u sekundi, gosti vide odmah',
+    'benefit_4_text' => 'Promijenili ste lokaciju ili termin? Izmijenite u panelu — svi gosti automatski vide novu verziju. Bez ponovnog slanja.',
 
-    'benefit_5_title' => 'Odbrojavanje do velikog dana',
-    'benefit_5_text' => 'Sat koji otkucava stvara uzbuđenje. Svaki put kad gosti otvore link, vide koliko je ostalo.',
+    'benefit_5_title' => 'Sat koji kuca vraća goste',
+    'benefit_5_text' => 'Odbrojavanje živi na svakom otvaranju pozivnice. Gosti se vraćaju da provjere koliko je ostalo — i uzbuđenje raste svaki put.',
 
-    'benefit_6_title' => 'Javni i personalizovani link',
-    'benefit_6_text' => 'Podijelite jedan javni link za sve, ili pošaljite svakom gostu jedinstven lični link — njegovo ime bit će već upisano u RSVP formi čim otvori pozivnicu.',
+    'benefit_6_title' => 'Savršeno na svakom ekranu',
+    'benefit_6_text' => 'Ni JPEG koji izbljeđuje, ni PDF koji niko ne otvara. Web pozivnica izgleda jednako savršeno na telefonu, tabletu i računaru.',
 
     'steps_title' => 'Kako funkcionira?',
     'steps_subtitle' => 'Napravite svoju pozivnicu u tri jednostavna koraka.',
