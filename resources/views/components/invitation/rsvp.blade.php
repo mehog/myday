@@ -1,4 +1,9 @@
-<section class="invitation-section py-20 px-6 pb-28" id="rsvp">
+<section
+    class="invitation-section py-20 px-6 pb-28"
+    id="rsvp"
+    x-data="{ pending: null }"
+    @keydown.escape.window="pending = null"
+>
     <div class="max-w-xl mx-auto text-center invitation-fade-in">
         <p class="text-sm uppercase tracking-[0.3em] text-[var(--color-text-muted)] mb-3">{{ __('invitation.rsvp') }}</p>
         <h2 class="invitation-heading text-4xl text-[var(--color-text)] mb-4">{{ __('invitation.confirm_attendance') }}</h2>
@@ -54,7 +59,7 @@
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <button
                     type="button"
-                    wire:click="respond('yes')"
+                    @click="pending = 'yes'"
                     wire:loading.attr="disabled"
                     class="rsvp-btn rsvp-btn-yes flex-1 rounded-xl px-8 py-4 invitation-heading text-xl transition"
                 >
@@ -63,7 +68,7 @@
                 </button>
                 <button
                     type="button"
-                    wire:click="respond('no')"
+                    @click="pending = 'no'"
                     wire:loading.attr="disabled"
                     class="rsvp-btn rsvp-btn-no flex-1 rounded-xl px-8 py-4 invitation-heading text-xl transition"
                 >
@@ -72,4 +77,49 @@
             </div>
         @endif
     </div>
+
+    @if (! ($guest && $guest->hasResponded()) && ! ($rsvpSubmitted && $guest))
+        <div
+            x-show="pending !== null"
+            x-transition.opacity
+            class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4"
+            @click.self="pending = null"
+            style="display: none;"
+        >
+            <div
+                x-show="pending !== null"
+                x-transition
+                class="w-full max-w-md rounded-2xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)] p-8 text-center"
+                @click.stop
+            >
+                <h3 class="invitation-heading text-2xl text-[var(--color-text)] mb-2">
+                    {{ __('invitation.confirm_rsvp_title') }}
+                </h3>
+                <p
+                    class="invitation-body text-[var(--color-text-muted)] mb-8"
+                    x-text="pending === 'yes'
+                        ? '{{ __('invitation.confirm_rsvp_yes') }}'
+                        : '{{ __('invitation.confirm_rsvp_no') }}'"
+                ></p>
+
+                <div class="flex flex-col gap-3">
+                    <button
+                        type="button"
+                        @click="$wire.respond(pending); pending = null"
+                        class="rsvp-btn w-full py-4 rounded-xl invitation-heading text-lg transition"
+                        :class="pending === 'yes' ? 'rsvp-btn-yes' : 'rsvp-btn-no'"
+                    >
+                        {{ __('invitation.rsvp_confirm_btn') }}
+                    </button>
+                    <button
+                        type="button"
+                        class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition mt-2"
+                        @click="pending = null"
+                    >
+                        {{ __('invitation.rsvp_cancel_btn') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
 </section>

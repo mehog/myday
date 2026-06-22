@@ -44,6 +44,11 @@ return [
     'yes_attending' => 'Da, dolazim',
     'no_attending' => 'Ne, ne mogu doći',
     'saving' => 'Spremanje...',
+    'confirm_rsvp_title' => 'Potvrda odgovora',
+    'confirm_rsvp_yes' => 'Sigurno želite potvrditi dolazak?',
+    'confirm_rsvp_no' => 'Sigurno ne možete doći?',
+    'rsvp_confirm_btn' => 'Potvrdi',
+    'rsvp_cancel_btn' => 'Odustani',
 
     'rsvp_yes' => 'Dolazim',
     'rsvp_no' => 'Ne dolazim',
