@@ -50,31 +50,38 @@ class GuestsRelationManager extends RelationManager
             ->modifyQueryUsing(fn (Builder $query) => $query->with('weddingEvent'))
             ->recordTitleAttribute('name')
             ->columns([
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable(),
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('email')
                     ->searchable(),
                 TextColumn::make('rsvp_status')
                     ->badge()
+                    ->sortable()
                     ->formatStateUsing(fn (?RsvpStatus $state) => $state?->label() ?? $this->trans('rsvp_pending')),
                 TextColumn::make('rsvp_responded_at')
                     ->dateTime()
+                    ->sortable()
                     ->placeholder('—'),
                 TextColumn::make('invite_platform')
                     ->label($this->trans('sent_via'))
                     ->badge()
+                    ->sortable()
                     ->formatStateUsing(fn (?InvitePlatform $state) => $state?->label())
                     ->placeholder('—'),
                 TextColumn::make('invite_sent_at')
                     ->label($this->trans('invite_sent'))
                     ->dateTime()
+                    ->sortable()
                     ->placeholder('—')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('personal_url')
                     ->label($this->trans('personal_link'))
-                    ->limit(40)
-                    ->tooltip(fn (Guest $record): string => $record->personal_url)
+                    ->formatStateUsing(fn () => 'Link')
                     ->copyable()
+                    ->copyableState(fn (Guest $record): string => $record->personal_url)
                     ->copyMessage($this->trans('link_copied')),
             ])
             ->headerActions([
@@ -103,6 +110,14 @@ class GuestsRelationManager extends RelationManager
                     }),
             ])
             ->recordActions([
+                Action::make('copyPersonalLink')
+                    ->label($this->trans('copy_link'))
+                    ->icon('heroicon-o-clipboard')
+                    ->color('gray')
+                    ->alpineClickHandler(fn (Guest $record): string => Clipboard::alpineCopy(
+                        $record->personal_url,
+                        $this->trans('link_copied'),
+                    )),
                 Action::make('sendInvite')
                     ->label($this->trans('send_invite'))
                     ->modalHeading($this->trans('send_invite'))
@@ -147,14 +162,6 @@ class GuestsRelationManager extends RelationManager
                             ->success()
                             ->send();
                     }),
-                Action::make('copyPersonalLink')
-                    ->label($this->trans('copy_link'))
-                    ->icon('heroicon-o-clipboard')
-                    ->color('gray')
-                    ->alpineClickHandler(fn (Guest $record): string => Clipboard::alpineCopy(
-                        $record->personal_url,
-                        $this->trans('link_copied'),
-                    )),
                 EditAction::make(),
                 DeleteAction::make(),
             ])

@@ -21,6 +21,8 @@ class MyWeddingForm
         return $schema
             ->components([
                 Section::make('Par')
+                    ->columnSpanFull()
+                    ->collapsible()
                     ->columns(2)
                     ->schema([
                         TextInput::make('groom_name')
@@ -42,9 +44,12 @@ class MyWeddingForm
                         DateTimePicker::make('wedding_date')
                             ->label('Datum i vrijeme vjenčanja')
                             ->required()
-                            ->native(false),
+                            ->native(false)
+                            ->columnSpanFull(),
                     ]),
                 Section::make('Dizajn')
+                    ->columnSpanFull()
+                    ->collapsible()
                     ->columns(2)
                     ->schema([
                         Select::make('theme')
@@ -61,40 +66,36 @@ class MyWeddingForm
                             ->label('Naslovna fotografija')
                             ->image()
                             ->directory('hero-images')
-                            ->disk(config('filesystems.media_disk'))
-                            ->columnSpanFull(),
+                            ->disk(config('filesystems.media_disk')),
                         TextInput::make('music_url')
                             ->label('YouTube pjesma')
                             ->url()
                             ->maxLength(500)
-                            ->helperText('Zalijepite YouTube link pjesme (npr. https://www.youtube.com/watch?v=... ili https://youtu.be/...)')
-                            ->columnSpanFull(),
+                            ->helperText('Zalijepite YouTube link pjesme (npr. https://www.youtube.com/watch?v=... ili https://youtu.be/...)'),
                     ]),
                 Section::make('Lokacija')
                     ->columns(2)
+                    ->collapsible()
                     ->schema([
                         TextInput::make('location_name')
                             ->label('Naziv lokacije')
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->columnSpanFull(),
                         TextInput::make('location_address')
                             ->label('Adresa')
                             ->maxLength(255)
                             ->columnSpanFull(),
-                    ]),
-                Section::make('Napredne postavke')
-                    ->collapsed()
-                    ->columns(2)
-                    ->schema([
                         TextInput::make('location_lat')
-                            ->label('Geografska širina')
+                            ->label('Lat')
                             ->numeric()
                             ->step(0.0000001),
                         TextInput::make('location_lng')
-                            ->label('Geografska dužina')
+                            ->label('Lng')
                             ->numeric()
                             ->step(0.0000001),
                     ]),
                 Section::make('RSVP')
+                    ->collapsible()
                     ->schema([
                         DatePicker::make('rsvp_deadline')
                             ->label('Rok za potvrdu dolaska')
