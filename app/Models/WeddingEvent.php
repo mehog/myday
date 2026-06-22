@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\InvitationTheme;
 use App\LinkMode;
+use App\Support\MediaDisk;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -85,6 +86,11 @@ class WeddingEvent extends Model
     public function requiresToken(): bool
     {
         return $this->link_mode === LinkMode::TokenOnly;
+    }
+
+    public function getHeroImageUrlAttribute(): ?string
+    {
+        return MediaDisk::url($this->hero_image);
     }
 
     public function getYoutubeEmbedUrlAttribute(): ?string

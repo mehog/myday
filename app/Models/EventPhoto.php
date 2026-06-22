@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Support\MediaDisk;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Storage;
 
 class EventPhoto extends Model
 {
@@ -24,6 +24,6 @@ class EventPhoto extends Model
 
     public function getUrlAttribute(): string
     {
-        return Storage::disk('public')->url($this->path);
+        return MediaDisk::url($this->path) ?? '';
     }
 }

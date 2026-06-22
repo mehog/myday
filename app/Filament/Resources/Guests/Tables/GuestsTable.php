@@ -61,13 +61,17 @@ class GuestsTable
                             ->required(),
                         FileUpload::make('file')
                             ->label('CSV file')
+                            ->disk('local')
+                            ->directory('temp/csv-imports')
                             ->acceptedFileTypes(['text/csv', 'text/plain', 'application/vnd.ms-excel'])
                             ->required(),
                     ])
                     ->action(function (array $data): void {
                         $event = WeddingEvent::query()->findOrFail($data['wedding_event_id']);
-                        $path = storage_path('app/public/'.$data['file']);
-                        $count = GuestImporter::importFromPath($event, $path);
+                        $contents = \Illuminate\Support\Facades\Storage::disk('local')->get($data['file']);
+                        $count = GuestImporter::importFromContents($event, $contents);
+
+                        \Illuminate\Support\Facades\Storage::disk('local')->delete($data['file']);
 
                         Notification::make()
                             ->title("Imported {$count} guests")

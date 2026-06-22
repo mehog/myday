@@ -1,7 +1,5 @@
 @php
-    $heroUrl = $event->hero_image
-        ? \Illuminate\Support\Facades\Storage::disk('public')->url($event->hero_image)
-        : null;
+    $heroUrl = $event->hero_image_url;
 @endphp
 
 <section class="invitation-section hero-section relative min-h-[85vh] flex items-end justify-center overflow-hidden">

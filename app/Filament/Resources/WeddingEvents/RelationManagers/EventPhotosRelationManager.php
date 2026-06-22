@@ -27,7 +27,7 @@ class EventPhotosRelationManager extends RelationManager
                     ->label('Photo')
                     ->image()
                     ->directory('event-photos')
-                    ->disk('public')
+                    ->disk(config('filesystems.media_disk'))
                     ->required(),
                 TextInput::make('sort_order')
                     ->numeric()
@@ -44,7 +44,7 @@ class EventPhotosRelationManager extends RelationManager
             ->reorderable('sort_order')
             ->columns([
                 ImageColumn::make('path')
-                    ->disk('public'),
+                    ->disk(config('filesystems.media_disk')),
                 TextColumn::make('sort_order')
                     ->sortable(),
             ])

@@ -12,8 +12,8 @@
         <meta property="og:description" content="{{ __('invitation.meta_og_description', ['date' => $event->wedding_date->translatedFormat('j. F Y.')]) }}">
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ url()->current() }}">
-        @if ($event->hero_image)
-            <meta property="og:image" content="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($event->hero_image) }}">
+        @if ($event->hero_image_url)
+            <meta property="og:image" content="{{ $event->hero_image_url }}">
         @endif
         <meta name="twitter:card" content="summary_large_image">
     @else

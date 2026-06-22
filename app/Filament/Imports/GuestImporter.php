@@ -8,9 +8,9 @@ use League\Csv\Reader;
 
 class GuestImporter
 {
-    public static function importFromPath(WeddingEvent $event, string $path): int
+    public static function importFromContents(WeddingEvent $event, string $contents): int
     {
-        $reader = Reader::createFromPath($path);
+        $reader = Reader::createFromString($contents);
         $reader->setHeaderOffset(0);
 
         $count = 0;

@@ -51,7 +51,7 @@ class WeddingEventForm
                         FileUpload::make('hero_image')
                             ->image()
                             ->directory('hero-images')
-                            ->disk('public')
+                            ->disk(config('filesystems.media_disk'))
                             ->columnSpanFull(),
                         TextInput::make('music_url')
                             ->label('YouTube URL')
