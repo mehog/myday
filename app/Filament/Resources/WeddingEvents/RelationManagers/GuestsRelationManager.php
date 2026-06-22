@@ -3,7 +3,9 @@
 namespace App\Filament\Resources\WeddingEvents\RelationManagers;
 
 use App\Filament\Imports\GuestImporter;
+use App\Models\Guest;
 use App\RsvpStatus;
+use App\Support\Clipboard;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -16,6 +18,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class GuestsRelationManager extends RelationManager
 {
@@ -40,6 +43,7 @@ class GuestsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->with('weddingEvent'))
             ->recordTitleAttribute('name')
             ->columns([
                 TextColumn::make('name')
@@ -54,6 +58,8 @@ class GuestsRelationManager extends RelationManager
                     ->placeholder('—'),
                 TextColumn::make('personal_url')
                     ->label('Personal link')
+                    ->limit(40)
+                    ->tooltip(fn (Guest $record): string => $record->personal_url)
                     ->copyable()
                     ->copyMessage('Link copied'),
             ])
@@ -83,6 +89,11 @@ class GuestsRelationManager extends RelationManager
                     }),
             ])
             ->recordActions([
+                Action::make('copyPersonalLink')
+                    ->label('Copy link')
+                    ->icon('heroicon-o-clipboard')
+                    ->color('gray')
+                    ->alpineClickHandler(fn (Guest $record): string => Clipboard::alpineCopy($record->personal_url)),
                 EditAction::make(),
                 DeleteAction::make(),
             ])

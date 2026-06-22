@@ -14,11 +14,21 @@ class WeddingEventSeeder extends Seeder
 {
     public function run(): void
     {
-        User::query()->firstOrCreate(
+        User::query()->updateOrCreate(
             ['email' => 'admin@myday.test'],
             [
                 'name' => 'Admin',
                 'password' => Hash::make('password'),
+                'is_admin' => true,
+            ]
+        );
+
+        $customer = User::query()->updateOrCreate(
+            ['email' => 'customer@myday.test'],
+            [
+                'name' => 'Demo Par',
+                'password' => Hash::make('password'),
+                'is_admin' => false,
             ]
         );
 
@@ -43,6 +53,7 @@ class WeddingEventSeeder extends Seeder
                 ['name' => 'Jelena Petrovic', 'email' => 'jelena@example.com'],
                 ['name' => 'Stefan Nikolic', 'email' => 'stefan@example.com'],
             ],
+            userId: $customer->id,
         );
 
         $this->seedEvent(
@@ -99,10 +110,12 @@ class WeddingEventSeeder extends Seeder
         InvitationTheme $theme,
         array $schedule,
         array $guests = [],
+        ?int $userId = null,
     ): void {
         $event = WeddingEvent::query()->updateOrCreate(
             ['slug' => $slug],
             [
+                'user_id' => $userId,
                 'bride_name' => $bride,
                 'groom_name' => $groom,
                 'wedding_date' => now()->addMonths(4)->setTime(16, 0),

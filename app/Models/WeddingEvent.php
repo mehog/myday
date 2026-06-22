@@ -7,6 +7,7 @@ use App\LinkMode;
 use App\Support\MediaDisk;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
@@ -15,6 +16,7 @@ class WeddingEvent extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'slug',
         'bride_name',
         'groom_name',
@@ -51,6 +53,11 @@ class WeddingEvent extends Model
                 $event->slug = Str::slug($event->groom_name.'-'.$event->bride_name);
             }
         });
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function guests(): HasMany

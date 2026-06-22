@@ -1,94 +1,103 @@
 <?php
 
-namespace App\Filament\Resources\WeddingEvents\Schemas;
+namespace App\Filament\App\Schemas;
 
-use App\Models\User;
 use App\InvitationTheme;
 use App\LinkMode;
+use App\Models\WeddingEvent;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
-class WeddingEventForm
+class MyWeddingForm
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema
             ->components([
-                Section::make('Couple')
+                Section::make('Par')
                     ->columns(2)
                     ->schema([
-                        Select::make('user_id')
-                            ->label('Customer account')
-                            ->options(fn () => User::query()->where('is_admin', false)->orderBy('name')->pluck('name', 'id'))
-                            ->searchable()
-                            ->nullable()
-                            ->helperText('Assign a customer who can manage this wedding at /app'),
                         TextInput::make('groom_name')
+                            ->label('Ime mladoženje')
                             ->required()
                             ->maxLength(255),
                         TextInput::make('bride_name')
+                            ->label('Ime mlade')
                             ->required()
                             ->maxLength(255),
                         TextInput::make('slug')
-                            ->required()
-                            ->unique(ignoreRecord: true)
-                            ->maxLength(255)
-                            ->helperText('Used in the public URL: /e/{slug}'),
+                            ->label('Link pozivnice')
+                            ->readOnly()
+                            ->dehydrated(false)
+                            ->helperText(fn (?WeddingEvent $record): ?string => $record
+                                ? 'Vaš link: '.$record->public_url
+                                : null)
+                            ->columnSpanFull(),
                         DateTimePicker::make('wedding_date')
+                            ->label('Datum i vrijeme vjenčanja')
                             ->required()
                             ->native(false),
                     ]),
-                Section::make('Design')
+                Section::make('Dizajn')
                     ->columns(2)
                     ->schema([
                         Select::make('theme')
+                            ->label('Tema')
                             ->options(collect(InvitationTheme::cases())->mapWithKeys(fn (InvitationTheme $theme) => [$theme->value => $theme->label()]))
                             ->required()
                             ->native(false),
                         Select::make('link_mode')
+                            ->label('Način dijeljenja')
                             ->options(collect(LinkMode::cases())->mapWithKeys(fn (LinkMode $mode) => [$mode->value => $mode->label()]))
                             ->required()
                             ->native(false),
                         FileUpload::make('hero_image')
+                            ->label('Naslovna fotografija')
                             ->image()
                             ->directory('hero-images')
                             ->disk(config('filesystems.media_disk'))
                             ->columnSpanFull(),
                         TextInput::make('music_url')
-                            ->label('YouTube URL')
+                            ->label('YouTube pjesma')
                             ->url()
                             ->maxLength(500)
                             ->helperText('Zalijepite YouTube link pjesme (npr. https://www.youtube.com/watch?v=... ili https://youtu.be/...)')
                             ->columnSpanFull(),
                     ]),
-                Section::make('Location')
+                Section::make('Lokacija')
                     ->columns(2)
                     ->schema([
                         TextInput::make('location_name')
+                            ->label('Naziv lokacije')
                             ->maxLength(255),
                         TextInput::make('location_address')
+                            ->label('Adresa')
                             ->maxLength(255)
                             ->columnSpanFull(),
+                    ]),
+                Section::make('Napredne postavke')
+                    ->collapsed()
+                    ->columns(2)
+                    ->schema([
                         TextInput::make('location_lat')
+                            ->label('Geografska širina')
                             ->numeric()
                             ->step(0.0000001),
                         TextInput::make('location_lng')
+                            ->label('Geografska dužina')
                             ->numeric()
                             ->step(0.0000001),
                     ]),
                 Section::make('RSVP')
                     ->schema([
                         DatePicker::make('rsvp_deadline')
+                            ->label('Rok za potvrdu dolaska')
                             ->native(false),
-                        Toggle::make('is_active')
-                            ->default(true)
-                            ->required(),
                     ]),
             ]);
     }
