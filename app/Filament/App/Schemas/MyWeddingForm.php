@@ -10,6 +10,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -98,6 +99,12 @@ class MyWeddingForm
                         DatePicker::make('rsvp_deadline')
                             ->label('Rok za potvrdu dolaska')
                             ->native(false),
+                        Textarea::make('send_message')
+                            ->label('Poruka za goste')
+                            ->helperText('Koristite {name} za ime gosta i {link} za personalizovani link.')
+                            ->placeholder("Dragi {name}, sa radošću vas pozivamo na naše vjenčanje!\nVaš link za potvrdu dolaska: {link}")
+                            ->rows(4)
+                            ->columnSpanFull(),
                     ]),
             ]);
     }

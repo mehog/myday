@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\InvitePlatform;
 use App\RsvpStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +21,8 @@ class Guest extends Model
         'token',
         'rsvp_status',
         'rsvp_responded_at',
+        'invite_sent_at',
+        'invite_platform',
     ];
 
     protected function casts(): array
@@ -27,6 +30,8 @@ class Guest extends Model
         return [
             'rsvp_status' => RsvpStatus::class,
             'rsvp_responded_at' => 'datetime',
+            'invite_sent_at' => 'datetime',
+            'invite_platform' => InvitePlatform::class,
         ];
     }
 

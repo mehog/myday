@@ -10,6 +10,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -89,6 +90,15 @@ class WeddingEventForm
                         Toggle::make('is_active')
                             ->default(true)
                             ->required(),
+                    ]),
+                Section::make('Invite message')
+                    ->schema([
+                        Textarea::make('send_message')
+                            ->label('Message template')
+                            ->helperText('Use {name} for guest name and {link} for personal invite link.')
+                            ->placeholder("Dragi {name}, sa radošću vas pozivamo na naše vjenčanje!\nVaš link za potvrdu dolaska: {link}")
+                            ->rows(4)
+                            ->columnSpanFull(),
                     ]),
             ]);
     }

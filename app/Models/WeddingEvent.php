@@ -31,6 +31,7 @@ class WeddingEvent extends Model
         'hero_image',
         'rsvp_deadline',
         'is_active',
+        'send_message',
     ];
 
     protected function casts(): array
@@ -88,6 +89,15 @@ class WeddingEvent extends Model
     public function guestUrl(Guest $guest): string
     {
         return url("/e/{$this->slug}/{$guest->token}");
+    }
+
+    public function composeSendMessage(Guest $guest): string
+    {
+        return str_replace(
+            ['{name}', '{link}'],
+            [$guest->name, $guest->personal_url],
+            $this->send_message ?? "Dragi {$guest->name},\n{$guest->personal_url}"
+        );
     }
 
     public function requiresToken(): bool
