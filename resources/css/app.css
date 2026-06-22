@@ -95,6 +95,26 @@
     scroll-margin-top: 5rem;
 }
 
+.landing-hero {
+    position: relative;
+    background-image: url('/img/wedding-bckg.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.landing-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: color-mix(in srgb, #1a1208 70%, transparent);
+}
+
+.landing-hero > * {
+    position: relative;
+    z-index: 1;
+}
+
 .landing-fade-in {
     animation: invitationFadeIn 0.8s ease-out both;
 }
