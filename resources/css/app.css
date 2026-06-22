@@ -79,32 +79,8 @@
 
 /* Landing page */
 .landing-page {
-    position: relative;
     background-color: #1a1208;
-    background-image: url('/img/wedding-bckg.webp');
-    background-size: cover;
-    background-position: center top;
-    background-attachment: fixed;
     color: #faf6ee;
-}
-
-.landing-page::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: linear-gradient(
-        180deg,
-        rgba(26, 18, 8, 0.78) 0%,
-        rgba(26, 18, 8, 0.85) 45%,
-        rgba(26, 18, 8, 0.9) 100%
-    );
-    pointer-events: none;
-    z-index: 0;
-}
-
-.landing-page > * {
-    position: relative;
-    z-index: 1;
 }
 
 .landing-heading {
@@ -119,30 +95,24 @@
     scroll-margin-top: 5rem;
 }
 
-.landing-section-alt {
-    background-color: rgba(26, 18, 8, 0.45);
-    backdrop-filter: blur(2px);
-}
-
 .landing-hero {
     position: relative;
+    background-image: url('/img/wedding-bckg.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-.landing-hero-content {
-    background-color: rgba(26, 18, 8, 0.72);
-    border: 1px solid rgba(250, 246, 238, 0.12);
-    backdrop-filter: blur(12px);
-    box-shadow:
-        0 24px 48px rgba(0, 0, 0, 0.35),
-        inset 0 1px 0 rgba(250, 246, 238, 0.06);
+.landing-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: color-mix(in srgb, #1a1208 70%, transparent);
 }
 
-.landing-hero-title {
-    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
-}
-
-.landing-nav {
-    background-color: rgba(26, 18, 8, 0.88);
+.landing-hero > * {
+    position: relative;
+    z-index: 1;
 }
 
 .landing-fade-in {
@@ -189,15 +159,11 @@
 }
 
 .landing-card {
-    background-color: rgba(26, 18, 8, 0.88);
-    backdrop-filter: blur(8px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .landing-card:hover {
     border-color: color-mix(in srgb, #c9a227 30%, transparent);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,4 +1,4 @@
-<header class="landing-nav fixed top-0 inset-x-0 z-50 border-b border-white/10 backdrop-blur-md">
+<header class="landing-nav fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-[#1a1208]/80 backdrop-blur-md">
     <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href="{{ route('home') }}" class="landing-heading text-2xl font-semibold text-[#faf6ee]">
             {{ config('app.name', 'NasDan') }}
@@ -15,14 +15,14 @@
 </header>
 
 <section class="landing-hero min-h-screen flex items-center justify-center px-6 pt-24 pb-16">
-    <div class="landing-hero-content max-w-3xl mx-auto text-center landing-fade-in rounded-3xl px-8 py-12 sm:px-12 sm:py-14">
-        <p class="text-sm uppercase tracking-[0.35em] text-[#e8dcc8] mb-6">
+    <div class="max-w-3xl mx-auto text-center landing-fade-in">
+        <p class="text-sm uppercase tracking-[0.35em] text-[#d4c4a8] mb-6">
             {{ config('app.name', 'NasDan') }}
         </p>
-        <h1 class="landing-hero-title landing-heading text-4xl sm:text-5xl md:text-6xl font-semibold text-[#faf6ee] leading-tight mb-6">
+        <h1 class="landing-heading text-4xl sm:text-5xl md:text-6xl font-semibold text-[#faf6ee] leading-tight mb-6">
             {{ __('landing.hero_title') }}
         </h1>
-        <p class="landing-body text-lg sm:text-xl text-[#e8dcc8] max-w-2xl mx-auto mb-10">
+        <p class="landing-body text-lg sm:text-xl text-[#d4c4a8] max-w-2xl mx-auto mb-10">
             {{ __('landing.hero_subtitle') }}
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">

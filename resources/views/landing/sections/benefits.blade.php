@@ -1,4 +1,4 @@
-<section class="landing-section landing-section-alt px-6 py-20">
+<section class="landing-section px-6 py-20 bg-[#2a1f0f]/50">
     <div class="max-w-5xl mx-auto">
         <div class="text-center mb-14 landing-fade-in">
             <h2 class="landing-heading text-3xl sm:text-4xl text-[#faf6ee] mb-4">

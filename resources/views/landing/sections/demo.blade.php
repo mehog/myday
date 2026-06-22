@@ -1,6 +1,6 @@
 <section
     id="demo"
-    class="landing-section landing-section-alt px-6 py-20 scroll-mt-20"
+    class="landing-section px-6 py-20 bg-[#2a1f0f]/50 scroll-mt-20"
     x-data="{
         modalOpen: false,
         publicUrl: '',
