@@ -1,6 +1,6 @@
 <section
     id="demo"
-    class="landing-section px-6 py-20 bg-[#2a1f0f]/50 scroll-mt-20"
+    class="landing-section landing-section-alt px-6 py-20 scroll-mt-20"
     x-data="{
         modalOpen: false,
         publicUrl: '',
@@ -34,7 +34,7 @@
 
         <div class="grid md:grid-cols-2 gap-6">
             @foreach ($demos as $demo)
-                <div class="landing-card rounded-2xl border border-[#c9a227]/20 bg-[#1a1208] overflow-hidden landing-fade-in">
+                <div class="landing-card rounded-2xl border border-[#c9a227]/25 overflow-hidden landing-fade-in">
                     <div class="aspect-video bg-gradient-to-br from-[#2a1f0f] to-[#1a1208] flex flex-col items-center justify-center p-8 border-b border-white/5">
                         <p class="landing-heading text-3xl sm:text-4xl text-[#faf6ee] mb-2 text-center">
                             {{ $demo['couple'] }}

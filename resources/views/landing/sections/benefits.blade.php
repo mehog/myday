@@ -1,4 +1,4 @@
-<section class="landing-section px-6 py-20 bg-[#2a1f0f]/50">
+<section class="landing-section landing-section-alt px-6 py-20">
     <div class="max-w-5xl mx-auto">
         <div class="text-center mb-14 landing-fade-in">
             <h2 class="landing-heading text-3xl sm:text-4xl text-[#faf6ee] mb-4">
@@ -18,7 +18,7 @@
                 ['title' => __('landing.benefit_5_title'), 'text' => __('landing.benefit_5_text')],
                 ['title' => __('landing.benefit_6_title'), 'text' => __('landing.benefit_6_text')],
             ] as $benefit)
-                <div class="landing-card rounded-2xl border border-white/10 bg-[#1a1208]/80 p-6 landing-fade-in">
+                <div class="landing-card rounded-2xl border border-white/15 p-6 landing-fade-in">
                     <div class="w-8 h-8 rounded-full bg-[#c9a227]/20 flex items-center justify-center mb-4">
                         <svg class="w-4 h-4 text-[#c9a227]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>

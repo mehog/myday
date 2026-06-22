@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'meta_title' => 'Digitalne pozivnice za vjenčanje',
+    'meta_title' => 'NasDan — Digitalne web pozivnice za vjenčanje',
     'meta_description' => 'Personalizovane web pozivnice za vaše vjenčanje. Odbrojavanje, RSVP, plan dana i više — sve na jednom linku.',
 
     'nav_demo' => 'Demo',

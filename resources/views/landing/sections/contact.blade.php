@@ -9,7 +9,7 @@
             </p>
         </div>
 
-        <div class="landing-card rounded-2xl border border-white/10 bg-[#1a1208]/80 p-6 sm:p-8 landing-fade-in">
+        <div class="landing-card rounded-2xl border border-white/15 p-6 sm:p-8 landing-fade-in">
             <livewire:contact-form />
         </div>
     </div>
