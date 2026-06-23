@@ -15,12 +15,17 @@ use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 
 class GuestsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query
+                ->withCount('linkVisits')
+                ->withMax('linkVisits as last_visited_at', 'visited_at'))
             ->columns([
                 TextColumn::make('weddingEvent.slug')
                     ->label('Wedding')
@@ -41,6 +46,16 @@ class GuestsTable
                     ->copyable()
                     ->copyMessage('Link copied')
                     ->toggleable(),
+                TextColumn::make('link_visits_count')
+                    ->label('Opens')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('last_visited_at')
+                    ->label('Last opened')
+                    ->since()
+                    ->sortable()
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('wedding_event_id')
@@ -68,10 +83,10 @@ class GuestsTable
                     ])
                     ->action(function (array $data): void {
                         $event = WeddingEvent::query()->findOrFail($data['wedding_event_id']);
-                        $contents = \Illuminate\Support\Facades\Storage::disk('local')->get($data['file']);
+                        $contents = Storage::disk('local')->get($data['file']);
                         $count = GuestImporter::importFromContents($event, $contents);
 
-                        \Illuminate\Support\Facades\Storage::disk('local')->delete($data['file']);
+                        Storage::disk('local')->delete($data['file']);
 
                         Notification::make()
                             ->title("Imported {$count} guests")

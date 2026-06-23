@@ -8,6 +8,7 @@ use App\Filament\Resources\WeddingEvents\Pages\ListWeddingEvents;
 use App\Filament\Resources\WeddingEvents\Pages\ViewWeddingEvent;
 use App\Filament\Resources\WeddingEvents\RelationManagers\EventPhotosRelationManager;
 use App\Filament\Resources\WeddingEvents\RelationManagers\GuestsRelationManager;
+use App\Filament\Resources\WeddingEvents\RelationManagers\LinkVisitsRelationManager;
 use App\Filament\Resources\WeddingEvents\RelationManagers\ScheduleItemsRelationManager;
 use App\Filament\Resources\WeddingEvents\Schemas\WeddingEventForm;
 use App\Filament\Resources\WeddingEvents\Schemas\WeddingEventInfolist;
@@ -54,6 +55,7 @@ class WeddingEventResource extends Resource
             ScheduleItemsRelationManager::class,
             EventPhotosRelationManager::class,
             GuestsRelationManager::class,
+            LinkVisitsRelationManager::class,
         ];
     }
 
