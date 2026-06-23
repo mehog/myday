@@ -116,6 +116,7 @@ class GuestsRelationManager extends RelationManager
                         InvitePlatform::WhatsApp => Heroicon::OutlinedChatBubbleLeftRight,
                         InvitePlatform::Viber => Heroicon::OutlinedPhone,
                         InvitePlatform::Telegram => Heroicon::OutlinedPaperAirplane,
+                        InvitePlatform::FacebookMessenger => Heroicon::OutlinedChatBubbleOvalLeft,
                         InvitePlatform::Manual => Heroicon::OutlinedHandRaised,
                         default => null,
                     })
@@ -185,6 +186,7 @@ class GuestsRelationManager extends RelationManager
                         $this->messagingAction($action, InvitePlatform::WhatsApp),
                         $this->messagingAction($action, InvitePlatform::Viber),
                         $this->messagingAction($action, InvitePlatform::Telegram),
+                        $this->messagingAction($action, InvitePlatform::FacebookMessenger),
                     ]),
                 ActionGroup::make([
                     Action::make('copyPersonalLink')
@@ -250,6 +252,7 @@ class GuestsRelationManager extends RelationManager
                     InvitePlatform::WhatsApp => MessengerLinks::whatsApp($record, $message),
                     InvitePlatform::Viber => MessengerLinks::viber($message),
                     InvitePlatform::Telegram => MessengerLinks::telegram($record, $message),
+                    InvitePlatform::FacebookMessenger => MessengerLinks::facebookMessenger($record, $message),
                     InvitePlatform::Manual => $record->personal_url,
                 };
 

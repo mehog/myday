@@ -29,6 +29,11 @@ class MessengerLinks
         return 'https://t.me/share/url?url='.rawurlencode($guest->personal_url).'&text='.rawurlencode($message);
     }
 
+    public static function facebookMessenger(Guest $guest, string $message): string
+    {
+        return 'fb-messenger://share/?link='.rawurlencode($guest->personal_url);
+    }
+
     public static function openInNewTab(string $url): string
     {
         $urlJs = Js::from($url);

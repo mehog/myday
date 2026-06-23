@@ -36,5 +36,6 @@ return [
     'platform_whatsapp' => 'WhatsApp',
     'platform_viber' => 'Viber',
     'platform_telegram' => 'Telegram',
+    'platform_facebook_messenger' => 'Facebook Messenger',
     'platform_manual' => 'Ručno',
 ];
