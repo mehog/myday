@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\WeddingEventCalendarController;
 use App\Livewire\InvitationPage;
 use App\Livewire\LandingPage;
 use App\Livewire\Onboarding\VerifyEmailNotice;
@@ -56,5 +57,6 @@ Route::get('/robots.txt', function () {
     return response($content, 200, ['Content-Type' => 'text/plain']);
 })->name('robots');
 
+Route::get('/e/{slug}/calendar.ics', WeddingEventCalendarController::class)->name('invitation.ics');
 Route::get('/e/{slug}', InvitationPage::class)->name('invitation.show');
 Route::get('/e/{slug}/{token}', InvitationPage::class)->name('invitation.guest');

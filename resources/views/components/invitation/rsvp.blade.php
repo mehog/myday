@@ -34,6 +34,24 @@
                         {{ __('invitation.edit_response') }}
                     </button>
                 @endif
+                @if ($guest->rsvp_status === \App\RsvpStatus::Yes)
+                    <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+                        <a
+                            href="{{ $event->googleCalendarUrl() }}"
+                            target="_blank"
+                            rel="noopener"
+                            class="rsvp-btn rsvp-btn-yes rounded-xl px-6 py-3 invitation-heading text-base transition"
+                        >
+                            {{ __('invitation.add_to_google_calendar') }}
+                        </a>
+                        <a
+                            href="{{ route('invitation.ics', $event->slug) }}"
+                            class="rsvp-btn rsvp-btn-no rounded-xl px-6 py-3 invitation-heading text-base transition"
+                        >
+                            {{ __('invitation.download_ics') }}
+                        </a>
+                    </div>
+                @endif
             </div>
         @elseif ($rsvpSubmitted && $guest && ! $isEditing)
             <div class="rounded-2xl border border-[var(--color-primary)]/30 bg-[var(--color-bg-soft)]/80 px-6 py-8">
@@ -51,6 +69,24 @@
                     >
                         {{ __('invitation.edit_response') }}
                     </button>
+                @endif
+                @if ($guest->rsvp_status === \App\RsvpStatus::Yes)
+                    <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+                        <a
+                            href="{{ $event->googleCalendarUrl() }}"
+                            target="_blank"
+                            rel="noopener"
+                            class="rsvp-btn rsvp-btn-yes rounded-xl px-6 py-3 invitation-heading text-base transition"
+                        >
+                            {{ __('invitation.add_to_google_calendar') }}
+                        </a>
+                        <a
+                            href="{{ route('invitation.ics', $event->slug) }}"
+                            class="rsvp-btn rsvp-btn-no rounded-xl px-6 py-3 invitation-heading text-base transition"
+                        >
+                            {{ __('invitation.download_ics') }}
+                        </a>
+                    </div>
                 @endif
             </div>
         @else

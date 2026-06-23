@@ -60,6 +60,9 @@ return [
     'rsvp_update_helper_text' => 'You can update your response before the deadline.',
     'edit_response' => 'Edit response',
 
+    'add_to_google_calendar' => 'Add to Google Calendar',
+    'download_ics' => 'Download for Apple / Outlook (.ics)',
+
     'token_required' => 'This invitation requires a personal link.',
 
     'preview_banner' => 'This is a preview. The link will go live once payment is confirmed and an admin approves it.',

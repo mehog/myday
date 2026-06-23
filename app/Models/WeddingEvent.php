@@ -96,6 +96,17 @@ class WeddingEvent extends Model
         return url("/e/{$this->slug}/{$guest->token}");
     }
 
+    public function googleCalendarUrl(): string
+    {
+        $start = $this->wedding_date->format('Ymd');
+        $end = $this->wedding_date->copy()->addDay()->format('Ymd');
+        $text = urlencode(__('invitation.save_the_date').' — '.$this->couple_names);
+        $loc = urlencode(trim("{$this->location_name} {$this->location_address}"));
+
+        return 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+            ."&text={$text}&dates={$start}/{$end}&location={$loc}";
+    }
+
     public function composeSendMessage(Guest $guest): string
     {
         return str_replace(

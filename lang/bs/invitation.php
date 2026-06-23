@@ -60,6 +60,9 @@ return [
     'rsvp_update_helper_text' => 'Odgovor možete promijeniti sve do isteka roka.',
     'edit_response' => 'Izmijeni odgovor',
 
+    'add_to_google_calendar' => 'Dodaj u Google kalendar',
+    'download_ics' => 'Preuzmi za Apple / Outlook (.ics)',
+
     'token_required' => 'Ova pozivnica zahtijeva lični link.',
 
     'preview_banner' => 'Ovo je pregled. Link će biti aktivan nakon potvrde uplate i odobrenja administratora.',

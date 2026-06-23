@@ -60,6 +60,9 @@ return [
     'rsvp_update_helper_text' => 'Sie können Ihre Antwort vor Ablauf der Frist ändern.',
     'edit_response' => 'Antwort bearbeiten',
 
+    'add_to_google_calendar' => 'Zu Google Kalender hinzufügen',
+    'download_ics' => 'Für Apple / Outlook herunterladen (.ics)',
+
     'token_required' => 'Diese Einladung erfordert einen persönlichen Link.',
 
     'preview_banner' => 'Dies ist eine Vorschau. Der Link wird freigeschaltet, sobald die Zahlung bestätigt und von einem Admin freigegeben wurde.',
