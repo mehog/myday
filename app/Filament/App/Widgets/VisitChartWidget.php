@@ -7,11 +7,21 @@ use Filament\Widgets\ChartWidget;
 
 class VisitChartWidget extends ChartWidget
 {
-    protected ?string $heading = 'Otvoreni linkovi';
+    protected ?string $heading = null;
 
-    protected ?string $description = 'Posjete pozivnici u posljednih 30 dana';
+    protected ?string $description = null;
 
     protected int|string|array $columnSpan = 'full';
+
+    public function getHeading(): ?string
+    {
+        return __('app.chart_heading');
+    }
+
+    public function getDescription(): ?string
+    {
+        return __('app.chart_description');
+    }
 
     protected function getType(): string
     {
@@ -53,7 +63,7 @@ class VisitChartWidget extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Otvorenja',
+                    'label' => __('app.chart_dataset_label'),
                     'data' => $data,
                 ],
             ],

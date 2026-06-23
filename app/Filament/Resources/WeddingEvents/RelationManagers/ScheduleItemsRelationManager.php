@@ -19,26 +19,31 @@ class ScheduleItemsRelationManager extends RelationManager
 {
     protected static string $relationship = 'scheduleItems';
 
-    protected static ?string $title = 'Raspored';
+    protected static ?string $title = null;
+
+    public static function getTitle(\Illuminate\Database\Eloquent\Model $ownerRecord, string $pageClass): string
+    {
+        return __('schedule.title');
+    }
 
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 TimePicker::make('time')
-                    ->label('Vrijeme')
+                    ->label($this->trans('field_time'))
                     ->required()
                     ->seconds(false),
                 TextInput::make('title')
-                    ->label('Naziv')
+                    ->label($this->trans('field_title'))
                     ->required()
                     ->maxLength(255),
                 Textarea::make('description')
-                    ->label('Opis')
+                    ->label($this->trans('field_description'))
                     ->rows(3)
                     ->columnSpanFull(),
                 TextInput::make('sort_order')
-                    ->label('Redosljed')
+                    ->label($this->trans('field_sort_order'))
                     ->numeric()
                     ->default(0)
                     ->required(),
@@ -53,16 +58,16 @@ class ScheduleItemsRelationManager extends RelationManager
             ->reorderable('sort_order')
             ->columns([
                 TextColumn::make('time')
-                    ->label('Vrijeme')
+                    ->label($this->trans('field_time'))
                     ->time('H:i'),
                 TextColumn::make('title')
-                    ->label('Naziv')
+                    ->label($this->trans('field_title'))
                     ->searchable(),
                 TextColumn::make('description')
-                    ->label('Opis')
+                    ->label($this->trans('field_description'))
                     ->limit(50),
                 TextColumn::make('sort_order')
-                    ->label('Redosljed')
+                    ->label($this->trans('field_sort_order'))
                     ->sortable(),
             ])
             ->headerActions([
@@ -78,10 +83,15 @@ class ScheduleItemsRelationManager extends RelationManager
                 ]),
             ])
             ->emptyStateIcon('heroicon-o-clock')
-            ->emptyStateHeading('Još nema stavki u rasporedu')
-            ->emptyStateDescription('Dodajte prvi događaj vašeg dana — npr. ceremonija, koktel ili večera.')
+            ->emptyStateHeading($this->trans('empty_heading'))
+            ->emptyStateDescription($this->trans('empty_description'))
             ->emptyStateActions([
                 CreateAction::make(),
             ]);
+    }
+
+    protected function trans(string $key, array $replace = []): string
+    {
+        return __("schedule.{$key}", $replace);
     }
 }

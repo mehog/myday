@@ -22,15 +22,30 @@ class MyWeddingResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHeart;
 
-    protected static ?string $navigationLabel = 'Moje vjenčanje';
+    protected static ?string $navigationLabel = null;
 
-    protected static ?string $modelLabel = 'Vjenčanje';
+    protected static ?string $modelLabel = null;
 
-    protected static ?string $pluralModelLabel = 'Moje vjenčanje';
+    protected static ?string $pluralModelLabel = null;
 
     protected static ?string $recordTitleAttribute = 'couple_names';
 
     protected static ?string $slug = 'moje-vjencanje';
+
+    public static function getNavigationLabel(): string
+    {
+        return __('app.nav_my_wedding');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('app.model_label_wedding');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('app.nav_my_wedding');
+    }
 
     public static function form(Schema $schema): Schema
     {

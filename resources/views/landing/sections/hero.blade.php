@@ -4,23 +4,6 @@
             {{ config('app.name', 'NasDan') }}
         </a>
         <nav class="flex items-center gap-4 sm:gap-6">
-            <div class="flex items-center gap-1 text-sm">
-                <button
-                    type="button"
-                    wire:click="switchLocale('bs')"
-                    class="px-2 py-1 rounded transition {{ app()->getLocale() === 'bs' ? 'text-[#c9a227] font-semibold' : 'text-[#d4c4a8] hover:text-[#c9a227]' }}"
-                >
-                    BS
-                </button>
-                <span class="text-[#d4c4a8]/50">|</span>
-                <button
-                    type="button"
-                    wire:click="switchLocale('en')"
-                    class="px-2 py-1 rounded transition {{ app()->getLocale() === 'en' ? 'text-[#c9a227] font-semibold' : 'text-[#d4c4a8] hover:text-[#c9a227]' }}"
-                >
-                    EN
-                </button>
-            </div>
             <a href="#demo" class="text-sm text-[#d4c4a8] hover:text-[#c9a227] transition hidden sm:inline">
                 {{ __('landing.nav_demo') }}
             </a>

@@ -23,17 +23,20 @@ class WeddingOverviewWidget extends StatsOverviewWidget
         $daysUntil = (int) now()->startOfDay()->diffInDays($wedding->wedding_date->copy()->startOfDay(), false);
 
         return [
-            Stat::make('Gosti', (string) $guestCount)
-                ->description('Ukupno pozvanih gostiju')
+            Stat::make(__('app.stat_guests'), (string) $guestCount)
+                ->description(__('app.stat_guests_desc'))
                 ->icon('heroicon-o-users'),
-            Stat::make('Potvrdili', (string) $confirmed)
-                ->description('Potvrdili dolazak')
+            Stat::make(__('app.stat_confirmed'), (string) $confirmed)
+                ->description(__('app.stat_confirmed_desc'))
                 ->icon('heroicon-o-check-circle')
                 ->color('success'),
-            Stat::make('Odgovorili', "{$responseRate}%")
-                ->description("{$responded} od {$guestCount} gostiju")
+            Stat::make(__('app.stat_responded'), "{$responseRate}%")
+                ->description(__('app.stat_responded_desc', ['responded' => $responded, 'total' => $guestCount]))
                 ->icon('heroicon-o-chat-bubble-left-right'),
-            Stat::make('Do vjenčanja', $daysUntil >= 0 ? "{$daysUntil} dana" : 'Prošlo')
+            Stat::make(
+                __('app.stat_days_until'),
+                $daysUntil >= 0 ? __('app.stat_days_value', ['days' => $daysUntil]) : __('app.stat_days_passed')
+            )
                 ->description($wedding->wedding_date->translatedFormat('d. F Y.'))
                 ->icon('heroicon-o-calendar-days')
                 ->color($daysUntil >= 0 ? 'primary' : 'gray'),

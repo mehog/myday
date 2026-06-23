@@ -20,98 +20,98 @@ class MyWeddingForm
     {
         return $schema
             ->components([
-                Section::make('Par')
+                Section::make(__('app.section_couple'))
                     ->columnSpanFull()
                     ->collapsible()
                     ->columns(2)
                     ->schema([
                         TextInput::make('groom_name')
-                            ->label('Ime mladoženje')
+                            ->label(__('app.groom_name'))
                             ->required()
                             ->maxLength(255),
                         TextInput::make('bride_name')
-                            ->label('Ime mlade')
+                            ->label(__('app.bride_name'))
                             ->required()
                             ->maxLength(255),
                         TextInput::make('slug')
-                            ->label('Link pozivnice')
+                            ->label(__('app.invitation_link'))
                             ->readOnly()
                             ->dehydrated(false)
                             ->helperText(fn (?WeddingEvent $record): ?string => $record
-                                ? 'Vaš link: '.$record->public_url
+                                ? __('app.your_link').$record->public_url
                                 : null)
                             ->columnSpanFull(),
                         DateTimePicker::make('wedding_date')
-                            ->label('Datum i vrijeme vjenčanja')
+                            ->label(__('app.wedding_datetime'))
                             ->required()
                             ->native(false)
                             ->columnSpanFull(),
                     ]),
-                Section::make('Dizajn')
+                Section::make(__('app.section_design'))
                     ->columnSpanFull()
                     ->collapsible()
                     ->columns(2)
                     ->schema([
                         Select::make('theme')
-                            ->label('Tema')
+                            ->label(__('app.theme'))
                             ->options(collect(InvitationTheme::cases())->mapWithKeys(fn (InvitationTheme $theme) => [$theme->value => $theme->label()]))
                             ->required()
                             ->native(false),
                         Select::make('link_mode')
-                            ->label('Način dijeljenja')
+                            ->label(__('app.share_mode'))
                             ->options(collect(LinkMode::cases())->mapWithKeys(fn (LinkMode $mode) => [$mode->value => $mode->label()]))
                             ->required()
                             ->native(false),
                         FileUpload::make('hero_image')
-                            ->label('Naslovna fotografija')
+                            ->label(__('app.hero_image'))
                             ->image()
                             ->directory('hero-images')
                             ->disk(config('filesystems.media_disk')),
                         TextInput::make('music_url')
-                            ->label('YouTube pjesma')
+                            ->label(__('app.youtube_song'))
                             ->url()
                             ->maxLength(500)
-                            ->helperText('Zalijepite YouTube link pjesme (npr. https://www.youtube.com/watch?v=... ili https://youtu.be/...)'),
+                            ->helperText(__('app.youtube_helper')),
                     ]),
-                Section::make('Lokacija')
+                Section::make(__('app.section_location'))
                     ->columns(2)
                     ->collapsible()
                     ->schema([
                         TextInput::make('location_name')
-                            ->label('Naziv lokacije')
+                            ->label(__('app.location_name'))
                             ->maxLength(255)
                             ->columnSpanFull(),
                         TextInput::make('location_address')
-                            ->label('Adresa')
+                            ->label(__('app.location_address'))
                             ->maxLength(255)
                             ->columnSpanFull(),
-                        Section::make('Koordinate')
-                            ->description('Opcionalno. Koristite samo ako želite preciznu lokaciju na mapi.')
+                        Section::make(__('app.section_coordinates'))
+                            ->description(__('app.coordinates_description'))
                             ->collapsed()
                             ->collapsible()
                             ->columns(2)
                             ->columnSpanFull()
                             ->schema([
                                 TextInput::make('location_lat')
-                                    ->label('Geografska širina')
+                                    ->label(__('app.latitude'))
                                     ->numeric()
                                     ->step(0.0000001),
                                 TextInput::make('location_lng')
-                                    ->label('Geografska dužina')
+                                    ->label(__('app.longitude'))
                                     ->numeric()
                                     ->step(0.0000001),
                             ]),
                     ]),
-                Section::make('RSVP')
+                Section::make(__('app.section_rsvp'))
                     ->collapsible()
                     ->schema([
                         DatePicker::make('rsvp_deadline')
-                            ->label('Rok za potvrdu dolaska')
+                            ->label(__('app.rsvp_deadline'))
                             ->native(false),
                         Textarea::make('send_message')
-                            ->label('Poruka za goste')
-                            ->helperText('Koristite {name} za ime gosta i {link} za personalizovani link.')
-                            ->placeholder("Npr: Dragi {name}, sa radošću vas pozivamo na naše vjenčanje!\nVaš link za potvrdu dolaska: {link}")
+                            ->label(__('app.guest_message'))
+                            ->helperText(__('app.guest_message_helper'))
+                            ->placeholder(__('app.guest_message_placeholder'))
                             ->rows(4)
                             ->columnSpanFull(),
                     ]),

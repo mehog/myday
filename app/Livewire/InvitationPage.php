@@ -7,6 +7,7 @@ use App\LinkType;
 use App\Models\Guest;
 use App\Models\WeddingEvent;
 use App\RsvpStatus;
+use App\Support\Locale;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -85,6 +86,11 @@ class InvitationPage extends Component
         }
 
         $this->rsvpSubmitted = true;
+    }
+
+    public function switchLocale(string $locale): void
+    {
+        Locale::set($locale);
     }
 
     public function render()

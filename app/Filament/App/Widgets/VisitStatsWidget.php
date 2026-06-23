@@ -36,17 +36,17 @@ class VisitStatsWidget extends StatsOverviewWidget
             ->count();
 
         return [
-            Stat::make('Ukupno otvorenja', (string) $totalViews)
-                ->description('Sva otvorenja pozivnice')
+            Stat::make(__('app.stat_total_opens'), (string) $totalViews)
+                ->description(__('app.stat_total_opens_desc'))
                 ->icon('heroicon-o-eye'),
-            Stat::make('Ovaj mjesec', (string) $thisMonthViews)
-                ->description('Otvorenja ovog mjeseca')
+            Stat::make(__('app.stat_this_month'), (string) $thisMonthViews)
+                ->description(__('app.stat_this_month_desc'))
                 ->icon('heroicon-o-calendar'),
-            Stat::make('Jedinstveni posjetitelji', (string) $uniqueVisitorsThisMonth)
-                ->description('Ovaj mjesec')
+            Stat::make(__('app.stat_unique_visitors'), (string) $uniqueVisitorsThisMonth)
+                ->description(__('app.stat_unique_visitors_desc'))
                 ->icon('heroicon-o-user'),
-            Stat::make('Personalni linkovi', (string) $personalOpens)
-                ->description('Otvorenja personalnih linkova')
+            Stat::make(__('app.stat_personal_opens'), (string) $personalOpens)
+                ->description(__('app.stat_personal_opens_desc'))
                 ->icon('heroicon-o-link'),
         ];
     }

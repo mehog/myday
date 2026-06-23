@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'title' => 'Gosti',
+    'field_name' => 'Ime',
+    'field_email' => 'Email',
+    'field_phone' => 'Telefon',
+    'field_rsvp_status' => 'RSVP status',
+    'field_rsvp_responded_at' => 'Datum odgovora',
     'personal_link' => 'Personalni link',
     'link_copied' => 'Link kopiran',
     'sent_via' => 'Kanal pozivnice',

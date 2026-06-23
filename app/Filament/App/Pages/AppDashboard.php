@@ -17,9 +17,19 @@ class AppDashboard extends BaseDashboard
 {
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHome;
 
-    protected static ?string $navigationLabel = 'Pregled';
+    protected static ?string $navigationLabel = null;
 
-    protected static ?string $title = 'Pregled';
+    protected static ?string $title = null;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('app.dashboard_label');
+    }
+
+    public function getTitle(): string
+    {
+        return __('app.dashboard_title');
+    }
 
     public function mount(): void
     {
@@ -27,8 +37,8 @@ class AppDashboard extends BaseDashboard
 
         if ($wedding && ! $wedding->is_active) {
             Notification::make()
-                ->title('Pozivnica čeka aktivaciju')
-                ->body('Link će biti aktivan nakon potvrde uplate i odobrenja administratora. Do tada možete pregledati pozivnicu.')
+                ->title(__('app.pending_activation_title'))
+                ->body(__('app.pending_activation_body'))
                 ->warning()
                 ->persistent()
                 ->send();
@@ -58,11 +68,11 @@ class AppDashboard extends BaseDashboard
 
         $actions = [
             Action::make('edit')
-                ->label('Uredi pozivnicu')
+                ->label(__('app.edit_invitation'))
                 ->icon('heroicon-o-pencil-square')
                 ->url(MyWeddingResource::getUrl('edit', ['record' => $wedding])),
             Action::make('preview')
-                ->label('Pregled pozivnice')
+                ->label(__('app.preview_invitation'))
                 ->icon('heroicon-o-arrow-top-right-on-square')
                 ->url($wedding->public_url)
                 ->openUrlInNewTab(),
@@ -70,10 +80,10 @@ class AppDashboard extends BaseDashboard
 
         if ($wedding->is_active) {
             $actions[] = Action::make('copyLink')
-                ->label('Kopiraj link')
+                ->label(__('guests.copy_link'))
                 ->icon('heroicon-o-clipboard')
                 ->color('gray')
-                ->alpineClickHandler(fn (): string => Clipboard::alpineCopy($wedding->public_url, 'Link kopiran'));
+                ->alpineClickHandler(fn (): string => Clipboard::alpineCopy($wedding->public_url, __('guests.link_copied')));
         }
 
         return $actions;
@@ -84,11 +94,11 @@ class AppDashboard extends BaseDashboard
         $wedding = auth()->user()?->weddingEvent;
 
         if (! $wedding) {
-            return 'Vaša pozivnica nije još kreirana. Kontaktirajte NasDan tim da vam je postavi.';
+            return __('app.no_invitation');
         }
 
         if (! $wedding->is_active) {
-            return $wedding->couple_names.' — link nije još aktivan';
+            return $wedding->couple_names.' '.__('app.invitation_inactive_suffix');
         }
 
         return $wedding->couple_names;

@@ -72,4 +72,17 @@ class Locale
     {
         return self::current() === 'bs' ? 'bs_BA' : 'en_US';
     }
+
+    /**
+     * @return array<string, string>
+     */
+    public static function options(): array
+    {
+        $labels = config('app.locale_labels', []);
+
+        return array_intersect_key(
+            $labels,
+            array_flip(self::supported()),
+        );
+    }
 }

@@ -15,15 +15,15 @@ class EditMyWedding extends EditRecord
     {
         return [
             Action::make('preview')
-                ->label('Pregled pozivnice')
+                ->label(__('app.preview_invitation'))
                 ->icon('heroicon-o-arrow-top-right-on-square')
                 ->url(fn (): string => $this->record->public_url)
                 ->openUrlInNewTab(),
             Action::make('copyLink')
-                ->label('Kopiraj link')
+                ->label(__('guests.copy_link'))
                 ->icon('heroicon-o-clipboard')
                 ->color('gray')
-                ->alpineClickHandler(fn (): string => Clipboard::alpineCopy($this->record->public_url, 'Link kopiran')),
+                ->alpineClickHandler(fn (): string => Clipboard::alpineCopy($this->record->public_url, __('guests.link_copied'))),
         ];
     }
 }

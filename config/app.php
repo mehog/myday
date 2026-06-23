@@ -86,6 +86,11 @@ return [
 
     'default_locale' => 'bs',
 
+    'locale_labels' => [
+        'bs' => 'Bosanski',
+        'en' => 'English',
+    ],
+
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 
     /*

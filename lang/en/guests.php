@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'title' => 'Guests',
+    'field_name' => 'Name',
+    'field_email' => 'Email',
+    'field_phone' => 'Phone',
+    'field_rsvp_status' => 'RSVP status',
+    'field_rsvp_responded_at' => 'Response date',
     'personal_link' => 'Personal link',
     'link_copied' => 'Link copied',
     'sent_via' => 'Invite channel',

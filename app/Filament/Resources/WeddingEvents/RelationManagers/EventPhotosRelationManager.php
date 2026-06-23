@@ -19,25 +19,30 @@ class EventPhotosRelationManager extends RelationManager
 {
     protected static string $relationship = 'eventPhotos';
 
-    protected static ?string $title = 'Fotografije';
+    protected static ?string $title = null;
+
+    public static function getTitle(\Illuminate\Database\Eloquent\Model $ownerRecord, string $pageClass): string
+    {
+        return __('photos.title');
+    }
 
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 FileUpload::make('path')
-                    ->label('Fotografija')
+                    ->label($this->trans('field_photo'))
                     ->image()
                     ->directory('event-photos')
                     ->disk(config('filesystems.media_disk'))
                     ->required(),
                 TextInput::make('title')
-                    ->label('Naslov')
+                    ->label($this->trans('field_title'))
                     ->maxLength(255)
-                    ->placeholder('npr. Dvorana, Vrt, Parking')
-                    ->helperText('Opcionalno. Prikazuje se ispod fotografije na pozivnici.'),
+                    ->placeholder($this->trans('field_title_placeholder'))
+                    ->helperText($this->trans('field_title_helper')),
                 TextInput::make('sort_order')
-                    ->label('Redosljed')
+                    ->label($this->trans('field_sort_order'))
                     ->numeric()
                     ->default(0)
                     ->required(),
@@ -52,14 +57,14 @@ class EventPhotosRelationManager extends RelationManager
             ->reorderable('sort_order')
             ->columns([
                 ImageColumn::make('path')
-                    ->label('Fotografija')
+                    ->label($this->trans('field_photo'))
                     ->disk(config('filesystems.media_disk')),
                 TextColumn::make('title')
-                    ->label('Naslov')
+                    ->label($this->trans('field_title'))
                     ->placeholder('—')
                     ->searchable(),
                 TextColumn::make('sort_order')
-                    ->label('Redosljed')
+                    ->label($this->trans('field_sort_order'))
                     ->sortable(),
             ])
             ->headerActions([
@@ -75,10 +80,15 @@ class EventPhotosRelationManager extends RelationManager
                 ]),
             ])
             ->emptyStateIcon('heroicon-o-photo')
-            ->emptyStateHeading('Još nema fotografija')
-            ->emptyStateDescription('Dodajte prvu fotografiju lokacije ili vašeg para.')
+            ->emptyStateHeading($this->trans('empty_heading'))
+            ->emptyStateDescription($this->trans('empty_description'))
             ->emptyStateActions([
                 CreateAction::make(),
             ]);
+    }
+
+    protected function trans(string $key, array $replace = []): string
+    {
+        return __("photos.{$key}", $replace);
     }
 }

@@ -34,22 +34,27 @@ class GuestsRelationManager extends RelationManager
 {
     protected static string $relationship = 'guests';
 
-    protected static ?string $title = 'Gosti';
+    protected static ?string $title = null;
+
+    public static function getTitle(\Illuminate\Database\Eloquent\Model $ownerRecord, string $pageClass): string
+    {
+        return __('guests.title');
+    }
 
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->label('Ime')
+                    ->label($this->trans('field_name'))
                     ->required()
                     ->maxLength(255),
                 TextInput::make('email')
-                    ->label('Email')
+                    ->label($this->trans('field_email'))
                     ->email()
                     ->maxLength(255),
                 TextInput::make('phone')
-                    ->label('Telefon')
+                    ->label($this->trans('field_phone'))
                     ->tel()
                     ->maxLength(255),
             ]);
@@ -71,16 +76,16 @@ class GuestsRelationManager extends RelationManager
                     ->width(40)
                     ->height(40),
                 TextColumn::make('name')
-                    ->label('Ime')
+                    ->label($this->trans('field_name'))
                     ->searchable()
                     ->weight('medium'),
                 TextColumn::make('email')
-                    ->label('Email')
+                    ->label($this->trans('field_email'))
                     ->searchable()
                     ->placeholder('—')
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('rsvp_status')
-                    ->label('RSVP status')
+                    ->label($this->trans('field_rsvp_status'))
                     ->badge()
                     ->sortable()
                     ->color(fn (?RsvpStatus $state): string => match ($state) {
@@ -90,7 +95,7 @@ class GuestsRelationManager extends RelationManager
                     })
                     ->formatStateUsing(fn (?RsvpStatus $state) => $state?->label() ?? $this->trans('rsvp_pending')),
                 TextColumn::make('rsvp_responded_at')
-                    ->label('Datum odgovora')
+                    ->label($this->trans('field_rsvp_responded_at'))
                     ->since()
                     ->sortable()
                     ->placeholder('—')

@@ -1,26 +1,9 @@
 <div class="min-h-screen flex flex-col">
     <header class="border-b border-white/5 bg-[#1a1208]/80 backdrop-blur-md">
-        <div class="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div class="max-w-2xl mx-auto px-6 py-4">
             <a href="{{ route('home') }}" class="landing-heading text-xl font-semibold text-[#faf6ee]">
                 {{ config('app.name', 'NasDan') }}
             </a>
-            <div class="flex items-center gap-1 text-sm">
-                <button
-                    type="button"
-                    wire:click="switchLocale('bs')"
-                    class="px-2 py-1 rounded transition {{ app()->getLocale() === 'bs' ? 'text-[#c9a227] font-semibold' : 'text-[#d4c4a8] hover:text-[#c9a227]' }}"
-                >
-                    BS
-                </button>
-                <span class="text-[#d4c4a8]/50">|</span>
-                <button
-                    type="button"
-                    wire:click="switchLocale('en')"
-                    class="px-2 py-1 rounded transition {{ app()->getLocale() === 'en' ? 'text-[#c9a227] font-semibold' : 'text-[#d4c4a8] hover:text-[#c9a227]' }}"
-                >
-                    EN
-                </button>
-            </div>
         </div>
     </header>
 
@@ -215,4 +198,6 @@
             @endif
         </div>
     </main>
+
+    <x-onboarding-footer />
 </div>
