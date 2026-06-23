@@ -110,6 +110,23 @@ class WeddingEvent extends Model
         return $this->link_mode === LinkMode::TokenOnly;
     }
 
+    public function canBeViewedBy(?User $user): bool
+    {
+        if ($this->is_active) {
+            return true;
+        }
+
+        if ($user === null) {
+            return false;
+        }
+
+        if ($user->is_admin) {
+            return true;
+        }
+
+        return $this->user_id !== null && $this->user_id === $user->id;
+    }
+
     public function getHeroImageUrlAttribute(): ?string
     {
         return MediaDisk::url($this->hero_image);

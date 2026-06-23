@@ -7,7 +7,6 @@ use App\LinkType;
 use App\Models\Guest;
 use App\Models\WeddingEvent;
 use App\RsvpStatus;
-use Illuminate\Support\Carbon;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -22,16 +21,20 @@ class InvitationPage extends Component
 
     public bool $rsvpSubmitted = false;
 
+    public bool $isPreview = false;
+
     public function mount(string $slug, ?string $token = null): void
     {
-        app()->setLocale('bs');
-        Carbon::setLocale('bs');
-
         $this->event = WeddingEvent::query()
             ->where('slug', $slug)
-            ->where('is_active', true)
             ->with(['scheduleItems', 'eventPhotos'])
             ->firstOrFail();
+
+        if (! $this->event->canBeViewedBy(auth()->user())) {
+            abort(404);
+        }
+
+        $this->isPreview = ! $this->event->is_active;
 
         if ($this->event->requiresToken() && $token === null) {
             abort(403, __('invitation.token_required'));
@@ -43,16 +46,18 @@ class InvitationPage extends Component
                 ->firstOrFail();
         }
 
-        $request = request();
+        if (! $this->isPreview) {
+            $request = request();
 
-        RecordLinkVisit::dispatch(
-            weddingEventId: $this->event->id,
-            guestId: $this->guest?->id,
-            linkType: $this->guest ? LinkType::Personal : LinkType::Public,
-            ip: $request->ip(),
-            userAgent: $request->userAgent(),
-            referer: $request->header('referer'),
-        );
+            RecordLinkVisit::dispatch(
+                weddingEventId: $this->event->id,
+                guestId: $this->guest?->id,
+                linkType: $this->guest ? LinkType::Personal : LinkType::Public,
+                ip: $request->ip(),
+                userAgent: $request->userAgent(),
+                referer: $request->header('referer'),
+            );
+        }
     }
 
     public function respond(string $status): void
@@ -89,6 +94,7 @@ class InvitationPage extends Component
             ->layoutData([
                 'event' => $this->event,
                 'guest' => $this->guest,
+                'isPreview' => $this->isPreview,
             ]);
     }
 }

@@ -1,6 +1,15 @@
 <div>
+    @if ($isPreview)
+        <div class="fixed top-0 inset-x-0 z-50 bg-[#c9a227] text-[#1a1208] px-4 py-3 text-sm flex items-center justify-center gap-2 shadow-md">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <p class="text-center">{{ __('invitation.preview_banner') }}</p>
+        </div>
+    @endif
+
     <x-theme :theme="$event->theme">
-        <div class="invitation-page">
+        <div @class(['invitation-page', 'pt-12' => $isPreview])>
             @include('components.invitation.hero', ['event' => $event])
 
             @include('components.invitation.countdown', ['event' => $event])

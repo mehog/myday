@@ -3,15 +3,23 @@
 namespace App\Livewire;
 
 use App\Models\WeddingEvent;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[Layout('layouts.landing')]
 class LandingPage extends Component
 {
-    public function mount(): void
+    public function switchLocale(string $locale): void
     {
-        app()->setLocale('bs');
+        if (! in_array($locale, ['en', 'bs'], true)) {
+            return;
+        }
+
+        session(['locale' => $locale]);
+        App::setLocale($locale);
+        Carbon::setLocale($locale);
     }
 
     public function render()

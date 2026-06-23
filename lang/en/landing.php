@@ -1,0 +1,84 @@
+<?php
+
+return [
+    'meta_title' => 'NasDan — Digital wedding web invitations',
+    'meta_description' => 'Personalized web invitations for your wedding. Countdown, RSVP, day schedule and more — all on one link.',
+
+    'nav_demo' => 'Demo',
+    'nav_order' => 'Order',
+    'nav_create' => 'Create invitation',
+
+    'hero_title' => 'Your wedding story deserves more than a photo in a chat',
+    'hero_subtitle' => 'A personalized web invitation with countdown, RSVP, day schedule and venue photos — ready to share in three steps.',
+    'hero_cta_demo' => 'View demo',
+    'hero_cta_order' => 'Order invitation',
+    'hero_cta_create' => 'Create invitation',
+
+    'benefits_title' => 'What a photo cannot do',
+    'benefits_subtitle' => 'Every guest gets an invitation with their name. You see who confirmed. And you send it all directly from the panel.',
+
+    'benefit_1_title' => 'Every guest gets their own name',
+    'benefit_1_text' => 'Send each guest a personalized link — as soon as they open the invitation, their name is already there. No confusion, no anonymity.',
+
+    'benefit_2_title' => 'Send directly from the panel',
+    'benefit_2_text' => 'WhatsApp, Viber or Telegram — choose the platform and send the invitation directly. No copying links, no forgotten guests.',
+
+    'benefit_3_title' => 'Confirmations arrive in real time',
+    'benefit_3_text' => 'Every RSVP response appears immediately in your panel. You know exactly who is coming, who is not — and who has not responded yet.',
+
+    'benefit_4_title' => 'Change in seconds, guests see it instantly',
+    'benefit_4_text' => 'Changed the venue or time? Update it in the panel — all guests automatically see the new version. No resending needed.',
+
+    'benefit_5_title' => 'A ticking clock brings guests back',
+    'benefit_5_text' => 'The countdown lives on every opening of the invitation. Guests return to check how much time is left — and excitement grows each time.',
+
+    'benefit_6_title' => 'Perfect on every screen',
+    'benefit_6_text' => 'Neither a JPEG that fades nor a PDF nobody opens. A web invitation looks equally perfect on phone, tablet and desktop.',
+
+    'steps_title' => 'How does it work?',
+    'steps_subtitle' => 'Create your invitation in three simple steps.',
+
+    'step_1_title' => 'Fill in the form',
+    'step_1_text' => 'Send us basic information about the couple, date and your preferences.',
+
+    'step_2_title' => 'We create the invitation',
+    'step_2_text' => 'We design and prepare your personalized web invitation.',
+
+    'step_3_title' => 'Share the link',
+    'step_3_text' => 'Send one link to all guests — or personalized links for each one.',
+
+    'demo_title' => 'See what it looks like',
+    'demo_subtitle' => 'Open a demo invitation and experience what your guests will see.',
+    'demo_cta' => 'Open demo invitation',
+    'demo_modal_title' => 'Choose link type',
+    'demo_modal_subtitle' => 'How would you like to view the demo invitation?',
+    'demo_modal_public' => 'Public link',
+    'demo_modal_personalized' => 'Personalized link',
+    'demo_modal_cancel' => 'Cancel',
+
+    'contact_title' => 'Order an invitation',
+    'contact_subtitle' => 'Fill in the form and we will get back to you as soon as possible.',
+
+    'form_name' => 'Full name',
+    'form_email' => 'Email address',
+    'form_phone' => 'Phone number',
+    'form_groom' => 'Groom\'s name',
+    'form_bride' => 'Bride\'s name',
+    'form_date' => 'Wedding date',
+    'form_theme' => 'Theme selection',
+    'form_theme_placeholder' => 'Choose a theme',
+    'form_notes' => 'Notes',
+    'form_notes_placeholder' => 'Special requests, questions or additional information...',
+    'form_submit' => 'Send inquiry',
+    'form_saving' => 'Sending...',
+
+    'form_success_title' => 'Thank you!',
+    'form_success_text' => 'We received your inquiry. We will contact you soon.',
+
+    'form_name_required' => 'Please enter your name.',
+    'form_email_required' => 'Please enter your email address.',
+    'form_email_invalid' => 'The email address is not valid.',
+
+    'footer_rights' => 'All rights reserved.',
+    'footer_contact' => 'Contact',
+];

@@ -6,11 +6,13 @@ return [
 
     'nav_demo' => 'Demo',
     'nav_order' => 'Naruči',
+    'nav_create' => 'Kreiraj pozivnicu',
 
     'hero_title' => 'Vaša vjenčana priča zaslužuje više od slike u chatu',
     'hero_subtitle' => 'Personalizovana web pozivnica sa odbrojavanjem, potvrdom dolaska, planom dana i fotografijama lokacije — spremna za dijeljenje u tri koraka.',
     'hero_cta_demo' => 'Pogledaj demo',
     'hero_cta_order' => 'Naruči pozivnicu',
+    'hero_cta_create' => 'Kreiraj pozivnicu',
 
     'benefits_title' => 'Ono što slika ne može',
     'benefits_subtitle' => 'Svaki gost dobija pozivnicu sa svojim imenom. Vi vidite ko je potvrdio. I sve to šaljete direktno iz panela.',

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bs">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +23,7 @@
     <meta property="og:image" content="{{ $ogImage }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:locale" content="bs_BA">
+    <meta property="og:locale" content="{{ app()->getLocale() === 'bs' ? 'bs_BA' : 'en_US' }}">
     <meta property="og:site_name" content="{{ config('app.name', 'NasDan') }}">
 
     <meta name="twitter:card" content="summary_large_image">

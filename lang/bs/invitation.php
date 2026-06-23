@@ -54,4 +54,6 @@ return [
     'rsvp_no' => 'Ne dolazim',
 
     'token_required' => 'Ova pozivnica zahtijeva lični link.',
+
+    'preview_banner' => 'Ovo je pregled. Link će biti aktivan nakon potvrde uplate i odobrenja administratora.',
 ];

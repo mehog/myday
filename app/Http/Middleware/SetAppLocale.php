@@ -15,8 +15,14 @@ class SetAppLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        App::setLocale('bs');
-        Carbon::setLocale('bs');
+        $locale = session('locale', 'bs');
+
+        if (! in_array($locale, ['en', 'bs'], true)) {
+            $locale = 'bs';
+        }
+
+        App::setLocale($locale);
+        Carbon::setLocale($locale);
 
         return $next($request);
     }

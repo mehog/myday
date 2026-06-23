@@ -30,6 +30,10 @@
             <meta name="robots" content="noindex, nofollow">
         @endisset
 
+        @if (! empty($isPreview))
+            <meta name="robots" content="noindex, nofollow">
+        @endif
+
         <link rel="canonical" href="{{ url('/e/'.$event->slug) }}">
     @else
         <title>{{ config('app.name', __('invitation.title')) }}</title>

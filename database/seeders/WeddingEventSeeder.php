@@ -20,6 +20,7 @@ class WeddingEventSeeder extends Seeder
                 'name' => 'Admin',
                 'password' => Hash::make('password'),
                 'is_admin' => true,
+                'email_verified_at' => now(),
             ]
         );
 
@@ -29,6 +30,7 @@ class WeddingEventSeeder extends Seeder
                 'name' => 'Demo Par',
                 'password' => Hash::make('password'),
                 'is_admin' => false,
+                'email_verified_at' => now(),
             ]
         );
 
