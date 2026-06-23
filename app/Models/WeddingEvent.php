@@ -76,6 +76,11 @@ class WeddingEvent extends Model
         return $this->hasMany(EventPhoto::class)->orderBy('sort_order');
     }
 
+    public function linkVisits(): HasMany
+    {
+        return $this->hasMany(LinkVisit::class);
+    }
+
     public function getCoupleNamesAttribute(): string
     {
         return "{$this->groom_name} & {$this->bride_name}";

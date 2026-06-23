@@ -7,6 +7,7 @@ use App\RsvpStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class Guest extends Model
@@ -47,6 +48,11 @@ class Guest extends Model
     public function weddingEvent(): BelongsTo
     {
         return $this->belongsTo(WeddingEvent::class);
+    }
+
+    public function linkVisits(): HasMany
+    {
+        return $this->hasMany(LinkVisit::class);
     }
 
     public function hasResponded(): bool

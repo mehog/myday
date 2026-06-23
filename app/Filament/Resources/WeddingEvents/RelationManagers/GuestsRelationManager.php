@@ -9,20 +9,26 @@ use App\RsvpStatus;
 use App\Support\Clipboard;
 use App\Support\MessengerLinks;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 
 class GuestsRelationManager extends RelationManager
 {
@@ -52,46 +58,71 @@ class GuestsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => $query->with('weddingEvent'))
+            ->modifyQueryUsing(fn (Builder $query) => $query
+                ->with('weddingEvent')
+                ->withMax('linkVisits as last_visited_at', 'visited_at'))
             ->recordTitleAttribute('name')
             ->columns([
-                TextColumn::make('id')
-                    ->label('ID')
-                    ->sortable(),
+                ImageColumn::make('avatar')
+                    ->label('')
+                    ->getStateUsing(fn (): null => null)
+                    ->defaultImageUrl(fn (Guest $record): string => 'https://ui-avatars.com/api/?name='.urlencode($record->name).'&background=f43f5e&color=fff&size=128')
+                    ->circular()
+                    ->width(40)
+                    ->height(40),
                 TextColumn::make('name')
                     ->label('Ime')
-                    ->searchable(),
+                    ->searchable()
+                    ->weight('medium'),
                 TextColumn::make('email')
                     ->label('Email')
-                    ->searchable(),
+                    ->searchable()
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('rsvp_status')
                     ->label('RSVP status')
                     ->badge()
                     ->sortable()
+                    ->color(fn (?RsvpStatus $state): string => match ($state) {
+                        RsvpStatus::Yes => 'success',
+                        RsvpStatus::No => 'danger',
+                        default => 'warning',
+                    })
                     ->formatStateUsing(fn (?RsvpStatus $state) => $state?->label() ?? $this->trans('rsvp_pending')),
                 TextColumn::make('rsvp_responded_at')
                     ->label('Datum odgovora')
-                    ->dateTime()
+                    ->since()
                     ->sortable()
-                    ->placeholder('—'),
-                TextColumn::make('invite_platform')
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                IconColumn::make('invite_platform')
                     ->label($this->trans('sent_via'))
-                    ->badge()
                     ->sortable()
-                    ->formatStateUsing(fn (?InvitePlatform $state) => $state?->label())
+                    ->icon(fn (?InvitePlatform $state): ?Heroicon => match ($state) {
+                        InvitePlatform::WhatsApp => Heroicon::OutlinedChatBubbleLeftRight,
+                        InvitePlatform::Viber => Heroicon::OutlinedPhone,
+                        InvitePlatform::Telegram => Heroicon::OutlinedPaperAirplane,
+                        InvitePlatform::Manual => Heroicon::OutlinedHandRaised,
+                        default => null,
+                    })
+                    ->tooltip(fn (?InvitePlatform $state): ?string => $state?->label())
                     ->placeholder('—'),
                 TextColumn::make('invite_sent_at')
                     ->label($this->trans('invite_sent'))
-                    ->dateTime()
+                    ->since()
                     ->sortable()
-                    ->placeholder('—')
-                    ->toggleable(isToggledHiddenByDefault: false),
-                TextColumn::make('personal_url')
-                    ->label($this->trans('personal_link'))
-                    ->formatStateUsing(fn () => 'Link')
-                    ->copyable()
-                    ->copyableState(fn (Guest $record): string => $record->personal_url)
-                    ->copyMessage($this->trans('link_copied')),
+                    ->placeholder('—'),
+                TextColumn::make('last_visited_at')
+                    ->label($this->trans('last_opened'))
+                    ->since()
+                    ->sortable()
+                    ->placeholder('—'),
+            ])
+            ->emptyStateIcon(Heroicon::OutlinedUserGroup)
+            ->emptyStateHeading($this->trans('empty_heading'))
+            ->emptyStateDescription($this->trans('empty_description'))
+            ->emptyStateActions([
+                CreateAction::make(),
             ])
             ->headerActions([
                 CreateAction::make(),
@@ -99,7 +130,7 @@ class GuestsRelationManager extends RelationManager
                     ->label($this->trans('import_csv'))
                     ->icon('heroicon-o-arrow-up-tray')
                     ->form([
-                        \Filament\Forms\Components\FileUpload::make('file')
+                        FileUpload::make('file')
                             ->label($this->trans('csv_file'))
                             ->disk('local')
                             ->directory('temp/csv-imports')
@@ -107,10 +138,10 @@ class GuestsRelationManager extends RelationManager
                             ->required(),
                     ])
                     ->action(function (array $data): void {
-                        $contents = \Illuminate\Support\Facades\Storage::disk('local')->get($data['file']);
+                        $contents = Storage::disk('local')->get($data['file']);
                         $count = GuestImporter::importFromContents($this->getOwnerRecord(), $contents);
 
-                        \Illuminate\Support\Facades\Storage::disk('local')->delete($data['file']);
+                        Storage::disk('local')->delete($data['file']);
 
                         Notification::make()
                             ->title($this->trans('imported_count', ['count' => $count]))
@@ -119,19 +150,12 @@ class GuestsRelationManager extends RelationManager
                     }),
             ])
             ->recordActions([
-                Action::make('copyPersonalLink')
-                    ->label($this->trans('copy_link'))
-                    ->icon('heroicon-o-clipboard')
-                    ->color('gray')
-                    ->alpineClickHandler(fn (Guest $record): string => Clipboard::alpineCopy(
-                        $record->personal_url,
-                        $this->trans('link_copied'),
-                    )),
                 Action::make('sendInvite')
                     ->label($this->trans('send_invite'))
                     ->modalHeading($this->trans('send_invite'))
                     ->icon('heroicon-o-paper-airplane')
                     ->color('primary')
+                    ->button()
                     ->modalSubmitAction(false)
                     ->modalCancelAction(fn (Action $action) => $action->label($this->trans('close')))
                     ->fillForm(fn (Guest $record): array => [
@@ -148,31 +172,45 @@ class GuestsRelationManager extends RelationManager
                         $this->messagingAction($action, InvitePlatform::Viber),
                         $this->messagingAction($action, InvitePlatform::Telegram),
                     ]),
-                Action::make('markSent')
-                    ->label($this->trans('mark_sent'))
-                    ->modalHeading($this->trans('mark_sent'))
-                    ->icon('heroicon-o-check-circle')
-                    ->color('gray')
-                    ->form([
-                        Select::make('invite_platform')
-                            ->label($this->trans('platform'))
-                            ->options(collect(InvitePlatform::cases())->mapWithKeys(fn (InvitePlatform $platform) => [$platform->value => $platform->label()]))
-                            ->required()
-                            ->native(false),
-                    ])
-                    ->action(function (array $data, Guest $record): void {
-                        $record->update([
-                            'invite_sent_at' => now(),
-                            'invite_platform' => $data['invite_platform'],
-                        ]);
+                ActionGroup::make([
+                    Action::make('copyPersonalLink')
+                        ->label($this->trans('copy_link'))
+                        ->icon('heroicon-o-clipboard')
+                        ->color('gray')
+                        ->alpineClickHandler(fn (Guest $record): string => Clipboard::alpineCopy(
+                            $record->personal_url,
+                            $this->trans('link_copied'),
+                        )),
+                    Action::make('markSent')
+                        ->label($this->trans('mark_sent'))
+                        ->modalHeading($this->trans('mark_sent'))
+                        ->icon('heroicon-o-check-circle')
+                        ->color('gray')
+                        ->form([
+                            Select::make('invite_platform')
+                                ->label($this->trans('platform'))
+                                ->options(collect(InvitePlatform::cases())->mapWithKeys(fn (InvitePlatform $platform) => [$platform->value => $platform->label()]))
+                                ->required()
+                                ->native(false),
+                        ])
+                        ->action(function (array $data, Guest $record): void {
+                            $record->update([
+                                'invite_sent_at' => now(),
+                                'invite_platform' => $data['invite_platform'],
+                            ]);
 
-                        Notification::make()
-                            ->title($this->trans('guest_marked_sent'))
-                            ->success()
-                            ->send();
-                    }),
-                EditAction::make(),
-                DeleteAction::make(),
+                            Notification::make()
+                                ->title($this->trans('guest_marked_sent'))
+                                ->success()
+                                ->send();
+                        }),
+                    EditAction::make(),
+                    DeleteAction::make(),
+                ])
+                    ->label($this->trans('more_actions'))
+                    ->icon(Heroicon::OutlinedEllipsisVertical)
+                    ->color('gray')
+                    ->button(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
@@ -203,6 +241,7 @@ class GuestsRelationManager extends RelationManager
 
                 return MessengerLinks::openInNewTab($url);
             })
+            ->livewireClickHandlerEnabled(true)
             ->cancelParentActions();
     }
 

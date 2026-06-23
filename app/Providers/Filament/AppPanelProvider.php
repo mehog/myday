@@ -28,6 +28,9 @@ class AppPanelProvider extends PanelProvider
             ->path('app')
             ->login()
             ->brandName('NasDan')
+            ->globalSearch(false)
+            ->profile()
+            ->topNavigation()
             ->colors([
                 'primary' => Color::Rose,
             ])

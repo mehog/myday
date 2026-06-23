@@ -3,8 +3,9 @@
 return [
     'personal_link' => 'Personalni link',
     'link_copied' => 'Link kopiran',
-    'sent_via' => 'Poslano putem',
+    'sent_via' => 'Kanal pozivnice',
     'invite_sent' => 'Pozivnica poslana',
+    'last_opened' => 'Posljedno otvoreno',
     'rsvp_pending' => 'Na čekanju',
 
     'send_invite' => 'Pošalji pozivnicu',
@@ -18,6 +19,10 @@ return [
     'import_csv' => 'Uvezi CSV',
     'csv_file' => 'CSV datoteka',
     'imported_count' => 'Uvezeno :count gostiju',
+
+    'empty_heading' => 'Još nema gostiju',
+    'empty_description' => 'Dodajte prvog gosta ili uvezite listu iz CSV fajla.',
+    'more_actions' => 'Više opcija',
 
     'platform_whatsapp' => 'WhatsApp',
     'platform_viber' => 'Viber',

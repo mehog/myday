@@ -76,6 +76,12 @@ class ScheduleItemsRelationManager extends RelationManager
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
+            ])
+            ->emptyStateIcon('heroicon-o-clock')
+            ->emptyStateHeading('Još nema stavki u rasporedu')
+            ->emptyStateDescription('Dodajte prvi događaj vašeg dana — npr. ceremonija, koktel ili večera.')
+            ->emptyStateActions([
+                CreateAction::make(),
             ]);
     }
 }

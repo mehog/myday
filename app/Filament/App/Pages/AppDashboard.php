@@ -3,13 +3,19 @@
 namespace App\Filament\App\Pages;
 
 use App\Filament\App\Resources\MyWeddingResource;
+use App\Filament\App\Widgets\VisitChartWidget;
+use App\Filament\App\Widgets\VisitStatsWidget;
 use App\Filament\App\Widgets\WeddingOverviewWidget;
 use App\Support\Clipboard;
+use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Pages\Dashboard as BaseDashboard;
+use Filament\Support\Icons\Heroicon;
 
 class AppDashboard extends BaseDashboard
 {
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHome;
+
     protected static ?string $navigationLabel = 'Pregled';
 
     protected static ?string $title = 'Pregled';
@@ -22,6 +28,8 @@ class AppDashboard extends BaseDashboard
 
         return [
             WeddingOverviewWidget::class,
+            VisitStatsWidget::class,
+            VisitChartWidget::class,
         ];
     }
 

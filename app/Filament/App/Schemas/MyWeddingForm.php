@@ -9,8 +9,8 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -85,14 +85,22 @@ class MyWeddingForm
                             ->label('Adresa')
                             ->maxLength(255)
                             ->columnSpanFull(),
-                        TextInput::make('location_lat')
-                            ->label('Lat')
-                            ->numeric()
-                            ->step(0.0000001),
-                        TextInput::make('location_lng')
-                            ->label('Lng')
-                            ->numeric()
-                            ->step(0.0000001),
+                        Section::make('Koordinate')
+                            ->description('Opcionalno. Koristite samo ako želite preciznu lokaciju na mapi.')
+                            ->collapsed()
+                            ->collapsible()
+                            ->columns(2)
+                            ->columnSpanFull()
+                            ->schema([
+                                TextInput::make('location_lat')
+                                    ->label('Geografska širina')
+                                    ->numeric()
+                                    ->step(0.0000001),
+                                TextInput::make('location_lng')
+                                    ->label('Geografska dužina')
+                                    ->numeric()
+                                    ->step(0.0000001),
+                            ]),
                     ]),
                 Section::make('RSVP')
                     ->collapsible()
@@ -103,7 +111,7 @@ class MyWeddingForm
                         Textarea::make('send_message')
                             ->label('Poruka za goste')
                             ->helperText('Koristite {name} za ime gosta i {link} za personalizovani link.')
-                            ->placeholder("Dragi {name}, sa radošću vas pozivamo na naše vjenčanje!\nVaš link za potvrdu dolaska: {link}")
+                            ->placeholder("Npr: Dragi {name}, sa radošću vas pozivamo na naše vjenčanje!\nVaš link za potvrdu dolaska: {link}")
                             ->rows(4)
                             ->columnSpanFull(),
                     ]),

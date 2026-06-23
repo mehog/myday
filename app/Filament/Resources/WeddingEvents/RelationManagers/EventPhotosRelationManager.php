@@ -73,6 +73,12 @@ class EventPhotosRelationManager extends RelationManager
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
+            ])
+            ->emptyStateIcon('heroicon-o-photo')
+            ->emptyStateHeading('Još nema fotografija')
+            ->emptyStateDescription('Dodajte prvu fotografiju lokacije ili vašeg para.')
+            ->emptyStateActions([
+                CreateAction::make(),
             ]);
     }
 }
