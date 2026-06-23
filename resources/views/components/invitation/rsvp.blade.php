@@ -38,7 +38,7 @@
         @else
             @if ($guest)
                 <p class="invitation-body text-[var(--color-text-muted)] mb-8">
-                    Zdravo, <span class="text-[var(--color-accent)]">{{ $guest->name }}</span>. {{ __('invitation.greeting_question') }}
+                    {{ __('invitation.greeting_hello') }}, <span class="text-[var(--color-accent)]">{{ $guest->name }}</span>. {{ __('invitation.greeting_question') }}
                 </p>
             @else
                 <div class="mb-8 text-left">

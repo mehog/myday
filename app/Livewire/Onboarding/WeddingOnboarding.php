@@ -6,8 +6,8 @@ use App\InvitationTheme;
 use App\LinkMode;
 use App\Models\User;
 use App\Models\WeddingEvent;
+use App\Support\Locale;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -55,13 +55,7 @@ class WeddingOnboarding extends Component
 
     public function switchLocale(string $locale): void
     {
-        if (! in_array($locale, ['en', 'bs'], true)) {
-            return;
-        }
-
-        session(['locale' => $locale]);
-        App::setLocale($locale);
-        Carbon::setLocale($locale);
+        Locale::set($locale);
     }
 
     public function nextStep(): void

@@ -2,8 +2,7 @@
 
 namespace App\Livewire\Onboarding;
 
-use Carbon\Carbon;
-use Illuminate\Support\Facades\App;
+use App\Support\Locale;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -30,13 +29,7 @@ class VerifyEmailNotice extends Component
 
     public function switchLocale(string $locale): void
     {
-        if (! in_array($locale, ['en', 'bs'], true)) {
-            return;
-        }
-
-        session(['locale' => $locale]);
-        App::setLocale($locale);
-        Carbon::setLocale($locale);
+        Locale::set($locale);
     }
 
     public function resend(): void

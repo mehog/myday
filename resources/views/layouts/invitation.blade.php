@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bs">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,7 +13,7 @@
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ url()->current() }}">
         <meta property="og:site_name" content="{{ config('app.name', 'NasDan') }}">
-        <meta property="og:locale" content="bs_BA">
+        <meta property="og:locale" content="{{ \App\Support\Locale::ogLocale() }}">
         @if ($event->hero_image_url)
             <meta property="og:image" content="{{ $event->hero_image_url }}">
             <meta property="og:image:width" content="1200">

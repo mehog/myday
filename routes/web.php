@@ -5,15 +5,14 @@ use App\Livewire\InvitationPage;
 use App\Livewire\LandingPage;
 use App\Livewire\Onboarding\VerifyEmailNotice;
 use App\Livewire\Onboarding\WeddingOnboarding;
+use App\Support\Locale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', LandingPage::class)->name('home');
 
 Route::post('/lang/{locale}', function (string $locale) {
-    if (in_array($locale, ['en', 'bs'], true)) {
-        session(['locale' => $locale]);
-    }
+    Locale::set($locale);
 
     return redirect()->back();
 })->name('lang.switch');

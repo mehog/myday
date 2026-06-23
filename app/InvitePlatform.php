@@ -12,10 +12,10 @@ enum InvitePlatform: string
     public function label(): string
     {
         return match ($this) {
-            self::WhatsApp => __('guests.platform_whatsapp', [], 'bs'),
-            self::Viber => __('guests.platform_viber', [], 'bs'),
-            self::Telegram => __('guests.platform_telegram', [], 'bs'),
-            self::Manual => __('guests.platform_manual', [], 'bs'),
+            self::WhatsApp => __('guests.platform_whatsapp'),
+            self::Viber => __('guests.platform_viber'),
+            self::Telegram => __('guests.platform_telegram'),
+            self::Manual => __('guests.platform_manual'),
         };
     }
 }

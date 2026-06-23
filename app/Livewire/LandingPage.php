@@ -3,8 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\WeddingEvent;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\App;
+use App\Support\Locale;
+use App\Support\LocaleUrl;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -13,13 +13,7 @@ class LandingPage extends Component
 {
     public function switchLocale(string $locale): void
     {
-        if (! in_array($locale, ['en', 'bs'], true)) {
-            return;
-        }
-
-        session(['locale' => $locale]);
-        App::setLocale($locale);
-        Carbon::setLocale($locale);
+        Locale::set($locale);
     }
 
     public function render()
@@ -56,9 +50,9 @@ class LandingPage extends Component
                 'slug' => $event->slug,
                 'couple' => $event->couple_names,
                 'theme' => $event->theme->label(),
-                'publicUrl' => route('invitation.show', $event->slug),
+                'publicUrl' => LocaleUrl::withLocale(route('invitation.show', $event->slug)),
                 'personalUrl' => $guest
-                    ? route('invitation.guest', [$event->slug, $guest->token])
+                    ? LocaleUrl::withLocale(route('invitation.guest', [$event->slug, $guest->token]))
                     : null,
             ];
         }

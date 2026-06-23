@@ -247,6 +247,6 @@ class GuestsRelationManager extends RelationManager
 
     protected function trans(string $key, array $replace = []): string
     {
-        return __("guests.{$key}", $replace, 'bs');
+        return __("guests.{$key}", $replace);
     }
 }

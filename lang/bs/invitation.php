@@ -38,6 +38,7 @@ return [
     'your_response' => 'Vaš odgovor',
     'response_received' => 'Primili smo vaš odgovor.',
     'greeting_question' => 'Da li nam se pridružujete?',
+    'greeting_hello' => 'Zdravo',
     'your_name' => 'Vaše ime',
     'name_placeholder' => 'Unesite ime i prezime',
     'name_required' => 'Molimo unesite vaše ime.',
