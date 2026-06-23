@@ -72,6 +72,12 @@ class MyWeddingForm
                             ->url()
                             ->maxLength(500)
                             ->helperText(__('app.youtube_helper')),
+                        Textarea::make('motto')
+                            ->label(__('app.motto'))
+                            ->helperText(__('app.motto_helper'))
+                            ->maxLength(300)
+                            ->rows(3)
+                            ->columnSpanFull(),
                     ]),
                 Section::make(__('app.section_location'))
                     ->columns(2)

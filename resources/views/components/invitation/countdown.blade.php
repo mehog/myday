@@ -24,5 +24,11 @@
                 </div>
             </template>
         </div>
+
+        @if ($event->motto)
+            <p class="invitation-body text-lg text-[var(--color-text-muted)] italic mt-10 max-w-xl mx-auto">
+                {{ $event->motto }}
+            </p>
+        @endif
     </div>
 </section>

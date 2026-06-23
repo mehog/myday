@@ -67,6 +67,12 @@ class WeddingEventForm
                             ->maxLength(500)
                             ->helperText('Zalijepite YouTube link pjesme (npr. https://www.youtube.com/watch?v=... ili https://youtu.be/...)')
                             ->columnSpanFull(),
+                        Textarea::make('motto')
+                            ->label('Wedding motto')
+                            ->helperText('A short quote shown on the invitation countdown (max 2 sentences).')
+                            ->maxLength(300)
+                            ->rows(3)
+                            ->columnSpanFull(),
                     ]),
                 Section::make('Location')
                     ->columns(2)

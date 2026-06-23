@@ -32,6 +32,7 @@ class WeddingEvent extends Model
         'rsvp_deadline',
         'is_active',
         'send_message',
+        'motto',
     ];
 
     protected function casts(): array

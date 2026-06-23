@@ -32,6 +32,8 @@ return [
     'hero_image' => 'Naslovna fotografija',
     'youtube_song' => 'YouTube pjesma',
     'youtube_helper' => 'Zalijepite YouTube link pjesme (npr. https://www.youtube.com/watch?v=... ili https://youtu.be/...)',
+    'motto' => 'Moto vjenčanja',
+    'motto_helper' => 'Kratka rečenica ili poruka na pozivnici (max. 2 rečenice).',
 
     // Wedding form — Location section
     'section_location' => 'Lokacija',
