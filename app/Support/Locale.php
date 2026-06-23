@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -38,6 +39,12 @@ class Locale
         }
 
         session(['locale' => $locale]);
+
+        $user = auth()->user();
+        if ($user instanceof User) {
+            $user->update(['locale' => $locale]);
+        }
+
         self::apply($locale);
 
         return true;
@@ -50,7 +57,19 @@ class Locale
         if (is_string($queryLocale) && self::isSupported($queryLocale)) {
             session(['locale' => $queryLocale]);
 
+            $user = auth()->user();
+            if ($user instanceof User) {
+                $user->update(['locale' => $queryLocale]);
+            }
+
             return $queryLocale;
+        }
+
+        $user = auth()->user();
+        if ($user instanceof User && $user->locale && self::isSupported($user->locale)) {
+            session(['locale' => $user->locale]);
+
+            return $user->locale;
         }
 
         $sessionLocale = session('locale', self::default());
@@ -70,7 +89,11 @@ class Locale
 
     public static function ogLocale(): string
     {
-        return self::current() === 'bs' ? 'bs_BA' : 'en_US';
+        return match (self::current()) {
+            'bs' => 'bs_BA',
+            'de' => 'de_DE',
+            default => 'en_US',
+        };
     }
 
     /**

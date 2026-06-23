@@ -99,6 +99,90 @@ class WeddingEventSeeder extends Seeder
                 ['name' => 'Demo Gost', 'email' => 'demo-krscansko@example.com'],
             ],
         );
+
+        $this->seedEvent(
+            slug: 'demo-islamsko-en',
+            groom: 'Amer',
+            bride: 'Amina',
+            locationName: 'Gazi Husrev-beg Mosque',
+            locationAddress: 'Sarajevo, Bosnia and Herzegovina',
+            lat: 43.8594,
+            lng: 18.4286,
+            theme: InvitationTheme::AmberGold,
+            schedule: [
+                ['time' => '08:00', 'title' => 'Procession to the bride\'s home', 'description' => 'The groom and wedding party arrive to collect the bride.', 'sort_order' => 1],
+                ['time' => '09:00', 'title' => 'Civil marriage ceremony', 'description' => 'Signing at the registry office.', 'sort_order' => 2],
+                ['time' => '10:00', 'title' => 'Islamic marriage (nikah)', 'description' => 'Wedding ceremony at the mosque.', 'sort_order' => 3],
+                ['time' => '12:00', 'title' => 'Family luncheon', 'description' => 'Lunch for family and closest guests.', 'sort_order' => 4],
+                ['time' => '19:00', 'title' => 'Wedding dinner & celebration', 'description' => 'Dinner, dancing and celebration.', 'sort_order' => 5],
+            ],
+            guests: [
+                ['name' => 'Demo Guest', 'email' => 'demo-islamsko-en@example.com'],
+            ],
+        );
+
+        $this->seedEvent(
+            slug: 'demo-krscansko-en',
+            groom: 'Milan',
+            bride: 'Ana',
+            locationName: 'Sacred Heart Cathedral',
+            locationAddress: 'Sarajevo, Bosnia and Herzegovina',
+            lat: 43.8563,
+            lng: 18.4131,
+            theme: InvitationTheme::RoyalWedding,
+            schedule: [
+                ['time' => '09:00', 'title' => 'Procession to the bride\'s home', 'description' => 'The groom and wedding party arrive to collect the bride.', 'sort_order' => 1],
+                ['time' => '10:00', 'title' => 'Church ceremony & blessing', 'description' => 'Church ceremony and blessing.', 'sort_order' => 2],
+                ['time' => '12:00', 'title' => 'Family luncheon', 'description' => 'Lunch for family and closest guests.', 'sort_order' => 3],
+                ['time' => '15:00', 'title' => 'Wedding photo session', 'description' => 'Group photos with the newlyweds.', 'sort_order' => 4],
+                ['time' => '19:00', 'title' => 'Wedding dinner & celebration', 'description' => 'Dinner, dancing and celebration.', 'sort_order' => 5],
+            ],
+            guests: [
+                ['name' => 'Demo Guest', 'email' => 'demo-krscansko-en@example.com'],
+            ],
+        );
+
+        $this->seedEvent(
+            slug: 'demo-islamsko-de',
+            groom: 'Amer',
+            bride: 'Amina',
+            locationName: 'Gazi Husrev-beg-Moschee',
+            locationAddress: 'Sarajevo, Bosnien und Herzegowina',
+            lat: 43.8594,
+            lng: 18.4286,
+            theme: InvitationTheme::AmberGold,
+            schedule: [
+                ['time' => '08:00', 'title' => 'Abholung der Braut', 'description' => 'Der Bräutigam und die Hochzeitsgesellschaft holen die Braut ab.', 'sort_order' => 1],
+                ['time' => '09:00', 'title' => 'Standesamtliche Trauung', 'description' => 'Unterschrift beim Standesamt.', 'sort_order' => 2],
+                ['time' => '10:00', 'title' => 'Islamische Trauung (Nikah)', 'description' => 'Trauung in der Moschee.', 'sort_order' => 3],
+                ['time' => '12:00', 'title' => 'Familienessen', 'description' => 'Mittagessen für Familie und engste Gäste.', 'sort_order' => 4],
+                ['time' => '19:00', 'title' => 'Festliches Abendessen & Feier', 'description' => 'Abendessen, Tanzen und Feier.', 'sort_order' => 5],
+            ],
+            guests: [
+                ['name' => 'Demo Gast', 'email' => 'demo-islamsko-de@example.com'],
+            ],
+        );
+
+        $this->seedEvent(
+            slug: 'demo-krscansko-de',
+            groom: 'Milan',
+            bride: 'Ana',
+            locationName: 'Kathedrale zum Heiligsten Herzen Jesu',
+            locationAddress: 'Sarajevo, Bosnien und Herzegowina',
+            lat: 43.8563,
+            lng: 18.4131,
+            theme: InvitationTheme::RoyalWedding,
+            schedule: [
+                ['time' => '09:00', 'title' => 'Abholung der Braut', 'description' => 'Der Bräutigam und die Hochzeitsgesellschaft holen die Braut ab.', 'sort_order' => 1],
+                ['time' => '10:00', 'title' => 'Kirchliche Trauung & Segen', 'description' => 'Kirchliche Zeremonie und Segen.', 'sort_order' => 2],
+                ['time' => '12:00', 'title' => 'Familienessen', 'description' => 'Mittagessen für Familie und engste Gäste.', 'sort_order' => 3],
+                ['time' => '15:00', 'title' => 'Hochzeitsfotoshooting', 'description' => 'Gemeinsame Fotos mit den Brautleuten.', 'sort_order' => 4],
+                ['time' => '19:00', 'title' => 'Festliches Abendessen & Feier', 'description' => 'Abendessen, Tanzen und Feier.', 'sort_order' => 5],
+            ],
+            guests: [
+                ['name' => 'Demo Gast', 'email' => 'demo-krscansko-de@example.com'],
+            ],
+        );
     }
 
     private function seedEvent(

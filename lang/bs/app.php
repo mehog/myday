@@ -11,6 +11,7 @@ return [
     'preview_invitation' => 'Pregled pozivnice',
     'no_invitation' => 'Vaša pozivnica nije još kreirana. Kontaktirajte NasDan tim da vam je postavi.',
     'invitation_inactive_suffix' => '— link nije još aktivan',
+    'email_readonly' => 'Email se ovdje ne može mijenjati.',
 
     // Resource
     'nav_my_wedding' => 'Moje vjenčanje',

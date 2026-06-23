@@ -1,0 +1,37 @@
+<?php
+
+return [
+    'title' => 'Gäste',
+    'field_name' => 'Name',
+    'field_email' => 'E-Mail',
+    'field_phone' => 'Telefon',
+    'field_rsvp_status' => 'RSVP-Status',
+    'field_rsvp_responded_at' => 'Antwortdatum',
+    'personal_link' => 'Persönlicher Link',
+    'link_copied' => 'Link kopiert',
+    'sent_via' => 'Einladungskanal',
+    'invite_sent' => 'Einladung gesendet',
+    'last_opened' => 'Zuletzt geöffnet',
+    'rsvp_pending' => 'Ausstehend',
+
+    'send_invite' => 'Einladung senden',
+    'mark_sent' => 'Als gesendet markieren',
+    'copy_link' => 'Link kopieren',
+    'close' => 'Schließen',
+    'message' => 'Nachricht',
+    'platform' => 'Plattform',
+    'guest_marked_sent' => 'Gast als gesendet markiert',
+
+    'import_csv' => 'CSV importieren',
+    'csv_file' => 'CSV-Datei',
+    'imported_count' => ':count Gäste importiert',
+
+    'empty_heading' => 'Noch keine Gäste',
+    'empty_description' => 'Fügen Sie Ihren ersten Gast hinzu oder importieren Sie eine Liste aus einer CSV-Datei.',
+    'more_actions' => 'Weitere Optionen',
+
+    'platform_whatsapp' => 'WhatsApp',
+    'platform_viber' => 'Viber',
+    'platform_telegram' => 'Telegram',
+    'platform_manual' => 'Manuell',
+];

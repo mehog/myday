@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\App\Pages\Auth\EditProfile;
 use App\Http\Middleware\SetAppLocale;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -30,7 +31,7 @@ class AppPanelProvider extends PanelProvider
             ->login()
             ->brandName('NasDan')
             ->globalSearch(false)
-            ->profile()
+            ->profile(EditProfile::class)
             ->topNavigation()
             ->colors([
                 'primary' => Color::Rose,

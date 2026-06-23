@@ -26,9 +26,12 @@ class LandingPage extends Component
 
     private function loadDemos(): array
     {
+        $locale = app()->getLocale();
+        $suffix = $locale !== 'bs' ? '-'.$locale : '';
+
         $configs = [
-            'islamic' => ['slug' => 'demo-islamsko'],
-            'christian' => ['slug' => 'demo-krscansko'],
+            'islamic' => ['slug' => 'demo-islamsko'.$suffix],
+            'christian' => ['slug' => 'demo-krscansko'.$suffix],
         ];
 
         $demos = [];

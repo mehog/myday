@@ -82,13 +82,14 @@ return [
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
-    'supported_locales' => ['en', 'bs'],
+    'supported_locales' => ['en', 'bs', 'de'],
 
     'default_locale' => 'bs',
 
     'locale_labels' => [
         'bs' => 'Bosanski',
         'en' => 'English',
+        'de' => 'Deutsch',
     ],
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),

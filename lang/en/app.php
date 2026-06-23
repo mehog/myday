@@ -11,6 +11,7 @@ return [
     'preview_invitation' => 'Preview invitation',
     'no_invitation' => 'Your invitation has not been created yet. Contact the NasDan team to set it up.',
     'invitation_inactive_suffix' => '— link not yet active',
+    'email_readonly' => 'Email cannot be changed here.',
 
     // Resource
     'nav_my_wedding' => 'My wedding',
