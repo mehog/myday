@@ -28,17 +28,22 @@ class GuestsRelationManager extends RelationManager
 {
     protected static string $relationship = 'guests';
 
+    protected static ?string $title = 'Gosti';
+
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label('Ime')
                     ->required()
                     ->maxLength(255),
                 TextInput::make('email')
+                    ->label('Email')
                     ->email()
                     ->maxLength(255),
                 TextInput::make('phone')
+                    ->label('Telefon')
                     ->tel()
                     ->maxLength(255),
             ]);
@@ -54,14 +59,18 @@ class GuestsRelationManager extends RelationManager
                     ->label('ID')
                     ->sortable(),
                 TextColumn::make('name')
+                    ->label('Ime')
                     ->searchable(),
                 TextColumn::make('email')
+                    ->label('Email')
                     ->searchable(),
                 TextColumn::make('rsvp_status')
+                    ->label('RSVP status')
                     ->badge()
                     ->sortable()
                     ->formatStateUsing(fn (?RsvpStatus $state) => $state?->label() ?? $this->trans('rsvp_pending')),
                 TextColumn::make('rsvp_responded_at')
+                    ->label('Datum odgovora')
                     ->dateTime()
                     ->sortable()
                     ->placeholder('—'),

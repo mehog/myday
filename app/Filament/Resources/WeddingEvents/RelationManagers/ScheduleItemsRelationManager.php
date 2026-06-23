@@ -19,20 +19,26 @@ class ScheduleItemsRelationManager extends RelationManager
 {
     protected static string $relationship = 'scheduleItems';
 
+    protected static ?string $title = 'Raspored';
+
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 TimePicker::make('time')
+                    ->label('Vrijeme')
                     ->required()
                     ->seconds(false),
                 TextInput::make('title')
+                    ->label('Naziv')
                     ->required()
                     ->maxLength(255),
                 Textarea::make('description')
+                    ->label('Opis')
                     ->rows(3)
                     ->columnSpanFull(),
                 TextInput::make('sort_order')
+                    ->label('Redosljed')
                     ->numeric()
                     ->default(0)
                     ->required(),
@@ -47,12 +53,16 @@ class ScheduleItemsRelationManager extends RelationManager
             ->reorderable('sort_order')
             ->columns([
                 TextColumn::make('time')
+                    ->label('Vrijeme')
                     ->time('H:i'),
                 TextColumn::make('title')
+                    ->label('Naziv')
                     ->searchable(),
                 TextColumn::make('description')
+                    ->label('Opis')
                     ->limit(50),
                 TextColumn::make('sort_order')
+                    ->label('Redosljed')
                     ->sortable(),
             ])
             ->headerActions([

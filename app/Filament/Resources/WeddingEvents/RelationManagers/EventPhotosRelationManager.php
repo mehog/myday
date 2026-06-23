@@ -19,22 +19,25 @@ class EventPhotosRelationManager extends RelationManager
 {
     protected static string $relationship = 'eventPhotos';
 
+    protected static ?string $title = 'Fotografije';
+
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 FileUpload::make('path')
-                    ->label('Photo')
+                    ->label('Fotografija')
                     ->image()
                     ->directory('event-photos')
                     ->disk(config('filesystems.media_disk'))
                     ->required(),
                 TextInput::make('title')
-                    ->label('Title')
+                    ->label('Naslov')
                     ->maxLength(255)
                     ->placeholder('npr. Dvorana, Vrt, Parking')
-                    ->helperText('Optional. Shown below the photo on the invitation.'),
+                    ->helperText('Opcionalno. Prikazuje se ispod fotografije na pozivnici.'),
                 TextInput::make('sort_order')
+                    ->label('Redosljed')
                     ->numeric()
                     ->default(0)
                     ->required(),
@@ -49,11 +52,14 @@ class EventPhotosRelationManager extends RelationManager
             ->reorderable('sort_order')
             ->columns([
                 ImageColumn::make('path')
+                    ->label('Fotografija')
                     ->disk(config('filesystems.media_disk')),
                 TextColumn::make('title')
+                    ->label('Naslov')
                     ->placeholder('—')
                     ->searchable(),
                 TextColumn::make('sort_order')
+                    ->label('Redosljed')
                     ->sortable(),
             ])
             ->headerActions([
