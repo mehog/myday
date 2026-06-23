@@ -14,9 +14,6 @@
                 ['title' => __('landing.benefit_1_title'), 'text' => __('landing.benefit_1_text')],
                 ['title' => __('landing.benefit_2_title'), 'text' => __('landing.benefit_2_text')],
                 ['title' => __('landing.benefit_3_title'), 'text' => __('landing.benefit_3_text')],
-                ['title' => __('landing.benefit_4_title'), 'text' => __('landing.benefit_4_text')],
-                ['title' => __('landing.benefit_5_title'), 'text' => __('landing.benefit_5_text')],
-                ['title' => __('landing.benefit_6_title'), 'text' => __('landing.benefit_6_text')],
             ] as $benefit)
                 <div class="landing-card rounded-2xl border border-white/15 p-6 landing-fade-in">
                     <div class="w-8 h-8 rounded-full bg-[#c9a227]/20 flex items-center justify-center mb-4">

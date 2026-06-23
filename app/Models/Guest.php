@@ -19,6 +19,8 @@ class Guest extends Model
         'name',
         'email',
         'phone',
+        'plus_one_allowed',
+        'plus_one_name',
         'token',
         'rsvp_status',
         'rsvp_responded_at',

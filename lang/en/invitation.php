@@ -54,6 +54,12 @@ return [
     'rsvp_yes' => 'Attending',
     'rsvp_no' => 'Not attending',
 
+    'plus_one_question' => 'Will you be bringing someone?',
+    'plus_one_name_placeholder' => 'Their name (optional)',
+    'plus_one_helper_text' => 'Your invitation allows a plus one (one person). If you are bringing someone (e.g. spouse), please enter their name so we can prepare the seating arrangement accordingly.',
+    'rsvp_update_helper_text' => 'You can update your response before the deadline.',
+    'edit_response' => 'Edit response',
+
     'token_required' => 'This invitation requires a personal link.',
 
     'preview_banner' => 'This is a preview. The link will go live once payment is confirmed and an admin approves it.',

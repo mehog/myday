@@ -54,6 +54,12 @@ return [
     'rsvp_yes' => 'Nimmt teil',
     'rsvp_no' => 'Nimmt nicht teil',
 
+    'plus_one_question' => 'Bringen Sie jemanden mit?',
+    'plus_one_name_placeholder' => 'Name der Begleitung (optional)',
+    'plus_one_helper_text' => 'Ihre Einladung erlaubt eine Begleitung (eine Person). Falls Sie jemanden mitbringen (z. B. Ehepartner/in), geben Sie bitte deren Namen an, damit wir den Sitzplan entsprechend vorbereiten können.',
+    'rsvp_update_helper_text' => 'Sie können Ihre Antwort vor Ablauf der Frist ändern.',
+    'edit_response' => 'Antwort bearbeiten',
+
     'token_required' => 'Diese Einladung erfordert einen persönlichen Link.',
 
     'preview_banner' => 'Dies ist eine Vorschau. Der Link wird freigeschaltet, sobald die Zahlung bestätigt und von einem Admin freigegeben wurde.',

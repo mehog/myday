@@ -19,6 +19,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
@@ -57,6 +58,10 @@ class GuestsRelationManager extends RelationManager
                     ->label($this->trans('field_phone'))
                     ->tel()
                     ->maxLength(255),
+                Toggle::make('plus_one_allowed')
+                    ->label($this->trans('field_plus_one_allowed'))
+                    ->helperText($this->trans('field_plus_one_allowed_helper'))
+                    ->default(false),
             ]);
     }
 
@@ -100,6 +105,10 @@ class GuestsRelationManager extends RelationManager
                     ->sortable()
                     ->placeholder('—')
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('plus_one_name')
+                    ->label($this->trans('field_plus_one_name'))
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: false),
                 IconColumn::make('invite_platform')
                     ->label($this->trans('sent_via'))
                     ->sortable()

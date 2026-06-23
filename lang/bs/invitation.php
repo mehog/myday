@@ -54,6 +54,12 @@ return [
     'rsvp_yes' => 'Dolazim',
     'rsvp_no' => 'Ne dolazim',
 
+    'plus_one_question' => 'Da li dovodite nekoga?',
+    'plus_one_name_placeholder' => 'Ime pratnje (optionalno)',
+    'plus_one_helper_text' => 'Vaša pozivnica podražava pratnju (jednu osobu). Ukoliko dovodite nekoga (npr. supružnik/a), molimo unesite njihovo ime kako bismo mogli prilagoditi raspored.',
+    'rsvp_update_helper_text' => 'Odgovor možete promijeniti sve do isteka roka.',
+    'edit_response' => 'Izmijeni odgovor',
+
     'token_required' => 'Ova pozivnica zahtijeva lični link.',
 
     'preview_banner' => 'Ovo je pregled. Link će biti aktivan nakon potvrde uplate i odobrenja administratora.',

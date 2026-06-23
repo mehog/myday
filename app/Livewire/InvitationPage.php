@@ -20,7 +20,11 @@ class InvitationPage extends Component
 
     public string $anonymousName = '';
 
+    public string $plusOneName = '';
+
     public bool $rsvpSubmitted = false;
+
+    public bool $isEditing = false;
 
     public bool $isPreview = false;
 
@@ -66,10 +70,20 @@ class InvitationPage extends Component
         $rsvpStatus = RsvpStatus::from($status);
 
         if ($this->guest) {
-            $this->guest->update([
+            $updateData = [
                 'rsvp_status' => $rsvpStatus,
                 'rsvp_responded_at' => now(),
-            ]);
+            ];
+
+            if ($rsvpStatus === RsvpStatus::Yes && $this->guest->plus_one_allowed) {
+                $updateData['plus_one_name'] = filled($this->plusOneName)
+                    ? trim($this->plusOneName)
+                    : null;
+            } else {
+                $updateData['plus_one_name'] = null;
+            }
+
+            $this->guest->update($updateData);
             $this->guest->refresh();
         } else {
             $this->validate([
@@ -86,6 +100,14 @@ class InvitationPage extends Component
         }
 
         $this->rsvpSubmitted = true;
+        $this->isEditing = false;
+    }
+
+    public function editRsvp(): void
+    {
+        $this->isEditing = true;
+        $this->plusOneName = $this->guest?->plus_one_name ?? '';
+        $this->rsvpSubmitted = false;
     }
 
     public function switchLocale(string $locale): void

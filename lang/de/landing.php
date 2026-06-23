@@ -26,15 +26,6 @@ return [
     'benefit_3_title' => 'Bestätigungen in Echtzeit',
     'benefit_3_text' => 'Jede RSVP-Antwort erscheint sofort in Ihrem Panel. Sie wissen genau, wer kommt, wer nicht — und wer noch nicht geantwortet hat.',
 
-    'benefit_4_title' => 'Ändern in Sekunden, Gäste sehen es sofort',
-    'benefit_4_text' => 'Location oder Uhrzeit geändert? Aktualisieren Sie es im Panel — alle Gäste sehen automatisch die neue Version. Kein erneutes Senden nötig.',
-
-    'benefit_5_title' => 'Eine tickende Uhr bringt Gäste zurück',
-    'benefit_5_text' => 'Der Countdown lebt bei jedem Öffnen der Einladung. Gäste kehren zurück, um zu prüfen, wie viel Zeit noch bleibt — und die Vorfreude wächst jedes Mal.',
-
-    'benefit_6_title' => 'Perfekt auf jedem Bildschirm',
-    'benefit_6_text' => 'Weder ein JPEG, das verblasst, noch ein PDF, das niemand öffnet. Eine Web-Einladung sieht auf Handy, Tablet und Desktop gleichermaßen perfekt aus.',
-
     'steps_title' => 'Wie funktioniert es?',
     'steps_subtitle' => 'Erstellen Sie Ihre Einladung in drei einfachen Schritten.',
 
@@ -93,7 +84,7 @@ return [
     'pricing_plan_popular' => 'Am beliebtesten',
     'pricing_cta' => 'Jetzt bestellen',
     'pricing_features_title' => 'Alle Pakete beinhalten',
-    'pricing_feature_1' => 'Personalisierter Einladungslink pro Gast',
+    'pricing_feature_1' => 'Öffentlicher oder personalisierter Einladungslink',
     'pricing_feature_2' => 'Senden über WhatsApp, Viber oder Telegram',
     'pricing_feature_3' => 'RSVP-Bestätigungen in Echtzeit',
     'pricing_feature_4' => 'Live-Bearbeitung — Änderungen sofort sichtbar',
@@ -101,9 +92,8 @@ return [
     'pricing_feature_6' => '4 visuelle Themen zur Auswahl',
     'pricing_feature_7' => 'Tagesablauf der Hochzeit',
     'pricing_feature_8' => 'Fotogalerie der Location',
-    'pricing_feature_9' => 'Öffentliche und personalisierte Link-Modi',
-    'pricing_feature_10' => 'Gästeverwaltungs-Panel',
-    'pricing_feature_11' => 'Besuchsstatistiken',
-    'pricing_feature_12' => 'Unterstützung für Bosnisch, Englisch und Deutsch',
-    'pricing_feature_13' => 'Optimiert für Handy, Tablet und Desktop',
+    'pricing_feature_9' => 'Gästeverwaltungs-Panel',
+    'pricing_feature_10' => 'Besuchsstatistiken',
+    'pricing_feature_11' => 'Unterstützung für mehrere Sprachen',
+    'pricing_feature_12' => 'Optimiert für Handy, Tablet und Desktop',
 ];

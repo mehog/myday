@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Guests\Schemas;
 use App\Models\WeddingEvent;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
 class GuestForm
@@ -27,6 +28,9 @@ class GuestForm
                 TextInput::make('phone')
                     ->tel()
                     ->maxLength(255),
+                Toggle::make('plus_one_allowed')
+                    ->label('Plus one')
+                    ->default(false),
             ]);
     }
 }

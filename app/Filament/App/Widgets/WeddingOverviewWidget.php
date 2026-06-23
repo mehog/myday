@@ -17,7 +17,12 @@ class WeddingOverviewWidget extends StatsOverviewWidget
         }
 
         $guestCount = $wedding->guests()->count();
-        $confirmed = $wedding->guests()->where('rsvp_status', RsvpStatus::Yes)->count();
+        $confirmedGuests = $wedding->guests()->where('rsvp_status', RsvpStatus::Yes)->count();
+        $plusOnes = $wedding->guests()
+            ->where('rsvp_status', RsvpStatus::Yes)
+            ->whereNotNull('plus_one_name')
+            ->count();
+        $confirmed = $confirmedGuests + $plusOnes;
         $responded = $wedding->guests()->whereNotNull('rsvp_status')->count();
         $responseRate = $guestCount > 0 ? round(($responded / $guestCount) * 100) : 0;
         $daysUntil = (int) now()->startOfDay()->diffInDays($wedding->wedding_date->copy()->startOfDay(), false);

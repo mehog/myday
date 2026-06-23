@@ -41,6 +41,10 @@ class GuestsTable
                 TextColumn::make('rsvp_responded_at')
                     ->dateTime()
                     ->placeholder('—'),
+                TextColumn::make('plus_one_name')
+                    ->label('Companion name')
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('personal_url')
                     ->label('Personal link')
                     ->copyable()

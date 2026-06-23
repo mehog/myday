@@ -61,7 +61,7 @@
             </h3>
 
             <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-4">
-                @foreach (range(1, 13) as $i)
+                @foreach (range(1, 12) as $i)
                     <li class="flex items-start gap-3">
                         <span class="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-[#c9a227]/20 flex items-center justify-center">
                             <svg class="w-3 h-3 text-[#c9a227]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -74,6 +74,15 @@
                     </li>
                 @endforeach
             </ul>
+
+            <div class="mt-8 text-center">
+                <a
+                    href="{{ route('onboarding', ['locale' => app()->getLocale()]) }}"
+                    class="landing-btn-secondary inline-block px-8 py-4 rounded-xl landing-heading text-lg transition"
+                >
+                    {{ __('landing.hero_cta_create') }}
+                </a>
+            </div>
         </div>
     </div>
 </section>

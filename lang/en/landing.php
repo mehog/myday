@@ -26,15 +26,6 @@ return [
     'benefit_3_title' => 'Confirmations arrive in real time',
     'benefit_3_text' => 'Every RSVP response appears immediately in your panel. You know exactly who is coming, who is not — and who has not responded yet.',
 
-    'benefit_4_title' => 'Change in seconds, guests see it instantly',
-    'benefit_4_text' => 'Changed the venue or time? Update it in the panel — all guests automatically see the new version. No resending needed.',
-
-    'benefit_5_title' => 'A ticking clock brings guests back',
-    'benefit_5_text' => 'The countdown lives on every opening of the invitation. Guests return to check how much time is left — and excitement grows each time.',
-
-    'benefit_6_title' => 'Perfect on every screen',
-    'benefit_6_text' => 'Neither a JPEG that fades nor a PDF nobody opens. A web invitation looks equally perfect on phone, tablet and desktop.',
-
     'steps_title' => 'How does it work?',
     'steps_subtitle' => 'Create your invitation in three simple steps.',
 
@@ -93,7 +84,7 @@ return [
     'pricing_plan_popular' => 'Most popular',
     'pricing_cta' => 'Order now',
     'pricing_features_title' => 'All plans include',
-    'pricing_feature_1' => 'Personalized invitation link per guest',
+    'pricing_feature_1' => 'Public or personalized invitation link',
     'pricing_feature_2' => 'Send via WhatsApp, Viber or Telegram',
     'pricing_feature_3' => 'Real-time RSVP confirmations',
     'pricing_feature_4' => 'Live editing — changes visible instantly',
@@ -101,9 +92,8 @@ return [
     'pricing_feature_6' => '4 visual themes to choose from',
     'pricing_feature_7' => 'Wedding day schedule',
     'pricing_feature_8' => 'Event photo gallery',
-    'pricing_feature_9' => 'Public + personalized link modes',
-    'pricing_feature_10' => 'Guest management panel',
-    'pricing_feature_11' => 'Visit statistics',
-    'pricing_feature_12' => 'Bosnian & English language support',
-    'pricing_feature_13' => 'Optimized for mobile, tablet and desktop',
+    'pricing_feature_9' => 'Guest management panel',
+    'pricing_feature_10' => 'Visit statistics',
+    'pricing_feature_11' => 'Support for multiple languages',
+    'pricing_feature_12' => 'Optimized for mobile, tablet and desktop',
 ];

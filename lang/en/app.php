@@ -53,7 +53,7 @@ return [
     'stat_guests' => 'Guests',
     'stat_guests_desc' => 'Total invited guests',
     'stat_confirmed' => 'Confirmed',
-    'stat_confirmed_desc' => 'Confirmed attendance',
+    'stat_confirmed_desc' => 'Guests + companions',
     'stat_responded' => 'Responded',
     'stat_responded_desc' => ':responded of :total guests',
     'stat_days_until' => 'Until the wedding',

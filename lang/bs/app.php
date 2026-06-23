@@ -53,7 +53,7 @@ return [
     'stat_guests' => 'Gosti',
     'stat_guests_desc' => 'Ukupno pozvanih gostiju',
     'stat_confirmed' => 'Potvrdili',
-    'stat_confirmed_desc' => 'Potvrdili dolazak',
+    'stat_confirmed_desc' => 'Gosti + pratnja',
     'stat_responded' => 'Odgovorili',
     'stat_responded_desc' => ':responded od :total gostiju',
     'stat_days_until' => 'Do vjenčanja',

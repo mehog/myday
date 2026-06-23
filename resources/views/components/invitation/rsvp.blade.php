@@ -14,7 +14,7 @@
             </p>
         @endif
 
-        @if ($guest && $guest->hasResponded())
+        @if ($guest && $guest->hasResponded() && ! $isEditing)
             <div class="rounded-2xl border border-[var(--color-primary)]/30 bg-[var(--color-bg-soft)]/80 px-6 py-8">
                 <p class="invitation-heading text-2xl text-[var(--color-text)] mb-2">
                     {{ __('invitation.thank_you', ['name' => $guest->name]) }}
@@ -25,8 +25,17 @@
                         {{ $guest->rsvp_status->label() }}
                     </span>
                 </p>
+                @if (! $isEditing && (! $event->rsvp_deadline || now()->lte($event->rsvp_deadline)))
+                    <button
+                        type="button"
+                        wire:click="editRsvp"
+                        class="mt-4 text-sm text-[var(--color-primary)] hover:underline transition"
+                    >
+                        {{ __('invitation.edit_response') }}
+                    </button>
+                @endif
             </div>
-        @elseif ($rsvpSubmitted && $guest)
+        @elseif ($rsvpSubmitted && $guest && ! $isEditing)
             <div class="rounded-2xl border border-[var(--color-primary)]/30 bg-[var(--color-bg-soft)]/80 px-6 py-8">
                 <p class="invitation-heading text-2xl text-[var(--color-text)] mb-2">
                     {{ __('invitation.thank_you', ['name' => $guest->name]) }}
@@ -34,6 +43,15 @@
                 <p class="invitation-body text-[var(--color-text-muted)]">
                     {{ __('invitation.response_received') }}
                 </p>
+                @if (! $isEditing && (! $event->rsvp_deadline || now()->lte($event->rsvp_deadline)))
+                    <button
+                        type="button"
+                        wire:click="editRsvp"
+                        class="mt-4 text-sm text-[var(--color-primary)] hover:underline transition"
+                    >
+                        {{ __('invitation.edit_response') }}
+                    </button>
+                @endif
             </div>
         @else
             @if ($guest)
@@ -78,7 +96,7 @@
         @endif
     </div>
 
-    @if (! ($guest && $guest->hasResponded()) && ! ($rsvpSubmitted && $guest))
+    @if (! ($guest && $guest->hasResponded() && ! $isEditing) && ! ($rsvpSubmitted && $guest && ! $isEditing))
         <div
             x-show="pending !== null"
             x-transition.opacity
@@ -102,6 +120,29 @@
                         : '{{ __('invitation.confirm_rsvp_no') }}'"
                 ></p>
 
+                @if ($guest?->plus_one_allowed)
+                    <div
+                        x-show="pending === 'yes'"
+                        x-cloak
+                        class="mb-6 text-left"
+                    >
+                        <label for="plusOneName" class="block text-sm text-[var(--color-text-muted)] mb-2">
+                            {{ __('invitation.plus_one_question') }}
+                        </label>
+                        <input
+                            id="plusOneName"
+                            type="text"
+                            wire:model="plusOneName"
+                            class="w-full rounded-xl border border-white/10 bg-[var(--color-bg)] px-4 py-3 text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary)] focus:outline-none"
+                            placeholder="{{ __('invitation.plus_one_name_placeholder') }}"
+                        >
+                        {{-- helper text --}}
+                        <p class="text-sm text-[var(--color-text-muted)] mt-2">
+                            {{ __('invitation.plus_one_helper_text') }}
+                        </p>
+                    </div>
+                @endif
+
                 <div class="flex flex-col gap-3">
                     <button
                         type="button"
@@ -118,6 +159,10 @@
                     >
                         {{ __('invitation.rsvp_cancel_btn') }}
                     </button>
+                    {{-- helper text explaining rsvp can be updated until the deadline --}}
+                    <p class="text-sm text-[var(--color-text-muted)] mt-2">
+                        {{ __('invitation.rsvp_update_helper_text') }}
+                    </p>
                 </div>
             </div>
         </div>

@@ -26,15 +26,6 @@ return [
     'benefit_3_title' => 'Potvrde stižu u realnom vremenu',
     'benefit_3_text' => 'Svaki RSVP odgovor se odmah pojavljuje u vašem panelu. Znate tačno ko dolazi, ko ne — i ko još nije odgovorio.',
 
-    'benefit_4_title' => 'Izmjena u sekundi, gosti vide odmah',
-    'benefit_4_text' => 'Promijenili ste lokaciju ili termin? Izmijenite u panelu — svi gosti automatski vide novu verziju. Bez ponovnog slanja.',
-
-    'benefit_5_title' => 'Sat koji kuca vraća goste',
-    'benefit_5_text' => 'Odbrojavanje živi na svakom otvaranju pozivnice. Gosti se vraćaju da provjere koliko je ostalo — i uzbuđenje raste svaki put.',
-
-    'benefit_6_title' => 'Savršeno na svakom ekranu',
-    'benefit_6_text' => 'Ni JPEG koji izbljeđuje, ni PDF koji niko ne otvara. Web pozivnica izgleda jednako savršeno na telefonu, tabletu i računaru.',
-
     'steps_title' => 'Kako funkcionira?',
     'steps_subtitle' => 'Napravite svoju pozivnicu u tri jednostavna koraka.',
 
@@ -93,7 +84,7 @@ return [
     'pricing_plan_popular' => 'Najpopularnije',
     'pricing_cta' => 'Naruči odmah',
     'pricing_features_title' => 'Svi paketi uključuju',
-    'pricing_feature_1' => 'Personalizovani link pozivnice za svakog gosta',
+    'pricing_feature_1' => 'Javni ili personalizovani link pozivnice',
     'pricing_feature_2' => 'Slanje putem WhatsApp, Viber ili Telegram',
     'pricing_feature_3' => 'Potvrde dolaska u realnom vremenu',
     'pricing_feature_4' => 'Izmjene uživo — gosti vide odmah',
@@ -101,9 +92,8 @@ return [
     'pricing_feature_6' => '4 vizuelne teme na izbor',
     'pricing_feature_7' => 'Plan dana vjenčanja',
     'pricing_feature_8' => 'Galerija fotografija lokacije',
-    'pricing_feature_9' => 'Javni i personalizovani linkovi',
-    'pricing_feature_10' => 'Panel za upravljanje gostima',
-    'pricing_feature_11' => 'Statistika posjeta',
-    'pricing_feature_12' => 'Podrška za bosanski i engleski jezik',
-    'pricing_feature_13' => 'Optimizovano za mobitel, tablet i računar',
+    'pricing_feature_9' => 'Panel za upravljanje gostima',
+    'pricing_feature_10' => 'Statistika posjeta',
+    'pricing_feature_11' => 'Podrška za više jezika',
+    'pricing_feature_12' => 'Optimizovano za mobitel, tablet i računar',
 ];

@@ -53,7 +53,7 @@ return [
     'stat_guests' => 'Gäste',
     'stat_guests_desc' => 'Eingeladene Gäste insgesamt',
     'stat_confirmed' => 'Bestätigt',
-    'stat_confirmed_desc' => 'Bestätigte Teilnahme',
+    'stat_confirmed_desc' => 'Gäste + Begleitung',
     'stat_responded' => 'Geantwortet',
     'stat_responded_desc' => ':responded von :total Gästen',
     'stat_days_until' => 'Bis zur Hochzeit',
