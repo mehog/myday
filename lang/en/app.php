@@ -106,4 +106,28 @@ return [
     'push_notifications_no_wedding' => 'You need a wedding event before sending notifications.',
     'push_notifications_rsvp_pending' => 'Pending RSVP',
 
+    // Guest messages
+    'nav_guest_messages' => 'Guest messages',
+    'guest_messages_title' => 'Guest messages',
+    'guest_messages_model_label' => 'Message',
+    'guest_messages_plural_label' => 'Guest messages',
+    'guest_messages_col_sender' => 'Guest',
+    'guest_messages_col_type' => 'Type',
+    'guest_messages_col_message' => 'Message',
+    'guest_messages_col_photo' => 'Photo',
+    'guest_messages_col_audio' => 'Audio',
+    'guest_messages_col_sent_at' => 'Received at',
+    'guest_messages_filter_type' => 'Message type',
+    'guest_messages_filter_sender' => 'Guest',
+    'guest_messages_download_photos' => 'Download all photos',
+    'guest_messages_empty_heading' => 'No guest messages yet',
+    'guest_messages_empty_desc' => 'Messages will appear here once guests use the contact page.',
+    'guest_messages_listen' => 'Listen ↗',
+    'stat_messages' => 'Guest messages',
+    'stat_messages_desc' => 'Text, audio and photo messages received',
+    'guest_messages_detail_title' => 'Message from :name',
+    'guest_messages_back' => 'Back to messages',
+    'guest_messages_photos_label' => 'photo(s)',
+    'guest_messages_col_photo_count' => ':count photo(s)',
+
 ];

@@ -59,6 +59,11 @@ class Guest extends Model
         return $this->hasMany(LinkVisit::class);
     }
 
+    public function guestMessages(): HasMany
+    {
+        return $this->hasMany(GuestMessage::class)->latest();
+    }
+
     public function hasResponded(): bool
     {
         return $this->rsvp_status !== null;

@@ -87,6 +87,11 @@ class WeddingEvent extends Model
         return $this->hasMany(PushNotificationLog::class);
     }
 
+    public function guestMessages(): HasMany
+    {
+        return $this->hasMany(GuestMessage::class)->latest();
+    }
+
     public function getCoupleNamesAttribute(): string
     {
         return "{$this->groom_name} & {$this->bride_name}";

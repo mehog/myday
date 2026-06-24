@@ -1,0 +1,282 @@
+<div>
+    <x-theme :theme="$event->theme">
+        <div class="invitation-page min-h-screen">
+            <section class="invitation-section py-16 px-6">
+                <div class="max-w-2xl mx-auto invitation-fade-in">
+                    <div class="text-center mb-10">
+                        <p class="text-sm uppercase tracking-[0.3em] text-[var(--color-text-muted)] mb-3">
+                            {{ $event->couple_names }}
+                        </p>
+                        <h1 class="invitation-heading text-4xl text-[var(--color-text)] mb-4">
+                            {{ __('invitation.contact_page_title') }}
+                        </h1>
+                        <p class="invitation-body text-[var(--color-text-muted)]">
+                            {{ __('invitation.contact_page_description', ['name' => $senderName]) }}
+                        </p>
+                    </div>
+
+                    <div class="mb-8 text-center">
+                        <a
+                            href="{{ route('invitation.guest', [$event->slug, $guest->token]) }}"
+                            class="text-sm text-[var(--color-primary)] hover:underline transition"
+                        >
+                            &larr; {{ __('invitation.back_to_invitation') }}
+                        </a>
+                    </div>
+
+                    <div class="space-y-6">
+                        {{-- Text message --}}
+                        <div class="rounded-2xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)]/80 p-6">
+                            <h2 class="invitation-heading text-xl text-[var(--color-text)] mb-2">
+                                {{ __('invitation.send_text_message') }}
+                            </h2>
+                            <p class="invitation-body text-sm text-[var(--color-text-muted)] mb-4">
+                                {{ __('invitation.send_text_message_description') }}
+                            </p>
+                            <form wire:submit="submitText" class="space-y-4">
+                                <div>
+                                    <label for="textContent" class="block text-sm text-[var(--color-text-muted)] mb-2">
+                                        {{ __('invitation.your_message') }}
+                                    </label>
+                                    <textarea
+                                        id="textContent"
+                                        wire:model="textContent"
+                                        rows="5"
+                                        class="w-full rounded-xl border border-white/10 bg-[var(--color-bg)] px-4 py-3 text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary)] focus:outline-none resize-y"
+                                        placeholder="{{ __('invitation.message_placeholder') }}"
+                                    ></textarea>
+                                    @error('textContent')
+                                        <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <button
+                                    type="submit"
+                                    wire:loading.attr="disabled"
+                                    wire:target="submitText"
+                                    class="rsvp-btn rsvp-btn-yes w-full sm:w-auto rounded-xl px-6 py-3 invitation-heading text-base transition disabled:opacity-60"
+                                >
+                                    <span wire:loading.remove wire:target="submitText">{{ __('invitation.send_message') }}</span>
+                                    <span wire:loading wire:target="submitText">{{ __('invitation.saving') }}</span>
+                                </button>
+                            </form>
+                        </div>
+
+                        {{-- Audio message --}}
+                        <div
+                            class="rounded-2xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)]/80 p-6"
+                            x-data="{
+                                recording: false,
+                                hasRecording: false,
+                                mediaRecorder: null,
+                                audioChunks: [],
+                                audioUrl: null,
+                                audioBlob: null,
+                                uploading: false,
+                                error: null,
+                                async startRecording() {
+                                    this.error = null;
+                                    try {
+                                        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                                        this.mediaRecorder = new MediaRecorder(stream);
+                                        this.audioChunks = [];
+                                        this.mediaRecorder.ondataavailable = (e) => {
+                                            if (e.data.size > 0) this.audioChunks.push(e.data);
+                                        };
+                                        this.mediaRecorder.onstop = () => {
+                                            stream.getTracks().forEach((track) => track.stop());
+                                            this.audioBlob = new Blob(this.audioChunks, { type: this.mediaRecorder.mimeType || 'audio/webm' });
+                                            if (this.audioUrl) URL.revokeObjectURL(this.audioUrl);
+                                            this.audioUrl = URL.createObjectURL(this.audioBlob);
+                                            this.hasRecording = true;
+                                        };
+                                        this.mediaRecorder.start();
+                                        this.recording = true;
+                                    } catch (e) {
+                                        this.error = @js(__('invitation.microphone_error'));
+                                    }
+                                },
+                                stopRecording() {
+                                    if (this.mediaRecorder && this.recording) {
+                                        this.mediaRecorder.stop();
+                                        this.recording = false;
+                                    }
+                                },
+                                discardRecording() {
+                                    if (this.audioUrl) URL.revokeObjectURL(this.audioUrl);
+                                    this.audioUrl = null;
+                                    this.audioBlob = null;
+                                    this.hasRecording = false;
+                                    this.audioChunks = [];
+                                },
+                                sendRecording() {
+                                    if (! this.audioBlob) return;
+                                    this.uploading = true;
+                                    this.error = null;
+                                    const extension = this.audioBlob.type.includes('ogg') ? 'ogg' : 'webm';
+                                    const file = new File([this.audioBlob], `recording.${extension}`, { type: this.audioBlob.type || 'audio/webm' });
+                                    $wire.upload('audioFile', file, () => {
+                                        $wire.submitAudio().then(() => {
+                                            this.discardRecording();
+                                            this.uploading = false;
+                                        }).catch(() => {
+                                            this.uploading = false;
+                                        });
+                                    }, () => {
+                                        this.error = @js(__('invitation.audio_upload_error'));
+                                        this.uploading = false;
+                                    });
+                                },
+                            }"
+                        >
+                            <h2 class="invitation-heading text-xl text-[var(--color-text)] mb-2">
+                                {{ __('invitation.send_audio_message') }}
+                            </h2>
+                            <p class="invitation-body text-sm text-[var(--color-text-muted)] mb-4">
+                                {{ __('invitation.send_audio_message_description') }}
+                            </p>
+
+                            <div class="flex flex-wrap gap-3 mb-4">
+                                <button
+                                    type="button"
+                                    x-show="! recording && ! hasRecording"
+                                    @click="startRecording()"
+                                    class="rsvp-btn rsvp-btn-yes rounded-xl px-6 py-3 invitation-heading text-base transition"
+                                >
+                                    {{ __('invitation.record_audio') }}
+                                </button>
+                                <button
+                                    type="button"
+                                    x-show="recording"
+                                    x-cloak
+                                    @click="stopRecording()"
+                                    class="rsvp-btn rsvp-btn-no rounded-xl px-6 py-3 invitation-heading text-base transition"
+                                >
+                                    {{ __('invitation.stop_recording') }}
+                                </button>
+                                <template x-if="hasRecording">
+                                    <div class="flex flex-wrap items-center gap-3 w-full">
+                                        <audio x-ref="playback" :src="audioUrl" controls class="w-full max-w-sm"></audio>
+                                        <button
+                                            type="button"
+                                            @click="discardRecording()"
+                                            class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition"
+                                        >
+                                            {{ __('invitation.discard_recording') }}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            @click="sendRecording()"
+                                            :disabled="uploading"
+                                            class="rsvp-btn rsvp-btn-yes rounded-xl px-6 py-3 invitation-heading text-base transition disabled:opacity-60"
+                                        >
+                                            <span x-show="! uploading">{{ __('invitation.send_message') }}</span>
+                                            <span x-show="uploading">{{ __('invitation.saving') }}</span>
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <p x-show="error" x-text="error" class="text-sm text-red-400"></p>
+                            @error('audioFile')
+                                <p class="text-sm text-red-400">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        {{-- Photos --}}
+                        <div @class([
+                            'rounded-2xl border p-6',
+                            'border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)]/80' => $this->canSendPhotos(),
+                            'border-white/5 bg-[var(--color-bg-soft)]/40 opacity-70' => ! $this->canSendPhotos(),
+                        ])>
+                            <h2 class="invitation-heading text-xl text-[var(--color-text)] mb-2">
+                                {{ __('invitation.send_photos') }}
+                            </h2>
+
+                            @if ($this->canSendPhotos())
+                                <p class="invitation-body text-sm text-[var(--color-text-muted)] mb-4">
+                                    {{ __('invitation.send_photos_description') }}
+                                </p>
+                                <form wire:submit="submitPhotos" class="space-y-4">
+                                    <div>
+                                        <label for="photoFiles" class="block text-sm text-[var(--color-text-muted)] mb-2">
+                                            {{ __('invitation.select_photos') }}
+                                        </label>
+                                        <input
+                                            id="photoFiles"
+                                            type="file"
+                                            wire:model="photoFiles"
+                                            accept="image/*"
+                                            multiple
+                                            class="w-full text-sm text-[var(--color-text-muted)] file:mr-4 file:rounded-lg file:border-0 file:bg-[var(--color-primary)] file:px-4 file:py-2 file:text-[var(--color-bg)] file:cursor-pointer"
+                                        >
+                                        @error('photoFiles')
+                                            <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
+                                        @enderror
+                                        @error('photoFiles.*')
+                                            <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div wire:loading wire:target="photoFiles" class="text-sm text-[var(--color-text-muted)]">
+                                        {{ __('invitation.uploading_photos') }}
+                                    </div>
+                                    <button
+                                        type="submit"
+                                        wire:loading.attr="disabled"
+                                        wire:target="submitPhotos, photoFiles"
+                                        class="rsvp-btn rsvp-btn-yes w-full sm:w-auto rounded-xl px-6 py-3 invitation-heading text-base transition disabled:opacity-60"
+                                    >
+                                        <span wire:loading.remove wire:target="submitPhotos">{{ __('invitation.send_photos') }}</span>
+                                        <span wire:loading wire:target="submitPhotos">{{ __('invitation.saving') }}</span>
+                                    </button>
+                                </form>
+                            @else
+                                <p class="invitation-body text-sm text-[var(--color-text-muted)]">
+                                    {{ __('invitation.photos_available_from', ['date' => $event->wedding_date->translatedFormat('j. F Y.')]) }}
+                                </p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="py-8 px-6 text-center border-t border-[color-mix(in_srgb,var(--color-text)_10%,transparent)]">
+                <x-locale-picker
+                    selectClass="text-sm py-1.5 px-3 min-w-[9rem] cursor-pointer rounded-xl border border-[color-mix(in_srgb,var(--color-primary)_40%,transparent)] bg-[var(--color-bg-soft)] text-[var(--color-text)]"
+                    labelClass="text-sm text-[var(--color-text-muted)]"
+                />
+            </footer>
+
+            <div
+                x-data="{ show: @entangle('messageSent').live }"
+                x-show="show"
+                x-transition.opacity
+                x-cloak
+                @keydown.escape.window="if (show) { $wire.dismissSuccess() }"
+                class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4"
+                @click.self="$wire.dismissSuccess()"
+                style="display: none;"
+            >
+                <div
+                    x-show="show"
+                    x-transition
+                    class="w-full max-w-md rounded-2xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)] p-8 text-center shadow-xl"
+                    @click.stop
+                >
+                    <h3 class="invitation-heading text-2xl text-[var(--color-text)] mb-2">
+                        {{ __('invitation.message_sent') }}
+                    </h3>
+                    <p class="invitation-body text-[var(--color-text-muted)] mb-8">
+                        {{ __('invitation.message_sent_description') }}
+                    </p>
+                    <button
+                        type="button"
+                        @click="$wire.dismissSuccess()"
+                        class="rsvp-btn rsvp-btn-yes w-full py-4 rounded-xl invitation-heading text-lg transition"
+                    >
+                        {{ __('invitation.message_sent_close') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </x-theme>
+</div>

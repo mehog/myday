@@ -106,4 +106,28 @@ return [
     'push_notifications_no_wedding' => 'Prije slanja obavijesti morate imati kreirano vjenčanje.',
     'push_notifications_rsvp_pending' => 'RSVP na čekanju',
 
+    // Guest messages
+    'nav_guest_messages' => 'Poruke gostiju',
+    'guest_messages_title' => 'Poruke gostiju',
+    'guest_messages_model_label' => 'Poruka',
+    'guest_messages_plural_label' => 'Poruke gostiju',
+    'guest_messages_col_sender' => 'Gost',
+    'guest_messages_col_type' => 'Vrsta',
+    'guest_messages_col_message' => 'Poruka',
+    'guest_messages_col_photo' => 'Fotografija',
+    'guest_messages_col_audio' => 'Audio',
+    'guest_messages_col_sent_at' => 'Primljeno',
+    'guest_messages_filter_type' => 'Vrsta poruke',
+    'guest_messages_filter_sender' => 'Gost',
+    'guest_messages_download_photos' => 'Preuzmi sve fotografije',
+    'guest_messages_empty_heading' => 'Nema poruka od gostiju',
+    'guest_messages_empty_desc' => 'Poruke će se ovdje pojaviti kada gosti koriste kontakt stranicu.',
+    'guest_messages_listen' => 'Slušaj ↗',
+    'stat_messages' => 'Poruke gostiju',
+    'stat_messages_desc' => 'Primljene poruke, audio i fotografije',
+    'guest_messages_detail_title' => 'Poruka od :name',
+    'guest_messages_back' => 'Nazad na poruke',
+    'guest_messages_photos_label' => 'fotografija',
+    'guest_messages_col_photo_count' => ':count fotografija',
+
 ];

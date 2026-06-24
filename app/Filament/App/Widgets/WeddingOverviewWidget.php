@@ -2,6 +2,7 @@
 
 namespace App\Filament\App\Widgets;
 
+use App\Filament\App\Resources\GuestMessagesResource;
 use App\RsvpStatus;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -26,6 +27,7 @@ class WeddingOverviewWidget extends StatsOverviewWidget
         $responded = $wedding->guests()->whereNotNull('rsvp_status')->count();
         $responseRate = $guestCount > 0 ? round(($responded / $guestCount) * 100) : 0;
         $daysUntil = (int) now()->startOfDay()->diffInDays($wedding->wedding_date->copy()->startOfDay(), false);
+        $messageCount = $wedding->guestMessages()->count();
 
         return [
             Stat::make(__('app.stat_guests'), (string) $guestCount)
@@ -45,6 +47,10 @@ class WeddingOverviewWidget extends StatsOverviewWidget
                 ->description($wedding->wedding_date->translatedFormat('d. F Y.'))
                 ->icon('heroicon-o-calendar-days')
                 ->color($daysUntil >= 0 ? 'primary' : 'gray'),
+            Stat::make(__('app.stat_messages'), (string) $messageCount)
+                ->description(__('app.stat_messages_desc'))
+                ->icon('heroicon-o-chat-bubble-left-right')
+                ->url(GuestMessagesResource::getUrl()),
         ];
     }
 }

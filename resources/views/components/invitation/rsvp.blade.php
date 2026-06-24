@@ -3,12 +3,13 @@
     id="rsvp"
     x-data="{
         pending: null,
+        showCalendarModal: false,
         showPushPrompt: false,
         subscribing: false,
         subscribed: false,
         subscribeUrl: @js(! empty($isPersonalLink) && $guest ? route('push.subscribe', $guest->token) : null),
     }"
-    @keydown.escape.window="pending = null; showPushPrompt = false"
+    @keydown.escape.window="pending = null; showPushPrompt = false; showCalendarModal = false"
     @rsvp-accepted.window="if (subscribeUrl) { showPushPrompt = true }"
 >
     <div class="max-w-xl mx-auto text-center invitation-fade-in">
@@ -42,22 +43,7 @@
                     </button>
                 @endif
                 @if ($guest->rsvp_status === \App\RsvpStatus::Yes)
-                    <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-                        <a
-                            href="{{ $event->googleCalendarUrl() }}"
-                            target="_blank"
-                            rel="noopener"
-                            class="rsvp-btn rsvp-btn-yes rounded-xl px-6 py-3 invitation-heading text-base transition"
-                        >
-                            {{ __('invitation.add_to_google_calendar') }}
-                        </a>
-                        <a
-                            href="{{ route('invitation.ics', $event->slug) }}"
-                            class="rsvp-btn rsvp-btn-no rounded-xl px-6 py-3 invitation-heading text-base transition"
-                        >
-                            {{ __('invitation.download_ics') }}
-                        </a>
-                    </div>
+                    @include('components.invitation.rsvp-yes-actions', ['event' => $event, 'guest' => $guest])
                 @endif
             </div>
         @elseif ($rsvpSubmitted && $guest && ! $isEditing)
@@ -78,22 +64,7 @@
                     </button>
                 @endif
                 @if ($guest->rsvp_status === \App\RsvpStatus::Yes)
-                    <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-                        <a
-                            href="{{ $event->googleCalendarUrl() }}"
-                            target="_blank"
-                            rel="noopener"
-                            class="rsvp-btn rsvp-btn-yes rounded-xl px-6 py-3 invitation-heading text-base transition"
-                        >
-                            {{ __('invitation.add_to_google_calendar') }}
-                        </a>
-                        <a
-                            href="{{ route('invitation.ics', $event->slug) }}"
-                            class="rsvp-btn rsvp-btn-no rounded-xl px-6 py-3 invitation-heading text-base transition"
-                        >
-                            {{ __('invitation.download_ics') }}
-                        </a>
-                    </div>
+                    @include('components.invitation.rsvp-yes-actions', ['event' => $event, 'guest' => $guest])
                 @endif
             </div>
         @else
@@ -210,6 +181,51 @@
             </div>
         </div>
     @endif
+
+    <div
+        x-show="showCalendarModal"
+        x-transition.opacity
+        class="fixed inset-0 z-[105] flex items-center justify-center bg-black/80 p-4"
+        @click.self="showCalendarModal = false"
+        style="display: none;"
+    >
+        <div
+            x-show="showCalendarModal"
+            x-transition
+            class="w-full max-w-md rounded-2xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)] p-8 text-center"
+            @click.stop
+        >
+            <h3 class="invitation-heading text-2xl text-[var(--color-text)] mb-2">
+                {{ __('invitation.add_to_calendar') }}
+            </h3>
+            <p class="invitation-body text-[var(--color-text-muted)] mb-8">
+                {{ __('invitation.add_to_calendar_description') }}
+            </p>
+            <div class="flex flex-col gap-3">
+                <a
+                    href="{{ $event->googleCalendarUrl() }}"
+                    target="_blank"
+                    rel="noopener"
+                    class="rsvp-btn rsvp-btn-yes w-full py-4 rounded-xl invitation-heading text-lg transition"
+                >
+                    {{ __('invitation.add_to_google_calendar') }}
+                </a>
+                <a
+                    href="{{ route('invitation.ics', $event->slug) }}"
+                    class="rsvp-btn rsvp-btn-no w-full py-4 rounded-xl invitation-heading text-lg transition"
+                >
+                    {{ __('invitation.download_ics') }}
+                </a>
+                <button
+                    type="button"
+                    class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition mt-2"
+                    @click="showCalendarModal = false"
+                >
+                    {{ __('invitation.rsvp_cancel_btn') }}
+                </button>
+            </div>
+        </div>
+    </div>
 
     @if (! empty($isPersonalLink) && $guest)
         <div

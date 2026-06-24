@@ -2,7 +2,9 @@
 
 use App\Actions\StorePushSubscriptionAction;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\DownloadGuestPhotosController;
 use App\Http\Controllers\WeddingEventCalendarController;
+use App\Livewire\GuestContactPage;
 use App\Livewire\InvitationPage;
 use App\Livewire\LandingPage;
 use App\Livewire\Onboarding\VerifyEmailNotice;
@@ -58,7 +60,12 @@ Route::get('/robots.txt', function () {
     return response($content, 200, ['Content-Type' => 'text/plain']);
 })->name('robots');
 
+Route::get('/app-api/guest-messages/photos/download/{message?}', DownloadGuestPhotosController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('guest-messages.photos.download');
+
 Route::get('/e/{slug}/calendar.ics', WeddingEventCalendarController::class)->name('invitation.ics');
+Route::get('/e/{slug}/{token}/contact', GuestContactPage::class)->name('invitation.contact.guest');
 Route::get('/e/{slug}', InvitationPage::class)->name('invitation.show');
 Route::get('/e/{slug}/{token}', InvitationPage::class)->name('invitation.guest');
 Route::post('/push/subscribe/{guest:token}', StorePushSubscriptionAction::class)->name('push.subscribe');
