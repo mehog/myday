@@ -34,6 +34,8 @@ class GuestContactPage extends Component
 
     public bool $messageSent = false;
 
+    public bool $isDemo = false;
+
     public ?string $lastSentType = null;
 
     public function mount(string $slug, string $token): void
@@ -54,6 +56,7 @@ class GuestContactPage extends Component
             ->where('token', $token)
             ->firstOrFail();
 
+        $this->isDemo = $this->event->is_demo;
         $this->senderName = $this->guest->name;
     }
 
@@ -67,6 +70,10 @@ class GuestContactPage extends Component
 
     public function submitText(): void
     {
+        if ($this->isDemo) {
+            return;
+        }
+
         $this->ensureCanSendMessage();
 
         $validated = $this->validate([
@@ -89,6 +96,10 @@ class GuestContactPage extends Component
 
     public function submitAudio(): void
     {
+        if ($this->isDemo) {
+            return;
+        }
+
         $this->ensureCanSendMessage();
 
         $this->validate([
@@ -118,6 +129,10 @@ class GuestContactPage extends Component
 
     public function submitPhotos(): void
     {
+        if ($this->isDemo) {
+            return;
+        }
+
         if (! $this->canSendPhotos()) {
             throw ValidationException::withMessages([
                 'photoFiles' => __('invitation.photos_not_available'),

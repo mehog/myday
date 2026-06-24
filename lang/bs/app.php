@@ -106,7 +106,12 @@ return [
     'push_notifications_no_wedding' => 'Prije slanja obavijesti morate imati kreirano vjenčanje.',
     'push_notifications_rsvp_pending' => 'RSVP na čekanju',
 
-    'push_error_ios' => 'Push obavijesti su podržane samo u Safariju na iOS-u. Otvorite ovaj link u Safariju i dodajte ga na početni ekran.',
+    'push_install_title' => 'Omogućite na iPhoneu',
+    'push_install_step1' => '1. Dodirnite Share dugme na dnu Safarija.',
+    'push_install_step2' => '2. Odaberite "Dodaj na početni ekran".',
+    'push_install_step3' => '3. Otvorite aplikaciju s početnog ekrana i uključite obavijesti.',
+    'push_ios_update' => 'Ažurirajte iOS na verziju 16.4 ili noviju da biste primali obavijesti.',
+    'push_enable_notifications' => 'Uključi obavijesti',
     'push_error_not_supported' => 'Vaš preglednik ne podržava push obavijesti.',
     'push_error_denied' => 'Blokirali ste obavijesti. Dozvolite ih u podešavanjima preglednika.',
     'push_error_config' => 'Greška u konfiguraciji push obavijesti.',

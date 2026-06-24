@@ -77,6 +77,7 @@ class WeddingEventSeeder extends Seeder
             guests: [
                 ['name' => 'Demo Gost', 'email' => 'demo-islamsko@example.com'],
             ],
+            isDemo: true,
         );
 
         $this->seedEvent(
@@ -98,6 +99,7 @@ class WeddingEventSeeder extends Seeder
             guests: [
                 ['name' => 'Demo Gost', 'email' => 'demo-krscansko@example.com'],
             ],
+            isDemo: true,
         );
 
         $this->seedEvent(
@@ -119,6 +121,7 @@ class WeddingEventSeeder extends Seeder
             guests: [
                 ['name' => 'Demo Guest', 'email' => 'demo-islamsko-en@example.com'],
             ],
+            isDemo: true,
         );
 
         $this->seedEvent(
@@ -140,6 +143,7 @@ class WeddingEventSeeder extends Seeder
             guests: [
                 ['name' => 'Demo Guest', 'email' => 'demo-krscansko-en@example.com'],
             ],
+            isDemo: true,
         );
 
         $this->seedEvent(
@@ -161,6 +165,7 @@ class WeddingEventSeeder extends Seeder
             guests: [
                 ['name' => 'Demo Gast', 'email' => 'demo-islamsko-de@example.com'],
             ],
+            isDemo: true,
         );
 
         $this->seedEvent(
@@ -182,6 +187,7 @@ class WeddingEventSeeder extends Seeder
             guests: [
                 ['name' => 'Demo Gast', 'email' => 'demo-krscansko-de@example.com'],
             ],
+            isDemo: true,
         );
     }
 
@@ -197,11 +203,13 @@ class WeddingEventSeeder extends Seeder
         array $schedule,
         array $guests = [],
         ?int $userId = null,
+        bool $isDemo = false,
     ): void {
         $event = WeddingEvent::query()->updateOrCreate(
             ['slug' => $slug],
             [
                 'user_id' => $userId,
+                'is_demo' => $isDemo,
                 'bride_name' => $bride,
                 'groom_name' => $groom,
                 'wedding_date' => now()->addMonths(4)->setTime(16, 0),

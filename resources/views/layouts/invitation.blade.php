@@ -33,6 +33,16 @@
             <meta name="robots" content="noindex, nofollow">
         @endisset
 
+        @if (! empty($isPersonalLink) && isset($guest))
+            <link rel="manifest" href="{{ route('invitation.manifest', [$event->slug, $guest->token]) }}">
+            <meta name="mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+            <meta name="apple-mobile-web-app-title" content="{{ $event->couple_names }}">
+            <link rel="apple-touch-icon" href="/icons/nd-logo-transparent.webp">
+            <meta name="theme-color" content="#1a1208">
+        @endif
+
         @if (! empty($isPreview))
             <meta name="robots" content="noindex, nofollow">
         @endif
@@ -77,25 +87,32 @@
 
                 window.subscribeToPush = async function (subscribeUrl) {
                     try {
-                        if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-                            const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+                        const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent)
+                            || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+                        const isStandalone = window.navigator.standalone === true
+                            || window.matchMedia('(display-mode: standalone)').matches;
 
+                        if (isIos && !isStandalone && !('PushManager' in window)) {
+                            return { ok: false, error: 'push_needs_install' };
+                        }
+
+                        if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
                             return {
                                 ok: false,
-                                error: isIos ? 'push_not_supported_ios' : 'push_not_supported',
+                                error: isIos ? 'push_ios_update' : 'push_error_not_supported',
                             };
                         }
 
                         const vapidKey = document.querySelector('meta[name="vapid-public-key"]')?.content;
 
                         if (!vapidKey) {
-                            return { ok: false, error: 'push_config_error' };
+                            return { ok: false, error: 'push_error_config' };
                         }
 
                         const permission = await Notification.requestPermission();
 
                         if (permission === 'denied') {
-                            return { ok: false, error: 'push_permission_denied' };
+                            return { ok: false, error: 'push_error_denied' };
                         }
 
                         if (permission !== 'granted') {
@@ -133,12 +150,12 @@
                         });
 
                         if (!response.ok) {
-                            return { ok: false, error: 'push_server_error' };
+                            return { ok: false, error: 'push_error_server' };
                         }
 
                         return { ok: true, error: null };
                     } catch (e) {
-                        return { ok: false, error: 'push_unknown_error' };
+                        return { ok: false, error: 'push_error_unknown' };
                     }
                 };
             </script>

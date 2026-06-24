@@ -106,7 +106,12 @@ return [
     'push_notifications_no_wedding' => 'You need a wedding event before sending notifications.',
     'push_notifications_rsvp_pending' => 'Pending RSVP',
 
-    'push_error_ios' => 'Push notifications are only supported in Safari on iOS. Please open this link in Safari and add it to your Home Screen.',
+    'push_install_title' => 'Enable on iPhone',
+    'push_install_step1' => '1. Tap the Share button at the bottom of Safari.',
+    'push_install_step2' => '2. Choose "Add to Home Screen".',
+    'push_install_step3' => '3. Open the app from your Home Screen and enable notifications.',
+    'push_ios_update' => 'Update to iOS 16.4 or newer to receive notifications.',
+    'push_enable_notifications' => 'Enable notifications',
     'push_error_not_supported' => 'Your browser does not support push notifications.',
     'push_error_denied' => 'You blocked notifications. Please allow them in your browser settings and try again.',
     'push_error_config' => 'Push notification configuration error.',

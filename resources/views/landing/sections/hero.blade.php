@@ -1,7 +1,14 @@
 <header class="landing-nav fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-[#1a1208]/80 backdrop-blur-md">
     <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="{{ route('home') }}" class="landing-heading text-2xl font-semibold text-[#faf6ee]">
-            {{ config('app.name', 'NasDan') }}
+        <a href="{{ route('home') }}" class="inline-flex items-center">
+            <img
+                src="{{ asset('icons/nd-logo-transparent.webp') }}"
+                alt="{{ config('app.name', 'NasDan') }}"
+                class="h-9 w-auto"
+                width="120"
+                height="36"
+                style="max-width: 50px;"
+            >
         </a>
         <nav class="flex items-center gap-4 sm:gap-6">
             <a href="#demo" class="text-sm text-[#d4c4a8] hover:text-[#c9a227] transition hidden sm:inline">
@@ -19,9 +26,6 @@
 
 <section class="landing-hero min-h-screen flex items-center justify-center px-6 pt-24 pb-16">
     <div class="max-w-3xl mx-auto text-center landing-fade-in">
-        <p class="text-sm uppercase tracking-[0.35em] text-[#d4c4a8] mb-6">
-            {{ config('app.name', 'NasDan') }}
-        </p>
         <h1 class="landing-heading text-4xl sm:text-5xl md:text-6xl font-semibold text-[#faf6ee] leading-tight mb-6">
             {{ __('landing.hero_title') }}
         </h1>

@@ -31,6 +31,7 @@ class WeddingEvent extends Model
         'hero_image',
         'rsvp_deadline',
         'is_active',
+        'is_demo',
         'send_message',
         'motto',
     ];
@@ -41,6 +42,7 @@ class WeddingEvent extends Model
             'wedding_date' => 'datetime',
             'rsvp_deadline' => 'date',
             'is_active' => 'boolean',
+            'is_demo' => 'boolean',
             'theme' => InvitationTheme::class,
             'link_mode' => LinkMode::class,
             'location_lat' => 'decimal:7',

@@ -1,3 +1,5 @@
+<script>window._invitationIsDemo = @js($isDemo);</script>
+
 <div>
     <x-theme :theme="$event->theme">
         <div class="invitation-page min-h-screen">
@@ -33,7 +35,10 @@
                             <p class="invitation-body text-sm text-[var(--color-text-muted)] mb-4">
                                 {{ __('invitation.send_text_message_description') }}
                             </p>
-                            <form wire:submit="submitText" class="space-y-4">
+                            <form
+                                @submit.prevent="window._invitationIsDemo ? $dispatch('demo-message-sent') : $wire.submitText()"
+                                class="space-y-4"
+                            >
                                 <div>
                                     <label for="textContent" class="block text-sm text-[var(--color-text-muted)] mb-2">
                                         {{ __('invitation.your_message') }}
@@ -109,6 +114,10 @@
                                     this.audioChunks = [];
                                 },
                                 sendRecording() {
+                                    if (window._invitationIsDemo) {
+                                        this.$dispatch('demo-message-sent');
+                                        return;
+                                    }
                                     if (! this.audioBlob) return;
                                     this.uploading = true;
                                     this.error = null;
@@ -196,7 +205,10 @@
                                 <p class="invitation-body text-sm text-[var(--color-text-muted)] mb-4">
                                     {{ __('invitation.send_photos_description') }}
                                 </p>
-                                <form wire:submit="submitPhotos" class="space-y-4">
+                                <form
+                                    @submit.prevent="window._invitationIsDemo ? $dispatch('demo-message-sent') : $wire.submitPhotos()"
+                                    class="space-y-4"
+                                >
                                     <div>
                                         <label for="photoFiles" class="block text-sm text-[var(--color-text-muted)] mb-2">
                                             {{ __('invitation.select_photos') }}
@@ -239,8 +251,17 @@
                 </div>
             </section>
 
-            <footer class="py-8 px-6 text-center border-t border-[color-mix(in_srgb,var(--color-text)_10%,transparent)]">
+            <footer class="py-8 px-6 border-t border-[color-mix(in_srgb,var(--color-text)_10%,transparent)] flex items-center justify-between gap-4">
+                <a href="{{ route('home') }}" class="shrink-0">
+                    <img
+                        src="{{ asset('icons/nd-logo-transparent.webp') }}"
+                        alt="{{ config('app.name', 'NasDan') }}"
+                        class="max-w-[50px] w-full h-auto"
+                        style="max-width: 50px;"
+                    >
+                </a>
                 <x-locale-picker
+                    class="justify-end"
                     selectClass="text-sm py-1.5 px-3 min-w-[9rem] cursor-pointer rounded-xl border border-[color-mix(in_srgb,var(--color-primary)_40%,transparent)] bg-[var(--color-bg-soft)] text-[var(--color-text)]"
                     labelClass="text-sm text-[var(--color-text-muted)]"
                 />
@@ -248,12 +269,13 @@
 
             <div
                 x-data="{ show: @entangle('messageSent').live }"
+                @demo-message-sent.window="show = true"
                 x-show="show"
                 x-transition.opacity
                 x-cloak
-                @keydown.escape.window="if (show) { $wire.dismissSuccess() }"
+                @keydown.escape.window="if (show) { show = false; if (!window._invitationIsDemo) $wire.dismissSuccess() }"
                 class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4"
-                @click.self="$wire.dismissSuccess()"
+                @click.self="show = false; if (!window._invitationIsDemo) $wire.dismissSuccess()"
                 style="display: none;"
             >
                 <div
@@ -270,7 +292,7 @@
                     </p>
                     <button
                         type="button"
-                        @click="$wire.dismissSuccess()"
+                        @click="show = false; if (!window._invitationIsDemo) $wire.dismissSuccess()"
                         class="rsvp-btn rsvp-btn-yes w-full py-4 rounded-xl invitation-heading text-lg transition"
                     >
                         {{ __('invitation.message_sent_close') }}

@@ -15,3 +15,8 @@
         </a>
     @endif
 </div>
+@include('components.invitation.push-enable', [
+    'event' => $event,
+    'guest' => $guest,
+    'isPersonalLink' => $isPersonalLink ?? false,
+])

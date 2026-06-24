@@ -10,12 +10,12 @@
         pushError: null,
         subscribeUrl: @js(! empty($isPersonalLink) && $guest ? route('push.subscribe', $guest->token) : null),
         pushErrorMessages: @js([
-            'push_not_supported_ios' => __('app.push_error_ios'),
-            'push_not_supported' => __('app.push_error_not_supported'),
-            'push_permission_denied' => __('app.push_error_denied'),
-            'push_config_error' => __('app.push_error_config'),
-            'push_server_error' => __('app.push_error_server'),
-            'push_unknown_error' => __('app.push_error_unknown'),
+            'push_ios_update' => __('app.push_ios_update'),
+            'push_error_not_supported' => __('app.push_error_not_supported'),
+            'push_error_denied' => __('app.push_error_denied'),
+            'push_error_config' => __('app.push_error_config'),
+            'push_error_server' => __('app.push_error_server'),
+            'push_error_unknown' => __('app.push_error_unknown'),
         ]),
     }"
     @keydown.escape.window="pending = null; showPushPrompt = false; showCalendarModal = false"
@@ -52,7 +52,11 @@
                     </button>
                 @endif
                 @if ($guest->rsvp_status === \App\RsvpStatus::Yes)
-                    @include('components.invitation.rsvp-yes-actions', ['event' => $event, 'guest' => $guest])
+                    @include('components.invitation.rsvp-yes-actions', [
+                        'event' => $event,
+                        'guest' => $guest,
+                        'isPersonalLink' => $isPersonalLink ?? false,
+                    ])
                 @endif
             </div>
         @elseif ($rsvpSubmitted && $guest && ! $isEditing)
@@ -73,7 +77,11 @@
                     </button>
                 @endif
                 @if ($guest->rsvp_status === \App\RsvpStatus::Yes)
-                    @include('components.invitation.rsvp-yes-actions', ['event' => $event, 'guest' => $guest])
+                    @include('components.invitation.rsvp-yes-actions', [
+                        'event' => $event,
+                        'guest' => $guest,
+                        'isPersonalLink' => $isPersonalLink ?? false,
+                    ])
                 @endif
             </div>
         @else
@@ -285,12 +293,7 @@
                     >
                         {{ __('app.push_notifications_maybe_later') }}
                     </button>
-                    <p
-                        x-show="pushError"
-                        x-cloak
-                        class="text-sm text-red-400 mt-2"
-                        x-text="pushErrorMessages[pushError] ?? pushError"
-                    ></p>
+                    @include('components.invitation.push-error-feedback')
                 </div>
             </div>
         </div>

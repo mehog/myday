@@ -106,7 +106,12 @@ return [
     'push_notifications_no_wedding' => 'Sie benötigen ein Hochzeitsereignis, bevor Sie Benachrichtigungen senden können.',
     'push_notifications_rsvp_pending' => 'RSVP ausstehend',
 
-    'push_error_ios' => 'Push-Benachrichtigungen werden auf iOS nur in Safari unterstützt. Öffnen Sie diesen Link in Safari.',
+    'push_install_title' => 'Auf dem iPhone aktivieren',
+    'push_install_step1' => '1. Tippen Sie unten in Safari auf Teilen.',
+    'push_install_step2' => '2. Wählen Sie „Zum Home-Bildschirm“.',
+    'push_install_step3' => '3. Öffnen Sie die App vom Home-Bildschirm und aktivieren Sie Benachrichtigungen.',
+    'push_ios_update' => 'Aktualisieren Sie auf iOS 16.4 oder neuer, um Benachrichtigungen zu erhalten.',
+    'push_enable_notifications' => 'Benachrichtigungen aktivieren',
     'push_error_not_supported' => 'Ihr Browser unterstützt keine Push-Benachrichtigungen.',
     'push_error_denied' => 'Sie haben Benachrichtigungen blockiert. Bitte in den Browsereinstellungen erlauben.',
     'push_error_config' => 'Konfigurationsfehler bei Push-Benachrichtigungen.',

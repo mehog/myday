@@ -36,8 +36,17 @@
                 'isPersonalLink' => $isPersonalLink,
             ])
 
-            <footer class="py-8 px-6 text-center border-t border-[color-mix(in_srgb,var(--color-text)_10%,transparent)]">
+            <footer class="py-8 px-6 border-t border-[color-mix(in_srgb,var(--color-text)_10%,transparent)] flex items-center justify-between gap-4">
+                <a href="{{ route('home') }}" class="shrink-0">
+                    <img
+                        src="{{ asset('icons/nd-logo-transparent.webp') }}"
+                        alt="{{ config('app.name', 'NasDan') }}"
+                        class="max-w-[50px] w-full h-auto"
+                        style="max-width: 50px;"
+                    >
+                </a>
                 <x-locale-picker
+                    class="justify-end"
                     selectClass="text-sm py-1.5 px-3 min-w-[9rem] cursor-pointer rounded-xl border border-[color-mix(in_srgb,var(--color-primary)_40%,transparent)] bg-[var(--color-bg-soft)] text-[var(--color-text)]"
                     labelClass="text-sm text-[var(--color-text-muted)]"
                 />
