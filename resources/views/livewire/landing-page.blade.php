@@ -1,6 +1,7 @@
 <div>
     @include('landing.sections.hero')
     @include('landing.sections.benefits')
+    @include('landing.sections.guest-interaction')
     @include('landing.sections.how-it-works')
     @include('landing.sections.demo', ['demos' => $demos])
     @include('landing.sections.contact')

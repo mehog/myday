@@ -1,8 +1,15 @@
 <div class="min-h-screen flex flex-col">
     <header class="border-b border-white/5 bg-[#1a1208]/80 backdrop-blur-md">
         <div class="max-w-2xl mx-auto px-6 py-4">
-            <a href="{{ route('home') }}" class="landing-heading text-xl font-semibold text-[#faf6ee]">
-                {{ config('app.name', 'NasDan') }}
+            <a href="{{ route('home') }}" class="inline-flex items-center">
+                <img
+                    src="{{ asset('icons/nd-logo-transparent.webp') }}"
+                    alt="{{ config('app.name', 'NasDan') }}"
+                    class="h-9 w-auto"
+                    width="120"
+                    height="36"
+                    style="max-width: 50px;"
+                >
             </a>
         </div>
     </header>
