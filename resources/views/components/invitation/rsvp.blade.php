@@ -1,8 +1,15 @@
 <section
     class="invitation-section py-20 px-6 pb-28"
     id="rsvp"
-    x-data="{ pending: null }"
-    @keydown.escape.window="pending = null"
+    x-data="{
+        pending: null,
+        showPushPrompt: false,
+        subscribing: false,
+        subscribed: false,
+        subscribeUrl: @js(! empty($isPersonalLink) && $guest ? route('push.subscribe', $guest->token) : null),
+    }"
+    @keydown.escape.window="pending = null; showPushPrompt = false"
+    @rsvp-accepted.window="if (subscribeUrl) { showPushPrompt = true }"
 >
     <div class="max-w-xl mx-auto text-center invitation-fade-in">
         <p class="text-sm uppercase tracking-[0.3em] text-[var(--color-text-muted)] mb-3">{{ __('invitation.rsvp') }}</p>
@@ -199,6 +206,57 @@
                     <p class="text-sm text-[var(--color-text-muted)] mt-2">
                         {{ __('invitation.rsvp_update_helper_text') }}
                     </p>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if (! empty($isPersonalLink) && $guest)
+        <div
+            x-show="showPushPrompt && ! subscribed"
+            x-transition.opacity
+            class="fixed inset-0 z-[110] flex items-center justify-center bg-black/80 p-4"
+            @click.self="showPushPrompt = false"
+            style="display: none;"
+        >
+            <div
+                x-show="showPushPrompt && ! subscribed"
+                x-transition
+                class="w-full max-w-md rounded-2xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)] p-8 text-center"
+                @click.stop
+            >
+                <h3 class="invitation-heading text-2xl text-[var(--color-text)] mb-2">
+                    {{ __('app.push_notifications_title') }}
+                </h3>
+                <p class="invitation-body text-[var(--color-text-muted)] mb-8">
+                    {{ __('app.push_notifications_prompt_body', ['couple' => $event->couple_names]) }}
+                </p>
+                <div class="flex flex-col gap-3">
+                    <button
+                        type="button"
+                        class="rsvp-btn rsvp-btn-yes w-full py-4 rounded-xl invitation-heading text-lg transition disabled:opacity-60"
+                        :disabled="subscribing"
+                        @click="
+                            subscribing = true;
+                            subscribeToPush(subscribeUrl).then((ok) => {
+                                subscribing = false;
+                                if (ok) {
+                                    subscribed = true;
+                                    showPushPrompt = false;
+                                }
+                            });
+                        "
+                    >
+                        <span x-show="! subscribing">{{ __('app.push_notifications_allow') }}</span>
+                        <span x-show="subscribing">{{ __('invitation.saving') }}</span>
+                    </button>
+                    <button
+                        type="button"
+                        class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition"
+                        @click="showPushPrompt = false"
+                    >
+                        {{ __('app.push_notifications_maybe_later') }}
+                    </button>
                 </div>
             </div>
         </div>

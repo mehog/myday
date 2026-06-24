@@ -28,6 +28,8 @@ class InvitationPage extends Component
 
     public bool $isPreview = false;
 
+    public bool $isPersonalLink = false;
+
     public function mount(string $slug, ?string $token = null): void
     {
         $this->event = WeddingEvent::query()
@@ -49,6 +51,8 @@ class InvitationPage extends Component
             $this->guest = $this->event->guests()
                 ->where('token', $token)
                 ->firstOrFail();
+
+            $this->isPersonalLink = true;
         }
 
         if (! $this->isPreview) {
@@ -101,6 +105,10 @@ class InvitationPage extends Component
 
         $this->rsvpSubmitted = true;
         $this->isEditing = false;
+
+        if ($rsvpStatus === RsvpStatus::Yes && $this->isPersonalLink && $this->guest?->token) {
+            $this->dispatch('rsvp-accepted');
+        }
     }
 
     public function editRsvp(): void
@@ -123,6 +131,7 @@ class InvitationPage extends Component
                 'event' => $this->event,
                 'guest' => $this->guest,
                 'isPreview' => $this->isPreview,
+                'isPersonalLink' => $this->isPersonalLink,
             ]);
     }
 }

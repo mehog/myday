@@ -33,6 +33,7 @@
             @include('components.invitation.rsvp', [
                 'event' => $event,
                 'guest' => $guest,
+                'isPersonalLink' => $isPersonalLink,
             ])
 
             <footer class="py-8 px-6 text-center border-t border-[color-mix(in_srgb,var(--color-text)_10%,transparent)]">

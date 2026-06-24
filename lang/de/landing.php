@@ -85,7 +85,7 @@ return [
     'pricing_cta' => 'Jetzt bestellen',
     'pricing_features_title' => 'Alle Pakete beinhalten',
     'pricing_feature_1' => 'Öffentlicher oder personalisierter Einladungslink',
-    'pricing_feature_2' => 'Senden über WhatsApp, Viber oder Telegram',
+    'pricing_feature_2' => 'Senden über WhatsApp, Viber, Telegram oder Messenger',
     'pricing_feature_3' => 'RSVP-Bestätigungen in Echtzeit',
     'pricing_feature_4' => 'Live-Bearbeitung — Änderungen sofort sichtbar',
     'pricing_feature_5' => 'Countdown-Timer',
@@ -95,5 +95,5 @@ return [
     'pricing_feature_9' => 'Gästeverwaltungs-Panel',
     'pricing_feature_10' => 'Besuchsstatistiken',
     'pricing_feature_11' => 'Unterstützung für mehrere Sprachen',
-    'pricing_feature_12' => 'Optimiert für Handy, Tablet und Desktop',
+    'pricing_feature_12' => 'Push-Benachrichtigungen für wichtige Updates an Gäste',
 ];

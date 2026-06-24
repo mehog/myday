@@ -85,7 +85,7 @@ return [
     'pricing_cta' => 'Naruči odmah',
     'pricing_features_title' => 'Svi paketi uključuju',
     'pricing_feature_1' => 'Javni ili personalizovani link pozivnice',
-    'pricing_feature_2' => 'Slanje putem WhatsApp, Viber ili Telegram',
+    'pricing_feature_2' => 'Slanje putem WhatsApp, Viber, Telegram ili Messenger',
     'pricing_feature_3' => 'Potvrde dolaska u realnom vremenu',
     'pricing_feature_4' => 'Izmjene uživo — gosti vide odmah',
     'pricing_feature_5' => 'Odbrojavanje do vjenčanja',
@@ -95,5 +95,5 @@ return [
     'pricing_feature_9' => 'Panel za upravljanje gostima',
     'pricing_feature_10' => 'Statistika posjeta',
     'pricing_feature_11' => 'Podrška za više jezika',
-    'pricing_feature_12' => 'Optimizovano za mobitel, tablet i računar',
+    'pricing_feature_12' => 'Push notifikacije za važne poruke gostima',
 ];

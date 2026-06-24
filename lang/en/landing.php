@@ -85,7 +85,7 @@ return [
     'pricing_cta' => 'Order now',
     'pricing_features_title' => 'All plans include',
     'pricing_feature_1' => 'Public or personalized invitation link',
-    'pricing_feature_2' => 'Send via WhatsApp, Viber or Telegram',
+    'pricing_feature_2' => 'Send via WhatsApp, Viber, Telegram or Messenger',
     'pricing_feature_3' => 'Real-time RSVP confirmations',
     'pricing_feature_4' => 'Live editing — changes visible instantly',
     'pricing_feature_5' => 'Countdown timer',
@@ -95,5 +95,5 @@ return [
     'pricing_feature_9' => 'Guest management panel',
     'pricing_feature_10' => 'Visit statistics',
     'pricing_feature_11' => 'Support for multiple languages',
-    'pricing_feature_12' => 'Optimized for mobile, tablet and desktop',
+    'pricing_feature_12' => 'Push notifications for important updates to guests',
 ];
