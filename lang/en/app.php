@@ -106,6 +106,13 @@ return [
     'push_notifications_no_wedding' => 'You need a wedding event before sending notifications.',
     'push_notifications_rsvp_pending' => 'Pending RSVP',
 
+    'push_error_ios' => 'Push notifications are only supported in Safari on iOS. Please open this link in Safari and add it to your Home Screen.',
+    'push_error_not_supported' => 'Your browser does not support push notifications.',
+    'push_error_denied' => 'You blocked notifications. Please allow them in your browser settings and try again.',
+    'push_error_config' => 'Push notification configuration error.',
+    'push_error_server' => 'Could not save subscription. Please try again.',
+    'push_error_unknown' => 'An unexpected error occurred. Please try again.',
+
     // Guest messages
     'nav_guest_messages' => 'Guest messages',
     'guest_messages_title' => 'Guest messages',

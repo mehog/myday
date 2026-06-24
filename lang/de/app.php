@@ -106,4 +106,11 @@ return [
     'push_notifications_no_wedding' => 'Sie benötigen ein Hochzeitsereignis, bevor Sie Benachrichtigungen senden können.',
     'push_notifications_rsvp_pending' => 'RSVP ausstehend',
 
+    'push_error_ios' => 'Push-Benachrichtigungen werden auf iOS nur in Safari unterstützt. Öffnen Sie diesen Link in Safari.',
+    'push_error_not_supported' => 'Ihr Browser unterstützt keine Push-Benachrichtigungen.',
+    'push_error_denied' => 'Sie haben Benachrichtigungen blockiert. Bitte in den Browsereinstellungen erlauben.',
+    'push_error_config' => 'Konfigurationsfehler bei Push-Benachrichtigungen.',
+    'push_error_server' => 'Abonnement konnte nicht gespeichert werden. Bitte erneut versuchen.',
+    'push_error_unknown' => 'Ein unerwarteter Fehler ist aufgetreten. Bitte erneut versuchen.',
+
 ];

@@ -7,10 +7,19 @@
         showPushPrompt: false,
         subscribing: false,
         subscribed: false,
+        pushError: null,
         subscribeUrl: @js(! empty($isPersonalLink) && $guest ? route('push.subscribe', $guest->token) : null),
+        pushErrorMessages: @js([
+            'push_not_supported_ios' => __('app.push_error_ios'),
+            'push_not_supported' => __('app.push_error_not_supported'),
+            'push_permission_denied' => __('app.push_error_denied'),
+            'push_config_error' => __('app.push_error_config'),
+            'push_server_error' => __('app.push_error_server'),
+            'push_unknown_error' => __('app.push_error_unknown'),
+        ]),
     }"
     @keydown.escape.window="pending = null; showPushPrompt = false; showCalendarModal = false"
-    @rsvp-accepted.window="if (subscribeUrl) { showPushPrompt = true }"
+    @rsvp-accepted.window="if (subscribeUrl) { showPushPrompt = true; pushError = null; }"
 >
     <div class="max-w-xl mx-auto text-center invitation-fade-in">
         <p class="text-sm uppercase tracking-[0.3em] text-[var(--color-text-muted)] mb-3">{{ __('invitation.rsvp') }}</p>
@@ -254,11 +263,14 @@
                         :disabled="subscribing"
                         @click="
                             subscribing = true;
-                            subscribeToPush(subscribeUrl).then((ok) => {
+                            pushError = null;
+                            subscribeToPush(subscribeUrl).then((result) => {
                                 subscribing = false;
-                                if (ok) {
+                                if (result.ok) {
                                     subscribed = true;
                                     showPushPrompt = false;
+                                } else if (result.error) {
+                                    pushError = result.error;
                                 }
                             });
                         "
@@ -273,6 +285,12 @@
                     >
                         {{ __('app.push_notifications_maybe_later') }}
                     </button>
+                    <p
+                        x-show="pushError"
+                        x-cloak
+                        class="text-sm text-red-400 mt-2"
+                        x-text="pushErrorMessages[pushError] ?? pushError"
+                    ></p>
                 </div>
             </div>
         </div>

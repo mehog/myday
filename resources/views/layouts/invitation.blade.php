@@ -76,53 +76,70 @@
                 }
 
                 window.subscribeToPush = async function (subscribeUrl) {
-                    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-                        return false;
+                    try {
+                        if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+                            const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+
+                            return {
+                                ok: false,
+                                error: isIos ? 'push_not_supported_ios' : 'push_not_supported',
+                            };
+                        }
+
+                        const vapidKey = document.querySelector('meta[name="vapid-public-key"]')?.content;
+
+                        if (!vapidKey) {
+                            return { ok: false, error: 'push_config_error' };
+                        }
+
+                        const permission = await Notification.requestPermission();
+
+                        if (permission === 'denied') {
+                            return { ok: false, error: 'push_permission_denied' };
+                        }
+
+                        if (permission !== 'granted') {
+                            return { ok: false, error: null };
+                        }
+
+                        const registration = await navigator.serviceWorker.ready;
+
+                        // Unsubscribe any stale subscription (e.g. from a different VAPID key)
+                        const existing = await registration.pushManager.getSubscription();
+                        if (existing) {
+                            await existing.unsubscribe();
+                        }
+
+                        const subscription = await registration.pushManager.subscribe({
+                            userVisibleOnly: true,
+                            applicationServerKey: urlBase64ToUint8Array(vapidKey),
+                        });
+
+                        const payload = subscription.toJSON();
+                        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+
+                        const response = await fetch(subscribeUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken,
+                            },
+                            body: JSON.stringify({
+                                endpoint: payload.endpoint,
+                                keys: payload.keys,
+                                content_encoding: 'aesgcm',
+                            }),
+                        });
+
+                        if (!response.ok) {
+                            return { ok: false, error: 'push_server_error' };
+                        }
+
+                        return { ok: true, error: null };
+                    } catch (e) {
+                        return { ok: false, error: 'push_unknown_error' };
                     }
-
-                    const vapidKey = document.querySelector('meta[name="vapid-public-key"]')?.content;
-
-                    if (!vapidKey) {
-                        return false;
-                    }
-
-                    const permission = await Notification.requestPermission();
-
-                    if (permission !== 'granted') {
-                        return false;
-                    }
-
-                    const registration = await navigator.serviceWorker.ready;
-
-                    // Unsubscribe any stale subscription (e.g. from a different VAPID key)
-                    const existing = await registration.pushManager.getSubscription();
-                    if (existing) {
-                        await existing.unsubscribe();
-                    }
-
-                    const subscription = await registration.pushManager.subscribe({
-                        userVisibleOnly: true,
-                        applicationServerKey: urlBase64ToUint8Array(vapidKey),
-                    });
-
-                    const payload = subscription.toJSON();
-                    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
-
-                    const response = await fetch(subscribeUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'X-CSRF-TOKEN': csrfToken,
-                        },
-                        body: JSON.stringify({
-                            endpoint: payload.endpoint,
-                            keys: payload.keys,
-                            content_encoding: 'aesgcm',
-                        }),
-                    });
-
-                    return response.ok;
                 };
             </script>
         @endif

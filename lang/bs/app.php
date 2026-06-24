@@ -106,6 +106,13 @@ return [
     'push_notifications_no_wedding' => 'Prije slanja obavijesti morate imati kreirano vjenčanje.',
     'push_notifications_rsvp_pending' => 'RSVP na čekanju',
 
+    'push_error_ios' => 'Push obavijesti su podržane samo u Safariju na iOS-u. Otvorite ovaj link u Safariju i dodajte ga na početni ekran.',
+    'push_error_not_supported' => 'Vaš preglednik ne podržava push obavijesti.',
+    'push_error_denied' => 'Blokirali ste obavijesti. Dozvolite ih u podešavanjima preglednika.',
+    'push_error_config' => 'Greška u konfiguraciji push obavijesti.',
+    'push_error_server' => 'Pretplata nije mogla biti sačuvana. Pokušajte ponovo.',
+    'push_error_unknown' => 'Došlo je do neočekivane greške. Pokušajte ponovo.',
+
     // Guest messages
     'nav_guest_messages' => 'Poruke gostiju',
     'guest_messages_title' => 'Poruke gostiju',
