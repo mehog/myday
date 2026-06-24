@@ -103,9 +103,10 @@ class GuestContactPage extends Component
         $this->ensureCanSendMessage();
 
         $this->validate([
-            'audioFile' => ['required', 'file', 'mimetypes:audio/webm,audio/ogg,audio/mp4,audio/mpeg,audio/wav,video/webm', 'max:10240'],
+            'audioFile' => ['required', 'file', 'mimetypes:audio/webm,audio/ogg,audio/mp4,audio/mpeg,audio/wav,video/webm,audio/3gpp,audio/aac', 'max:10240'],
         ], [
             'audioFile.required' => __('invitation.audio_required'),
+            'audioFile.mimetypes' => __('invitation.audio_format_error'),
         ]);
 
         $extension = $this->audioFile->getClientOriginalExtension() ?: 'webm';

@@ -64,6 +64,7 @@ return [
     'download_ics' => 'Für Apple / Outlook herunterladen (.ics)',
 
     'token_required' => 'Diese Einladung erfordert einen persönlichen Link.',
+    'audio_format_error' => 'Das Audioformat wird von Ihrem Gerät nicht unterstützt. Bitte versuchen Sie es mit einem anderen Browser.',
 
     'preview_banner' => 'Dies ist eine Vorschau. Der Link wird freigeschaltet, sobald die Zahlung bestätigt und von einem Admin freigegeben wurde.',
 ];

@@ -93,6 +93,7 @@ return [
     'message_required' => 'Molimo unesite poruku.',
     'audio_required' => 'Molimo snimite audio poruku prije slanja.',
     'audio_upload_error' => 'Neuspješno slanje audio snimka. Pokušajte ponovo.',
+    'audio_format_error' => 'Format audio zapisa nije podržan na vašem uređaju. Molimo pokušajte s drugim preglednikom.',
     'microphone_error' => 'Nismo mogli pristupiti mikrofonu. Provjerite dozvole u pregledniku.',
     'message_rate_limit' => 'Dostigli ste dnevni limit poruka. Pokušajte ponovo sutra.',
     'message_type_text' => 'Tekst',

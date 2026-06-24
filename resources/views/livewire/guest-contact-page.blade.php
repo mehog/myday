@@ -82,7 +82,15 @@
                                     this.error = null;
                                     try {
                                         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                                        this.mediaRecorder = new MediaRecorder(stream);
+                                        const preferredMimes = [
+                                            'audio/webm;codecs=opus',
+                                            'audio/webm',
+                                            'audio/ogg;codecs=opus',
+                                            'audio/ogg',
+                                            'audio/mp4',
+                                        ];
+                                        const mimeType = preferredMimes.find((t) => MediaRecorder.isTypeSupported(t)) || '';
+                                        this.mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : {});
                                         this.audioChunks = [];
                                         this.mediaRecorder.ondataavailable = (e) => {
                                             if (e.data.size > 0) this.audioChunks.push(e.data);
@@ -121,7 +129,15 @@
                                     if (! this.audioBlob) return;
                                     this.uploading = true;
                                     this.error = null;
-                                    const extension = this.audioBlob.type.includes('ogg') ? 'ogg' : 'webm';
+                                    const blobType = this.audioBlob.type;
+                                    let extension = 'webm';
+                                    if (blobType.includes('ogg')) {
+                                        extension = 'ogg';
+                                    } else if (blobType.includes('mp4') || blobType.includes('m4a')) {
+                                        extension = 'mp4';
+                                    } else if (blobType.includes('3gpp') || blobType.includes('3gp')) {
+                                        extension = '3gp';
+                                    }
                                     const file = new File([this.audioBlob], `recording.${extension}`, { type: this.audioBlob.type || 'audio/webm' });
                                     $wire.upload('audioFile', file, () => {
                                         $wire.submitAudio().then(() => {

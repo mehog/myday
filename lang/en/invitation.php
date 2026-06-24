@@ -93,6 +93,7 @@ return [
     'message_required' => 'Please enter a message.',
     'audio_required' => 'Please record an audio message before sending.',
     'audio_upload_error' => 'Failed to upload the audio recording. Please try again.',
+    'audio_format_error' => 'Audio format is not supported by your device. Please try on a different browser.',
     'microphone_error' => 'Could not access the microphone. Please check your browser permissions.',
     'message_rate_limit' => 'You have reached the daily message limit. Please try again tomorrow.',
     'message_type_text' => 'Text',
