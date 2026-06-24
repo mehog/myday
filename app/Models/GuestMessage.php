@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\GuestMessageType;
 use App\Support\MediaDisk;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -17,6 +18,7 @@ class GuestMessage extends Model
         'content',
         'file_path',
         'file_paths',
+        'seen_at',
     ];
 
     protected function casts(): array
@@ -24,7 +26,13 @@ class GuestMessage extends Model
         return [
             'type' => GuestMessageType::class,
             'file_paths' => 'array',
+            'seen_at' => 'datetime',
         ];
+    }
+
+    public function scopeUnseen(Builder $query): Builder
+    {
+        return $query->whereNull('seen_at');
     }
 
     public function weddingEvent(): BelongsTo

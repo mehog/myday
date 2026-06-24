@@ -28,6 +28,7 @@ class WeddingOverviewWidget extends StatsOverviewWidget
         $responseRate = $guestCount > 0 ? round(($responded / $guestCount) * 100) : 0;
         $daysUntil = (int) now()->startOfDay()->diffInDays($wedding->wedding_date->copy()->startOfDay(), false);
         $messageCount = $wedding->guestMessages()->count();
+        $unseenCount = $wedding->guestMessages()->whereNull('seen_at')->count();
 
         return [
             Stat::make(__('app.stat_guests'), (string) $guestCount)
@@ -48,8 +49,11 @@ class WeddingOverviewWidget extends StatsOverviewWidget
                 ->icon('heroicon-o-calendar-days')
                 ->color($daysUntil >= 0 ? 'primary' : 'gray'),
             Stat::make(__('app.stat_messages'), (string) $messageCount)
-                ->description(__('app.stat_messages_desc'))
+                ->description($unseenCount > 0
+                    ? __('app.stat_messages_unseen', ['count' => $unseenCount])
+                    : __('app.stat_messages_desc'))
                 ->icon('heroicon-o-chat-bubble-left-right')
+                ->color($unseenCount > 0 ? 'warning' : null)
                 ->url(GuestMessagesResource::getUrl()),
         ];
     }

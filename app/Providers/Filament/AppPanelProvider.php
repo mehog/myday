@@ -31,6 +31,7 @@ class AppPanelProvider extends PanelProvider
             ->login()
             ->brandName('NasDan')
             ->globalSearch(false)
+            ->databaseNotifications()
             ->profile(EditProfile::class)
             ->topNavigation()
             ->colors([

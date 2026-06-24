@@ -11,6 +11,15 @@ class ViewGuestMessage extends ViewRecord
 {
     protected static string $resource = GuestMessagesResource::class;
 
+    public function mount(int|string $record): void
+    {
+        parent::mount($record);
+
+        if ($this->record->seen_at === null) {
+            $this->record->update(['seen_at' => now()]);
+        }
+    }
+
     public function getTitle(): string
     {
         return __('app.guest_messages_detail_title', ['name' => $this->record->sender_name]);
