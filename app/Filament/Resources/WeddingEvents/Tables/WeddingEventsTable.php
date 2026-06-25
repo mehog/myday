@@ -36,6 +36,8 @@ class WeddingEventsTable
                     ->badge(),
                 ToggleColumn::make('is_active')
                     ->label('Active'),
+                ToggleColumn::make('is_demo')
+                    ->label('Demo'),
                 TextColumn::make('link_visits_count')
                     ->label('Views')
                     ->sortable(),

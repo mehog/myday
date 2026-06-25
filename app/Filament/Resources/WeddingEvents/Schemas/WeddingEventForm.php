@@ -101,6 +101,9 @@ class WeddingEventForm
                         Toggle::make('is_active')
                             ->default(true)
                             ->required(),
+                        Toggle::make('is_demo')
+                            ->label('Demo invitation')
+                            ->helperText('Shows a live theme and layout switcher on the public invitation page. Changes are preview-only and are not saved.'),
                     ]),
                 Section::make('Invite message')
                     ->schema([

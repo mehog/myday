@@ -31,6 +31,9 @@ class WeddingEventInfolist
                             ->copyable(),
                         IconEntry::make('is_active')
                             ->boolean(),
+                        IconEntry::make('is_demo')
+                            ->label('Demo invitation')
+                            ->boolean(),
                     ]),
                 Section::make('Link Visits')
                     ->columns(4)
