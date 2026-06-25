@@ -20,6 +20,7 @@ return [
     'find_us' => 'Gdje nas naći',
     'location' => 'Lokacija',
     'map_title' => 'Mapa lokacije vjenčanja',
+    'get_directions' => 'Upute za dolazak',
 
     'gallery' => 'Fotografije lokacije',
     'gallery_description' => 'Pogledajte kako izgleda objekat i okolina kako biste lakše pronašli mjesto.',

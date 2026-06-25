@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\LinkMode;
 use App\Support\MediaDisk;
@@ -26,6 +27,7 @@ class WeddingEvent extends Model
         'location_lat',
         'location_lng',
         'theme',
+        'template',
         'link_mode',
         'music_url',
         'hero_image',
@@ -44,6 +46,7 @@ class WeddingEvent extends Model
             'is_active' => 'boolean',
             'is_demo' => 'boolean',
             'theme' => InvitationTheme::class,
+            'template' => InvitationTemplate::class,
             'link_mode' => LinkMode::class,
             'location_lat' => 'decimal:7',
             'location_lng' => 'decimal:7',

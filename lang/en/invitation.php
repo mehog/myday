@@ -20,6 +20,7 @@ return [
     'find_us' => 'Find us',
     'location' => 'Location',
     'map_title' => 'Wedding venue map',
+    'get_directions' => 'Get directions',
 
     'gallery' => 'Venue photos',
     'gallery_description' => 'See what the venue and surroundings look like so you can find the place more easily.',

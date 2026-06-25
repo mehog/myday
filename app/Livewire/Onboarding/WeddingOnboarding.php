@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Onboarding;
 
+use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\LinkMode;
 use App\Models\User;
@@ -27,6 +28,8 @@ class WeddingOnboarding extends Component
     public string $wedding_date = '';
 
     public string $theme = '';
+
+    public string $template = '';
 
     public string $your_name = '';
 
@@ -99,6 +102,7 @@ class WeddingOnboarding extends Component
                 'slug' => $this->uniqueSlug(),
                 'wedding_date' => Carbon::parse($this->wedding_date)->startOfDay(),
                 'theme' => InvitationTheme::from($this->theme),
+                'template' => InvitationTemplate::from($this->template),
                 'link_mode' => LinkMode::Public,
                 'is_active' => false,
             ]);
@@ -116,8 +120,12 @@ class WeddingOnboarding extends Component
     {
         return view('livewire.onboarding.wedding-onboarding', [
             'themes' => InvitationTheme::cases(),
+            'templates' => InvitationTemplate::cases(),
             'selectedTheme' => $this->theme !== ''
                 ? InvitationTheme::tryFrom($this->theme)
+                : null,
+            'selectedTemplate' => $this->template !== ''
+                ? InvitationTemplate::tryFrom($this->template)
                 : null,
         ])->title(__('onboarding.meta_title'));
     }
@@ -133,6 +141,7 @@ class WeddingOnboarding extends Component
                 'bride_name' => ['required', 'string', 'max:255'],
                 'wedding_date' => ['required', 'date', 'after:today'],
                 'theme' => ['required', 'string', Rule::in(array_column(InvitationTheme::cases(), 'value'))],
+                'template' => ['required', 'string', Rule::in(array_column(InvitationTemplate::cases(), 'value'))],
             ],
             2 => [
                 'your_name' => ['required', 'string', 'max:255'],
@@ -155,6 +164,7 @@ class WeddingOnboarding extends Component
                 'wedding_date.required' => __('onboarding.wedding_date_required'),
                 'wedding_date.after' => __('onboarding.wedding_date_future'),
                 'theme.required' => __('onboarding.theme_required'),
+                'template.required' => __('onboarding.template_required'),
             ],
             2 => [
                 'your_name.required' => __('onboarding.your_name_required'),

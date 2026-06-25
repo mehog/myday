@@ -28,6 +28,9 @@ return [
     // Wedding form — Design section
     'section_design' => 'Dizajn',
     'theme' => 'Tema',
+    'template' => 'Izgled',
+    'template_classic' => 'Klasičan',
+    'template_editorial' => 'Editorial',
     'share_mode' => 'Način dijeljenja',
     'hero_image' => 'Naslovna fotografija',
     'youtube_song' => 'YouTube pjesma',

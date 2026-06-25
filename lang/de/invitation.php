@@ -20,6 +20,7 @@ return [
     'find_us' => 'So finden Sie uns',
     'location' => 'Location',
     'map_title' => 'Karte der Hochzeitslocation',
+    'get_directions' => 'Route planen',
 
     'gallery' => 'Fotos der Location',
     'gallery_description' => 'Sehen Sie, wie die Location und die Umgebung aussehen, damit Sie den Ort leichter finden.',

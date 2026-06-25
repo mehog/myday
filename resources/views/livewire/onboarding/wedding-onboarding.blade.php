@@ -67,12 +67,13 @@
                             </div>
                         </div>
 
+                        <div>
+                            <label for="wedding_date" class="block text-sm text-[#d4c4a8] mb-2">{{ __('onboarding.wedding_date') }} *</label>
+                            <input id="wedding_date" type="date" wire:model="wedding_date" class="landing-input w-full">
+                            @error('wedding_date') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
+                        </div>
+
                         <div class="grid sm:grid-cols-2 gap-5">
-                            <div>
-                                <label for="wedding_date" class="block text-sm text-[#d4c4a8] mb-2">{{ __('onboarding.wedding_date') }} *</label>
-                                <input id="wedding_date" type="date" wire:model="wedding_date" class="landing-input w-full">
-                                @error('wedding_date') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
-                            </div>
                             <div>
                                 <label for="theme" class="block text-sm text-[#d4c4a8] mb-2">{{ __('onboarding.theme') }} *</label>
                                 <select id="theme" wire:model="theme" class="landing-input w-full">
@@ -82,6 +83,16 @@
                                     @endforeach
                                 </select>
                                 @error('theme') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
+                            </div>
+                            <div>
+                                <label for="template" class="block text-sm text-[#d4c4a8] mb-2">{{ __('onboarding.template') }} *</label>
+                                <select id="template" wire:model="template" class="landing-input w-full">
+                                    <option value="">{{ __('onboarding.template_placeholder') }}</option>
+                                    @foreach ($templates as $templateOption)
+                                        <option value="{{ $templateOption->value }}">{{ $templateOption->label() }}</option>
+                                    @endforeach
+                                </select>
+                                @error('template') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
                             </div>
                         </div>
 
@@ -168,6 +179,10 @@
                                 <div class="flex justify-between gap-4">
                                     <dt class="text-[#d4c4a8]">{{ __('onboarding.review_theme') }}</dt>
                                     <dd class="text-[#faf6ee] text-right">{{ $selectedTheme?->label() }}</dd>
+                                </div>
+                                <div class="flex justify-between gap-4">
+                                    <dt class="text-[#d4c4a8]">{{ __('onboarding.review_template') }}</dt>
+                                    <dd class="text-[#faf6ee] text-right">{{ $selectedTemplate?->label() }}</dd>
                                 </div>
                             </dl>
                         </div>

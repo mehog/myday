@@ -28,6 +28,9 @@ return [
     // Wedding form — Design section
     'section_design' => 'Design',
     'theme' => 'Thema',
+    'template' => 'Layout',
+    'template_classic' => 'Klassisch',
+    'template_editorial' => 'Editorial',
     'share_mode' => 'Freigabemodus',
     'hero_image' => 'Titelbild',
     'youtube_song' => 'YouTube-Lied',

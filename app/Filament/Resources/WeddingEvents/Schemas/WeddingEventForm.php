@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\WeddingEvents\Schemas;
 
 use App\Models\User;
+use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\LinkMode;
 use Filament\Forms\Components\DatePicker;
@@ -50,6 +51,10 @@ class WeddingEventForm
                     ->schema([
                         Select::make('theme')
                             ->options(collect(InvitationTheme::cases())->mapWithKeys(fn (InvitationTheme $theme) => [$theme->value => $theme->label()]))
+                            ->required()
+                            ->native(false),
+                        Select::make('template')
+                            ->options(collect(InvitationTemplate::cases())->mapWithKeys(fn (InvitationTemplate $template) => [$template->value => $template->label()]))
                             ->required()
                             ->native(false),
                         Select::make('link_mode')

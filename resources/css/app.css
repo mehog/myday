@@ -77,6 +77,50 @@
     }
 }
 
+/* Editorial invitation template */
+.editorial-hero-photo img {
+    transition: transform 0.6s ease;
+}
+
+.editorial-hero:hover .editorial-hero-photo img {
+    transform: scale(1.03);
+}
+
+.editorial-countdown-unit {
+    transition: transform 0.3s ease;
+}
+
+.editorial-countdown-unit:hover {
+    transform: translateY(-4px);
+}
+
+.editorial-timeline-item {
+    position: relative;
+}
+
+@media (min-width: 768px) {
+    .editorial-timeline-dot {
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.editorial-gallery-grid > .md\:row-span-2 button {
+    min-height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .editorial-hero-photo img,
+    .editorial-countdown-unit {
+        transition: none;
+    }
+
+    .editorial-hero:hover .editorial-hero-photo img,
+    .editorial-countdown-unit:hover {
+        transform: none;
+    }
+}
+
 /* Landing page */
 .landing-page {
     background-color: #1a1208;

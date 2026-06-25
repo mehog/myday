@@ -2,6 +2,7 @@
 
 namespace App\Filament\App\Schemas;
 
+use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\LinkMode;
 use App\Models\WeddingEvent;
@@ -55,6 +56,11 @@ class MyWeddingForm
                         Select::make('theme')
                             ->label(__('app.theme'))
                             ->options(collect(InvitationTheme::cases())->mapWithKeys(fn (InvitationTheme $theme) => [$theme->value => $theme->label()]))
+                            ->required()
+                            ->native(false),
+                        Select::make('template')
+                            ->label(__('app.template'))
+                            ->options(collect(InvitationTemplate::cases())->mapWithKeys(fn (InvitationTemplate $template) => [$template->value => $template->label()]))
                             ->required()
                             ->native(false),
                         Select::make('link_mode')
