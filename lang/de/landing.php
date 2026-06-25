@@ -100,7 +100,7 @@ return [
     'pricing_feature_2' => 'Senden über WhatsApp, Viber, Telegram oder Messenger',
     'pricing_feature_3' => 'RSVP-Bestätigungen in Echtzeit',
     'pricing_feature_4' => 'Live-Bearbeitung — Änderungen sofort sichtbar',
-    'pricing_feature_5' => '4 visuelle Themen zur Auswahl',
+    'pricing_feature_5' => 'Viele visuelle Themen zur Auswahl',
     'pricing_feature_6' => 'Tagesablauf der Hochzeit',
     'pricing_feature_7' => 'Fotogalerie der Location',
     'pricing_feature_8' => 'Gästeverwaltungs-Panel',

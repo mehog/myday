@@ -100,7 +100,7 @@ return [
     'pricing_feature_2' => 'Send via WhatsApp, Viber, Telegram or Messenger',
     'pricing_feature_3' => 'Real-time RSVP confirmations',
     'pricing_feature_4' => 'Live editing — changes visible instantly',
-    'pricing_feature_5' => '4 visual themes to choose from',
+    'pricing_feature_5' => 'Many visual themes to choose from',
     'pricing_feature_6' => 'Wedding day schedule',
     'pricing_feature_7' => 'Event photo gallery',
     'pricing_feature_8' => 'Guest management panel',

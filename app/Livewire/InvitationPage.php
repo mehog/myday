@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\InvitationTemplate;
+use App\InvitationTheme;
 use App\Jobs\RecordLinkVisit;
 use App\LinkType;
 use App\Models\Guest;
@@ -30,6 +32,10 @@ class InvitationPage extends Component
 
     public bool $isPersonalLink = false;
 
+    public string $previewTheme = '';
+
+    public string $previewTemplate = '';
+
     public function mount(string $slug, ?string $token = null): void
     {
         $this->event = WeddingEvent::query()
@@ -42,6 +48,11 @@ class InvitationPage extends Component
         }
 
         $this->isPreview = ! $this->event->is_active;
+
+        if ($this->event->is_demo) {
+            $this->previewTheme = $this->event->theme->value;
+            $this->previewTemplate = $this->event->template->value;
+        }
 
         if ($this->event->requiresToken() && $token === null) {
             abort(403, __('invitation.token_required'));
@@ -125,7 +136,20 @@ class InvitationPage extends Component
 
     public function render()
     {
-        return view('livewire.invitation-page')
+        $activeTheme = $this->event->is_demo && $this->previewTheme !== ''
+            ? InvitationTheme::from($this->previewTheme)
+            : $this->event->theme;
+
+        $activeTemplate = $this->event->is_demo && $this->previewTemplate !== ''
+            ? InvitationTemplate::from($this->previewTemplate)
+            : $this->event->template;
+
+        return view('livewire.invitation-page', [
+            'activeTheme' => $activeTheme,
+            'activeTemplate' => $activeTemplate,
+            'themes' => InvitationTheme::cases(),
+            'templates' => InvitationTemplate::cases(),
+        ])
             ->title($this->event->couple_names.' | '.__('invitation.title'))
             ->layoutData([
                 'event' => $this->event,

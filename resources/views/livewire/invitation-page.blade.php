@@ -8,9 +8,47 @@
         </div>
     @endif
 
-    <x-theme :theme="$event->theme">
-        <div @class(['invitation-page', 'pt-12' => $isPreview])>
-            @include('components.invitation.templates.'.$event->template->value, [
+    @if ($event->is_demo)
+        <div @class([
+            'fixed inset-x-0 z-50 flex flex-wrap items-center justify-center gap-3 sm:gap-4 px-4 py-2.5 bg-[#1a1208]/95 backdrop-blur border-b border-[#c9a227]/30 text-sm',
+            'top-0' => ! $isPreview,
+            'top-12' => $isPreview,
+        ])>
+            <span class="text-[#c9a227] uppercase tracking-widest text-xs font-medium shrink-0">
+                {{ __('invitation.demo_try') }}
+            </span>
+            <select
+                wire:model.live="previewTheme"
+                class="text-sm py-1.5 px-3 min-w-[9rem] cursor-pointer rounded-xl border border-[#c9a227]/40 bg-[#2a1f0f] text-[#faf6ee]"
+                aria-label="{{ __('app.theme') }}"
+            >
+                @foreach ($themes as $themeOption)
+                    <option value="{{ $themeOption->value }}">{{ $themeOption->label() }}</option>
+                @endforeach
+            </select>
+            <select
+                wire:model.live="previewTemplate"
+                class="text-sm py-1.5 px-3 min-w-[9rem] cursor-pointer rounded-xl border border-[#c9a227]/40 bg-[#2a1f0f] text-[#faf6ee]"
+                aria-label="{{ __('app.template') }}"
+            >
+                @foreach ($templates as $templateOption)
+                    <option value="{{ $templateOption->value }}">{{ $templateOption->label() }}</option>
+                @endforeach
+            </select>
+        </div>
+    @endif
+
+    @php
+        $bannerCount = ($isPreview ? 1 : 0) + ($event->is_demo ? 1 : 0);
+    @endphp
+
+    <x-theme :theme="$activeTheme">
+        <div @class([
+            'invitation-page',
+            'pt-12' => $bannerCount === 1,
+            'pt-24' => $bannerCount === 2,
+        ])>
+            @include('components.invitation.templates.'.$activeTemplate->value, [
                 'event' => $event,
                 'guest' => $guest,
                 'isPersonalLink' => $isPersonalLink,

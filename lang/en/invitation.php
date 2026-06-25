@@ -104,4 +104,5 @@ return [
     'token_required' => 'This invitation requires a personal link.',
 
     'preview_banner' => 'This is a preview. The link will go live once payment is confirmed and an admin approves it.',
+    'demo_try' => 'Try a style',
 ];

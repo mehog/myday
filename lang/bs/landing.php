@@ -100,7 +100,7 @@ return [
     'pricing_feature_2' => 'Slanje putem WhatsApp, Viber, Telegram ili Messenger',
     'pricing_feature_3' => 'Potvrde dolaska u realnom vremenu',
     'pricing_feature_4' => 'Izmjene uživo — gosti vide odmah',
-    'pricing_feature_5' => '4 vizuelne teme na izbor',
+    'pricing_feature_5' => 'Brojne vizuelne teme na izbor',
     'pricing_feature_6' => 'Plan dana vjenčanja',
     'pricing_feature_7' => 'Galerija fotografija lokacije',
     'pricing_feature_8' => 'Panel za upravljanje gostima',

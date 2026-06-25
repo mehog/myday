@@ -68,4 +68,5 @@ return [
     'audio_format_error' => 'Das Audioformat wird von Ihrem Gerät nicht unterstützt. Bitte versuchen Sie es mit einem anderen Browser.',
 
     'preview_banner' => 'Dies ist eine Vorschau. Der Link wird freigeschaltet, sobald die Zahlung bestätigt und von einem Admin freigegeben wurde.',
+    'demo_try' => 'Stil ausprobieren',
 ];
