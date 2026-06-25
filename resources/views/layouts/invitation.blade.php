@@ -40,7 +40,14 @@
             <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
             <meta name="apple-mobile-web-app-title" content="{{ $event->couple_names }}">
             <link rel="apple-touch-icon" href="/icons/nd-logo-transparent.webp">
-            <meta name="theme-color" content="#1a1208">
+            <meta name="theme-color" content="{{ match ($event->theme->value) {
+                'pearl-white' => '#FAFAF8',
+                'dusty-rose' => '#F9F1EE',
+                'royal-wedding' => '#0f1a2e',
+                'lavender-dream' => '#2d2438',
+                'winter-magic' => '#1a2332',
+                default => '#1a1208',
+            } }}">
         @endif
 
         @if (! empty($isPreview))
@@ -55,7 +62,7 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=cormorant-garamond:400,500,600,700|playfair-display:400,500,600,700|lora:400,500,600|crimson-pro:400,500,600" rel="stylesheet">
+    <link href="https://fonts.bunny.net/css?family=cormorant-garamond:400,500,600,700|playfair-display:400,500,600,700|lora:400,500,600|crimson-pro:400,500,600|montserrat:300,400,500,600,700" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles

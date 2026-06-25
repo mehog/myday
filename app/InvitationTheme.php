@@ -8,6 +8,8 @@ enum InvitationTheme: string
     case RoyalWedding = 'royal-wedding';
     case LavenderDream = 'lavender-dream';
     case WinterMagic = 'winter-magic';
+    case PearlWhite = 'pearl-white';
+    case DustyRose = 'dusty-rose';
 
     public function label(): string
     {
@@ -16,6 +18,8 @@ enum InvitationTheme: string
             self::RoyalWedding => 'Royal Wedding',
             self::LavenderDream => 'Lavender Dream',
             self::WinterMagic => 'Winter Magic',
+            self::PearlWhite => 'Pearl White',
+            self::DustyRose => 'Dusty Rose',
         };
     }
 }

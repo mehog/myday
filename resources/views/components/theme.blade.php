@@ -50,6 +50,30 @@
             '--font-body' => "'Crimson Pro', serif",
             '--gradient-hero' => 'linear-gradient(180deg, rgba(26,35,50,0.3) 0%, rgba(26,35,50,0.95) 100%)',
         ],
+        'pearl-white' => [
+            '--color-primary' => '#8C7355',
+            '--color-primary-dark' => '#6E5A42',
+            '--color-accent' => '#E8E0D5',
+            '--color-bg' => '#FAFAF8',
+            '--color-bg-soft' => '#F0EDE8',
+            '--color-text' => '#1C1917',
+            '--color-text-muted' => '#78716C',
+            '--font-heading' => "'Montserrat', sans-serif",
+            '--font-body' => "'Lora', serif",
+            '--gradient-hero' => 'linear-gradient(180deg, rgba(250,250,248,0.3) 0%, rgba(250,250,248,0.92) 100%)',
+        ],
+        'dusty-rose' => [
+            '--color-primary' => '#B5706A',
+            '--color-primary-dark' => '#9A5A55',
+            '--color-accent' => '#E8C9C4',
+            '--color-bg' => '#F9F1EE',
+            '--color-bg-soft' => '#F2E6E1',
+            '--color-text' => '#2D1B16',
+            '--color-text-muted' => '#8B6E65',
+            '--font-heading' => "'Cormorant Garamond', serif",
+            '--font-body' => "'Lora', serif",
+            '--gradient-hero' => 'linear-gradient(180deg, rgba(249,241,238,0.3) 0%, rgba(249,241,238,0.92) 100%)',
+        ],
     ];
 
     $vars = $themes[$theme->value] ?? $themes['amber-gold'];
