@@ -105,4 +105,5 @@ return [
 
     'preview_banner' => 'Ovo je pregled. Link će biti aktivan nakon potvrde uplate i odobrenja administratora.',
     'demo_try' => 'Isprobajte stil',
+    'demo_switcher_close' => 'Zatvori',
 ];

@@ -36,6 +36,8 @@ class InvitationPage extends Component
 
     public string $previewTemplate = '';
 
+    public bool $showDemoSwitcher = true;
+
     public function mount(string $slug, ?string $token = null): void
     {
         $this->event = WeddingEvent::query()

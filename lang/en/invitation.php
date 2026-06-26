@@ -105,4 +105,5 @@ return [
 
     'preview_banner' => 'This is a preview. The link will go live once payment is confirmed and an admin approves it.',
     'demo_try' => 'Try a style',
+    'demo_switcher_close' => 'Close style picker',
 ];
