@@ -82,6 +82,10 @@ class CreatePushNotification extends CreateRecord
             ->where('wedding_event_id', $weddingEventId)
             ->whereHas('pushSubscriptions');
 
+        if ($data['recipient_type'] === PushNotificationRecipientType::Unanswered->value) {
+            $query->whereNull('rsvp_status');
+        }
+
         if ($data['recipient_type'] === PushNotificationRecipientType::Selected->value) {
             $query->whereIn('id', $data['selected_guest_ids'] ?? []);
         }

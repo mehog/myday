@@ -82,7 +82,7 @@ return [
 
     // Push notifications
     'nav_push_notifications' => 'Push notifications',
-    'push_notifications_title' => 'Stay in the loop!',
+    'push_notifications_title' => 'Notification',
     'push_notifications_allow' => 'Allow notifications',
     'push_notifications_maybe_later' => 'Maybe later',
     'push_notifications_prompt_body' => 'Allow :couple to send you important updates about the wedding.',
@@ -93,6 +93,7 @@ return [
     'push_notifications_field_recipients' => 'Recipients',
     'push_notifications_field_select_guests' => 'Select guests',
     'push_notifications_recipients_all' => 'All subscribers',
+    'push_notifications_recipients_unanswered' => 'Guests who have not answered',
     'push_notifications_recipients_selected' => 'Select specific guests',
     'push_notifications_subscriber_count' => ':count guest(s) have push notifications enabled.',
     'push_notifications_sent_to' => 'Sent to',

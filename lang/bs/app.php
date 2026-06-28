@@ -82,7 +82,7 @@ return [
 
     // Push notifications
     'nav_push_notifications' => 'Push obavijesti',
-    'push_notifications_title' => 'Budite u toku!',
+    'push_notifications_title' => 'Obavijest',
     'push_notifications_allow' => 'Dozvoli obavijesti',
     'push_notifications_maybe_later' => 'Možda kasnije',
     'push_notifications_prompt_body' => 'Dozvolite :couple da vam šalju važne obavijesti o vjenčanju.',
@@ -93,6 +93,7 @@ return [
     'push_notifications_field_recipients' => 'Primaoci',
     'push_notifications_field_select_guests' => 'Odaberi goste',
     'push_notifications_recipients_all' => 'Svi pretplaćeni',
+    'push_notifications_recipients_unanswered' => 'Gosti koji nisu odgovorili',
     'push_notifications_recipients_selected' => 'Odaberi određene goste',
     'push_notifications_subscriber_count' => ':count gost(a) ima uključene push obavijesti.',
     'push_notifications_sent_to' => 'Poslano',

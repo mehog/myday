@@ -82,7 +82,7 @@ return [
 
     // Push notifications
     'nav_push_notifications' => 'Push-Benachrichtigungen',
-    'push_notifications_title' => 'Bleiben Sie informiert!',
+    'push_notifications_title' => 'Benachrichtigung',
     'push_notifications_allow' => 'Benachrichtigungen erlauben',
     'push_notifications_maybe_later' => 'Vielleicht später',
     'push_notifications_prompt_body' => 'Erlauben Sie :couple, Ihnen wichtige Updates zur Hochzeit zu senden.',
@@ -93,6 +93,7 @@ return [
     'push_notifications_field_recipients' => 'Empfänger',
     'push_notifications_field_select_guests' => 'Gäste auswählen',
     'push_notifications_recipients_all' => 'Alle Abonnenten',
+    'push_notifications_recipients_unanswered' => 'Gäste, die noch nicht geantwortet haben',
     'push_notifications_recipients_selected' => 'Bestimmte Gäste auswählen',
     'push_notifications_subscriber_count' => ':count Gast/Gäste haben Push-Benachrichtigungen aktiviert.',
     'push_notifications_sent_to' => 'Gesendet an',
