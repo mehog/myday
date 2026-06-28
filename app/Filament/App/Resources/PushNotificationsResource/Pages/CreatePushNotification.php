@@ -67,7 +67,6 @@ class CreatePushNotification extends CreateRecord
             guestIds: $guests->pluck('id')->all(),
             title: $data['title'],
             body: $data['body'],
-            url: $weddingEvent->public_url,
         );
 
         return $log;

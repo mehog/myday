@@ -63,6 +63,14 @@ return [
 
     'add_to_google_calendar' => 'Zu Google Kalender hinzufügen',
     'download_ics' => 'Für Apple / Outlook herunterladen (.ics)',
+    'add_to_calendar' => 'Zum Kalender hinzufügen',
+    'send_message_to_newlyweds' => 'Nachricht an das Brautpaar senden',
+    'view_notifications' => 'Benachrichtigungen anzeigen',
+    'push_notifications_page_title' => 'Benachrichtigungen',
+    'push_notifications_page_description' => 'Alle Nachrichten vom Brautpaar.',
+    'push_notification_sent_at' => 'Gesendet am',
+    'push_notifications_empty' => 'Es wurden noch keine Benachrichtigungen gesendet.',
+    'back_to_invitation' => 'Zurück zur Einladung',
 
     'token_required' => 'Diese Einladung erfordert einen persönlichen Link.',
     'audio_format_error' => 'Das Audioformat wird von Ihrem Gerät nicht unterstützt. Bitte versuchen Sie es mit einem anderen Browser.',

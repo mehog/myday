@@ -66,6 +66,11 @@ return [
     'add_to_calendar' => 'Add to calendar',
     'add_to_calendar_description' => 'Choose how you would like to save the date in your calendar.',
     'send_message_to_newlyweds' => 'Send message to the newlyweds',
+    'view_notifications' => 'View notifications',
+    'push_notifications_page_title' => 'Notifications',
+    'push_notifications_page_description' => 'All messages sent by the newlyweds.',
+    'push_notification_sent_at' => 'Sent on',
+    'push_notifications_empty' => 'No notifications have been sent yet.',
 
     'contact_page_title' => 'Send a message to the newlyweds',
     'contact_page_description' => 'Share a message, audio recording, or photos with the newlyweds, :name.',

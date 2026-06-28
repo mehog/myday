@@ -13,6 +13,14 @@
         >
             {{ __('invitation.send_message_to_newlyweds') }}
         </a>
+        @if ($event->pushNotificationLogs()->where('status', 'sent')->exists())
+            <a
+                href="{{ route('invitation.push.guest', [$event->slug, $guest->token]) }}"
+                class="rsvp-btn rsvp-btn-no rounded-xl px-6 py-3 invitation-heading text-base transition"
+            >
+                {{ __('invitation.view_notifications') }}
+            </a>
+        @endif
     @endif
 </div>
 @include('components.invitation.push-enable', [
