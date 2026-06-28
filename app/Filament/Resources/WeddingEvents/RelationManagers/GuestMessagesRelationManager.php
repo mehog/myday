@@ -39,19 +39,19 @@ class GuestMessagesRelationManager extends RelationManager
                     ->limit(60)
                     ->placeholder('—')
                     ->wrap()
-                    ->visible(fn ($record): bool => $record->type === GuestMessageType::Text),
+                    ->visible(fn ($record): bool => $record?->type === GuestMessageType::Text),
                 ImageColumn::make('file_paths')
                     ->label('Photo')
                     ->disk(config('filesystems.media_disk'))
                     ->getStateUsing(fn ($record) => $record->file_paths[0] ?? null)
-                    ->visible(fn ($record): bool => $record->type === GuestMessageType::Photo),
+                    ->visible(fn ($record): bool => $record?->type === GuestMessageType::Photo),
                 TextColumn::make('file_path')
                     ->label('Audio')
                     ->formatStateUsing(fn (): string => 'Listen')
                     ->url(fn ($record): ?string => $record->type === GuestMessageType::Audio ? $record->fileUrl() : null)
                     ->openUrlInNewTab()
                     ->color('primary')
-                    ->visible(fn ($record): bool => $record->type === GuestMessageType::Audio),
+                    ->visible(fn ($record): bool => $record?->type === GuestMessageType::Audio),
                 TextColumn::make('created_at')
                     ->label('Sent at')
                     ->since()

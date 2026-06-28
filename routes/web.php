@@ -24,6 +24,8 @@ Route::post('/lang/{locale}', function (string $locale) {
 
 Route::get('/onboarding', WeddingOnboarding::class)->name('onboarding');
 
+Route::redirect('/login', '/app/login')->name('login');
+
 Route::middleware('auth')->group(function () {
     Route::get('/onboarding/verify-email', VerifyEmailNotice::class)->name('verification.notice');
 
@@ -36,11 +38,11 @@ Route::middleware('auth')->group(function () {
 
         return back()->with('status', 'verification-link-sent');
     })->middleware('throttle:6,1')->name('verification.send');
-
-    Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)
-        ->middleware(['signed', 'throttle:6,1'])
-        ->name('verification.verify');
 });
+
+Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)
+    ->middleware(['signed', 'throttle:6,1'])
+    ->name('verification.verify');
 
 Route::get('/sitemap.xml', function () {
     return response()

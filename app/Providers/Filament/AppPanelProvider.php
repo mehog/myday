@@ -30,12 +30,15 @@ class AppPanelProvider extends PanelProvider
             ->path('app')
             ->login()
             ->brandName('NasDan')
+            ->brandLogo(asset('icons/nd-logo-transparent.webp'))
+            ->brandLogoHeight('2.25rem')
+            ->viteTheme('resources/css/filament/app/theme.css')
             ->globalSearch(false)
             ->databaseNotifications()
             ->profile(EditProfile::class)
             ->topNavigation()
             ->colors([
-                'primary' => Color::Rose,
+                'primary' => Color::hex('#c9a227'),
             ])
             ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\Filament\App\Resources')
             ->discoverPages(in: app_path('Filament/App/Pages'), for: 'App\Filament\App\Pages')

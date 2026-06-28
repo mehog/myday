@@ -7,6 +7,8 @@ return [
     'nav_demo' => 'Demo',
     'nav_order' => 'Order',
     'nav_create' => 'Create invitation',
+    'nav_login' => 'Log in',
+    'nav_panel' => 'My panel',
 
     'hero_title' => 'Your wedding story deserves more than a photo in a chat',
     'hero_subtitle' => 'A personalized web invitation with countdown, RSVP, day schedule and venue photos — ready to share in three steps.',

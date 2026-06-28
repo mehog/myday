@@ -17,6 +17,15 @@
             <a href="{{ route('onboarding', ['locale' => app()->getLocale()]) }}" class="text-sm text-[#d4c4a8] hover:text-[#c9a227] transition hidden sm:inline">
                 {{ __('landing.nav_create') }}
             </a>
+            @guest
+                <a href="/app/login" class="text-sm text-[#d4c4a8] hover:text-[#c9a227] transition inline">
+                    {{ __('landing.nav_login') }}
+                </a>
+            @else
+                <a href="/app" class="text-sm text-[#d4c4a8] hover:text-[#c9a227] transition hidden sm:inline">
+                    {{ __('landing.nav_panel') }}
+                </a>
+            @endguest
             <a href="#naruči" class="text-sm px-4 py-2 rounded-full border border-[#c9a227] text-[#c9a227] hover:bg-[#c9a227] hover:text-[#1a1208] transition">
                 {{ __('landing.nav_order') }}
             </a>

@@ -1,0 +1,65 @@
+@import url('https://fonts.bunny.net/css?family=cormorant-garamond:400,600,700|lora:400,500,600');
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/App/**/*';
+@source '../../../../resources/views/filament/app/**/*';
+
+@layer components {
+    .fi-body:has(.fi-simple-layout) {
+        @apply bg-[#1a1208] text-[#faf6ee];
+
+        font-family: 'Lora', serif;
+    }
+
+    .fi-simple-layout {
+        @apply bg-[#1a1208];
+    }
+
+    .fi-simple-layout .fi-simple-main {
+        @apply border border-white/10 bg-[#2a1f0f] shadow-none ring-white/10;
+    }
+
+    .fi-simple-layout .fi-simple-header-heading {
+        @apply text-[#faf6ee];
+
+        font-family: 'Cormorant Garamond', serif;
+    }
+
+    .fi-simple-layout .fi-simple-header-subheading {
+        @apply text-[#d4c4a8];
+    }
+
+    .fi-simple-layout .fi-fo-field-wrp-label,
+    .fi-simple-layout .fi-fo-field-label-content,
+    .fi-simple-layout .fi-checkbox-label {
+        @apply text-[#d4c4a8];
+    }
+
+    .fi-simple-layout .fi-input-wrp {
+        @apply border border-white/10 bg-[#2a1f0f] shadow-none ring-white/10;
+    }
+
+    .fi-simple-layout .fi-input-wrp:not(.fi-disabled):not(:has(.fi-ac-action:focus)) {
+        @apply focus-within:border-[#c9a227] focus-within:ring-[#c9a227];
+    }
+
+    .fi-simple-layout input.fi-input {
+        @apply text-[#faf6ee] placeholder:text-[#d4c4a8];
+    }
+
+    .fi-simple-layout .fi-btn.fi-color-primary:not(.fi-outlined) {
+        @apply bg-[#c9a227] text-[#1a1208];
+    }
+
+    .fi-simple-layout .fi-btn.fi-color-primary:not(.fi-outlined):not(.fi-disabled):not([disabled]) {
+        @apply hover:bg-[#a8841a];
+    }
+
+    .fi-simple-layout .fi-link {
+        @apply text-[#c9a227];
+    }
+
+    .fi-simple-layout .fi-link:not(.fi-disabled):not([disabled]) {
+        @apply hover:text-[#a8841a];
+    }
+}
