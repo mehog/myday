@@ -57,6 +57,7 @@ return [
 
     'plus_one_question' => 'Da li dovodite nekoga?',
     'plus_one_name_placeholder' => 'Ime pratnje (optionalno)',
+    'plus_one_notice' => 'Vaša pozivnica uključuje pratnju (jednu osobu).',
     'plus_one_helper_text' => 'Vaša pozivnica podražava pratnju (jednu osobu). Ukoliko dovodite nekoga (npr. supružnik/a), molimo unesite njihovo ime kako bismo mogli prilagoditi raspored.',
     'rsvp_update_helper_text' => 'Odgovor možete promijeniti sve do isteka roka.',
     'edit_response' => 'Izmijeni odgovor',

@@ -57,6 +57,7 @@ return [
 
     'plus_one_question' => 'Will you be bringing someone?',
     'plus_one_name_placeholder' => 'Their name (optional)',
+    'plus_one_notice' => 'Your invitation includes a plus one.',
     'plus_one_helper_text' => 'Your invitation allows a plus one (one person). If you are bringing someone (e.g. spouse), please enter their name so we can prepare the seating arrangement accordingly.',
     'rsvp_update_helper_text' => 'You can update your response before the deadline.',
     'edit_response' => 'Edit response',

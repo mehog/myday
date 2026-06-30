@@ -89,6 +89,12 @@
                 <p class="invitation-body text-[var(--color-text-muted)] mb-8">
                     {{ __('invitation.greeting_hello') }}, <span class="text-[var(--color-accent)]">{{ $guest->name }}</span>. {{ __('invitation.greeting_question') }}
                 </p>
+
+                @if ($guest->plus_one_allowed)
+                    <p class="invitation-body text-sm text-[var(--color-text-muted)] -mt-5 mb-8">
+                        {{ __('invitation.plus_one_notice') }}
+                    </p>
+                @endif
             @else
                 <div class="mb-8 text-left">
                     <label for="anonymousName" class="block text-sm text-[var(--color-text-muted)] mb-2">{{ __('invitation.your_name') }}</label>
@@ -124,6 +130,12 @@
                     {{ __('invitation.no_attending') }}
                 </button>
             </div>
+
+            @include('components.invitation.push-enable', [
+                'event' => $event,
+                'guest' => $guest ?? null,
+                'isPersonalLink' => $isPersonalLink ?? false,
+            ])
         @endif
     </div>
 
