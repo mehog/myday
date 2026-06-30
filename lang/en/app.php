@@ -57,6 +57,7 @@ return [
     // Wedding overview widget
     'stat_guests' => 'Guests',
     'stat_guests_desc' => 'Total invited guests',
+    'stat_guests_desc_plus_ones' => 'Total invited guests · :count with plus one',
     'stat_confirmed' => 'Confirmed',
     'stat_confirmed_desc' => 'Guests + companions',
     'stat_responded' => 'Responded',

@@ -57,6 +57,7 @@ return [
     // Wedding overview widget
     'stat_guests' => 'Gäste',
     'stat_guests_desc' => 'Eingeladene Gäste insgesamt',
+    'stat_guests_desc_plus_ones' => 'Eingeladene Gäste insgesamt · :count mit Begleitung',
     'stat_confirmed' => 'Bestätigt',
     'stat_confirmed_desc' => 'Gäste + Begleitung',
     'stat_responded' => 'Geantwortet',

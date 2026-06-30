@@ -18,6 +18,7 @@ class WeddingOverviewWidget extends StatsOverviewWidget
         }
 
         $guestCount = $wedding->guests()->count();
+        $plusOneInvitees = $wedding->guests()->where('plus_one_allowed', true)->count();
         $confirmedGuests = $wedding->guests()->where('rsvp_status', RsvpStatus::Yes)->count();
         $plusOnes = $wedding->guests()
             ->where('rsvp_status', RsvpStatus::Yes)
@@ -32,7 +33,9 @@ class WeddingOverviewWidget extends StatsOverviewWidget
 
         return [
             Stat::make(__('app.stat_guests'), (string) $guestCount)
-                ->description(__('app.stat_guests_desc'))
+                ->description($plusOneInvitees > 0
+                    ? __('app.stat_guests_desc_plus_ones', ['count' => $plusOneInvitees])
+                    : __('app.stat_guests_desc'))
                 ->icon('heroicon-o-users'),
             Stat::make(__('app.stat_confirmed'), (string) $confirmed)
                 ->description(__('app.stat_confirmed_desc'))

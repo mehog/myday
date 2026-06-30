@@ -57,6 +57,7 @@ return [
     // Wedding overview widget
     'stat_guests' => 'Gosti',
     'stat_guests_desc' => 'Ukupno pozvanih gostiju',
+    'stat_guests_desc_plus_ones' => 'Ukupno pozvanih gostiju · :count s pratnjom',
     'stat_confirmed' => 'Potvrdili',
     'stat_confirmed_desc' => 'Gosti + pratnja',
     'stat_responded' => 'Odgovorili',
