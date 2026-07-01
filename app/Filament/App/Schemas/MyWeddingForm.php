@@ -24,6 +24,7 @@ class MyWeddingForm
                 Section::make(__('app.section_couple'))
                     ->columnSpanFull()
                     ->collapsible()
+                    ->collapsed()
                     ->columns(2)
                     ->schema([
                         TextInput::make('groom_name')
@@ -51,6 +52,7 @@ class MyWeddingForm
                 Section::make(__('app.section_design'))
                     ->columnSpanFull()
                     ->collapsible()
+                    ->collapsed()
                     ->columns(2)
                     ->schema([
                         Select::make('theme')
@@ -88,6 +90,7 @@ class MyWeddingForm
                 Section::make(__('app.section_location'))
                     ->columns(2)
                     ->collapsible()
+                    ->collapsed()
                     ->schema([
                         TextInput::make('location_name')
                             ->label(__('app.location_name'))
@@ -116,6 +119,7 @@ class MyWeddingForm
                     ]),
                 Section::make(__('app.section_rsvp'))
                     ->collapsible()
+                    ->collapsed()
                     ->schema([
                         DatePicker::make('rsvp_deadline')
                             ->label(__('app.rsvp_deadline'))
