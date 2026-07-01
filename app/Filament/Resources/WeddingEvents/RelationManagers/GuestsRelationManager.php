@@ -252,6 +252,10 @@ class GuestsRelationManager extends RelationManager
                                 ))
                                 ->required()
                                 ->native(false),
+                            Textarea::make('rsvp_note')
+                                ->label($this->trans('field_rsvp_note'))
+                                ->rows(3)
+                                ->maxLength(500),
                         ])
                         ->action(function (array $data, Guest $record): void {
                             $rsvpStatus = RsvpStatus::from($data['rsvp_status']);
