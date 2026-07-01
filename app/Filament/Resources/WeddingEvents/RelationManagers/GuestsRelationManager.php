@@ -242,7 +242,6 @@ class GuestsRelationManager extends RelationManager
                         ->color('gray')
                         ->fillForm(fn (Guest $record): array => [
                             'rsvp_status' => $record->rsvp_status?->value,
-                            'rsvp_note' => $record->rsvp_note,
                         ])
                         ->form([
                             Select::make('rsvp_status')
@@ -252,17 +251,12 @@ class GuestsRelationManager extends RelationManager
                                 ))
                                 ->required()
                                 ->native(false),
-                            Textarea::make('rsvp_note')
-                                ->label($this->trans('field_rsvp_note'))
-                                ->rows(3)
-                                ->maxLength(500),
                         ])
                         ->action(function (array $data, Guest $record): void {
                             $rsvpStatus = RsvpStatus::from($data['rsvp_status']);
 
                             $record->update([
                                 'rsvp_status' => $rsvpStatus,
-                                'rsvp_note' => filled($data['rsvp_note']) ? trim($data['rsvp_note']) : null,
                                 'rsvp_responded_at' => now(),
                                 'rsvp_manual_override' => true,
                                 'plus_one_name' => $rsvpStatus === RsvpStatus::Yes ? $record->plus_one_name : null,
