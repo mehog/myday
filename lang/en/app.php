@@ -60,6 +60,7 @@ return [
     'stat_guests_desc_plus_ones' => 'Total invited guests · :count with plus one',
     'stat_confirmed' => 'Confirmed',
     'stat_confirmed_desc' => 'Guests + companions',
+    'stat_confirmed_desc_plus_ones' => 'Guests + companions · :count companions confirmed',
     'stat_responded' => 'Responded',
     'stat_responded_desc' => ':responded of :total guests',
     'stat_days_until' => 'Until the wedding',

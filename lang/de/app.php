@@ -60,6 +60,7 @@ return [
     'stat_guests_desc_plus_ones' => 'Eingeladene Gäste insgesamt · :count mit Begleitung',
     'stat_confirmed' => 'Bestätigt',
     'stat_confirmed_desc' => 'Gäste + Begleitung',
+    'stat_confirmed_desc_plus_ones' => 'Gäste + Begleitung · :count Begleitungen bestätigt',
     'stat_responded' => 'Geantwortet',
     'stat_responded_desc' => ':responded von :total Gästen',
     'stat_days_until' => 'Bis zur Hochzeit',

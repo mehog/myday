@@ -78,7 +78,7 @@ class InvitationPage extends Component
                 ip: $request->ip(),
                 userAgent: $request->userAgent(),
                 referer: $request->header('referer'),
-            );
+            )->afterResponse();
         }
     }
 

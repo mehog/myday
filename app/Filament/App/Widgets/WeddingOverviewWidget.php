@@ -38,7 +38,9 @@ class WeddingOverviewWidget extends StatsOverviewWidget
                     : __('app.stat_guests_desc'))
                 ->icon('heroicon-o-users'),
             Stat::make(__('app.stat_confirmed'), (string) $confirmed)
-                ->description(__('app.stat_confirmed_desc'))
+                ->description($plusOnes > 0
+                    ? __('app.stat_confirmed_desc_plus_ones', ['count' => $plusOnes])
+                    : __('app.stat_confirmed_desc'))
                 ->icon('heroicon-o-check-circle')
                 ->color('success'),
             Stat::make(__('app.stat_responded'), "{$responseRate}%")

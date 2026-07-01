@@ -60,6 +60,7 @@ return [
     'stat_guests_desc_plus_ones' => 'Ukupno pozvanih gostiju · :count s pratnjom',
     'stat_confirmed' => 'Potvrdili',
     'stat_confirmed_desc' => 'Gosti + pratnja',
+    'stat_confirmed_desc_plus_ones' => 'Gosti + pratnja · :count pratnje potvrdilo',
     'stat_responded' => 'Odgovorili',
     'stat_responded_desc' => ':responded od :total gostiju',
     'stat_days_until' => 'Do vjenčanja',

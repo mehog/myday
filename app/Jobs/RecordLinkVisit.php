@@ -4,13 +4,15 @@ namespace App\Jobs;
 
 use App\LinkType;
 use App\Models\LinkVisit;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Cache;
 use Jenssegers\Agent\Agent;
 
-class RecordLinkVisit implements ShouldQueue
+class RecordLinkVisit
 {
     use Queueable;
+
+    private const DEDUPE_MINUTES = 30;
 
     public function __construct(
         public int $weddingEventId,
@@ -23,6 +25,10 @@ class RecordLinkVisit implements ShouldQueue
 
     public function handle(): void
     {
+        if (! Cache::add($this->dedupeKey(), true, now()->addMinutes(self::DEDUPE_MINUTES))) {
+            return;
+        }
+
         $agent = new Agent;
 
         if ($this->userAgent) {
@@ -51,5 +57,12 @@ class RecordLinkVisit implements ShouldQueue
             'os' => $agent->platform(),
             'visited_at' => now(),
         ]);
+    }
+
+    private function dedupeKey(): string
+    {
+        $visitor = $this->guestId ?? ($this->ip ? hash('sha256', $this->ip) : 'unknown');
+
+        return "link_visit:{$this->weddingEventId}:{$visitor}";
     }
 }
