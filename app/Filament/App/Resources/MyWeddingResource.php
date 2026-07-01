@@ -65,9 +65,9 @@ class MyWeddingResource extends Resource
     public static function getRelations(): array
     {
         return [
+            GuestsRelationManager::class,
             ScheduleItemsRelationManager::class,
             EventPhotosRelationManager::class,
-            GuestsRelationManager::class,
         ];
     }
 

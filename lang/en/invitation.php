@@ -60,6 +60,9 @@ return [
     'plus_one_notice' => 'Your invitation includes a plus one.',
     'plus_one_helper_text' => 'Your invitation allows a plus one (one person). If you are bringing someone (e.g. spouse), please enter their name so we can prepare the seating arrangement accordingly.',
     'rsvp_update_helper_text' => 'You can update your response before the deadline.',
+    'rsvp_leave_message_hint' => 'You can also leave a message for the couple.',
+    'rsvp_note_label' => 'Leave a message (optional)',
+    'rsvp_note_placeholder' => 'A few words for the newlyweds…',
     'edit_response' => 'Edit response',
 
     'add_to_google_calendar' => 'Add to Google Calendar',

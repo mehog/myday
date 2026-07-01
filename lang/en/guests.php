@@ -24,6 +24,11 @@ return [
     'message' => 'Message',
     'platform' => 'Platform',
     'guest_marked_sent' => 'Guest marked as sent',
+    'mark_rsvp' => 'Mark RSVP',
+    'mark_rsvp_description' => 'Use this if a guest replied privately (e.g. Viber or phone call) instead of through their invite link. The response will be marked as manually entered by you.',
+    'rsvp_marked' => 'RSVP updated',
+    'rsvp_manual_flag' => 'Manual',
+    'field_rsvp_note' => 'Note from guest',
 
     'import_csv' => 'Import CSV',
     'csv_file' => 'CSV file',

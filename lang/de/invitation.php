@@ -60,6 +60,9 @@ return [
     'plus_one_notice' => 'Ihre Einladung beinhaltet eine Begleitung.',
     'plus_one_helper_text' => 'Ihre Einladung erlaubt eine Begleitung (eine Person). Falls Sie jemanden mitbringen (z. B. Ehepartner/in), geben Sie bitte deren Namen an, damit wir den Sitzplan entsprechend vorbereiten können.',
     'rsvp_update_helper_text' => 'Sie können Ihre Antwort vor Ablauf der Frist ändern.',
+    'rsvp_leave_message_hint' => 'Sie können auch eine Nachricht an das Brautpaar hinterlassen.',
+    'rsvp_note_label' => 'Nachricht hinterlassen (optional)',
+    'rsvp_note_placeholder' => 'Ein paar Worte für das Brautpaar…',
     'edit_response' => 'Antwort bearbeiten',
 
     'add_to_google_calendar' => 'Zu Google Kalender hinzufügen',

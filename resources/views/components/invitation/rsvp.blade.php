@@ -131,6 +131,19 @@
                 </button>
             </div>
 
+            <p class="invitation-body text-sm text-[var(--color-text-muted)] mt-6">
+                {{ __('invitation.rsvp_update_helper_text') }}
+                @if ($guest && ($isPersonalLink ?? false))
+                    &nbsp;·&nbsp;
+                    <a
+                        href="{{ route('invitation.contact.guest', [$event->slug, $guest->token]) }}"
+                        class="text-[var(--color-primary)] hover:underline transition"
+                    >
+                        {{ __('invitation.rsvp_leave_message_hint') }}
+                    </a>
+                @endif
+            </p>
+
             @include('components.invitation.push-enable', [
                 'event' => $event,
                 'guest' => $guest ?? null,
@@ -186,6 +199,20 @@
                     </div>
                 @endif
 
+                <div class="mb-6 text-left">
+                    <label for="rsvpNote" class="block text-sm text-[var(--color-text-muted)] mb-2">
+                        {{ __('invitation.rsvp_note_label') }}
+                    </label>
+                    <textarea
+                        id="rsvpNote"
+                        wire:model="rsvpNote"
+                        rows="3"
+                        maxlength="500"
+                        class="w-full rounded-xl border border-white/10 bg-[var(--color-bg)] px-4 py-3 text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary)] focus:outline-none resize-none"
+                        placeholder="{{ __('invitation.rsvp_note_placeholder') }}"
+                    ></textarea>
+                </div>
+
                 <div class="flex flex-col gap-3">
                     <button
                         type="button"
@@ -202,10 +229,6 @@
                     >
                         {{ __('invitation.rsvp_cancel_btn') }}
                     </button>
-                    {{-- helper text explaining rsvp can be updated until the deadline --}}
-                    <p class="text-sm text-[var(--color-text-muted)] mt-2">
-                        {{ __('invitation.rsvp_update_helper_text') }}
-                    </p>
                 </div>
             </div>
         </div>

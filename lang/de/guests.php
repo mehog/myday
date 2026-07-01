@@ -24,6 +24,11 @@ return [
     'message' => 'Nachricht',
     'platform' => 'Plattform',
     'guest_marked_sent' => 'Gast als gesendet markiert',
+    'mark_rsvp' => 'RSVP markieren',
+    'mark_rsvp_description' => 'Verwenden Sie dies, wenn ein Gast privat geantwortet hat (z. B. Viber oder Anruf) statt über den Einladungslink. Die Antwort wird als manuell von Ihnen eingetragen markiert.',
+    'rsvp_marked' => 'RSVP aktualisiert',
+    'rsvp_manual_flag' => 'Manuell',
+    'field_rsvp_note' => 'Nachricht vom Gast',
 
     'import_csv' => 'CSV importieren',
     'csv_file' => 'CSV-Datei',

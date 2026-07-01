@@ -24,6 +24,11 @@ return [
     'message' => 'Poruka',
     'platform' => 'Platforma',
     'guest_marked_sent' => 'Gost označen kao poslan',
+    'mark_rsvp' => 'Označi RSVP',
+    'mark_rsvp_description' => 'Koristite ovo ako je gost odgovorio privatno (npr. Viber ili telefon) umjesto putem pozivnice. Odgovor će biti označen kao ručno unesen od strane mladenaca.',
+    'rsvp_marked' => 'RSVP ažuriran',
+    'rsvp_manual_flag' => 'Ručno',
+    'field_rsvp_note' => 'Poruka gosta',
 
     'import_csv' => 'Uvezi CSV',
     'csv_file' => 'CSV datoteka',

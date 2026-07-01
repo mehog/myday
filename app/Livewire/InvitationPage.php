@@ -24,6 +24,8 @@ class InvitationPage extends Component
 
     public string $plusOneName = '';
 
+    public string $rsvpNote = '';
+
     public bool $rsvpSubmitted = false;
 
     public bool $isEditing = false;
@@ -86,10 +88,16 @@ class InvitationPage extends Component
     {
         $rsvpStatus = RsvpStatus::from($status);
 
+        $this->validate([
+            'rsvpNote' => ['nullable', 'string', 'max:500'],
+        ]);
+
         if ($this->guest) {
             $updateData = [
                 'rsvp_status' => $rsvpStatus,
                 'rsvp_responded_at' => now(),
+                'rsvp_manual_override' => false,
+                'rsvp_note' => filled($this->rsvpNote) ? trim($this->rsvpNote) : null,
             ];
 
             if ($rsvpStatus === RsvpStatus::Yes && $this->guest->plus_one_allowed) {
@@ -113,6 +121,7 @@ class InvitationPage extends Component
                 'name' => $this->anonymousName,
                 'rsvp_status' => $rsvpStatus,
                 'rsvp_responded_at' => now(),
+                'rsvp_note' => filled($this->rsvpNote) ? trim($this->rsvpNote) : null,
             ]);
         }
 
@@ -128,6 +137,7 @@ class InvitationPage extends Component
     {
         $this->isEditing = true;
         $this->plusOneName = $this->guest?->plus_one_name ?? '';
+        $this->rsvpNote = $this->guest?->rsvp_note ?? '';
         $this->rsvpSubmitted = false;
     }
 

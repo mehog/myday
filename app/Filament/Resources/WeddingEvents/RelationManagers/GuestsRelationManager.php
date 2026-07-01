@@ -98,7 +98,15 @@ class GuestsRelationManager extends RelationManager
                         RsvpStatus::No => 'danger',
                         default => 'warning',
                     })
-                    ->formatStateUsing(fn (?RsvpStatus $state) => $state?->label() ?? $this->trans('rsvp_pending')),
+                    ->formatStateUsing(function (?RsvpStatus $state, Guest $record): string {
+                        $label = $state?->label() ?? $this->trans('rsvp_pending');
+
+                        if ($record->rsvp_manual_override) {
+                            return $label.' ('.$this->trans('rsvp_manual_flag').')';
+                        }
+
+                        return $label;
+                    }),
                 TextColumn::make('rsvp_responded_at')
                     ->label($this->trans('field_rsvp_responded_at'))
                     ->since()
@@ -107,6 +115,11 @@ class GuestsRelationManager extends RelationManager
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('plus_one_name')
                     ->label($this->trans('field_plus_one_name'))
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: false),
+                TextColumn::make('rsvp_note')
+                    ->label($this->trans('field_rsvp_note'))
+                    ->limit(40)
                     ->placeholder('—')
                     ->toggleable(isToggledHiddenByDefault: false),
                 IconColumn::make('invite_platform')
@@ -121,7 +134,8 @@ class GuestsRelationManager extends RelationManager
                         default => null,
                     })
                     ->tooltip(fn (?InvitePlatform $state): ?string => $state?->label())
-                    ->placeholder('—'),
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('invite_sent_at')
                     ->label($this->trans('invite_sent'))
                     ->since()
@@ -217,6 +231,41 @@ class GuestsRelationManager extends RelationManager
 
                             Notification::make()
                                 ->title($this->trans('guest_marked_sent'))
+                                ->success()
+                                ->send();
+                        }),
+                    Action::make('markRsvp')
+                        ->label($this->trans('mark_rsvp'))
+                        ->modalHeading($this->trans('mark_rsvp'))
+                        ->modalDescription($this->trans('mark_rsvp_description'))
+                        ->icon('heroicon-o-pencil-square')
+                        ->color('gray')
+                        ->fillForm(fn (Guest $record): array => [
+                            'rsvp_status' => $record->rsvp_status?->value,
+                            'rsvp_note' => $record->rsvp_note,
+                        ])
+                        ->form([
+                            Select::make('rsvp_status')
+                                ->label($this->trans('field_rsvp_status'))
+                                ->options(collect(RsvpStatus::cases())->mapWithKeys(
+                                    fn (RsvpStatus $status) => [$status->value => $status->label()]
+                                ))
+                                ->required()
+                                ->native(false),
+                        ])
+                        ->action(function (array $data, Guest $record): void {
+                            $rsvpStatus = RsvpStatus::from($data['rsvp_status']);
+
+                            $record->update([
+                                'rsvp_status' => $rsvpStatus,
+                                'rsvp_note' => filled($data['rsvp_note']) ? trim($data['rsvp_note']) : null,
+                                'rsvp_responded_at' => now(),
+                                'rsvp_manual_override' => true,
+                                'plus_one_name' => $rsvpStatus === RsvpStatus::Yes ? $record->plus_one_name : null,
+                            ]);
+
+                            Notification::make()
+                                ->title($this->trans('rsvp_marked'))
                                 ->success()
                                 ->send();
                         }),

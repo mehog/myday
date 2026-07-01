@@ -26,6 +26,8 @@ class Guest extends Model
         'token',
         'rsvp_status',
         'rsvp_responded_at',
+        'rsvp_manual_override',
+        'rsvp_note',
         'invite_sent_at',
         'invite_platform',
     ];
@@ -35,6 +37,7 @@ class Guest extends Model
         return [
             'rsvp_status' => RsvpStatus::class,
             'rsvp_responded_at' => 'datetime',
+            'rsvp_manual_override' => 'boolean',
             'invite_sent_at' => 'datetime',
             'invite_platform' => InvitePlatform::class,
         ];

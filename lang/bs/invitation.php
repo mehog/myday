@@ -60,6 +60,9 @@ return [
     'plus_one_notice' => 'Vaša pozivnica uključuje pratnju (jednu osobu).',
     'plus_one_helper_text' => 'Vaša pozivnica podražava pratnju (jednu osobu). Ukoliko dovodite nekoga (npr. supružnik/a), molimo unesite njihovo ime kako bismo mogli prilagoditi raspored.',
     'rsvp_update_helper_text' => 'Odgovor možete promijeniti sve do isteka roka.',
+    'rsvp_leave_message_hint' => 'Možete i poslati poruku mladencima.',
+    'rsvp_note_label' => 'Ostavite poruku (opcionalno)',
+    'rsvp_note_placeholder' => 'Nekoliko riječi za mladence…',
     'edit_response' => 'Izmijeni odgovor',
 
     'add_to_google_calendar' => 'Dodaj u Google kalendar',
