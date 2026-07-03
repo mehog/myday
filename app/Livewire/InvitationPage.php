@@ -40,6 +40,8 @@ class InvitationPage extends Component
 
     public bool $showDemoSwitcher = true;
 
+    public bool $invitationRevealed = false;
+
     public function mount(string $slug, ?string $token = null): void
     {
         $this->event = WeddingEvent::query()

@@ -1,4 +1,11 @@
 <div>
+    @if ($event->reveal_animation)
+        @include('components.invitation.reveals.'.$event->reveal_animation->value, [
+            'event' => $event,
+            'isPreview' => $isPreview,
+        ])
+    @endif
+
     @if ($isPreview)
         <div class="fixed top-0 inset-x-0 z-50 bg-[#c9a227] text-[#1a1208] px-4 py-3 text-sm flex items-center justify-center gap-2 shadow-md">
             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -51,33 +58,40 @@
         $bannerCount = ($isPreview ? 1 : 0) + ($event->is_demo && $showDemoSwitcher ? 1 : 0);
     @endphp
 
-    <x-theme :theme="$activeTheme">
-        <div @class([
-            'invitation-page',
-            'pt-12' => $bannerCount === 1,
-            'pt-24' => $bannerCount === 2,
-        ])>
-            @include('components.invitation.templates.'.$activeTemplate->value, [
-                'event' => $event,
-                'guest' => $guest,
-                'isPersonalLink' => $isPersonalLink,
-            ])
+    <div
+        id="invitation-content"
+        @if (! $isPreview && ! $invitationRevealed && $event->reveal_animation)
+            style="opacity:0;pointer-events:none;transition:opacity .6s ease .2s"
+        @endif
+    >
+        <x-theme :theme="$activeTheme">
+            <div @class([
+                'invitation-page',
+                'pt-12' => $bannerCount === 1,
+                'pt-24' => $bannerCount === 2,
+            ])>
+                @include('components.invitation.templates.'.$activeTemplate->value, [
+                    'event' => $event,
+                    'guest' => $guest,
+                    'isPersonalLink' => $isPersonalLink,
+                ])
 
-            <footer class="py-8 px-6 border-t border-[color-mix(in_srgb,var(--color-text)_10%,transparent)] flex items-center justify-between gap-4">
-                <a href="{{ route('home') }}" class="shrink-0">
-                    <img
-                        src="{{ asset('icons/nd-logo-transparent.webp') }}"
-                        alt="{{ config('app.name', 'NasDan') }}"
-                        class="max-w-[50px] w-full h-auto"
-                        style="max-width: 50px;"
-                    >
-                </a>
-                <x-locale-picker
-                    class="justify-end"
-                    selectClass="text-sm py-1.5 px-3 min-w-[9rem] cursor-pointer rounded-xl border border-[color-mix(in_srgb,var(--color-primary)_40%,transparent)] bg-[var(--color-bg-soft)] text-[var(--color-text)]"
-                    labelClass="text-sm text-[var(--color-text-muted)]"
-                />
-            </footer>
-        </div>
-    </x-theme>
+                <footer class="py-8 px-6 border-t border-[color-mix(in_srgb,var(--color-text)_10%,transparent)] flex items-center justify-between gap-4">
+                    <a href="{{ route('home') }}" class="shrink-0">
+                        <img
+                            src="{{ asset('icons/nd-logo-transparent.webp') }}"
+                            alt="{{ config('app.name', 'NasDan') }}"
+                            class="max-w-[50px] w-full h-auto"
+                            style="max-width: 50px;"
+                        >
+                    </a>
+                    <x-locale-picker
+                        class="justify-end"
+                        selectClass="text-sm py-1.5 px-3 min-w-[9rem] cursor-pointer rounded-xl border border-[color-mix(in_srgb,var(--color-primary)_40%,transparent)] bg-[var(--color-bg-soft)] text-[var(--color-text)]"
+                        labelClass="text-sm text-[var(--color-text-muted)]"
+                    />
+                </footer>
+            </div>
+        </x-theme>
+    </div>
 </div>

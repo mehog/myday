@@ -6,6 +6,8 @@ return [
     'meta_og_description' => 'Join us on :date for our special day.',
 
     'save_the_date' => 'Save the date',
+    'envelope_open' => 'Open invitation',
+    'envelope_tap' => 'Tap to open',
     'counting_down' => 'Countdown',
     'until_i_do' => 'Until we say',
     'i_do' => 'I do',

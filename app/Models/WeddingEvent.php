@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\InvitationReveal;
 use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\LinkMode;
@@ -28,6 +29,7 @@ class WeddingEvent extends Model
         'location_lng',
         'theme',
         'template',
+        'reveal_animation',
         'link_mode',
         'music_url',
         'hero_image',
@@ -47,6 +49,7 @@ class WeddingEvent extends Model
             'is_demo' => 'boolean',
             'theme' => InvitationTheme::class,
             'template' => InvitationTemplate::class,
+            'reveal_animation' => InvitationReveal::class,
             'link_mode' => LinkMode::class,
             'location_lat' => 'decimal:7',
             'location_lng' => 'decimal:7',
@@ -159,22 +162,32 @@ class WeddingEvent extends Model
         return MediaDisk::url($this->hero_image);
     }
 
-    public function getYoutubeEmbedUrlAttribute(): ?string
+    public function getYoutubeVideoIdAttribute(): ?string
     {
         if (! $this->music_url) {
             return null;
         }
 
         $url = $this->music_url;
-        $videoId = null;
 
         if (preg_match('#youtube\.com/embed/([a-zA-Z0-9_-]{11})#', $url, $matches)) {
-            $videoId = $matches[1];
-        } elseif (preg_match('#youtu\.be/([a-zA-Z0-9_-]{11})#', $url, $matches)) {
-            $videoId = $matches[1];
-        } elseif (preg_match('#[?&]v=([a-zA-Z0-9_-]{11})#', $url, $matches)) {
-            $videoId = $matches[1];
+            return $matches[1];
         }
+
+        if (preg_match('#youtu\.be/([a-zA-Z0-9_-]{11})#', $url, $matches)) {
+            return $matches[1];
+        }
+
+        if (preg_match('#[?&]v=([a-zA-Z0-9_-]{11})#', $url, $matches)) {
+            return $matches[1];
+        }
+
+        return null;
+    }
+
+    public function getYoutubeEmbedUrlAttribute(): ?string
+    {
+        $videoId = $this->youtube_video_id;
 
         if (! $videoId) {
             return null;

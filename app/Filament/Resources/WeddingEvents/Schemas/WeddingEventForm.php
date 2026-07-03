@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\WeddingEvents\Schemas;
 
 use App\Models\User;
+use App\InvitationReveal;
 use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\LinkMode;
@@ -56,6 +57,12 @@ class WeddingEventForm
                         Select::make('template')
                             ->options(collect(InvitationTemplate::cases())->mapWithKeys(fn (InvitationTemplate $template) => [$template->value => $template->label()]))
                             ->required()
+                            ->native(false),
+                        Select::make('reveal_animation')
+                            ->label(__('app.reveal_animation'))
+                            ->options(collect(InvitationReveal::cases())->mapWithKeys(fn (InvitationReveal $reveal) => [$reveal->value => $reveal->label()]))
+                            ->nullable()
+                            ->placeholder(__('app.reveal_none'))
                             ->native(false),
                         Select::make('link_mode')
                             ->options(collect(LinkMode::cases())->mapWithKeys(fn (LinkMode $mode) => [$mode->value => $mode->label()]))

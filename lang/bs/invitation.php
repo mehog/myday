@@ -6,6 +6,8 @@ return [
     'meta_og_description' => 'Pridružite nam se :date na naš poseban dan.',
 
     'save_the_date' => 'Sačuvajte datum',
+    'envelope_open' => 'Otvori pozivnicu',
+    'envelope_tap' => 'Dodirnite za otvaranje',
     'counting_down' => 'Odbrojavanje',
     'until_i_do' => 'Do trenutka kada kažemo',
     'i_do' => 'da',
