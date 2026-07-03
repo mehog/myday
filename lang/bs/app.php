@@ -36,6 +36,7 @@ return [
     'reveal_envelope' => 'Koverta',
     'reveal_wax_seal' => 'Pečat',
     'reveal_curtain' => 'Zavjese',
+    'reveal_polaroid' => 'Polaroid pad',
     'share_mode' => 'Način dijeljenja',
     'hero_image' => 'Naslovna fotografija',
     'youtube_song' => 'YouTube pjesma',

@@ -36,6 +36,7 @@ return [
     'reveal_envelope' => 'Envelope',
     'reveal_wax_seal' => 'Wax seal',
     'reveal_curtain' => 'Curtain reveal',
+    'reveal_polaroid' => 'Polaroid drop',
     'share_mode' => 'Sharing mode',
     'hero_image' => 'Hero image',
     'youtube_song' => 'YouTube song',
