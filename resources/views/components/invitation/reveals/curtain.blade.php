@@ -383,6 +383,8 @@
             let heartTimer = null;
             let revealedToLivewire = false;
 
+            document.body.style.overflow = 'hidden';
+
             function showInviteContent() {
                 const el = document.getElementById('invitation-content');
 
@@ -410,6 +412,7 @@
             }
 
             function finishReveal() {
+                document.body.style.overflow = '';
                 showInviteContent();
                 document.dispatchEvent(new CustomEvent('invitation:revealed'));
             }

@@ -157,4 +157,9 @@ return [
     'guest_messages_photos_label' => 'photo(s)',
     'guest_messages_col_photo_count' => ':count photo(s)',
 
+    // Recent RSVP notes widget
+    'recent_rsvp_notes_heading' => 'Latest notes from guests',
+    'recent_rsvp_notes_empty' => 'No guest notes yet',
+    'recent_rsvp_notes_empty_desc' => 'Notes guests leave when RSVPing will appear here',
+
 ];

@@ -3,6 +3,7 @@
 namespace App\Filament\App\Pages;
 
 use App\Filament\App\Resources\MyWeddingResource;
+use App\Filament\App\Widgets\RecentGuestMessagesWidget;
 use App\Filament\App\Widgets\VisitChartWidget;
 use App\Filament\App\Widgets\VisitStatsWidget;
 use App\Filament\App\Widgets\WeddingOverviewWidget;
@@ -52,6 +53,7 @@ class AppDashboard extends BaseDashboard
         }
 
         return [
+            RecentGuestMessagesWidget::class,
             WeddingOverviewWidget::class,
             VisitStatsWidget::class,
             VisitChartWidget::class,

@@ -157,4 +157,9 @@ return [
     'guest_messages_photos_label' => 'fotografija',
     'guest_messages_col_photo_count' => ':count fotografija',
 
+    // Recent RSVP notes widget
+    'recent_rsvp_notes_heading' => 'Posljednje poruke pri RSVP-u',
+    'recent_rsvp_notes_empty' => 'Nema poruka od gostiju',
+    'recent_rsvp_notes_empty_desc' => 'Poruke koje gosti ostave pri odgovaranju pojavit će se ovdje',
+
 ];

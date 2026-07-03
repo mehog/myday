@@ -20,6 +20,7 @@ use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -67,6 +68,11 @@ class GuestsRelationManager extends RelationManager
                     ->label($this->trans('field_plus_one_allowed'))
                     ->helperText($this->trans('field_plus_one_allowed_helper'))
                     ->default(false),
+                Placeholder::make('rsvp_note')
+                    ->label($this->trans('field_rsvp_note'))
+                    ->prose()
+                    ->placeholder('—')
+                    ->hiddenOn('create'),
             ]);
     }
 
@@ -125,6 +131,8 @@ class GuestsRelationManager extends RelationManager
                 TextColumn::make('rsvp_note')
                     ->label($this->trans('field_rsvp_note'))
                     ->limit(40)
+                    ->tooltip(fn (?string $state): ?string => $state)
+                    ->sortable()
                     ->placeholder('—')
                     ->toggleable(isToggledHiddenByDefault: false),
                 IconColumn::make('invite_platform')
