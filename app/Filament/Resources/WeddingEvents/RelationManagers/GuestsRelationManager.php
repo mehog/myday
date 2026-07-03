@@ -15,6 +15,10 @@ use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ForceDeleteAction;
+use Filament\Actions\ForceDeleteBulkAction;
+use Filament\Actions\RestoreAction;
+use Filament\Actions\RestoreBulkAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -27,6 +31,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
@@ -146,6 +151,9 @@ class GuestsRelationManager extends RelationManager
                     ->since()
                     ->sortable()
                     ->placeholder('—'),
+            ])
+            ->filters([
+                TrashedFilter::make(),
             ])
             ->emptyStateIcon(Heroicon::OutlinedUserGroup)
             ->emptyStateHeading($this->trans('empty_heading'))
@@ -269,6 +277,8 @@ class GuestsRelationManager extends RelationManager
                         }),
                     EditAction::make(),
                     DeleteAction::make(),
+                    RestoreAction::make(),
+                    ForceDeleteAction::make(),
                 ])
                     ->label($this->trans('more_actions'))
                     ->icon(Heroicon::OutlinedEllipsisVertical)
@@ -278,6 +288,8 @@ class GuestsRelationManager extends RelationManager
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
+                    RestoreBulkAction::make(),
+                    ForceDeleteBulkAction::make(),
                 ]),
             ]);
     }

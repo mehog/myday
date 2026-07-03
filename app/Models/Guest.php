@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use NotificationChannels\WebPush\HasPushSubscriptions;
 
 class Guest extends Model
 {
-    use HasFactory, HasPushSubscriptions, Notifiable;
+    use HasFactory, HasPushSubscriptions, Notifiable, SoftDeletes;
 
     protected $fillable = [
         'wedding_event_id',

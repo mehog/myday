@@ -4,6 +4,8 @@ namespace App\Filament\Resources\Guests\Pages;
 
 use App\Filament\Resources\Guests\GuestResource;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\ForceDeleteAction;
+use Filament\Actions\RestoreAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditGuest extends EditRecord
@@ -14,6 +16,8 @@ class EditGuest extends EditRecord
     {
         return [
             DeleteAction::make(),
+            RestoreAction::make(),
+            ForceDeleteAction::make(),
         ];
     }
 }
