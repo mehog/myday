@@ -91,8 +91,17 @@
                 };
             }
 
+            // Expose a gesture-safe play trigger so reveal animations can call it
+            // synchronously within the user's tap event — required for iOS autoplay.
+            window.envYtPlayOnGesture = function () {
+                playWhenReady();
+            };
+
+            // Eagerly initialise the player as soon as the API is ready so it is
+            // loaded before the user taps the reveal card.
+            ensureApiThenInit();
+
             document.addEventListener('invitation:revealed', function () {
-                ensureApiThenInit();
                 playWhenReady();
             });
         })();

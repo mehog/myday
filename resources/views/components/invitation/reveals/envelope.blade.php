@@ -495,6 +495,7 @@
                 }
 
                 started = true;
+                window.envYtPlayOnGesture?.();
 
                 if (reduce) {
                     stage.classList.add('env-gone');
