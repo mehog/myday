@@ -1,3 +1,16 @@
+self.addEventListener('install', (event) => {
+    self.skipWaiting();
+});
+
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        Promise.all([
+            self.clients.claim(),
+            self.registration.navigationPreload.disable().catch(() => {}),
+        ]),
+    );
+});
+
 self.addEventListener('push', (event) => {
     if (!event.data) {
         return;
