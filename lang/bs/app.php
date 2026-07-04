@@ -31,6 +31,7 @@ return [
     'template' => 'Izgled',
     'template_classic' => 'Klasičan',
     'template_editorial' => 'Editorial',
+    'template_story' => 'Priča (Story)',
     'reveal_animation' => 'Ulazna animacija',
     'reveal_none' => 'Bez animacije',
     'reveal_envelope' => 'Koverta',

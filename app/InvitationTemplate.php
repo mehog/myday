@@ -6,12 +6,14 @@ enum InvitationTemplate: string
 {
     case Classic = 'classic';
     case Editorial = 'editorial';
+    case Story = 'story';
 
     public function label(): string
     {
         return match ($this) {
             self::Classic => __('app.template_classic'),
             self::Editorial => __('app.template_editorial'),
+            self::Story => __('app.template_story'),
         };
     }
 }

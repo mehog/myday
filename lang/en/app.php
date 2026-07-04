@@ -31,6 +31,7 @@ return [
     'template' => 'Layout',
     'template_classic' => 'Classic',
     'template_editorial' => 'Editorial',
+    'template_story' => 'Story',
     'reveal_animation' => 'Entry animation',
     'reveal_none' => 'No animation',
     'reveal_envelope' => 'Envelope',
