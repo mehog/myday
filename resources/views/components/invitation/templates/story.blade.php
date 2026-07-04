@@ -44,10 +44,13 @@
 
 <div
     class="story-wrap"
+    @story-modal-open.window="modalOpen = true; clearAdvTimer()"
+    @story-modal-close.window="modalOpen = false; animKey++; startAdvTimer()"
     x-data="{
         current: 0,
         total: {{ $slideCount }},
         held: false,
+        modalOpen: false,
         holdTimer: null,
         advTimer: null,
         animKey: 0,
@@ -179,7 +182,7 @@
 
             const duration = this.durations[this.current];
 
-            if (this.held || duration < 0) {
+            if (this.held || this.modalOpen || duration < 0) {
                 return;
             }
 
@@ -380,6 +383,7 @@
                 <section
                     class="story-slide story-slide-gallery"
                     x-data="{ lightbox: null, lightboxTitle: null }"
+                    x-init="$watch('lightbox', v => v ? $dispatch('story-modal-open') : $dispatch('story-modal-close'))"
                     @keydown.escape.window="lightbox = null; lightboxTitle = null"
                 >
                     <div class="story-slide-content story-slide-content-top">
@@ -410,6 +414,7 @@
                     </div>
 
                     <div
+                        x-teleport="body"
                         x-show="lightbox"
                         x-transition.opacity
                         class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4"

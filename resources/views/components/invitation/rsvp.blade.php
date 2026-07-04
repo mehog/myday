@@ -18,6 +18,11 @@
             'push_error_unknown' => __('app.push_error_unknown'),
         ]),
     }"
+    x-init="
+        $watch('pending', v => v ? $dispatch('story-modal-open') : $dispatch('story-modal-close'));
+        $watch('showCalendarModal', v => v ? $dispatch('story-modal-open') : $dispatch('story-modal-close'));
+        $watch('showPushPrompt', v => v ? $dispatch('story-modal-open') : $dispatch('story-modal-close'));
+    "
     @keydown.escape.window="pending = null; showPushPrompt = false; showCalendarModal = false"
     @rsvp-accepted.window="if (subscribeUrl) { showPushPrompt = true; pushError = null; }"
 >
@@ -154,6 +159,7 @@
 
     @if (! ($guest && $guest->hasResponded() && ! $isEditing) && ! ($rsvpSubmitted && $guest && ! $isEditing))
         <div
+            x-teleport="body"
             x-show="pending !== null"
             x-transition.opacity
             class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4"
@@ -235,6 +241,7 @@
     @endif
 
     <div
+        x-teleport="body"
         x-show="showCalendarModal"
         x-transition.opacity
         class="fixed inset-0 z-[105] flex items-center justify-center bg-black/80 p-4"
@@ -281,6 +288,7 @@
 
     @if (! empty($isPersonalLink) && $guest)
         <div
+            x-teleport="body"
             x-show="showPushPrompt && ! subscribed"
             x-transition.opacity
             class="fixed inset-0 z-[110] flex items-center justify-center bg-black/80 p-4"
