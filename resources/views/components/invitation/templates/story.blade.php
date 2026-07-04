@@ -59,6 +59,7 @@
         swipeStartX: 0,
         swipeStartY: 0,
         SWIPE_THRESHOLD: 50,
+        gestureBlocked: false,
 
         init() {
             const el = this.$el;
@@ -66,9 +67,11 @@
 
             el.addEventListener('touchstart', (e) => {
                 if (e.target.closest(INTERACTIVE)) {
+                    this.gestureBlocked = true;
                     return;
                 }
 
+                this.gestureBlocked = false;
                 this.swipeStartX = e.touches[0].clientX;
                 this.swipeStartY = e.touches[0].clientY;
                 this.holdTimer = setTimeout(() => {
@@ -91,6 +94,11 @@
             }, { passive: false });
 
             el.addEventListener('touchend', (e) => {
+                if (this.gestureBlocked) {
+                    this.gestureBlocked = false;
+                    return;
+                }
+
                 const wasHeld = this.held;
                 const endX = e.changedTouches[0].clientX;
                 const deltaX = endX - this.swipeStartX;
@@ -111,6 +119,7 @@
             }, { passive: true });
 
             el.addEventListener('touchcancel', () => {
+                this.gestureBlocked = false;
                 this.held = false;
                 clearTimeout(this.holdTimer);
                 this.holdTimer = null;
@@ -119,9 +128,11 @@
 
             el.addEventListener('mousedown', (e) => {
                 if (e.target.closest(INTERACTIVE)) {
+                    this.gestureBlocked = true;
                     return;
                 }
 
+                this.gestureBlocked = false;
                 this.swipeStartX = e.clientX;
                 this.holdTimer = setTimeout(() => {
                     this.held = true;
@@ -130,6 +141,11 @@
             });
 
             el.addEventListener('mouseup', (e) => {
+                if (this.gestureBlocked) {
+                    this.gestureBlocked = false;
+                    return;
+                }
+
                 const wasHeld = this.held;
                 const deltaX = e.clientX - this.swipeStartX;
                 this.held = false;
