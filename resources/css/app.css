@@ -198,7 +198,6 @@
     transition: transform 0.45s ease;
     will-change: transform;
     cursor: default;
-    touch-action: none;
     user-select: none;
 }
 

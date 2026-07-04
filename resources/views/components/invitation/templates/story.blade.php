@@ -54,9 +54,106 @@
         durations: @js($durations),
         TAP_THRESHOLD: 150,
         swipeStartX: 0,
+        swipeStartY: 0,
         SWIPE_THRESHOLD: 50,
 
         init() {
+            const el = this.$el;
+            const INTERACTIVE = 'button, a, input, textarea, select';
+
+            el.addEventListener('touchstart', (e) => {
+                if (e.target.closest(INTERACTIVE)) {
+                    return;
+                }
+
+                this.swipeStartX = e.touches[0].clientX;
+                this.swipeStartY = e.touches[0].clientY;
+                this.holdTimer = setTimeout(() => {
+                    this.held = true;
+                    this.clearAdvTimer();
+                }, this.TAP_THRESHOLD);
+            }, { passive: true });
+
+            el.addEventListener('touchmove', (e) => {
+                if (!this.holdTimer && !this.held) {
+                    return;
+                }
+
+                const dx = e.touches[0].clientX - this.swipeStartX;
+                const dy = e.touches[0].clientY - this.swipeStartY;
+
+                if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 8) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            el.addEventListener('touchend', (e) => {
+                const wasHeld = this.held;
+                const endX = e.changedTouches[0].clientX;
+                const deltaX = endX - this.swipeStartX;
+                this.held = false;
+                clearTimeout(this.holdTimer);
+                this.holdTimer = null;
+
+                if (wasHeld) {
+                    this.animKey++;
+                    this.startAdvTimer();
+                } else if (Math.abs(deltaX) >= this.SWIPE_THRESHOLD) {
+                    if (deltaX < 0) {
+                        this.next();
+                    } else {
+                        this.goTo(this.current - 1);
+                    }
+                }
+            }, { passive: true });
+
+            el.addEventListener('touchcancel', () => {
+                this.held = false;
+                clearTimeout(this.holdTimer);
+                this.holdTimer = null;
+                this.startAdvTimer();
+            }, { passive: true });
+
+            el.addEventListener('mousedown', (e) => {
+                if (e.target.closest(INTERACTIVE)) {
+                    return;
+                }
+
+                this.swipeStartX = e.clientX;
+                this.holdTimer = setTimeout(() => {
+                    this.held = true;
+                    this.clearAdvTimer();
+                }, this.TAP_THRESHOLD);
+            });
+
+            el.addEventListener('mouseup', (e) => {
+                const wasHeld = this.held;
+                const deltaX = e.clientX - this.swipeStartX;
+                this.held = false;
+                clearTimeout(this.holdTimer);
+                this.holdTimer = null;
+
+                if (wasHeld) {
+                    this.animKey++;
+                    this.startAdvTimer();
+                } else if (Math.abs(deltaX) >= this.SWIPE_THRESHOLD) {
+                    if (deltaX < 0) {
+                        this.next();
+                    } else {
+                        this.goTo(this.current - 1);
+                    }
+                }
+            });
+
+            el.addEventListener('mouseleave', () => {
+                if (this.held || this.holdTimer) {
+                    this.held = false;
+                    clearTimeout(this.holdTimer);
+                    this.holdTimer = null;
+                    this.startAdvTimer();
+                }
+            });
+
             this.startAdvTimer();
         },
 
@@ -94,40 +191,6 @@
                 clearTimeout(this.advTimer);
                 this.advTimer = null;
             }
-        },
-
-        onPointerDown(event) {
-            this.swipeStartX = event.clientX;
-            this.holdTimer = setTimeout(() => {
-                this.held = true;
-                this.clearAdvTimer();
-            }, this.TAP_THRESHOLD);
-        },
-
-        onPointerUp(event) {
-            const wasHeld = this.held;
-            const deltaX = event.clientX - this.swipeStartX;
-            this.held = false;
-            clearTimeout(this.holdTimer);
-            this.holdTimer = null;
-
-            if (wasHeld) {
-                this.animKey++;
-                this.startAdvTimer();
-            } else if (Math.abs(deltaX) >= this.SWIPE_THRESHOLD) {
-                if (deltaX < 0) {
-                    this.next();
-                } else {
-                    this.goTo(this.current - 1);
-                }
-            }
-        },
-
-        onPointerCancel() {
-            this.held = false;
-            clearTimeout(this.holdTimer);
-            this.holdTimer = null;
-            this.startAdvTimer();
         },
     }"
 >
@@ -190,9 +253,6 @@
             class="story-track"
             :class="{ 'story-track-held': held }"
             :style="{ transform: 'translateX(calc(' + (-current) + ' * 100vw))' }"
-            @pointerdown.stop="onPointerDown($event)"
-            @pointerup.stop="onPointerUp($event)"
-            @pointercancel.stop="onPointerCancel()"
         >
             {{-- Slide 1: Hero --}}
             <section class="story-slide story-slide-hero">
