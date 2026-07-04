@@ -95,15 +95,15 @@
                 clearTimeout(this.holdTimer);
                 this.holdTimer = null;
 
-                if (wasHeld) {
-                    this.animKey++;
-                    this.startAdvTimer();
-                } else if (Math.abs(deltaX) >= this.SWIPE_THRESHOLD) {
+                if (Math.abs(deltaX) >= this.SWIPE_THRESHOLD) {
                     if (deltaX < 0) {
                         this.next();
                     } else {
                         this.goTo(this.current - 1);
                     }
+                } else if (wasHeld) {
+                    this.animKey++;
+                    this.startAdvTimer();
                 }
             }, { passive: true });
 
@@ -133,15 +133,15 @@
                 clearTimeout(this.holdTimer);
                 this.holdTimer = null;
 
-                if (wasHeld) {
-                    this.animKey++;
-                    this.startAdvTimer();
-                } else if (Math.abs(deltaX) >= this.SWIPE_THRESHOLD) {
+                if (Math.abs(deltaX) >= this.SWIPE_THRESHOLD) {
                     if (deltaX < 0) {
                         this.next();
                     } else {
                         this.goTo(this.current - 1);
                     }
+                } else if (wasHeld) {
+                    this.animKey++;
+                    this.startAdvTimer();
                 }
             });
 
