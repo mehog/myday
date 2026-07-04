@@ -159,7 +159,6 @@
 
     @if (! ($guest && $guest->hasResponded() && ! $isEditing) && ! ($rsvpSubmitted && $guest && ! $isEditing))
         <div
-            x-teleport="body"
             x-show="pending !== null"
             x-transition.opacity
             class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4"
@@ -241,7 +240,6 @@
     @endif
 
     <div
-        x-teleport="body"
         x-show="showCalendarModal"
         x-transition.opacity
         class="fixed inset-0 z-[105] flex items-center justify-center bg-black/80 p-4"
@@ -288,7 +286,6 @@
 
     @if (! empty($isPersonalLink) && $guest)
         <div
-            x-teleport="body"
             x-show="showPushPrompt && ! subscribed"
             x-transition.opacity
             class="fixed inset-0 z-[110] flex items-center justify-center bg-black/80 p-4"

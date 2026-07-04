@@ -255,7 +255,7 @@
         <div
             class="story-track"
             :class="{ 'story-track-held': held }"
-            :style="{ transform: 'translateX(calc(' + (-current) + ' * 100vw))' }"
+            :style="{ left: 'calc(' + (-current) + ' * 100vw)' }"
         >
             {{-- Slide 1: Hero --}}
             <section class="story-slide story-slide-hero">
@@ -414,7 +414,6 @@
                     </div>
 
                     <div
-                        x-teleport="body"
                         x-show="lightbox"
                         x-transition.opacity
                         class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4"

@@ -195,8 +195,8 @@
     display: flex;
     flex-direction: row;
     height: 100%;
-    transition: transform 0.45s ease;
-    will-change: transform;
+    position: relative;
+    transition: left 0.45s ease;
     cursor: default;
     user-select: none;
 }
