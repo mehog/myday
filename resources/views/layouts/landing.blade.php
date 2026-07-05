@@ -47,6 +47,16 @@
 <body class="landing-page antialiased">
     {{ $slot }}
 
+    <div x-data="invitationReturn()" x-cloak>
+        <a
+            x-show="url"
+            :href="url"
+            class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[#c9a227] text-[#c9a227] bg-[#1a1208]/80 backdrop-blur-sm landing-heading text-sm whitespace-nowrap hover:bg-[#c9a227] hover:text-[#1a1208] transition"
+        >
+            &larr; {{ __('landing.back_to_invitation') }}
+        </a>
+    </div>
+
     @livewireScripts
 </body>
 </html>

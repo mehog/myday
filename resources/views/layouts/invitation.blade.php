@@ -72,6 +72,15 @@
 
     @livewireScripts
 
+    <script>
+        try {
+            localStorage.setItem('nd_invitation_url', JSON.stringify({
+                url: window.location.href,
+                expires: Date.now() + 86400000
+            }));
+        } catch (e) {}
+    </script>
+
     @isset($guest)
         @if (! empty($isPersonalLink) && config('webpush.vapid.public_key'))
             <script>

@@ -31,4 +31,19 @@ document.addEventListener('alpine:init', () => {
             ];
         },
     }));
+
+    Alpine.data('invitationReturn', () => ({
+        url: null,
+        init() {
+            try {
+                const raw = localStorage.getItem('nd_invitation_url');
+                if (raw) {
+                    const data = JSON.parse(raw);
+                    if (data.expires > Date.now()) {
+                        this.url = data.url;
+                    }
+                }
+            } catch (e) {}
+        },
+    }));
 });

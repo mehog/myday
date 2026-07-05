@@ -9,6 +9,7 @@ return [
     'nav_create' => 'Kreiraj pozivnicu',
     'nav_login' => 'Prijavi se',
     'nav_panel' => 'Moj panel',
+    'back_to_invitation' => 'Nazad na pozivnicu',
 
     'hero_title' => 'Vaša vjenčana priča zaslužuje više od slike u chatu',
     'hero_subtitle' => 'Personalizovana web pozivnica sa odbrojavanjem, potvrdom dolaska, planom dana i fotografijama lokacije — spremna za dijeljenje u tri koraka.',

@@ -9,6 +9,7 @@ return [
     'nav_create' => 'Einladung erstellen',
     'nav_login' => 'Anmelden',
     'nav_panel' => 'Mein Panel',
+    'back_to_invitation' => 'Zurück zur Einladung',
 
     'hero_title' => 'Ihre Hochzeitsgeschichte verdient mehr als ein Foto im Chat',
     'hero_subtitle' => 'Eine personalisierte Web-Einladung mit Countdown, RSVP, Tagesablauf und Fotos der Location — in drei Schritten bereit zum Teilen.',

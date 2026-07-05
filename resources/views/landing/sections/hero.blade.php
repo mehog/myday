@@ -22,7 +22,7 @@
                     {{ __('landing.nav_login') }}
                 </a>
             @else
-                <a href="/app" class="text-sm text-[#d4c4a8] hover:text-[#c9a227] transition hidden sm:inline">
+                <a href="/app" class="text-sm text-[#d4c4a8] hover:text-[#c9a227] transition sm:inline">
                     {{ __('landing.nav_panel') }}
                 </a>
             @endguest
