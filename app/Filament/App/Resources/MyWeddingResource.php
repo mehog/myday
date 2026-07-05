@@ -32,6 +32,8 @@ class MyWeddingResource extends Resource
 
     protected static ?string $slug = 'moje-vjencanje';
 
+    protected static ?int $navigationSort = 10;
+
     public static function getNavigationLabel(): string
     {
         return __('app.nav_my_wedding');

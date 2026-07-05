@@ -36,6 +36,8 @@ class PushNotificationsResource extends Resource
 
     protected static ?string $slug = 'push-notifications';
 
+    protected static ?int $navigationSort = 30;
+
     public static function getNavigationLabel(): string
     {
         return __('app.nav_push_notifications');

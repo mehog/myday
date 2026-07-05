@@ -5,11 +5,13 @@ namespace App\Livewire\Onboarding;
 use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\LinkMode;
+use App\Models\Referral;
 use App\Models\User;
 use App\Models\WeddingEvent;
 use App\Support\Locale;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -106,6 +108,19 @@ class WeddingOnboarding extends Component
                 'link_mode' => LinkMode::Public,
                 'is_active' => false,
             ]);
+
+            $referrerId = null;
+            $referralCode = Cookie::get(config('referral.cookie_name'));
+
+            if (is_string($referralCode) && $referralCode !== '') {
+                $referrer = Referral::userByReferralCode($referralCode);
+
+                if ($referrer !== null && $referrer->id !== $user->id) {
+                    $referrerId = $referrer->id;
+                }
+            }
+
+            $user->createReferralAccount($referrerId);
 
             return $user;
         });

@@ -4,6 +4,7 @@ use App\Actions\StorePushSubscriptionAction;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\DownloadGuestPhotosController;
 use App\Http\Controllers\InvitationManifestController;
+use App\Http\Controllers\ReferralLinkController;
 use App\Http\Controllers\WeddingEventCalendarController;
 use App\Livewire\GuestContactPage;
 use App\Livewire\GuestPushNotificationsPage;
@@ -22,6 +23,9 @@ Route::post('/lang/{locale}', function (string $locale) {
 
     return redirect()->back();
 })->name('lang.switch');
+
+Route::get('/'.(config('referral.route_prefix') ?: 'ref').'/{code}', ReferralLinkController::class)
+    ->name('referral.link');
 
 Route::get('/onboarding', WeddingOnboarding::class)->name('onboarding');
 

@@ -34,7 +34,7 @@ class GuestMessagesResource extends Resource
 
     protected static ?string $slug = 'poruke-gostiju';
 
-    protected static ?int $navigationSort = 99;
+    protected static ?int $navigationSort = 40;
 
     public static function getNavigationLabel(): string
     {

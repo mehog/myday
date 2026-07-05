@@ -2,28 +2,28 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Traits\Referrable;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'is_admin', 'locale'])]
+#[Fillable(['name', 'email', 'password', 'is_admin', 'locale', 'referral_fee_percentage', 'paypal_email', 'bank_account_info'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, Referrable;
 
     /**
-     * Get the attributes that should be cast.
-     *
      * @return array<string, string>
      */
     protected function casts(): array
@@ -32,12 +32,23 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerif
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
+            'referral_fee_percentage' => 'decimal:2',
         ];
     }
 
     public function weddingEvent(): HasOne
     {
         return $this->hasOne(WeddingEvent::class);
+    }
+
+    public function referralPayouts(): HasMany
+    {
+        return $this->hasMany(ReferralPayout::class, 'referrer_id');
+    }
+
+    public function referralFeePercentage(): float
+    {
+        return (float) ($this->referral_fee_percentage ?? config('referral.default_fee', 10));
     }
 
     public function canAccessPanel(Panel $panel): bool
