@@ -17,7 +17,7 @@
 
                     <div class="mb-8 text-center">
                         <a
-                            href="{{ route('invitation.guest', [$event->slug, $guest->token]) }}"
+                            href="{{ route('invitation.guest', [$event->slug, $guest->token]) }}#rsvp"
                             class="text-sm text-[var(--color-primary)] hover:underline transition"
                         >
                             &larr; {{ __('invitation.back_to_invitation') }}

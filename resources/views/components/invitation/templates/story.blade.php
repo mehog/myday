@@ -173,6 +173,11 @@
                 }
             });
 
+            if (window.location.hash === '#rsvp') {
+                this.current = this.total - 1;
+                history.replaceState(null, '', window.location.pathname);
+            }
+
             this.startAdvTimer();
         },
 
