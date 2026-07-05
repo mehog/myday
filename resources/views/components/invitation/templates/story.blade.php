@@ -288,7 +288,7 @@
                 <div class="story-slide-overlay"></div>
 
                 <div class="story-slide-content story-slide-content-bottom">
-                    <p class="story-eyebrow">{{ __('invitation.save_the_date') }}</p>
+                    <p class="story-eyebrow">{{ $event->isWeddingDay() ? __('invitation.today_is_the_day_eyebrow') : __('invitation.save_the_date') }}</p>
                     <h1 class="story-title invitation-heading">
                         {{ $event->groom_name }}
                         <span class="story-amp">&</span>
@@ -306,29 +306,39 @@
             {{-- Slide 2: Countdown --}}
             <section
                 class="story-slide story-slide-countdown"
-                x-data="countdown('{{ $event->wedding_date->toIso8601String() }}', @js([
-                    'days' => __('invitation.days'),
-                    'hours' => __('invitation.hours'),
-                    'minutes' => __('invitation.minutes'),
-                    'seconds' => __('invitation.seconds'),
-                ]))"
-                x-init="start()"
+                @unless ($event->isWeddingDay())
+                    x-data="countdown('{{ $event->wedding_date->toIso8601String() }}', @js([
+                        'days' => __('invitation.days'),
+                        'hours' => __('invitation.hours'),
+                        'minutes' => __('invitation.minutes'),
+                        'seconds' => __('invitation.seconds'),
+                    ]))"
+                    x-init="start()"
+                @endunless
             >
                 <div class="story-slide-content story-slide-content-center">
-                    <p class="story-eyebrow story-eyebrow-muted">{{ __('invitation.counting_down') }}</p>
-                    <h2 class="story-section-title invitation-heading">
-                        {{ __('invitation.until_i_do') }}
-                        <span class="text-[var(--color-primary)]">{{ __('invitation.i_do') }}</span>
-                    </h2>
+                    @if ($event->isWeddingDay())
+                        <p class="story-eyebrow story-eyebrow-muted">{{ __('invitation.today_is_the_day_eyebrow') }}</p>
+                        <h2 class="story-section-title invitation-heading mb-6">
+                            {{ __('invitation.today_is_the_day_title') }}
+                        </h2>
+                        <p class="story-motto invitation-body">{{ __('invitation.today_is_the_day_subtitle') }}</p>
+                    @else
+                        <p class="story-eyebrow story-eyebrow-muted">{{ __('invitation.counting_down') }}</p>
+                        <h2 class="story-section-title invitation-heading">
+                            {{ __('invitation.until_i_do') }}
+                            <span class="text-[var(--color-primary)]">{{ __('invitation.i_do') }}</span>
+                        </h2>
 
-                    <div class="story-countdown-grid">
-                        <template x-for="(item, index) in units" :key="index">
-                            <div class="story-countdown-unit">
-                                <div class="story-countdown-value invitation-heading" x-text="item.value"></div>
-                                <div class="story-countdown-label" x-text="item.label"></div>
-                            </div>
-                        </template>
-                    </div>
+                        <div class="story-countdown-grid">
+                            <template x-for="(item, index) in units" :key="index">
+                                <div class="story-countdown-unit">
+                                    <div class="story-countdown-value invitation-heading" x-text="item.value"></div>
+                                    <div class="story-countdown-label" x-text="item.label"></div>
+                                </div>
+                            </template>
+                        </div>
+                    @endif
 
                     @if ($event->motto)
                         <p class="story-motto invitation-body">{{ $event->motto }}</p>

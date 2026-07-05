@@ -6,6 +6,9 @@ return [
     'meta_og_description' => 'Pridružite nam se :date na naš poseban dan.',
 
     'save_the_date' => 'Sačuvajte datum',
+    'today_is_the_day_eyebrow' => 'Danas je taj dan',
+    'today_is_the_day_title' => 'Danas izgovaramo DA',
+    'today_is_the_day_subtitle' => 'Dobrodošli i hvala vam što ste s nama.',
     'envelope_open' => 'Otvori pozivnicu',
     'envelope_tap' => 'Dodirnite za otvaranje',
     'counting_down' => 'Odbrojavanje',

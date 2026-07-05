@@ -157,6 +157,11 @@ class WeddingEvent extends Model
         return $this->user_id !== null && $this->user_id === $user->id;
     }
 
+    public function isWeddingDay(): bool
+    {
+        return now()->isSameDay($this->wedding_date);
+    }
+
     public function getHeroImageUrlAttribute(): ?string
     {
         return MediaDisk::url($this->hero_image);

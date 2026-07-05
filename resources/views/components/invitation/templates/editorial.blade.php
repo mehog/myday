@@ -19,7 +19,7 @@
     <div class="editorial-hero-panel flex flex-1 items-center justify-center bg-[var(--color-bg)] px-8 py-16 lg:px-14 lg:py-20">
         <div class="max-w-md text-center lg:text-left invitation-fade-in">
             <p class="text-xs sm:text-sm uppercase tracking-[0.35em] text-[var(--color-text-muted)] mb-6">
-                {{ __('invitation.save_the_date') }}
+                {{ $event->isWeddingDay() ? __('invitation.today_is_the_day_eyebrow') : __('invitation.save_the_date') }}
             </p>
             <h1 class="invitation-heading text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[var(--color-text)] leading-tight mb-6">
                 {{ $event->groom_name }}
@@ -41,30 +41,44 @@
 {{-- Countdown: inline numbers --}}
 <section
     class="invitation-section editorial-countdown py-20 px-6"
-    x-data="countdown('{{ $event->wedding_date->toIso8601String() }}', @js([
-        'days' => __('invitation.days'),
-        'hours' => __('invitation.hours'),
-        'minutes' => __('invitation.minutes'),
-        'seconds' => __('invitation.seconds'),
-    ]))"
-    x-init="start()"
+    @unless ($event->isWeddingDay())
+        x-data="countdown('{{ $event->wedding_date->toIso8601String() }}', @js([
+            'days' => __('invitation.days'),
+            'hours' => __('invitation.hours'),
+            'minutes' => __('invitation.minutes'),
+            'seconds' => __('invitation.seconds'),
+        ]))"
+        x-init="start()"
+    @endunless
 >
     <div class="max-w-5xl mx-auto text-center invitation-fade-in">
-        <p class="text-sm uppercase tracking-[0.3em] text-[var(--color-text-muted)] mb-3">
-            {{ __('invitation.counting_down') }}
-        </p>
-        <h2 class="invitation-heading text-3xl sm:text-4xl text-[var(--color-text)] mb-12">
-            {{ __('invitation.until_i_do') }} <span class="text-[var(--color-primary)]">{{ __('invitation.i_do') }}</span>
-        </h2>
+        @if ($event->isWeddingDay())
+            <p class="text-sm uppercase tracking-[0.3em] text-[var(--color-text-muted)] mb-3">
+                {{ __('invitation.today_is_the_day_eyebrow') }}
+            </p>
+            <h2 class="invitation-heading text-3xl sm:text-4xl text-[var(--color-text)] mb-6">
+                {{ __('invitation.today_is_the_day_title') }}
+            </h2>
+            <p class="invitation-body text-lg text-[var(--color-text-muted)] max-w-xl mx-auto">
+                {{ __('invitation.today_is_the_day_subtitle') }}
+            </p>
+        @else
+            <p class="text-sm uppercase tracking-[0.3em] text-[var(--color-text-muted)] mb-3">
+                {{ __('invitation.counting_down') }}
+            </p>
+            <h2 class="invitation-heading text-3xl sm:text-4xl text-[var(--color-text)] mb-12">
+                {{ __('invitation.until_i_do') }} <span class="text-[var(--color-primary)]">{{ __('invitation.i_do') }}</span>
+            </h2>
 
-        <div class="editorial-countdown-row flex flex-wrap items-start justify-center gap-8 sm:gap-12 lg:gap-16">
-            <template x-for="(item, index) in units" :key="index">
-                <div class="editorial-countdown-unit text-center min-w-[4.5rem] sm:min-w-[5.5rem]">
-                    <div class="invitation-heading text-5xl sm:text-6xl lg:text-7xl font-semibold text-[var(--color-primary)] leading-none" x-text="item.value"></div>
-                    <div class="mt-3 text-xs uppercase tracking-[0.25em] text-[var(--color-text-muted)]" x-text="item.label"></div>
-                </div>
-            </template>
-        </div>
+            <div class="editorial-countdown-row flex flex-wrap items-start justify-center gap-8 sm:gap-12 lg:gap-16">
+                <template x-for="(item, index) in units" :key="index">
+                    <div class="editorial-countdown-unit text-center min-w-[4.5rem] sm:min-w-[5.5rem]">
+                        <div class="invitation-heading text-5xl sm:text-6xl lg:text-7xl font-semibold text-[var(--color-primary)] leading-none" x-text="item.value"></div>
+                        <div class="mt-3 text-xs uppercase tracking-[0.25em] text-[var(--color-text-muted)]" x-text="item.label"></div>
+                    </div>
+                </template>
+            </div>
+        @endif
 
         @if ($event->motto)
             <p class="invitation-body text-lg text-[var(--color-text-muted)] italic mt-12 max-w-xl mx-auto">

@@ -16,7 +16,7 @@
 
     <div class="relative z-10 w-full max-w-4xl mx-auto px-6 pb-16 pt-32 text-center invitation-fade-in">
         <p class="text-sm uppercase tracking-[0.35em] text-[var(--color-text-muted)] mb-4">
-            {{ __('invitation.save_the_date') }}
+            {{ $event->isWeddingDay() ? __('invitation.today_is_the_day_eyebrow') : __('invitation.save_the_date') }}
         </p>
         <h1 class="invitation-heading text-5xl sm:text-6xl md:text-7xl font-semibold text-[var(--color-text)] mb-4">
             {{ $event->groom_name }}

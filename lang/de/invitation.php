@@ -6,6 +6,9 @@ return [
     'meta_og_description' => 'Feiern Sie mit uns am :date unseren besonderen Tag.',
 
     'save_the_date' => 'Save the date',
+    'today_is_the_day_eyebrow' => 'Heute ist der Tag',
+    'today_is_the_day_title' => 'Heute heiraten wir!',
+    'today_is_the_day_subtitle' => 'Willkommen und danke, dass ihr dabei seid.',
     'envelope_open' => 'Einladung öffnen',
     'envelope_tap' => 'Tippen zum Öffnen',
     'counting_down' => 'Countdown',

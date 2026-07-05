@@ -27,14 +27,16 @@
     @rsvp-accepted.window="if (subscribeUrl) { showPushPrompt = true; pushError = null; }"
 >
     <div class="max-w-xl mx-auto text-center invitation-fade-in">
-        <p class="text-sm uppercase tracking-[0.3em] text-[var(--color-text-muted)] mb-3">{{ __('invitation.rsvp') }}</p>
-        <h2 class="invitation-heading text-4xl text-[var(--color-text)] mb-4">{{ __('invitation.confirm_attendance') }}</h2>
+        @unless ($event->isWeddingDay())
+            <p class="text-sm uppercase tracking-[0.3em] text-[var(--color-text-muted)] mb-3">{{ __('invitation.rsvp') }}</p>
+            <h2 class="invitation-heading text-4xl text-[var(--color-text)] mb-4">{{ __('invitation.confirm_attendance') }}</h2>
 
-        @if ($event->rsvp_deadline)
-            <p class="invitation-body text-[var(--color-text-muted)] mb-8">
-                {{ __('invitation.respond_by', ['date' => $event->rsvp_deadline->translatedFormat('j. F Y.')]) }}
-            </p>
-        @endif
+            @if ($event->rsvp_deadline)
+                <p class="invitation-body text-[var(--color-text-muted)] mb-8">
+                    {{ __('invitation.respond_by', ['date' => $event->rsvp_deadline->translatedFormat('j. F Y.')]) }}
+                </p>
+            @endif
+        @endunless
 
         @if ($guest && $guest->hasResponded() && ! $isEditing)
             <div class="rounded-2xl border border-[var(--color-primary)]/30 bg-[var(--color-bg-soft)]/80 px-6 py-8">
