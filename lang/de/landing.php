@@ -39,16 +39,16 @@ return [
     'interaction_3_text' => 'Gäste laden Fotos vom Hochzeitstag und den Tagen danach hoch — 30 Tage nach der Feier, alles an einem Ort für Sie.',
 
     'steps_title' => 'Wie funktioniert es?',
-    'steps_subtitle' => 'Erstellen Sie Ihre Einladung in drei einfachen Schritten.',
+    'steps_subtitle' => 'Erstellen Sie Ihre Einladung selbst online in drei einfachen Schritten.',
 
-    'step_1_title' => 'Formular ausfüllen',
-    'step_1_text' => 'Senden Sie uns grundlegende Informationen über das Paar, das Datum und Ihre Wünsche.',
+    'step_1_title' => 'Konto erstellen',
+    'step_1_text' => 'Registrieren Sie sich und geben Sie Paardaten, Hochzeitsdatum und Thema ein.',
 
-    'step_2_title' => 'Wir erstellen die Einladung',
-    'step_2_text' => 'Wir gestalten und bereiten Ihre personalisierte Web-Einladung vor.',
+    'step_2_title' => 'Link sofort erhalten',
+    'step_2_text' => 'Ihr Einladungslink erscheint sofort in Ihrem Panel. Sie können jederzeit eine Vorschau ansehen — er wird freigeschaltet, sobald die Zahlung bestätigt und von unserem Team aktiviert wurde.',
 
-    'step_3_title' => 'Link teilen',
-    'step_3_text' => 'Senden Sie einen Link an alle Gäste — oder personalisierte Links für jeden einzelnen.',
+    'step_3_title' => 'Mit Gästen teilen',
+    'step_3_text' => 'Senden Sie einen Link an alle — oder personalisierte Links für jeden Gast per WhatsApp, Viber oder Telegram.',
 
     'demo_title' => 'Sehen Sie, wie es aussieht',
     'demo_subtitle' => 'Öffnen Sie eine Demo-Einladung und erleben Sie, was Ihre Gäste sehen werden.',

@@ -39,16 +39,16 @@ return [
     'interaction_3_text' => 'Guests upload photos from the wedding day and the days that follow — for 30 days after the celebration, all in one place for you.',
 
     'steps_title' => 'How does it work?',
-    'steps_subtitle' => 'Create your invitation in three simple steps.',
+    'steps_subtitle' => 'Create your invitation yourself online in three simple steps.',
 
-    'step_1_title' => 'Fill in the form',
-    'step_1_text' => 'Send us basic information about the couple, date and your preferences.',
+    'step_1_title' => 'Create your account',
+    'step_1_text' => 'Sign up and enter the couple\'s details, wedding date, and choose a theme.',
 
-    'step_2_title' => 'We create the invitation',
-    'step_2_text' => 'We design and prepare your personalized web invitation.',
+    'step_2_title' => 'Get your link right away',
+    'step_2_text' => 'Your invitation link appears immediately in your panel. Preview it anytime — it goes live once payment is confirmed and our team activates it.',
 
-    'step_3_title' => 'Share the link',
-    'step_3_text' => 'Send one link to all guests — or personalized links for each one.',
+    'step_3_title' => 'Share with guests',
+    'step_3_text' => 'Send one link to everyone — or personalized links for each guest via WhatsApp, Viber, or Telegram.',
 
     'demo_title' => 'See what it looks like',
     'demo_subtitle' => 'Open a demo invitation and experience what your guests will see.',

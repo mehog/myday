@@ -39,16 +39,16 @@ return [
     'interaction_3_text' => 'Gosti uploaduju fotografije sa dana vjenčanja i dana nakon toga — 30 dana nakon proslave, sve na jednom mjestu za vas.',
 
     'steps_title' => 'Kako funkcionira?',
-    'steps_subtitle' => 'Napravite svoju pozivnicu u tri jednostavna koraka.',
+    'steps_subtitle' => 'Napravite pozivnicu sami online u tri jednostavna koraka.',
 
-    'step_1_title' => 'Popunite formular',
-    'step_1_text' => 'Pošaljite nam osnovne informacije o paru, datumu i vašim željama.',
+    'step_1_title' => 'Kreirajte račun',
+    'step_1_text' => 'Registrujte se i unesite podatke o paru, datum vjenčanja i odaberite temu pozivnice.',
 
-    'step_2_title' => 'Mi kreiramo pozivnicu',
-    'step_2_text' => 'Dizajniramo i pripremamo vašu personalizovanu web pozivnicu.',
+    'step_2_title' => 'Odmah dobijete link',
+    'step_2_text' => 'Link vaše pozivnice odmah je dostupan u panelu. Možete je pregledati bilo kada — postaje aktivna nakon potvrde uplate i odobrenja administratora.',
 
-    'step_3_title' => 'Dijelite link',
-    'step_3_text' => 'Pošaljite jedan link svim gostima — ili personalizovane linkove za svakog.',
+    'step_3_title' => 'Dijelite s gostima',
+    'step_3_text' => 'Pošaljite jedan link svima — ili personalizovane linkove svakom gostu putem WhatsAppa, Vibera ili Telegrama.',
 
     'demo_title' => 'Pogledajte kako izgleda',
     'demo_subtitle' => 'Otvorite demo pozivnicu i doživite iskustvo vaših gostiju.',

@@ -5,6 +5,7 @@ namespace App\Filament\App\Pages;
 use App\Support\Clipboard;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
@@ -74,6 +75,29 @@ class ReferralsPage extends Page
         }
 
         return [
+            ActionGroup::make([
+                Action::make('qrA4')
+                    ->label(__('referrals.qr_format_a4'))
+                    ->icon('heroicon-o-document')
+                    ->url(route('referrals.qr-code.download', ['format' => 'a4']), shouldOpenInNewTab: true),
+                Action::make('qrA5')
+                    ->label(__('referrals.qr_format_a5'))
+                    ->icon('heroicon-o-document')
+                    ->url(route('referrals.qr-code.download', ['format' => 'a5']), shouldOpenInNewTab: true),
+                Action::make('qrLetter')
+                    ->label(__('referrals.qr_format_letter'))
+                    ->icon('heroicon-o-document')
+                    ->url(route('referrals.qr-code.download', ['format' => 'letter']), shouldOpenInNewTab: true),
+            ])
+                ->label(__('referrals.download_qr'))
+                ->icon('heroicon-o-qr-code')
+                ->color('primary')
+                ->button(),
+            Action::make('downloadBrochure')
+                ->label(__('referrals.download_brochure'))
+                ->icon('heroicon-o-newspaper')
+                ->color('gray')
+                ->url(route('referrals.brochure.download'), shouldOpenInNewTab: true),
             Action::make('copyLink')
                 ->label(__('referrals.copy_link'))
                 ->icon('heroicon-o-clipboard')

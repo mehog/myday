@@ -2,7 +2,9 @@
 
 use App\Actions\StorePushSubscriptionAction;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\DownloadBrochureController;
 use App\Http\Controllers\DownloadGuestPhotosController;
+use App\Http\Controllers\DownloadReferralQrCodeController;
 use App\Http\Controllers\InvitationManifestController;
 use App\Http\Controllers\ReferralLinkController;
 use App\Http\Controllers\WeddingEventCalendarController;
@@ -71,6 +73,14 @@ Route::get('/robots.txt', function () {
 Route::get('/app-api/guest-messages/photos/download/{message?}', DownloadGuestPhotosController::class)
     ->middleware(['auth', 'verified'])
     ->name('guest-messages.photos.download');
+
+Route::get('/app-api/referrals/qr-code/download/{format?}', DownloadReferralQrCodeController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('referrals.qr-code.download');
+
+Route::get('/app-api/referrals/brochure/download', DownloadBrochureController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('referrals.brochure.download');
 
 Route::get('/e/{slug}/calendar.ics', WeddingEventCalendarController::class)->name('invitation.ics');
 Route::get('/e/{slug}/{token}/manifest.webmanifest', InvitationManifestController::class)->name('invitation.manifest');
