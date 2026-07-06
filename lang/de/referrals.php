@@ -7,7 +7,8 @@ return [
     'page_subheading' => 'Verdienen Sie :fee% Provision, wenn jemand, den Sie empfehlen, seine Hochzeitseinladung aktiviert.',
     'your_link_label' => 'Ihr Empfehlungslink',
     'fee_badge' => ':fee% Provision',
-    'link_help' => 'Teilen Sie diesen Link mit Paaren, die ihre Hochzeit planen. Wenn sie sich registrieren und ihre Einladung aktiviert wird, verdienen Sie Provision.',
+    'buyer_discount_badge' => '15% Rabatt für Ihre Empfehlungen',
+    'link_help' => 'Teilen Sie diesen Link mit Paaren, die ihre Hochzeit planen. Sie erhalten 15% Rabatt auf jedes Paket, und wenn sie sich registrieren und ihre Einladung aktiviert wird, verdienen Sie Provision.',
     'payout_info_hint' => 'Fügen Sie Ihre PayPal- oder Bankdaten in Ihrem Profil hinzu, damit wir Ihnen am Monatsende auszahlen können.',
     'payout_info_link' => 'Auszahlungsdetails bearbeiten',
     'copy_link' => 'Link kopieren',
@@ -18,7 +19,7 @@ return [
     'qr_format_a5' => 'A5 Flyer',
     'qr_format_letter' => 'US Letter',
     'qr_pdf_heading' => 'Planen Sie Ihre Hochzeit mit NasDan',
-    'qr_pdf_instructions' => 'Scannen Sie diesen Code, um digitale Hochzeitseinladungen zu entdecken und sich über unser Empfehlungsprogramm anzumelden.',
+    'qr_pdf_instructions' => 'Scannen Sie diesen Code, um digitale Hochzeitseinladungen zu entdecken und sich über unser Empfehlungsprogramm anzumelden — Paare erhalten 15% Rabatt auf jedes Paket.',
     'qr_pdf_link_label' => 'Oder besuchen Sie diesen Link',
     'qr_pdf_footer' => 'Powered by NasDan',
 

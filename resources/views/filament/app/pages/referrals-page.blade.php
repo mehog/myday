@@ -37,9 +37,14 @@
                         {{ $this->getReferralLink() }}
                     </p>
                 </div>
-                <x-filament::badge color="success">
-                    {{ __('referrals.fee_badge', ['fee' => number_format($this->getReferralFeePercentage(), 0)]) }}
-                </x-filament::badge>
+                <div class="flex flex-wrap gap-2">
+                    <x-filament::badge color="success">
+                        {{ __('referrals.fee_badge', ['fee' => number_format($this->getReferralFeePercentage(), 0)]) }}
+                    </x-filament::badge>
+                    <x-filament::badge color="warning">
+                        {{ __('referrals.buyer_discount_badge') }}
+                    </x-filament::badge>
+                </div>
             </div>
             <p class="mt-4 text-sm text-gray-600 dark:text-gray-300">
                 {{ __('referrals.link_help') }}

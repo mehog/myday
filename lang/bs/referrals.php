@@ -7,7 +7,8 @@ return [
     'page_subheading' => 'Zaradite :fee% provizije kada neko koga preporučite aktivira svoju vjenčanu pozivnicu.',
     'your_link_label' => 'Vaš referral link',
     'fee_badge' => ':fee% provizije',
-    'link_help' => 'Podijelite ovaj link parovima koji planiraju vjenčanje. Kada se registruju i njihova pozivnica bude aktivirana, zarađujete proviziju.',
+    'buyer_discount_badge' => '15% popusta za vaše preporuke',
+    'link_help' => 'Podijelite ovaj link parovima koji planiraju vjenčanje. Oni dobijaju 15% popusta na bilo koji paket, a kada se registruju i njihova pozivnica bude aktivirana, zarađujete proviziju.',
     'payout_info_hint' => 'Dodajte PayPal ili bankovne podatke u profil kako bismo vam mogli isplatiti na kraju mjeseca.',
     'payout_info_link' => 'Uredi podatke za isplatu',
     'copy_link' => 'Kopiraj link',
@@ -18,7 +19,7 @@ return [
     'qr_format_a5' => 'A5 letak',
     'qr_format_letter' => 'US Letter',
     'qr_pdf_heading' => 'Planirajte vjenčanje s NašDan',
-    'qr_pdf_instructions' => 'Skenirajte ovaj kod da istražite digitalne vjenčane pozivnice i registrujte se preko našeg referral programa.',
+    'qr_pdf_instructions' => 'Skenirajte ovaj kod da istražite digitalne vjenčane pozivnice i registrujte se preko našeg referral programa — parovi dobijaju 15% popusta na bilo koji paket.',
     'qr_pdf_link_label' => 'Ili posjetite ovaj link',
     'qr_pdf_footer' => 'Pokreće NašDan',
 
