@@ -12,6 +12,7 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -41,6 +42,10 @@ class AppPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::hex('#c9a227'),
             ])
+            ->renderHook(
+                PanelsRenderHook::HEAD_START,
+                fn () => view('components.google-analytics'),
+            )
             ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\Filament\App\Resources')
             ->discoverPages(in: app_path('Filament/App/Pages'), for: 'App\Filament\App\Pages')
             ->pages([
