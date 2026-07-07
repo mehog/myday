@@ -28,6 +28,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
@@ -37,6 +38,7 @@ use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\HtmlString;
 
 class GuestsRelationManager extends RelationManager
 {
@@ -193,15 +195,24 @@ class GuestsRelationManager extends RelationManager
                     })
                     ->fillForm(fn (): array => $this->getOwnerRecord()->theme->placeCardColors())
                     ->form([
-                        ColorPicker::make('bg')
-                            ->label($this->trans('place_cards_color_bg'))
-                            ->required(),
-                        ColorPicker::make('text')
-                            ->label($this->trans('place_cards_color_text'))
-                            ->required(),
-                        ColorPicker::make('accent')
-                            ->label($this->trans('place_cards_color_accent'))
-                            ->required(),
+                        Placeholder::make('place_cards_preview')
+                            ->hiddenLabel()
+                            ->content(fn (): HtmlString => new HtmlString(
+                                view('components.place-card-preview')->render()
+                            )),
+                        Section::make()
+                            ->columns(3)
+                            ->schema([
+                                ColorPicker::make('bg')
+                                    ->label($this->trans('place_cards_color_bg'))
+                                    ->required(),
+                                ColorPicker::make('text')
+                                    ->label($this->trans('place_cards_color_text'))
+                                    ->required(),
+                                ColorPicker::make('accent')
+                                    ->label($this->trans('place_cards_color_accent'))
+                                    ->required(),
+                            ]),
                         Placeholder::make('place_cards_print_hint')
                             ->hiddenLabel()
                             ->content($this->trans('place_cards_print_hint')),
