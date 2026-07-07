@@ -3,11 +3,14 @@
 namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\PushNotificationsResource\Pages\CreatePushNotification;
+use App\Filament\App\Resources\PushNotificationsResource\Pages\EditPushNotification;
 use App\Filament\App\Resources\PushNotificationsResource\Pages\ListPushNotifications;
 use App\Models\PushNotificationLog;
 use App\PushNotificationRecipientType;
 use App\PushNotificationStatus;
 use BackedEnum;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Radio;
@@ -138,11 +141,18 @@ class PushNotificationsResource extends Resource
                     ->label(__('app.push_notifications_failed_reason'))
                     ->limit(50)
                     ->placeholder('—')
+                    ->tooltip(fn (PushNotificationLog $record): ?string => $record->failed_reason)
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label(__('app.push_notifications_created_at'))
                     ->dateTime()
                     ->sortable(),
+            ])
+            ->recordActions([
+                EditAction::make()
+                    ->label(__('app.push_notifications_edit')),
+                DeleteAction::make()
+                    ->successNotificationTitle(__('app.push_notifications_deleted')),
             ])
             ->defaultSort('created_at', 'desc');
     }
@@ -161,6 +171,7 @@ class PushNotificationsResource extends Resource
         return [
             'index' => ListPushNotifications::route('/'),
             'create' => CreatePushNotification::route('/create'),
+            'edit' => EditPushNotification::route('/{record}/edit'),
         ];
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\StorePushSubscriptionAction;
+use App\Actions\StoreUserPushSubscriptionAction;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\DownloadBrochureController;
 use App\Http\Controllers\DownloadGuestPhotosController;
@@ -89,3 +90,6 @@ Route::get('/e/{slug}/{token}/push', GuestPushNotificationsPage::class)->name('i
 Route::get('/e/{slug}', InvitationPage::class)->name('invitation.show');
 Route::get('/e/{slug}/{token}', InvitationPage::class)->name('invitation.guest');
 Route::post('/push/subscribe/{guest:token}', StorePushSubscriptionAction::class)->name('push.subscribe');
+Route::post('/push/user/subscribe', StoreUserPushSubscriptionAction::class)
+    ->middleware(['auth', 'verified'])
+    ->name('push.user.subscribe');

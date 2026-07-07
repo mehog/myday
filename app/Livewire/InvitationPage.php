@@ -6,6 +6,7 @@ use App\InvitationReveal;
 use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\Jobs\RecordLinkVisit;
+use App\Jobs\SendCoupleRsvpNotificationJob;
 use App\LinkType;
 use App\Models\Guest;
 use App\Models\WeddingEvent;
@@ -140,6 +141,10 @@ class InvitationPage extends Component
 
         $this->rsvpSubmitted = true;
         $this->isEditing = false;
+
+        if ($this->guest !== null) {
+            SendCoupleRsvpNotificationJob::dispatch($this->guest->id)->afterResponse();
+        }
 
         if ($rsvpStatus === RsvpStatus::Yes && $this->isPersonalLink && $this->guest?->token) {
             $this->dispatch('rsvp-accepted');

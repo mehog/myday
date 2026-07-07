@@ -46,6 +46,10 @@ class AppPanelProvider extends PanelProvider
                 PanelsRenderHook::HEAD_START,
                 fn () => view('components.google-analytics'),
             )
+            ->renderHook(
+                PanelsRenderHook::BODY_END,
+                fn () => view('components.app.push-notifications'),
+            )
             ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\Filament\App\Resources')
             ->discoverPages(in: app_path('Filament/App/Pages'), for: 'App\Filament\App\Pages')
             ->pages([

@@ -14,6 +14,8 @@ use SensitiveParameter;
 
 class EditProfile extends BaseEditProfile
 {
+    protected string $view = 'filament.app.pages.edit-profile';
+
     protected function getLocaleFormComponent(): Component
     {
         return Select::make('locale')
