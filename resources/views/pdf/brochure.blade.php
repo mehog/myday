@@ -272,9 +272,15 @@
                     <h2 class="panel-title">{{ __('landing.contact_title') }}</h2>
                     <p class="panel-subtitle">{{ __('landing.contact_subtitle') }}</p>
                     <p class="body-text">{{ __('referrals.qr_pdf_instructions') }}</p>
-                    <p class="body-text">{{ __('referrals.your_link_label') }}:</p>
-                    <p class="referral-link">{{ $referralLink }}</p>
-                    <p class="site-url" style="margin-top: 8mm;">{{ $siteUrl }}</p>
+                    <p class="site-url" style="margin-bottom: 4mm;">{{ $siteUrl }}</p>
+
+                    <div class="qr-section">
+                        <div class="qr-wrap">
+                            <img src="{{ $qrDataUri }}" alt="QR code" class="qr">
+                        </div>
+                        <p class="referral-link">{{ $referralLink }}</p>
+                        <p class="referral-note">{{ __('referrals.qr_pdf_footer') }}</p>
+                    </div>
                 </td>
                 <td>
                     <h2 class="panel-title">{{ __('referrals.qr_pdf_heading') }}</h2>
