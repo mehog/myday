@@ -1,5 +1,3 @@
-<script>window._invitationIsDemo = @js($isDemo);</script>
-
 <div>
     <x-theme :theme="$event->theme">
         <div class="invitation-page min-h-screen">
@@ -45,10 +43,7 @@
                             <p class="invitation-body text-sm text-[var(--color-text-muted)] mb-4">
                                 {{ __('invitation.send_text_message_description') }}
                             </p>
-                            <form
-                                @submit.prevent="window._invitationIsDemo ? $dispatch('demo-message-sent') : $wire.submitText()"
-                                class="space-y-4"
-                            >
+                            <form wire:submit="submitText" class="space-y-4">
                                 <div>
                                     <label for="textContent" class="block text-sm text-[var(--color-text-muted)] mb-2">
                                         {{ __('invitation.your_message') }}
@@ -82,6 +77,7 @@
                         <div
                             class="rounded-2xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)]/80 p-6"
                             x-data="{
+                                isDemo: @js($isDemo),
                                 recording: false,
                                 hasRecording: false,
                                 mediaRecorder: null,
@@ -134,7 +130,7 @@
                                     this.audioChunks = [];
                                 },
                                 sendRecording() {
-                                    if (window._invitationIsDemo) {
+                                    if (this.isDemo) {
                                         this.$dispatch('demo-message-sent');
                                         return;
                                     }
@@ -151,8 +147,8 @@
                                         extension = '3gp';
                                     }
                                     const file = new File([this.audioBlob], `recording.${extension}`, { type: this.audioBlob.type || 'audio/webm' });
-                                    $wire.upload('audioFile', file, () => {
-                                        $wire.submitAudio().then(() => {
+                                    this.$wire.upload('audioFile', file, () => {
+                                        this.$wire.submitAudio().then(() => {
                                             this.discardRecording();
                                             this.uploading = false;
                                         }).catch(() => {
@@ -242,14 +238,14 @@
             </footer>
 
             <div
-                x-data="{ show: @entangle('messageSent').live }"
+                x-data="{ show: @entangle('messageSent').live, isDemo: @js($isDemo) }"
                 @demo-message-sent.window="show = true"
                 x-show="show"
                 x-transition.opacity
                 x-cloak
-                @keydown.escape.window="if (show) { show = false; if (!window._invitationIsDemo) $wire.dismissSuccess() }"
+                @keydown.escape.window="if (show) { show = false; if (!isDemo) $wire.dismissSuccess() }"
                 class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4"
-                @click.self="show = false; if (!window._invitationIsDemo) $wire.dismissSuccess()"
+                @click.self="show = false; if (!isDemo) $wire.dismissSuccess()"
                 style="display: none;"
             >
                 <div
@@ -266,7 +262,7 @@
                     </p>
                     <button
                         type="button"
-                        @click="show = false; if (!window._invitationIsDemo) $wire.dismissSuccess()"
+                        @click="show = false; if (!isDemo) $wire.dismissSuccess()"
                         class="rsvp-btn rsvp-btn-yes w-full py-4 rounded-xl invitation-heading text-lg transition"
                     >
                         {{ __('invitation.message_sent_close') }}

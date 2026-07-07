@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\InvitePlatform;
+use App\LinkType;
 use App\RsvpStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -61,6 +63,13 @@ class Guest extends Model
     public function linkVisits(): HasMany
     {
         return $this->hasMany(LinkVisit::class);
+    }
+
+    public function latestPersonalLinkVisit(): HasOne
+    {
+        return $this->hasOne(LinkVisit::class)
+            ->where('link_type', LinkType::Personal->value)
+            ->latestOfMany('visited_at');
     }
 
     public function guestMessages(): HasMany

@@ -53,8 +53,8 @@ class RecordLinkVisit
             'user_agent' => $this->userAgent,
             'referer' => $this->referer ? mb_substr($this->referer, 0, 512) : null,
             'device_type' => $deviceType,
-            'browser' => $agent->browser(),
-            'os' => $agent->platform(),
+            'browser' => $agent->browser() ?: null,
+            'os' => $agent->platform() ?: null,
             'visited_at' => now(),
         ]);
     }

@@ -9,6 +9,7 @@ use App\Models\WeddingEvent;
 use App\Support\MediaDisk;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Jenssegers\Agent\Agent;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -74,6 +75,8 @@ class GuestContactPage extends Component
     public function submitText(): void
     {
         if ($this->isDemo) {
+            $this->dispatch('demo-message-sent');
+
             return;
         }
 
@@ -91,6 +94,7 @@ class GuestContactPage extends Component
             'sender_name' => $this->senderName,
             'type' => GuestMessageType::Text,
             'content' => trim($validated['textContent']),
+            ...$this->fingerprint(),
         ]);
 
         $this->textContent = '';
@@ -100,6 +104,8 @@ class GuestContactPage extends Component
     public function submitAudio(): void
     {
         if ($this->isDemo) {
+            $this->dispatch('demo-message-sent');
+
             return;
         }
 
@@ -125,6 +131,7 @@ class GuestContactPage extends Component
             'sender_name' => $this->senderName,
             'type' => GuestMessageType::Audio,
             'file_path' => $path,
+            ...$this->fingerprint(),
         ]);
 
         $this->reset('audioFile');
@@ -133,14 +140,16 @@ class GuestContactPage extends Component
 
     public function submitPhotos(): void
     {
-        if ($this->isDemo) {
-            return;
-        }
-
         if (! $this->canSendPhotos()) {
             throw ValidationException::withMessages([
                 'photoFiles' => __('invitation.photos_not_available'),
             ]);
+        }
+
+        if ($this->isDemo) {
+            $this->dispatch('demo-message-sent');
+
+            return;
         }
 
         $this->ensureCanSendMessage();
@@ -168,6 +177,7 @@ class GuestContactPage extends Component
             'sender_name' => $this->senderName,
             'type' => GuestMessageType::Photo,
             'file_paths' => $paths,
+            ...$this->fingerprint(),
         ]);
 
         $this->reset('photoFiles');
@@ -186,6 +196,31 @@ class GuestContactPage extends Component
                 'textContent' => __('invitation.message_rate_limit'),
             ]);
         }
+    }
+
+    /**
+     * @return array{ip_hash: ?string, user_agent: ?string, device_type: string, browser: ?string, os: ?string}
+     */
+    private function fingerprint(): array
+    {
+        $request = request();
+        $agent = new Agent;
+
+        if ($request->userAgent()) {
+            $agent->setUserAgent($request->userAgent());
+        }
+
+        return [
+            'ip_hash' => $request->ip() ? hash('sha256', $request->ip()) : null,
+            'user_agent' => $request->userAgent(),
+            'device_type' => match (true) {
+                $agent->isTablet() => 'tablet',
+                $agent->isMobile() => 'mobile',
+                default => 'desktop',
+            },
+            'browser' => $agent->browser() ?: null,
+            'os' => $agent->platform() ?: null,
+        ];
     }
 
     protected function markMessageSent(string $type): void

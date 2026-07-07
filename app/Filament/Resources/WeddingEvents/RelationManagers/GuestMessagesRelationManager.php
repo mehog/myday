@@ -3,12 +3,14 @@
 namespace App\Filament\Resources\WeddingEvents\RelationManagers;
 
 use App\GuestMessageType;
+use App\Models\GuestMessage;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class GuestMessagesRelationManager extends RelationManager
 {
@@ -24,6 +26,7 @@ class GuestMessagesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query): Builder => $query->with('guest.latestPersonalLinkVisit'))
             ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('guest.name')
@@ -52,6 +55,17 @@ class GuestMessagesRelationManager extends RelationManager
                     ->openUrlInNewTab()
                     ->color('primary')
                     ->visible(fn ($record): bool => $record?->type === GuestMessageType::Audio),
+                TextColumn::make('deviceSummary')
+                    ->label('Device')
+                    ->getStateUsing(fn (GuestMessage $record): ?string => $record->deviceSummary())
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('visit_match')
+                    ->label('Visit match')
+                    ->badge()
+                    ->getStateUsing(fn (GuestMessage $record): string => $record->visitMatch()->adminLabel())
+                    ->color(fn (GuestMessage $record): string => $record->visitMatch()->color())
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label('Sent at')
                     ->since()

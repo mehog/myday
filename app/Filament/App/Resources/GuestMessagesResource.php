@@ -63,8 +63,52 @@ class GuestMessagesResource extends Resource
 
     public static function infolist(Schema $schema): Schema
     {
-        return $schema->components([
-            Section::make()
+        return $schema
+            ->columns(2)
+            ->components([
+            Section::make(__('app.guest_messages_col_message'))
+                ->columnSpanFull()
+                ->collapsible()
+                ->visible(fn (GuestMessage $record): bool => $record->type === GuestMessageType::Text)
+                ->schema([
+                    TextEntry::make('content')
+                        ->hiddenLabel()
+                        ->prose(),
+                ]),
+            Section::make(__('app.guest_messages_col_photo'))
+                ->columnSpanFull()
+                ->collapsible()
+                ->visible(fn (GuestMessage $record): bool => $record->type === GuestMessageType::Photo)
+                ->schema([
+                    TextEntry::make('photo_count')
+                        ->hiddenLabel()
+                        ->getStateUsing(fn (GuestMessage $record): string => __('app.guest_messages_col_photo_count', [
+                            'count' => count($record->file_paths ?? []),
+                        ])),
+                    ImageEntry::make('file_paths')
+                        ->hiddenLabel()
+                        ->disk(config('filesystems.media_disk'))
+                        ->extraImgAttributes([
+                            'class' => '!max-w-full w-full h-auto object-contain',
+                        ])
+                        ->wrap()
+                        ->columnSpanFull(),
+                ]),
+            Section::make(__('app.guest_messages_col_audio'))
+                ->columnSpanFull()
+                ->collapsible()
+                ->visible(fn (GuestMessage $record): bool => $record->type === GuestMessageType::Audio)
+                ->schema([
+                    TextEntry::make('file_path')
+                        ->hiddenLabel()
+                        ->formatStateUsing(fn (): string => __('app.guest_messages_listen'))
+                        ->url(fn (GuestMessage $record): ?string => $record->fileUrl())
+                        ->openUrlInNewTab(),
+                ]),
+            Section::make(__('app.guest_messages_detail_info'))
+                ->columnSpan(fn (GuestMessage $record): int|string => $record->hasFingerprint() ? 1 : 'full')
+                ->collapsible()
+                ->collapsed()
                 ->columns(2)
                 ->schema([
                     TextEntry::make('sender_name')
@@ -83,38 +127,40 @@ class GuestMessagesResource extends Resource
                         ->label(__('app.guest_messages_col_sent_at'))
                         ->dateTime(),
                 ]),
-            Section::make(__('app.guest_messages_col_message'))
-                ->visible(fn (GuestMessage $record): bool => $record->type === GuestMessageType::Text)
+            Section::make(__('app.guest_messages_device_section'))
+                ->collapsible()
+                ->collapsed()
+                ->visible(fn (GuestMessage $record): bool => $record->hasFingerprint())
+                ->columns(2)
                 ->schema([
-                    TextEntry::make('content')
-                        ->hiddenLabel()
-                        ->prose(),
-                ]),
-            Section::make(__('app.guest_messages_col_photo'))
-                ->visible(fn (GuestMessage $record): bool => $record->type === GuestMessageType::Photo)
-                ->schema([
-                    TextEntry::make('photo_count')
-                        ->hiddenLabel()
-                        ->getStateUsing(fn (GuestMessage $record): string => __('app.guest_messages_col_photo_count', [
-                            'count' => count($record->file_paths ?? []),
-                        ])),
-                    ImageEntry::make('file_paths')
-                        ->hiddenLabel()
-                        ->disk(config('filesystems.media_disk'))
-                        ->extraImgAttributes([
-                            'class' => '!max-w-full w-full h-auto object-contain',
-                        ])
-                        ->wrap()
+                    TextEntry::make('deviceSummary')
+                        ->label(__('app.guest_messages_sent_from'))
+                        ->getStateUsing(fn (GuestMessage $record): ?string => $record->deviceSummary())
+                        ->placeholder('—'),
+                    TextEntry::make('invitation_device')
+                        ->label(__('app.guest_messages_opened_from'))
+                        ->getStateUsing(function (GuestMessage $record): ?string {
+                            $visit = $record->guest?->latestPersonalLinkVisit;
+
+                            if (! $visit) {
+                                return null;
+                            }
+
+                            $parts = array_filter([
+                                $visit->browser,
+                                $visit->os,
+                                $visit->device_type,
+                            ]);
+
+                            return $parts === [] ? null : implode(' / ', $parts);
+                        })
+                        ->placeholder('—'),
+                    TextEntry::make('visit_match')
+                        ->label(__('app.guest_messages_visit_match_label'))
+                        ->badge()
+                        ->getStateUsing(fn (GuestMessage $record): string => $record->visitMatch()->label())
+                        ->color(fn (GuestMessage $record): string => $record->visitMatch()->color())
                         ->columnSpanFull(),
-                ]),
-            Section::make(__('app.guest_messages_col_audio'))
-                ->visible(fn (GuestMessage $record): bool => $record->type === GuestMessageType::Audio)
-                ->schema([
-                    TextEntry::make('file_path')
-                        ->hiddenLabel()
-                        ->formatStateUsing(fn (): string => __('app.guest_messages_listen'))
-                        ->url(fn (GuestMessage $record): ?string => $record->fileUrl())
-                        ->openUrlInNewTab(),
                 ]),
         ]);
     }
@@ -162,6 +208,12 @@ class GuestMessagesResource extends Resource
                     ->openUrlInNewTab()
                     ->color('primary')
                     ->visible(fn ($record): bool => $record?->type === GuestMessageType::Audio),
+                TextColumn::make('visit_match')
+                    ->label(__('app.guest_messages_col_origin'))
+                    ->badge()
+                    ->getStateUsing(fn (GuestMessage $record): string => $record->visitMatch()->label())
+                    ->color(fn (GuestMessage $record): string => $record->visitMatch()->color())
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label(__('app.guest_messages_col_sent_at'))
                     ->since()
@@ -194,7 +246,7 @@ class GuestMessagesResource extends Resource
         $weddingEventId = auth()->user()?->weddingEvent?->id;
 
         return parent::getEloquentQuery()
-            ->with('guest')
+            ->with(['guest.latestPersonalLinkVisit'])
             ->when($weddingEventId, fn (Builder $query) => $query->where('wedding_event_id', $weddingEventId))
             ->when(! $weddingEventId, fn (Builder $query) => $query->whereRaw('1 = 0'));
     }

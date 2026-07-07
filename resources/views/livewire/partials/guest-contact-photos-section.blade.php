@@ -12,10 +12,7 @@
         <p class="invitation-body text-sm text-[var(--color-text-muted)] mb-4">
             {{ __('invitation.send_photos_description') }}
         </p>
-        <form
-            @submit.prevent="window._invitationIsDemo ? $dispatch('demo-message-sent') : $wire.submitPhotos()"
-            class="space-y-4"
-        >
+        <form wire:submit="submitPhotos" class="space-y-4">
             <div>
                 <label for="photoFiles" class="block text-sm text-[var(--color-text-muted)] mb-2">
                     {{ __('invitation.select_photos') }}
