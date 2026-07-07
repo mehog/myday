@@ -36,6 +36,8 @@ class GuestContactPage extends Component
 
     public bool $isDemo = false;
 
+    public bool $fromPlaceCardQr = false;
+
     public ?string $lastSentType = null;
 
     public function mount(string $slug, string $token): void
@@ -58,6 +60,7 @@ class GuestContactPage extends Component
 
         $this->isDemo = $this->event->is_demo;
         $this->senderName = $this->guest->name;
+        $this->fromPlaceCardQr = request()->query('qr-code') === 'true';
     }
 
     public function canSendPhotos(): bool
@@ -200,7 +203,12 @@ class GuestContactPage extends Component
     public function render()
     {
         return view('livewire.guest-contact-page')
-            ->title(__('invitation.contact_page_title').' | '.$this->event->couple_names)
+            ->title(
+                ($this->fromPlaceCardQr
+                    ? __('invitation.contact_page_qr_title')
+                    : __('invitation.contact_page_title'))
+                .' | '.$this->event->couple_names
+            )
             ->layoutData([
                 'event' => $this->event,
                 'guest' => $this->guest,

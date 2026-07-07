@@ -79,6 +79,10 @@ return [
     'push_notifications_page_description' => 'Alle Nachrichten vom Brautpaar.',
     'push_notification_sent_at' => 'Gesendet am',
     'push_notifications_empty' => 'Es wurden noch keine Benachrichtigungen gesendet.',
+    'contact_page_title' => 'Nachricht an das Brautpaar senden',
+    'contact_page_description' => 'Teilen Sie eine Nachricht, eine Sprachaufnahme oder Fotos mit dem Brautpaar, :name.',
+    'contact_page_qr_title' => 'Willkommen an unserem Tag!',
+    'contact_page_qr_description' => 'Schön, dass Sie da sind, :name! Teilen Sie eine Nachricht, Sprachnotiz oder Fotos mit uns.',
     'back_to_invitation' => 'Zurück zur Einladung',
 
     'token_required' => 'Diese Einladung erfordert einen persönlichen Link.',

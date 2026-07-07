@@ -10,10 +10,18 @@
                             {{ $event->couple_names }}
                         </p>
                         <h1 class="invitation-heading text-4xl text-[var(--color-text)] mb-4">
-                            {{ __('invitation.contact_page_title') }}
+                            @if ($fromPlaceCardQr)
+                                {{ __('invitation.contact_page_qr_title') }}
+                            @else
+                                {{ __('invitation.contact_page_title') }}
+                            @endif
                         </h1>
                         <p class="invitation-body text-[var(--color-text-muted)]">
-                            {{ __('invitation.contact_page_description', ['name' => $senderName]) }}
+                            @if ($fromPlaceCardQr)
+                                {{ __('invitation.contact_page_qr_description', ['name' => $senderName]) }}
+                            @else
+                                {{ __('invitation.contact_page_description', ['name' => $senderName]) }}
+                            @endif
                         </p>
                     </div>
 

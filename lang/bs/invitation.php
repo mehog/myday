@@ -83,6 +83,8 @@ return [
 
     'contact_page_title' => 'Pošalji poruku mladencima',
     'contact_page_description' => 'Podijelite poruku, audio snimak ili fotografije mladencima, :name.',
+    'contact_page_qr_title' => 'Dobrodošli na naš dan!',
+    'contact_page_qr_description' => 'Drago nam je što ste ovdje, :name! Podijelite poruku, glasovnu poruku ili fotografije s nama.',
     'back_to_invitation' => 'Nazad na pozivnicu',
     'send_text_message' => 'Tekstualna poruka',
     'send_text_message_description' => 'Napišite poruku mladencima.',

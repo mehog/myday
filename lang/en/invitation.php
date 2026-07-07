@@ -83,6 +83,8 @@ return [
 
     'contact_page_title' => 'Send a message to the newlyweds',
     'contact_page_description' => 'Share a message, audio recording, or photos with the newlyweds, :name.',
+    'contact_page_qr_title' => 'Welcome to our day!',
+    'contact_page_qr_description' => 'Glad you\'re here, :name! Share a message, voice note, or photos with us.',
     'back_to_invitation' => 'Back to invitation',
     'send_text_message' => 'Text message',
     'send_text_message_description' => 'Write a message to the newlyweds.',

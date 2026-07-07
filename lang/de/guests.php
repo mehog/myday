@@ -43,4 +43,12 @@ return [
     'platform_telegram' => 'Telegram',
     'platform_facebook_messenger' => 'Facebook Messenger',
     'platform_manual' => 'Manuell',
+
+    'place_cards_download' => 'Tischkarten herunterladen',
+    'place_cards_empty' => 'Noch keine bestätigten Gäste. Tischkarten können erstellt werden, sobald mindestens ein Gast zugesagt hat.',
+    'place_cards_modal_description' => 'Passen Sie die Farben an Ihren Hochzeitsstil an. Die Standardfarben stammen von Ihrem Einladungsthema, Sie können sie aber frei ändern.',
+    'place_cards_print_hint' => 'Die Karten sind druckfertig. Laden Sie sie herunter und drucken Sie sie in jeder Druckerei oder zu Hause auf hochwertigem Karton.',
+    'place_cards_color_bg' => 'Hintergrundfarbe',
+    'place_cards_color_text' => 'Textfarbe',
+    'place_cards_color_accent' => 'Akzentfarbe',
 ];

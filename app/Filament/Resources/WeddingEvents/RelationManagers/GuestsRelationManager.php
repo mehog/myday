@@ -19,6 +19,7 @@ use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
@@ -171,6 +172,50 @@ class GuestsRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make(),
+                Action::make('downloadPlaceCards')
+                    ->label($this->trans('place_cards_download'))
+                    ->modalHeading($this->trans('place_cards_download'))
+                    ->modalDescription($this->trans('place_cards_modal_description'))
+                    ->icon('heroicon-o-printer')
+                    ->color('gray')
+                    ->before(function (Action $action): void {
+                        if (! $this->getOwnerRecord()
+                            ->guests()
+                            ->where('rsvp_status', RsvpStatus::Yes)
+                            ->exists()) {
+                            Notification::make()
+                                ->title($this->trans('place_cards_empty'))
+                                ->warning()
+                                ->send();
+
+                            $action->halt();
+                        }
+                    })
+                    ->fillForm(fn (): array => $this->getOwnerRecord()->theme->placeCardColors())
+                    ->form([
+                        ColorPicker::make('bg')
+                            ->label($this->trans('place_cards_color_bg'))
+                            ->required(),
+                        ColorPicker::make('text')
+                            ->label($this->trans('place_cards_color_text'))
+                            ->required(),
+                        ColorPicker::make('accent')
+                            ->label($this->trans('place_cards_color_accent'))
+                            ->required(),
+                        Placeholder::make('place_cards_print_hint')
+                            ->hiddenLabel()
+                            ->content($this->trans('place_cards_print_hint')),
+                    ])
+                    ->action(function (array $data, Action $action): void {
+                        $url = route('guests.place-cards.download', [
+                            'bg' => $data['bg'],
+                            'text' => $data['text'],
+                            'accent' => $data['accent'],
+                        ]);
+
+                        $this->js('window.open('.json_encode($url).", '_blank')");
+                        $action->halt();
+                    }),
                 Action::make('importCsv')
                     ->label($this->trans('import_csv'))
                     ->icon('heroicon-o-arrow-up-tray')

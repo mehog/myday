@@ -43,4 +43,12 @@ return [
     'platform_telegram' => 'Telegram',
     'platform_facebook_messenger' => 'Facebook Messenger',
     'platform_manual' => 'Manual',
+
+    'place_cards_download' => 'Download place cards',
+    'place_cards_empty' => 'No confirmed guests yet. Place cards can be generated once at least one guest has accepted the invitation.',
+    'place_cards_modal_description' => 'Customize the card colors to match your wedding style. Defaults come from your invitation theme, but you can change them freely.',
+    'place_cards_print_hint' => 'The cards are print-ready. Download and print them at any print shop, or at home on quality cardstock.',
+    'place_cards_color_bg' => 'Background color',
+    'place_cards_color_text' => 'Text color',
+    'place_cards_color_accent' => 'Accent color',
 ];
