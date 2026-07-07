@@ -9,7 +9,7 @@
             </p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-6 mb-14">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-14">
             @foreach ([
                 [
                     'name' => __('landing.pricing_plan_basic_name'),
@@ -27,6 +27,12 @@
                     'name' => __('landing.pricing_plan_premium_name'),
                     'guests' => __('landing.pricing_plan_premium_guests'),
                     'price' => __('landing.pricing_plan_premium_price'),
+                    'highlighted' => false,
+                ],
+                [
+                    'name' => __('landing.pricing_plan_deluxe_name'),
+                    'guests' => __('landing.pricing_plan_deluxe_guests'),
+                    'price' => __('landing.pricing_plan_deluxe_price'),
                     'highlighted' => false,
                 ],
             ] as $plan)
