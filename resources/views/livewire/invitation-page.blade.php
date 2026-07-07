@@ -1,6 +1,6 @@
 <div>
-    @if ($event->reveal_animation)
-        @include('components.invitation.reveals.'.$event->reveal_animation->value, [
+    @if ($activeReveal)
+        @include('components.invitation.reveals.'.$activeReveal->value, [
             'event' => $event,
             'isPreview' => $isPreview,
         ])
@@ -16,15 +16,43 @@
     @endif
 
     @if ($event->is_demo && $showDemoSwitcher)
-        <div @class([
-            'fixed inset-x-0 z-50 bg-[#1a1208]/95 backdrop-blur border-b border-[#c9a227]/30 text-sm',
-            'top-0' => ! $isPreview,
-            'top-12' => $isPreview,
-        ])>
-            <div class="relative flex flex-wrap items-center justify-center gap-3 sm:gap-4 px-10 py-2.5">
+        <style>
+            @keyframes demoRibbonSlide {
+                from {
+                    opacity: 0;
+                    transform: translateY(-100%);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes demoOptionFade {
+                from {
+                    opacity: 0;
+                    transform: translateY(0.5rem);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        </style>
+
+        <div
+            @class([
+                'fixed inset-x-0 z-50 bg-[#1a1208]/60 backdrop-blur border-b border-[#c9a227]/30 text-sm',
+                'top-0' => ! $isPreview,
+                'top-12' => $isPreview,
+            ])
+            style="animation: demoRibbonSlide 0.35s ease both"
+        >
+            <div class="relative flex items-center justify-center gap-1.5 sm:gap-3 px-8 py-2 sm:py-2.5">
                 <select
                     wire:model.live="previewTheme"
-                    class="text-sm py-1.5 px-3 min-w-[9rem] cursor-pointer rounded-xl border border-[#c9a227]/40 bg-[#2a1f0f] text-[#faf6ee]"
+                    class="flex-1 min-w-0 max-w-[8rem] sm:max-w-none text-xs sm:text-sm py-1.5 px-2 sm:px-3 cursor-pointer rounded-xl border border-[#c9a227]/40 bg-[#2a1f0f] text-[#faf6ee]"
+                    style="animation: demoOptionFade 0.3s ease both; animation-delay: 0.15s"
                     aria-label="{{ __('app.theme') }}"
                 >
                     @foreach ($themes as $themeOption)
@@ -33,11 +61,23 @@
                 </select>
                 <select
                     wire:model.live="previewTemplate"
-                    class="text-sm py-1.5 px-3 min-w-[9rem] cursor-pointer rounded-xl border border-[#c9a227]/40 bg-[#2a1f0f] text-[#faf6ee]"
+                    class="flex-1 min-w-0 max-w-[8rem] sm:max-w-none text-xs sm:text-sm py-1.5 px-2 sm:px-3 cursor-pointer rounded-xl border border-[#c9a227]/40 bg-[#2a1f0f] text-[#faf6ee]"
+                    style="animation: demoOptionFade 0.3s ease both; animation-delay: 0.3s"
                     aria-label="{{ __('app.template') }}"
                 >
                     @foreach ($templates as $templateOption)
                         <option value="{{ $templateOption->value }}">{{ $templateOption->label() }}</option>
+                    @endforeach
+                </select>
+                <select
+                    wire:model.live="previewReveal"
+                    class="flex-1 min-w-0 max-w-[8rem] sm:max-w-none text-xs sm:text-sm py-1.5 px-2 sm:px-3 cursor-pointer rounded-xl border border-[#c9a227]/40 bg-[#2a1f0f] text-[#faf6ee]"
+                    style="animation: demoOptionFade 0.3s ease both; animation-delay: 0.45s"
+                    aria-label="{{ __('app.reveal_animation') }}"
+                >
+                    <option value="">{{ __('app.reveal_none') }}</option>
+                    @foreach ($reveals as $revealOption)
+                        <option value="{{ $revealOption->value }}">{{ $revealOption->label() }}</option>
                     @endforeach
                 </select>
                 <button
@@ -60,7 +100,7 @@
 
     <div
         id="invitation-content"
-        @if (! $isPreview && ! $invitationRevealed && $event->reveal_animation)
+        @if (! $isPreview && ! $invitationRevealed && $activeReveal)
             style="opacity:0;pointer-events:none;transition:opacity .6s ease .2s"
         @endif
     >

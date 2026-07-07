@@ -68,10 +68,10 @@ class WeddingEventSeeder extends Seeder
             lng: 18.4286,
             theme: InvitationTheme::AmberGold,
             schedule: [
-                ['time' => '08:00', 'title' => 'Odlazak po mladu', 'description' => 'Mlađak i svatovi dolaze po mladu.', 'sort_order' => 1],
+                ['time' => '08:00', 'title' => 'Odlazak po mladu', 'description' => 'Mladoženja i svatovi dolaze po mladu.', 'sort_order' => 1],
                 ['time' => '09:00', 'title' => 'Općinsko/matičarsko vjenčanje', 'description' => 'Potpisivanje u matičnom uredu.', 'sort_order' => 2],
                 ['time' => '10:00', 'title' => 'Šerijatsko vjenčanje (nikah)', 'description' => 'Vjenčanje u džamiji.', 'sort_order' => 3],
-                ['time' => '12:00', 'title' => 'Svečani ručak za uže gosti', 'description' => 'Ručak za porodicu i najbliže goste.', 'sort_order' => 4],
+                ['time' => '12:00', 'title' => 'Svečani ručak za goste', 'description' => 'Ručak za porodicu i najbliže goste.', 'sort_order' => 4],
                 ['time' => '19:00', 'title' => 'Svečana večera i proslava', 'description' => 'Večera, ples i slavlje.', 'sort_order' => 5],
             ],
             guests: [
@@ -90,9 +90,9 @@ class WeddingEventSeeder extends Seeder
             lng: 18.4131,
             theme: InvitationTheme::RoyalWedding,
             schedule: [
-                ['time' => '09:00', 'title' => 'Odlazak po mladu', 'description' => 'Mlađak i svatovi dolaze po mladu.', 'sort_order' => 1],
+                ['time' => '09:00', 'title' => 'Odlazak po mladu', 'description' => 'Mladoženja i svatovi dolaze po mladu.', 'sort_order' => 1],
                 ['time' => '10:00', 'title' => 'Vjenčanje u crkvi', 'description' => 'Crkvena ceremonija i blagoslov.', 'sort_order' => 2],
-                ['time' => '12:00', 'title' => 'Svečani ručak za uže gosti', 'description' => 'Ručak za porodicu i najbliže goste.', 'sort_order' => 3],
+                ['time' => '12:00', 'title' => 'Svečani ručak za goste', 'description' => 'Ručak za porodicu i najbliže goste.', 'sort_order' => 3],
                 ['time' => '15:00', 'title' => 'Fotografisanje', 'description' => 'Zajedničko fotografisanje mladenaca.', 'sort_order' => 4],
                 ['time' => '19:00', 'title' => 'Svečana večera i proslava', 'description' => 'Večera, ples i slavlje.', 'sort_order' => 5],
             ],

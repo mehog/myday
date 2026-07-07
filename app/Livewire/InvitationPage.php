@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\InvitationReveal;
 use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\Jobs\RecordLinkVisit;
@@ -38,6 +39,8 @@ class InvitationPage extends Component
 
     public string $previewTemplate = '';
 
+    public string $previewReveal = '';
+
     public bool $showDemoSwitcher = true;
 
     public bool $invitationRevealed = false;
@@ -58,6 +61,14 @@ class InvitationPage extends Component
         if ($this->event->is_demo) {
             $this->previewTheme = $this->event->theme->value;
             $this->previewTemplate = $this->event->template->value;
+            $this->previewReveal = $this->event->reveal_animation?->value ?? '';
+
+            $stored = session("demo_preview.{$this->event->id}", []);
+            if ($stored) {
+                $this->previewTheme = $stored['theme'] ?? $this->previewTheme;
+                $this->previewTemplate = $stored['template'] ?? $this->previewTemplate;
+                $this->previewReveal = $stored['reveal'] ?? $this->previewReveal;
+            }
         }
 
         if ($this->event->requiresToken() && $token === null) {
@@ -148,6 +159,39 @@ class InvitationPage extends Component
         Locale::set($locale);
     }
 
+    public function updatedPreviewTheme(): void
+    {
+        $this->savePreviewSession();
+    }
+
+    public function updatedPreviewTemplate(string $value): void
+    {
+        $this->savePreviewSession();
+
+        if ($value === InvitationTemplate::Story->value) {
+            $this->js('window.location.reload()');
+        }
+    }
+
+    public function updatedPreviewReveal(): void
+    {
+        $this->savePreviewSession();
+        $this->js('window.location.reload()');
+    }
+
+    protected function savePreviewSession(): void
+    {
+        if (! $this->event->is_demo) {
+            return;
+        }
+
+        session()->put("demo_preview.{$this->event->id}", [
+            'theme' => $this->previewTheme,
+            'template' => $this->previewTemplate,
+            'reveal' => $this->previewReveal,
+        ]);
+    }
+
     public function render()
     {
         $activeTheme = $this->event->is_demo && $this->previewTheme !== ''
@@ -158,11 +202,17 @@ class InvitationPage extends Component
             ? InvitationTemplate::from($this->previewTemplate)
             : $this->event->template;
 
+        $activeReveal = $this->event->is_demo
+            ? ($this->previewReveal !== '' ? InvitationReveal::from($this->previewReveal) : null)
+            : $this->event->reveal_animation;
+
         return view('livewire.invitation-page', [
             'activeTheme' => $activeTheme,
             'activeTemplate' => $activeTemplate,
+            'activeReveal' => $activeReveal,
             'themes' => InvitationTheme::cases(),
             'templates' => InvitationTemplate::cases(),
+            'reveals' => InvitationReveal::cases(),
         ])
             ->title($this->event->couple_names.' | '.__('invitation.title'))
             ->layoutData([
