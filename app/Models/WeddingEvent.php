@@ -38,6 +38,7 @@ class WeddingEvent extends Model
         'is_demo',
         'send_message',
         'motto',
+        'seating_plan',
     ];
 
     protected function casts(): array
@@ -53,6 +54,7 @@ class WeddingEvent extends Model
             'link_mode' => LinkMode::class,
             'location_lat' => 'decimal:7',
             'location_lng' => 'decimal:7',
+            'seating_plan' => 'array',
         ];
     }
 

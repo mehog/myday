@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\DownloadBrochureController;
 use App\Http\Controllers\DownloadGuestPhotosController;
 use App\Http\Controllers\DownloadPlaceCardsController;
+use App\Http\Controllers\DownloadSeatingPlanPdfController;
 use App\Http\Controllers\DownloadReferralQrCodeController;
 use App\Http\Controllers\InvitationManifestController;
 use App\Http\Controllers\ReferralLinkController;
@@ -87,6 +88,10 @@ Route::get('/app-api/referrals/brochure/download', DownloadBrochureController::c
 Route::get('/app-api/guests/place-cards/download', DownloadPlaceCardsController::class)
     ->middleware(['auth', 'verified'])
     ->name('guests.place-cards.download');
+
+Route::get('/app-api/seating-plan/export-pdf', DownloadSeatingPlanPdfController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('seating-plan.export-pdf');
 
 Route::get('/e/{slug}/calendar.ics', WeddingEventCalendarController::class)->name('invitation.ics');
 Route::get('/e/{slug}/{token}/manifest.webmanifest', InvitationManifestController::class)->name('invitation.manifest');
