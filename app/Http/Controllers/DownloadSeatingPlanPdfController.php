@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\WeddingEvent;
+use App\RsvpStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Spatie\LaravelPdf\Facades\Pdf;
@@ -25,7 +26,9 @@ class DownloadSeatingPlanPdfController extends Controller
 
         abort_unless(is_string($imageDataUri), 422);
 
-        $guests = $wedding->guests()->get(['id', 'name', 'plus_one_name']);
+        $guests = $wedding->guests()
+            ->where('rsvp_status', RsvpStatus::Yes)
+            ->get(['id', 'name', 'plus_one_name']);
         $seatingPlan = $wedding->seating_plan ?? ['tables' => []];
 
         $nameMap = [

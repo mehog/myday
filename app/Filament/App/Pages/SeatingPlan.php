@@ -4,6 +4,7 @@ namespace App\Filament\App\Pages;
 
 use App\Models\Guest;
 use App\Models\WeddingEvent;
+use App\RsvpStatus;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
@@ -85,6 +86,7 @@ class SeatingPlan extends Page
 
         return $couple->concat(
             $wedding->guests()
+                ->where('rsvp_status', RsvpStatus::Yes)
                 ->orderBy('name')
                 ->get(['id', 'name', 'plus_one_name'])
                 ->flatMap(function (Guest $guest): array {
