@@ -9,11 +9,12 @@
             </p>
         </div>
 
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-2 gap-6">
             @foreach ([
                 ['title' => __('landing.benefit_1_title'), 'text' => __('landing.benefit_1_text')],
                 ['title' => __('landing.benefit_2_title'), 'text' => __('landing.benefit_2_text')],
                 ['title' => __('landing.benefit_3_title'), 'text' => __('landing.benefit_3_text')],
+                ['title' => __('landing.benefit_4_title'), 'text' => __('landing.benefit_4_text')],
             ] as $benefit)
                 <div class="landing-card rounded-2xl border border-white/15 p-6 landing-fade-in">
                     <div class="w-8 h-8 rounded-full bg-[#c9a227]/20 flex items-center justify-center mb-4">
