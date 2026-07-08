@@ -837,7 +837,52 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
             }
 
             const exportTab = window.open('', '_blank');
-            const dataUrl = stage.toDataURL({ pixelRatio: 2 });
+
+            const savedScale = scale;
+            const savedPos = stage.position();
+            const savedW = stage.width();
+            const savedH = stage.height();
+            const savedSelectedId = selectedTableId;
+
+            scale = 1;
+            stage.scale({ x: 1, y: 1 });
+            stage.position({ x: 0, y: 0 });
+            selectedTableId = null;
+            renderAll();
+            layer.draw();
+
+            const padding = 40;
+            const rect = layer.getClientRect();
+            const contentW = Math.ceil(rect.width + padding * 2);
+            const contentH = Math.ceil(rect.height + padding * 2);
+
+            stage.width(contentW);
+            stage.height(contentH);
+            stage.position({ x: -rect.x + padding, y: -rect.y + padding });
+            gridLayer.hide();
+
+            layer.destroyChildren();
+            plan.tables.forEach((tableData) => layer.add(createTableGroup(tableData)));
+            layer.draw();
+
+            const dataUrl = stage.toDataURL({
+                x: 0,
+                y: 0,
+                width: contentW,
+                height: contentH,
+                pixelRatio: 2,
+            });
+
+            stage.width(savedW);
+            stage.height(savedH);
+            scale = savedScale;
+            stage.scale({ x: savedScale, y: savedScale });
+            stage.position(savedPos);
+            gridLayer.show();
+            selectedTableId = savedSelectedId;
+            drawGrid();
+            renderAll();
+            emitZoom();
 
             wire.exportPdf(dataUrl)
                 .then(() => {

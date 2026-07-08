@@ -8,6 +8,13 @@ return [
     'save' => 'Speichern',
     'saved' => 'Sitzplan gespeichert.',
     'export_pdf' => 'PDF exportieren',
+    'pdf_heading' => 'Gästeliste & Sitzplan',
+    'pdf_total_people' => 'Gäste gesamt',
+    'pdf_total_seats' => 'Plätze gesamt',
+    'pdf_tables' => 'Tische',
+    'pdf_no_guests' => 'Keine Gäste zugewiesen',
+    'pdf_unassigned_guests' => 'Nicht zugewiesene Gäste',
+    'pdf_generated' => 'Generiert:',
     'invalid_data' => 'Ungültige Sitzplandaten.',
     'duplicate_assignment' => 'Derselbe Gast ist mehreren Plätzen zugewiesen.',
 

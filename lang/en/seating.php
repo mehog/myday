@@ -8,6 +8,13 @@ return [
     'save' => 'Save',
     'saved' => 'Seating plan saved.',
     'export_pdf' => 'Export PDF',
+    'pdf_heading' => 'Guest list & Seating plan',
+    'pdf_total_people' => 'Total guests',
+    'pdf_total_seats' => 'Total seats',
+    'pdf_tables' => 'Tables',
+    'pdf_no_guests' => 'No guests assigned',
+    'pdf_unassigned_guests' => 'Unassigned guests',
+    'pdf_generated' => 'Generated:',
     'invalid_data' => 'Invalid seating plan data.',
     'duplicate_assignment' => 'The same guest is assigned to multiple seats.',
 

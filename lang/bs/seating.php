@@ -8,6 +8,13 @@ return [
     'save' => 'Sačuvaj',
     'saved' => 'Raspored sjedenja je sačuvan.',
     'export_pdf' => 'Izvezi PDF',
+    'pdf_heading' => 'Lista gostiju & Raspored sjedenja',
+    'pdf_total_people' => 'Ukupno gostiju',
+    'pdf_total_seats' => 'Ukupno mjesta',
+    'pdf_tables' => 'Stolovi',
+    'pdf_no_guests' => 'Nema dodijeljenih gostiju',
+    'pdf_unassigned_guests' => 'Nedodijeljeni gosti',
+    'pdf_generated' => 'Generisano:',
     'invalid_data' => 'Neispravni podaci rasporeda.',
     'duplicate_assignment' => 'Isti gost je dodijeljen na više mjesta.',
 
