@@ -114,6 +114,11 @@
             border-top: 1px solid #f3f4f6;
         }
 
+        .pdf-emoji {
+            display: inline-block;
+            vertical-align: -0.15em;
+        }
+
         .table-card-empty {
             color: #9ca3af;
         }
@@ -180,7 +185,7 @@
                 </div>
 
                 @forelse ($table['guests'] as $index => $name)
-                    <div class="table-card-row">{{ $index + 1 }}. {{ $name }}</div>
+                    <div class="table-card-row">{{ $index + 1 }}. {!! \App\Support\PdfEmoji::toHtml($name, '10px') !!}</div>
                 @empty
                     <div class="table-card-row table-card-empty">{{ __('seating.pdf_no_guests') }}</div>
                 @endforelse
@@ -197,7 +202,7 @@
                 </div>
 
                 @foreach ($unassigned as $index => $name)
-                    <div class="table-card-row">{{ $index + 1 }}. {{ $name }}</div>
+                    <div class="table-card-row">{{ $index + 1 }}. {!! \App\Support\PdfEmoji::toHtml($name, '10px') !!}</div>
                 @endforeach
             </div>
         </div>

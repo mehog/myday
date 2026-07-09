@@ -117,6 +117,11 @@
             opacity: 0.85;
         }
 
+        .pdf-emoji {
+            display: inline-block;
+            vertical-align: -0.15em;
+        }
+
         .cut-mark {
             position: absolute;
             background: {{ $colors['accent'] }};
@@ -200,9 +205,9 @@
                                 <span class="cut-mark cut-mark-bottom-right-v"></span>
 
                                 <div class="card-back">
-                                    <div class="guest-name">{{ $card['name'] }}</div>
+                                    <div class="guest-name">{!! \App\Support\PdfEmoji::toHtml($card['name'], '14pt') !!}</div>
                                     @if (! empty($card['plus_one']))
-                                        <div class="plus-one-name">&amp; {{ $card['plus_one'] }}</div>
+                                        <div class="plus-one-name">&amp; {!! \App\Support\PdfEmoji::toHtml($card['plus_one'], '9pt') !!}</div>
                                     @endif
                                 </div>
 
@@ -210,9 +215,9 @@
 
                                 <div class="card-front">
                                     <img class="card-qr" src="{{ $card['qr'] }}" alt="">
-                                    <div class="guest-name">{{ $card['name'] }}</div>
+                                    <div class="guest-name">{!! \App\Support\PdfEmoji::toHtml($card['name'], '14pt') !!}</div>
                                     @if (! empty($card['plus_one']))
-                                        <div class="plus-one-name">&amp; {{ $card['plus_one'] }}</div>
+                                        <div class="plus-one-name">&amp; {!! \App\Support\PdfEmoji::toHtml($card['plus_one'], '9pt') !!}</div>
                                     @endif
                                 </div>
 
