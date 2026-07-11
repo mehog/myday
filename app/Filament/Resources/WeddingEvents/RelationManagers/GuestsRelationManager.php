@@ -37,6 +37,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 
@@ -46,7 +47,7 @@ class GuestsRelationManager extends RelationManager
 
     protected static ?string $title = null;
 
-    public static function getTitle(\Illuminate\Database\Eloquent\Model $ownerRecord, string $pageClass): string
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
     {
         return __('guests.title');
     }
@@ -314,24 +315,38 @@ class GuestsRelationManager extends RelationManager
                         ->color('gray')
                         ->fillForm(fn (Guest $record): array => [
                             'rsvp_status' => $record->rsvp_status?->value,
+                            'plus_one_name' => $record->plus_one_name,
                         ])
-                        ->form([
+                        ->form(fn (Guest $record): array => [
                             Select::make('rsvp_status')
                                 ->label($this->trans('field_rsvp_status'))
                                 ->options(collect(RsvpStatus::cases())->mapWithKeys(
                                     fn (RsvpStatus $status) => [$status->value => $status->label()]
                                 ))
                                 ->required()
-                                ->native(false),
+                                ->native(false)
+                                ->live(),
+                            TextInput::make('plus_one_name')
+                                ->label($this->trans('field_plus_one_name'))
+                                ->maxLength(255)
+                                ->visible(fn (callable $get): bool => $record->plus_one_allowed && $get('rsvp_status') === RsvpStatus::Yes->value),
                         ])
                         ->action(function (array $data, Guest $record): void {
                             $rsvpStatus = RsvpStatus::from($data['rsvp_status']);
+
+                            $plusOneName = null;
+
+                            if ($rsvpStatus === RsvpStatus::Yes && $record->plus_one_allowed) {
+                                $plusOneName = filled($data['plus_one_name'] ?? null)
+                                    ? trim($data['plus_one_name'])
+                                    : null;
+                            }
 
                             $record->update([
                                 'rsvp_status' => $rsvpStatus,
                                 'rsvp_responded_at' => now(),
                                 'rsvp_manual_override' => true,
-                                'plus_one_name' => $rsvpStatus === RsvpStatus::Yes ? $record->plus_one_name : null,
+                                'plus_one_name' => $plusOneName,
                             ]);
 
                             Notification::make()
