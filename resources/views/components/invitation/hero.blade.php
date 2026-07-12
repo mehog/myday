@@ -31,5 +31,9 @@
                 {{ $event->location_name }}
             </p>
         @endif
+
+        @if ($showRsvpNudge ?? false)
+            @include('components.invitation.rsvp-nudge-link')
+        @endif
     </div>
 </section>

@@ -38,6 +38,8 @@ return [
     'pause' => 'Pauza',
 
     'rsvp' => 'Potvrdite dolazak',
+    'rsvp_nudge_cta' => 'Potvrdite dolazak',
+    'rsvp_nudge_sticky_text' => 'Molimo potvrdite dolazak',
     'confirm_attendance' => 'Potvrdite svoj dolazak',
     'respond_by' => 'Molimo vas da odgovorite do :date.',
     'thank_you' => 'Hvala vam, :name!',

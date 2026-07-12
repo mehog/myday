@@ -38,6 +38,8 @@ return [
     'pause' => 'Pause',
 
     'rsvp' => 'Confirm attendance',
+    'rsvp_nudge_cta' => 'Confirm attendance',
+    'rsvp_nudge_sticky_text' => 'Please confirm your attendance',
     'confirm_attendance' => 'Confirm your attendance',
     'respond_by' => 'Please respond by :date.',
     'thank_you' => 'Thank you, :name!',

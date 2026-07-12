@@ -109,11 +109,17 @@
                 'invitation-page',
                 'pt-12' => $bannerCount === 1,
                 'pt-24' => $bannerCount === 2,
+                'pb-20' => $showRsvpNudge,
             ])>
                 @include('components.invitation.templates.'.$activeTemplate->value, [
                     'event' => $event,
                     'guest' => $guest,
                     'isPersonalLink' => $isPersonalLink,
+                    'showRsvpNudge' => $showRsvpNudge,
+                ])
+
+                @include('components.invitation.rsvp-sticky-bar', [
+                    'showRsvpNudge' => $showRsvpNudge,
                 ])
 
                 <footer class="py-8 px-6 border-t border-[color-mix(in_srgb,var(--color-text)_10%,transparent)] flex items-center justify-between gap-4">

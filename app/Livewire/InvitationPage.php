@@ -218,6 +218,10 @@ class InvitationPage extends Component
             'themes' => InvitationTheme::cases(),
             'templates' => InvitationTemplate::cases(),
             'reveals' => InvitationReveal::cases(),
+            'showRsvpNudge' => $this->isPersonalLink
+                && $this->guest
+                && ! $this->guest->hasResponded()
+                && ! $this->rsvpSubmitted,
         ])
             ->title($this->event->couple_names.' | '.__('invitation.title'))
             ->layoutData([

@@ -38,6 +38,8 @@ return [
     'pause' => 'Pause',
 
     'rsvp' => 'Teilnahme bestätigen',
+    'rsvp_nudge_cta' => 'Teilnahme bestätigen',
+    'rsvp_nudge_sticky_text' => 'Bitte bestätigen Sie Ihre Teilnahme',
     'confirm_attendance' => 'Bestätigen Sie Ihre Teilnahme',
     'respond_by' => 'Bitte antworten Sie bis :date.',
     'thank_you' => 'Danke, :name!',

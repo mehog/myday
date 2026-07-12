@@ -46,6 +46,7 @@
     class="story-wrap"
     @story-modal-open.window="modalOpen = true; clearAdvTimer()"
     @story-modal-close.window="modalOpen = false; animKey++; startAdvTimer()"
+    @go-to-rsvp.window="goTo(total - 1)"
     x-data="{
         current: 0,
         total: {{ $slideCount }},
@@ -304,6 +305,10 @@
                     </p>
                     @if ($event->location_name)
                         <p class="story-meta invitation-body">{{ $event->location_name }}</p>
+                    @endif
+
+                    @if ($showRsvpNudge ?? false)
+                        @include('components.invitation.rsvp-nudge-link', ['variant' => 'story'])
                     @endif
                 </div>
             </section>

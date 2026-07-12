@@ -1,4 +1,7 @@
-@include('components.invitation.hero', ['event' => $event])
+@include('components.invitation.hero', [
+    'event' => $event,
+    'showRsvpNudge' => $showRsvpNudge ?? false,
+])
 
 @include('components.invitation.countdown', ['event' => $event])
 
