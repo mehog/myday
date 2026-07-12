@@ -55,7 +55,7 @@ return [
     'longitude' => 'Geografska dužina',
 
     // Wedding form — RSVP section
-    'section_rsvp' => 'RSVP',
+    'section_rsvp' => 'Potvrda dolaska',
     'rsvp_deadline' => 'Rok za potvrdu dolaska',
     'guest_message' => 'Poruka za goste',
     'guest_message_helper' => 'Koristite {name} za ime gosta i {link} za personalizovani link.',
@@ -120,7 +120,7 @@ return [
     'push_notifications_failed_reason' => 'Razlog neuspjeha',
     'push_notifications_no_subscribers' => 'Nema gostiju s uključenim push obavijestima koji odgovaraju vašem odabiru.',
     'push_notifications_no_wedding' => 'Prije slanja obavijesti morate imati kreirano vjenčanje.',
-    'push_notifications_rsvp_pending' => 'RSVP na čekanju',
+    'push_notifications_rsvp_pending' => 'Čeka potvrdu',
 
     'push_install_title' => 'Omogućite na iPhoneu',
     'push_install_step1' => '1. Dodirnite Share dugme na dnu Safarija.',
@@ -135,15 +135,15 @@ return [
     'push_error_unknown' => 'Došlo je do neočekivane greške. Pokušajte ponovo.',
 
     // Couple push notifications
-    'couple_push_banner_title' => 'Budite obaviješteni o RSVP odgovorima',
+    'couple_push_banner_title' => 'Budite obaviješteni o potvrdama dolaska',
     'couple_push_banner_body' => 'Uključite push obavijesti da biste saznali kada gosti odgovore na pozivnicu.',
     'couple_push_banner_enabling' => 'Uključivanje…',
-    'couple_rsvp_notification_title' => 'Novi RSVP od :name',
+    'couple_rsvp_notification_title' => 'Nova potvrda od :name',
     'couple_rsvp_notification_body_yes' => ':name dolazi!',
     'couple_rsvp_notification_body_no' => ':name ne dolazi.',
     'couple_rsvp_notification_note_suffix' => 'Napomena: :note',
     'push_devices_heading' => 'Uređaji za push obavijesti',
-    'push_devices_description' => 'Svaki uređaj koji uključite primat će RSVP obavijesti. Oba partnera mogu dodati svoje uređaje.',
+    'push_devices_description' => 'Svaki uređaj koji uključite primat će obavijesti o potvrdama dolaska. Oba partnera mogu dodati svoje uređaje.',
     'push_devices_col_device' => 'Uređaj',
     'push_devices_col_registered' => 'Registrovan',
     'push_devices_add' => 'Dodaj ovaj uređaj',
@@ -194,7 +194,7 @@ return [
     'guest_messages_visit_unknown' => 'Nepoznato',
 
     // Recent RSVP notes widget
-    'recent_rsvp_notes_heading' => 'Posljednje poruke pri RSVP-u',
+    'recent_rsvp_notes_heading' => 'Posljednje poruke uz potvrdu dolaska',
     'recent_rsvp_notes_empty' => 'Nema poruka od gostiju',
     'recent_rsvp_notes_empty_desc' => 'Poruke koje gosti ostave pri odgovaranju pojavit će se ovdje',
 

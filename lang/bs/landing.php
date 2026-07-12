@@ -2,7 +2,7 @@
 
 return [
     'meta_title' => 'NasDan — Digitalne web pozivnice za vjenčanje',
-    'meta_description' => 'Personalizovane web pozivnice za vaše vjenčanje. Odbrojavanje, RSVP, plan dana i više — sve na jednom linku.',
+    'meta_description' => 'Personalizovane web pozivnice za vaše vjenčanje. Odbrojavanje, potvrda dolaska, plan dana i više — sve na jednom linku.',
 
     'nav_demo' => 'Demo',
     'nav_order' => 'Naruči',
@@ -27,7 +27,7 @@ return [
     'benefit_2_text' => 'WhatsApp, Viber ili Telegram — odaberite platformu i pošaljite pozivnicu direktno. Bez kopiranja linkova, bez zaboravljenih gostiju.',
 
     'benefit_3_title' => 'Potvrde stižu u realnom vremenu',
-    'benefit_3_text' => 'Svaki RSVP odgovor se odmah pojavljuje u vašem panelu. Znate tačno ko dolazi, ko ne — i ko još nije odgovorio.',
+    'benefit_3_text' => 'Svaka potvrda dolaska se odmah pojavljuje u vašem panelu. Znate tačno ko dolazi, ko ne — i ko još nije odgovorio.',
 
     'benefit_4_title' => 'Vizuelni plan sjedenja',
     'benefit_4_text' => 'Rasporedite potvrđene goste na interaktivnom platnu, dodijelite mjesta za stolove i izvezite kompletnu listu gostiju sa planom sjedenja kao PDF.',
