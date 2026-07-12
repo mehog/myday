@@ -44,6 +44,7 @@
             <meta name="theme-color" content="{{ match ($event->theme->value) {
                 'pearl-white' => '#FAFAF8',
                 'dusty-rose' => '#F9F1EE',
+                'paper-ink' => '#F3EDE3',
                 'royal-wedding' => '#0f1a2e',
                 'lavender-dream' => '#2d2438',
                 'winter-magic' => '#1a2332',
@@ -63,7 +64,7 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=cormorant-garamond:400,500,600,700|playfair-display:400,500,600,700|lora:400,500,600|crimson-pro:400,500,600|montserrat:300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.bunny.net/css?family=cormorant-garamond:400,500,600,700|playfair-display:400,500,600,700|lora:400,500,600|crimson-pro:400,500,600|montserrat:300,400,500,600,700|great-vibes:400" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles

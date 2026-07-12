@@ -53,6 +53,14 @@
                 '--polo-accent' => '#B5706A',
                 '--polo-photo-bg' => '#E8C9C4',
             ],
+            'paper-ink' => [
+                '--polo-bg' => '#7A623E',
+                '--polo-shadow' => 'rgba(0, 0, 0, 0.4)',
+                '--polo-caption-bg' => '#F3EDE3',
+                '--polo-caption-ink' => '#3A2E24',
+                '--polo-accent' => '#9A7B4F',
+                '--polo-photo-bg' => '#C4B59A',
+            ],
         ];
 
         $poloPalette = $poloPalettes[$event->theme->value] ?? $poloPalettes['amber-gold'];

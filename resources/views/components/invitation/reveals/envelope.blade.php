@@ -70,6 +70,17 @@
                 '--env-bg-1' => '#7a3a35',
                 '--env-bg-2' => '#9A5A55',
             ],
+            'paper-ink' => [
+                '--env-navy-1' => '#9A7B4F',
+                '--env-navy-2' => '#7A623E',
+                '--env-flap-2' => '#b8956a',
+                '--env-liner' => '#C4B59A',
+                '--env-paper' => '#F3EDE3',
+                '--env-ink' => '#3A2E24',
+                '--env-gold' => '#9A7B4F',
+                '--env-bg-1' => '#5a4a32',
+                '--env-bg-2' => '#7A623E',
+            ],
         ];
 
         $envPalette = $envPalettes[$event->theme->value] ?? $envPalettes['amber-gold'];

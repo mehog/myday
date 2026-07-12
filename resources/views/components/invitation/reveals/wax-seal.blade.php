@@ -70,6 +70,17 @@
                 '--seal-bg-1' => '#7a3a35',
                 '--seal-bg-2' => '#9A5A55',
             ],
+            'paper-ink' => [
+                '--seal-navy-1' => '#9A7B4F',
+                '--seal-navy-2' => '#7A623E',
+                '--seal-flap-2' => '#b8956a',
+                '--seal-liner' => '#C4B59A',
+                '--seal-paper' => '#F3EDE3',
+                '--seal-ink' => '#3A2E24',
+                '--seal-gold' => '#9A7B4F',
+                '--seal-bg-1' => '#5a4a32',
+                '--seal-bg-2' => '#7A623E',
+            ],
         ];
 
         $sealPalette = $sealPalettes[$event->theme->value] ?? $sealPalettes['amber-gold'];

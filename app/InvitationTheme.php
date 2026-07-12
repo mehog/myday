@@ -10,6 +10,7 @@ enum InvitationTheme: string
     case WinterMagic = 'winter-magic';
     case PearlWhite = 'pearl-white';
     case DustyRose = 'dusty-rose';
+    case PaperInk = 'paper-ink';
 
     public function label(): string
     {
@@ -20,6 +21,7 @@ enum InvitationTheme: string
             self::WinterMagic => 'Winter Magic',
             self::PearlWhite => 'Pearl White',
             self::DustyRose => 'Dusty Rose',
+            self::PaperInk => 'Paper & Ink',
         };
     }
 
@@ -58,6 +60,11 @@ enum InvitationTheme: string
                 'bg' => '#FFF0F3',
                 'text' => '#4A1A2A',
                 'accent' => '#C07080',
+            ],
+            self::PaperInk => [
+                'bg' => '#F3EDE3',
+                'text' => '#3A2E24',
+                'accent' => '#9A7B4F',
             ],
         };
     }

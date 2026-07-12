@@ -70,6 +70,17 @@
                 '--curtain-bg-1' => '#7a3a35',
                 '--curtain-bg-2' => '#9A5A55',
             ],
+            'paper-ink' => [
+                '--curtain-navy-1' => '#9A7B4F',
+                '--curtain-navy-2' => '#7A623E',
+                '--curtain-flap-2' => '#b8956a',
+                '--curtain-liner' => '#C4B59A',
+                '--curtain-paper' => '#F3EDE3',
+                '--curtain-ink' => '#3A2E24',
+                '--curtain-gold' => '#9A7B4F',
+                '--curtain-bg-1' => '#5a4a32',
+                '--curtain-bg-2' => '#7A623E',
+            ],
         ];
 
         $curtainPalette = $curtainPalettes[$event->theme->value] ?? $curtainPalettes['amber-gold'];

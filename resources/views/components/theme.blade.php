@@ -74,13 +74,26 @@
             '--font-body' => "'Lora', serif",
             '--gradient-hero' => 'linear-gradient(180deg, rgba(249,241,238,0.3) 0%, rgba(249,241,238,0.92) 100%)',
         ],
+        'paper-ink' => [
+            '--color-primary' => '#9A7B4F',
+            '--color-primary-dark' => '#7A623E',
+            '--color-accent' => '#C4B59A',
+            '--color-bg' => '#F3EDE3',
+            '--color-bg-soft' => '#EBE3D6',
+            '--color-text' => '#3A2E24',
+            '--color-text-muted' => '#7A6B5A',
+            '--font-heading' => "'Great Vibes', cursive",
+            '--font-body' => "'Lora', serif",
+            '--gradient-hero' => 'linear-gradient(180deg, rgba(243,237,227,0.25) 0%, rgba(243,237,227,0.94) 100%)',
+        ],
     ];
 
     $vars = $themes[$theme->value] ?? $themes['amber-gold'];
+    $themeClass = $theme->value === 'paper-ink' ? ' theme-paper-ink' : '';
 @endphp
 
 <div
-    {{ $attributes->merge(['class' => 'invitation-theme min-h-screen']) }}
+    {{ $attributes->merge(['class' => 'invitation-theme min-h-screen'.$themeClass]) }}
     style="@foreach ($vars as $key => $value) {{ $key }}: {{ $value }}; @endforeach"
 >
     {{ $slot }}
