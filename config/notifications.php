@@ -23,7 +23,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'couple_onboarding_days' => [1, 3, 5],
+    'couple_onboarding_days' => [1, 3, 7],
 
     /*
     |--------------------------------------------------------------------------
@@ -48,5 +48,13 @@ return [
     */
 
     'admin_enquiry_follow_up_days' => (int) env('ADMIN_ENQUIRY_FOLLOW_UP_DAYS', 3),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Seconds to wait between sends in notifications:preview (rate-limit safety)
+    |--------------------------------------------------------------------------
+    */
+
+    'preview_delay_seconds' => (int) env('NOTIFICATION_PREVIEW_DELAY_SECONDS', 2),
 
 ];
