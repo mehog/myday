@@ -27,6 +27,15 @@ class Locale
         return in_array($locale, self::supported(), true);
     }
 
+    public static function resolve(?string $locale): string
+    {
+        if (is_string($locale) && self::isSupported($locale)) {
+            return $locale;
+        }
+
+        return self::default();
+    }
+
     public static function current(): string
     {
         return App::getLocale();

@@ -29,6 +29,12 @@ class AdminNotifier
     public static function notify(Notification $notification): void
     {
         foreach (self::recipients() as $recipient) {
+            if ($recipient instanceof AnonymousNotifiable) {
+                $recipient->notify((clone $notification)->locale(Locale::default()));
+
+                continue;
+            }
+
             $recipient->notify($notification);
         }
     }

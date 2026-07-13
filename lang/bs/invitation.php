@@ -120,6 +120,8 @@ return [
     'message_type_photo' => 'Fotografija',
 
     'token_required' => 'Ova pozivnica zahtijeva lični link.',
+    'token_only_preview_banner' => 'Pregledavate javni link. Gosti mogu otvoriti ovu pozivnicu samo preko svog ličnog linka.',
+    'token_only_preview_rsvp' => 'Potvrda dolaska je dostupna samo na ličnom linku svakog gosta.',
 
     'preview_banner' => 'Ovo je pregled. Link će biti aktivan nakon potvrde uplate i odobrenja administratora.',
     'demo_try' => 'Isprobajte stil',

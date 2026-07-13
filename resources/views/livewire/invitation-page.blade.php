@@ -15,6 +15,21 @@
         </div>
     @endif
 
+    @if ($isTokenOnlyPreview)
+        <div
+            @class([
+                'fixed inset-x-0 z-50 bg-[#2a1f0f] text-[#faf6ee] px-4 py-3 text-sm flex items-center justify-center gap-2 shadow-md border-b border-[#c9a227]/40',
+                'top-0' => ! $isPreview,
+                'top-12' => $isPreview,
+            ])
+        >
+            <svg class="w-4 h-4 shrink-0 text-[#c9a227]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            <p class="text-center">{{ __('invitation.token_only_preview_banner') }}</p>
+        </div>
+    @endif
+
     @if ($event->is_demo && $showDemoSwitcher)
         <style>
             @keyframes demoRibbonSlide {
@@ -43,8 +58,9 @@
         <div
             @class([
                 'fixed inset-x-0 z-50 bg-[#1a1208]/60 backdrop-blur border-b border-[#c9a227]/30 text-sm',
-                'top-0' => ! $isPreview,
-                'top-12' => $isPreview,
+                'top-0' => ! $isPreview && ! $isTokenOnlyPreview,
+                'top-12' => ($isPreview xor $isTokenOnlyPreview),
+                'top-24' => $isPreview && $isTokenOnlyPreview,
             ])
             style="animation: demoRibbonSlide 0.35s ease both"
         >
@@ -95,7 +111,9 @@
     @endif
 
     @php
-        $bannerCount = ($isPreview ? 1 : 0) + ($event->is_demo && $showDemoSwitcher ? 1 : 0);
+        $bannerCount = ($isPreview ? 1 : 0)
+            + ($isTokenOnlyPreview ? 1 : 0)
+            + ($event->is_demo && $showDemoSwitcher ? 1 : 0);
     @endphp
 
     <div
@@ -109,6 +127,7 @@
                 'invitation-page',
                 'pt-12' => $bannerCount === 1,
                 'pt-24' => $bannerCount === 2,
+                'pt-36' => $bannerCount === 3,
                 'pb-20' => $showRsvpNudge,
             ])>
                 @include('components.invitation.templates.'.$activeTemplate->value, [

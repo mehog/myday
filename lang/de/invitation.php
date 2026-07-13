@@ -88,6 +88,8 @@ return [
     'back_to_invitation' => 'Zurück zur Einladung',
 
     'token_required' => 'Diese Einladung erfordert einen persönlichen Link.',
+    'token_only_preview_banner' => 'Sie sehen die öffentliche Vorschau. Gäste können diese Einladung nur über ihren persönlichen Link öffnen.',
+    'token_only_preview_rsvp' => 'Die Zusage ist nur über den persönlichen Einladungslink jedes Gastes möglich.',
     'audio_format_error' => 'Das Audioformat wird von Ihrem Gerät nicht unterstützt. Bitte versuchen Sie es mit einem anderen Browser.',
 
     'preview_banner' => 'Dies ist eine Vorschau. Der Link wird freigeschaltet, sobald die Zahlung bestätigt und von einem Admin freigegeben wurde.',

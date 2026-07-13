@@ -5,7 +5,9 @@ namespace App\Models;
 use App\InvitePlatform;
 use App\LinkType;
 use App\RsvpStatus;
+use App\Support\Locale;
 use Database\Factories\GuestFactory;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,7 +19,7 @@ use Illuminate\Support\Str;
 use NotificationChannels\WebPush\HasPushSubscriptions;
 use Thomasjohnkane\Snooze\Traits\SnoozeNotifiable;
 
-class Guest extends Model
+class Guest extends Model implements HasLocalePreference
 {
     /** @use HasFactory<GuestFactory> */
     use HasFactory, HasPushSubscriptions, Notifiable, SnoozeNotifiable, SoftDeletes;
@@ -93,5 +95,10 @@ class Guest extends Model
     public function routeNotificationForMail(): ?string
     {
         return $this->email;
+    }
+
+    public function preferredLocale(): string
+    {
+        return Locale::resolve($this->weddingEvent?->user?->locale);
     }
 }

@@ -34,6 +34,8 @@ class InvitationPage extends Component
 
     public bool $isPreview = false;
 
+    public bool $isTokenOnlyPreview = false;
+
     public bool $isPersonalLink = false;
 
     public string $previewTheme = '';
@@ -73,7 +75,11 @@ class InvitationPage extends Component
         }
 
         if ($this->event->requiresToken() && $token === null) {
-            abort(403, __('invitation.token_required'));
+            if (! $this->event->canPreviewPublicLink(auth()->user())) {
+                abort(403, __('invitation.token_required'));
+            }
+
+            $this->isTokenOnlyPreview = true;
         }
 
         if ($token !== null) {
@@ -84,7 +90,7 @@ class InvitationPage extends Component
             $this->isPersonalLink = true;
         }
 
-        if (! $this->isPreview) {
+        if (! $this->isPreview && ! $this->isTokenOnlyPreview) {
             $request = request();
 
             RecordLinkVisit::dispatch(
@@ -100,6 +106,10 @@ class InvitationPage extends Component
 
     public function respond(string $status): void
     {
+        if ($this->isTokenOnlyPreview || ($this->event->requiresToken() && ! $this->isPersonalLink)) {
+            return;
+        }
+
         $rsvpStatus = RsvpStatus::from($status);
 
         $this->validate([
@@ -228,6 +238,7 @@ class InvitationPage extends Component
                 'event' => $this->event,
                 'guest' => $this->guest,
                 'isPreview' => $this->isPreview,
+                'isTokenOnlyPreview' => $this->isTokenOnlyPreview,
                 'isPersonalLink' => $this->isPersonalLink,
             ]);
     }

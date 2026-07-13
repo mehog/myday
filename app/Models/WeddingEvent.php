@@ -144,21 +144,29 @@ class WeddingEvent extends Model
         return $this->link_mode === LinkMode::TokenOnly;
     }
 
+    public function isOwnedBy(?User $user): bool
+    {
+        return $user !== null
+            && $this->user_id !== null
+            && $this->user_id === $user->id;
+    }
+
+    public function canPreviewPublicLink(?User $user): bool
+    {
+        if ($user === null) {
+            return false;
+        }
+
+        return $user->is_admin || $this->isOwnedBy($user);
+    }
+
     public function canBeViewedBy(?User $user): bool
     {
         if ($this->is_active) {
             return true;
         }
 
-        if ($user === null) {
-            return false;
-        }
-
-        if ($user->is_admin) {
-            return true;
-        }
-
-        return $this->user_id !== null && $this->user_id === $user->id;
+        return $this->canPreviewPublicLink($user);
     }
 
     public function isWeddingDay(): bool

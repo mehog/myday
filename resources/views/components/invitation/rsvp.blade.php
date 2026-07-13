@@ -1,3 +1,14 @@
+@if (! empty($isTokenOnlyPreview))
+    <section class="invitation-section py-20 px-6" id="rsvp">
+        <div class="max-w-xl mx-auto text-center invitation-fade-in">
+            <p class="text-sm uppercase tracking-[0.3em] text-[var(--color-text-muted)] mb-3">{{ __('invitation.rsvp') }}</p>
+            <h2 class="invitation-heading text-4xl text-[var(--color-text)] mb-4">{{ __('invitation.confirm_attendance') }}</h2>
+            <p class="invitation-body text-[var(--color-text-muted)]">
+                {{ __('invitation.token_only_preview_rsvp') }}
+            </p>
+        </div>
+    </section>
+@else
 <section
     class="invitation-section py-20 px-6 pb-28"
     id="rsvp"
@@ -341,3 +352,4 @@
         </div>
     @endif
 </section>
+@endif

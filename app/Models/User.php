@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Support\Locale;
 use App\Traits\Referrable;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,7 +22,7 @@ use Thomasjohnkane\Snooze\Traits\SnoozeNotifiable;
 
 #[Fillable(['name', 'email', 'password', 'is_admin', 'locale', 'referral_fee_percentage', 'paypal_email', 'bank_account_info'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerifyEmail
+class User extends Authenticatable implements FilamentUser, HasAvatar, HasLocalePreference, MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, HasPushSubscriptions, Notifiable, Referrable, SnoozeNotifiable;
@@ -65,5 +67,10 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerif
     public function getFilamentAvatarUrl(): ?string
     {
         return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&background=f43f5e&color=fff&size=128';
+    }
+
+    public function preferredLocale(): string
+    {
+        return Locale::resolve($this->locale);
     }
 }
