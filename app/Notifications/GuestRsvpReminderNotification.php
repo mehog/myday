@@ -25,11 +25,26 @@ class GuestRsvpReminderNotification extends Notification implements ShouldQueue
             return true;
         }
 
-        if ($notifiable->weddingEvent?->rsvp_deadline === null) {
+        $deadline = $notifiable->weddingEvent?->rsvp_deadline;
+
+        if ($deadline === null) {
             return true;
         }
 
-        return $this->guestReminderShouldInterrupt($notifiable, requireUnanswered: true);
+        if ($this->guestReminderShouldInterrupt($notifiable, requireUnanswered: true)) {
+            return true;
+        }
+
+        $deadlineDay = $deadline->copy()->startOfDay();
+        $today = now()->startOfDay();
+
+        if ($deadlineDay->lt($today)) {
+            return true;
+        }
+
+        $daysRemaining = (int) $today->diffInDays($deadlineDay);
+
+        return $daysRemaining < $this->daysBeforeDeadline;
     }
 
     /**

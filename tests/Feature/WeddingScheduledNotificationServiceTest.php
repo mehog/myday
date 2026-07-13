@@ -91,6 +91,82 @@ class WeddingScheduledNotificationServiceTest extends TestCase
         $this->assertSame(0, $this->pendingCountForGuest($guest, ScheduledNotificationType::RsvpReminder1Day->value));
     }
 
+    public function test_it_skips_seven_day_rsvp_reminder_when_deadline_is_within_seven_days(): void
+    {
+        $event = WeddingEvent::factory()->create([
+            'rsvp_deadline' => '2026-07-04',
+            'is_active' => true,
+        ]);
+
+        $guest = Guest::withoutEvents(fn () => Guest::factory()->for($event)->create([
+            'email' => 'guest@example.com',
+            'rsvp_status' => null,
+        ]));
+
+        $this->service->syncGuest($guest);
+
+        $this->assertSame(0, $this->pendingCountForGuest($guest, ScheduledNotificationType::RsvpReminder7Days->value));
+        $this->assertSame(1, $this->pendingCountForGuest($guest, ScheduledNotificationType::RsvpReminder1Day->value));
+    }
+
+    public function test_it_skips_all_rsvp_reminders_when_deadline_is_today(): void
+    {
+        $event = WeddingEvent::factory()->create([
+            'rsvp_deadline' => '2026-07-01',
+            'is_active' => true,
+        ]);
+
+        $guest = Guest::withoutEvents(fn () => Guest::factory()->for($event)->create([
+            'email' => 'guest@example.com',
+            'rsvp_status' => null,
+        ]));
+
+        $this->service->syncGuest($guest);
+
+        $this->assertSame(0, $this->pendingCountForGuest($guest, ScheduledNotificationType::RsvpReminder7Days->value));
+        $this->assertSame(0, $this->pendingCountForGuest($guest, ScheduledNotificationType::RsvpReminder1Day->value));
+    }
+
+    public function test_rsvp_reminder_interrupts_when_deadline_is_too_soon(): void
+    {
+        $event = WeddingEvent::factory()->create([
+            'rsvp_deadline' => '2026-07-04',
+            'is_active' => true,
+        ]);
+
+        $guest = Guest::withoutEvents(fn () => Guest::factory()->for($event)->create([
+            'email' => 'guest@example.com',
+            'rsvp_status' => null,
+        ]));
+
+        $guest->load('weddingEvent');
+
+        $sevenDayReminder = new GuestRsvpReminderNotification(7);
+        $oneDayReminder = new GuestRsvpReminderNotification(1);
+
+        $this->assertTrue($sevenDayReminder->shouldInterrupt($guest));
+        $this->assertFalse($oneDayReminder->shouldInterrupt($guest));
+    }
+
+    public function test_rsvp_reminder_does_not_interrupt_when_deadline_matches_reminder_window(): void
+    {
+        $event = WeddingEvent::factory()->create([
+            'rsvp_deadline' => '2026-07-08',
+            'is_active' => true,
+        ]);
+
+        $guest = Guest::withoutEvents(fn () => Guest::factory()->for($event)->create([
+            'email' => 'guest@example.com',
+            'rsvp_status' => null,
+        ]));
+
+        $guest->load('weddingEvent');
+
+        $sevenDayReminder = new GuestRsvpReminderNotification(7);
+
+        $this->assertFalse($sevenDayReminder->shouldInterrupt($guest));
+    }
+
     public function test_it_reschedules_reminders_when_rsvp_deadline_changes(): void
     {
         $event = WeddingEvent::factory()->create([

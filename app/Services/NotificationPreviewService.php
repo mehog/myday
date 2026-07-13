@@ -243,7 +243,12 @@ final class NotificationPreviewService
                 'group' => 'rsvp',
                 'channel' => 'mail',
                 'target' => 'guest',
-                'factory' => fn (NotificationPreviewFixtures $fixtures): Notification => new GuestRsvpReminderNotification(7),
+                'factory' => function (NotificationPreviewFixtures $fixtures): Notification {
+                    $fixtures->wedding->rsvp_deadline = now()->addDays(7)->startOfDay();
+                    $fixtures->guest->setRelation('weddingEvent', $fixtures->wedding);
+
+                    return new GuestRsvpReminderNotification(7);
+                },
             ],
             [
                 'id' => 'guest-rsvp-1d',
@@ -251,7 +256,12 @@ final class NotificationPreviewService
                 'group' => 'rsvp',
                 'channel' => 'mail',
                 'target' => 'guest',
-                'factory' => fn (NotificationPreviewFixtures $fixtures): Notification => new GuestRsvpReminderNotification(1),
+                'factory' => function (NotificationPreviewFixtures $fixtures): Notification {
+                    $fixtures->wedding->rsvp_deadline = now()->addDay()->startOfDay();
+                    $fixtures->guest->setRelation('weddingEvent', $fixtures->wedding);
+
+                    return new GuestRsvpReminderNotification(1);
+                },
             ],
         ];
     }
