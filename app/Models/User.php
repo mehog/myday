@@ -16,13 +16,14 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use NotificationChannels\WebPush\HasPushSubscriptions;
+use Thomasjohnkane\Snooze\Traits\SnoozeNotifiable;
 
 #[Fillable(['name', 'email', 'password', 'is_admin', 'locale', 'referral_fee_percentage', 'paypal_email', 'bank_account_info'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, HasPushSubscriptions, Notifiable, Referrable;
+    use HasFactory, HasPushSubscriptions, Notifiable, Referrable, SnoozeNotifiable;
 
     /**
      * @return array<string, string>

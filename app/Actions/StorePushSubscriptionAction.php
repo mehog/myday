@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Models\Guest;
+use App\Services\WeddingScheduledNotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -23,6 +24,8 @@ class StorePushSubscriptionAction
             token: $validated['keys']['auth'],
             contentEncoding: $validated['content_encoding'] ?? null,
         );
+
+        app(WeddingScheduledNotificationService::class)->syncGuest($guest->fresh());
 
         return response()->json(['success' => true]);
     }

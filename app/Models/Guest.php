@@ -5,6 +5,7 @@ namespace App\Models;
 use App\InvitePlatform;
 use App\LinkType;
 use App\RsvpStatus;
+use Database\Factories\GuestFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,10 +15,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use NotificationChannels\WebPush\HasPushSubscriptions;
+use Thomasjohnkane\Snooze\Traits\SnoozeNotifiable;
 
 class Guest extends Model
 {
-    use HasFactory, HasPushSubscriptions, Notifiable, SoftDeletes;
+    /** @use HasFactory<GuestFactory> */
+    use HasFactory, HasPushSubscriptions, Notifiable, SnoozeNotifiable, SoftDeletes;
 
     protected $fillable = [
         'wedding_event_id',
@@ -85,5 +88,10 @@ class Guest extends Model
     public function getPersonalUrlAttribute(): string
     {
         return $this->weddingEvent->guestUrl($this);
+    }
+
+    public function routeNotificationForMail(): ?string
+    {
+        return $this->email;
     }
 }

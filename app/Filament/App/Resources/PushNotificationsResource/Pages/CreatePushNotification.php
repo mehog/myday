@@ -8,9 +8,11 @@ use App\Models\Guest;
 use App\Models\PushNotificationLog;
 use App\PushNotificationRecipientType;
 use App\PushNotificationStatus;
+use App\Services\WeddingScheduledNotificationService;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 class CreatePushNotification extends CreateRecord
@@ -53,18 +55,38 @@ class CreatePushNotification extends CreateRecord
             $this->halt();
         }
 
+        $scheduledAt = filled($data['scheduled_at'] ?? null)
+            ? Carbon::parse($data['scheduled_at'])
+            : null;
+
         $log = PushNotificationLog::query()->create([
             'wedding_event_id' => $weddingEvent->id,
             'title' => $data['title'],
             'body' => $data['body'],
             'recipient_type' => $data['recipient_type'],
             'sent_to_count' => $guests->count(),
+            'guest_ids' => $guests->pluck('id')->all(),
             'status' => PushNotificationStatus::Queued,
+            'scheduled_at' => $scheduledAt,
         ]);
+
+        $guestIds = $guests->pluck('id')->all();
+        $user = auth()->user();
+
+        if ($scheduledAt !== null && $scheduledAt->isFuture() && $user !== null) {
+            app(WeddingScheduledNotificationService::class)->scheduleGuestPush(
+                log: $log,
+                user: $user,
+                sendAt: $scheduledAt,
+                guestIds: $guestIds,
+            );
+
+            return $log;
+        }
 
         SendGuestPushNotificationsJob::dispatch(
             logId: $log->id,
-            guestIds: $guests->pluck('id')->all(),
+            guestIds: $guestIds,
             title: $data['title'],
             body: $data['body'],
         );
@@ -95,6 +117,12 @@ class CreatePushNotification extends CreateRecord
 
     protected function getCreatedNotificationTitle(): ?string
     {
+        $scheduledAt = $this->data['scheduled_at'] ?? null;
+
+        if (filled($scheduledAt) && Carbon::parse($scheduledAt)->isFuture()) {
+            return __('app.push_notifications_scheduled_success');
+        }
+
         return __('app.push_notifications_queued_success');
     }
 }

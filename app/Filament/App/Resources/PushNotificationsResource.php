@@ -12,6 +12,7 @@ use BackedEnum;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Textarea;
@@ -88,6 +89,12 @@ class PushNotificationsResource extends Resource
                             ->required()
                             ->maxLength(120)
                             ->rows(3),
+                        DateTimePicker::make('scheduled_at')
+                            ->label(__('app.push_notifications_field_scheduled_at'))
+                            ->helperText(__('app.push_notifications_field_scheduled_at_helper'))
+                            ->native(false)
+                            ->minDate(now())
+                            ->seconds(false),
                         Radio::make('recipient_type')
                             ->label(__('app.push_notifications_field_recipients'))
                             ->options(collect(PushNotificationRecipientType::cases())->mapWithKeys(
@@ -123,11 +130,17 @@ class PushNotificationsResource extends Resource
                     ->label(__('app.push_notifications_status'))
                     ->badge()
                     ->color(fn (PushNotificationStatus $state): string => match ($state) {
+                        PushNotificationStatus::Scheduled => 'info',
                         PushNotificationStatus::Queued => 'warning',
                         PushNotificationStatus::Sent => 'success',
                         PushNotificationStatus::Failed => 'danger',
                     })
                     ->formatStateUsing(fn (PushNotificationStatus $state): string => $state->label()),
+                TextColumn::make('scheduled_at')
+                    ->label(__('app.push_notifications_scheduled_at'))
+                    ->dateTime()
+                    ->placeholder('—')
+                    ->sortable(),
                 TextColumn::make('recipient_type')
                     ->label(__('app.push_notifications_field_recipients'))
                     ->badge()
@@ -150,7 +163,8 @@ class PushNotificationsResource extends Resource
             ])
             ->recordActions([
                 EditAction::make()
-                    ->label(__('app.push_notifications_edit')),
+                    ->label(__('app.push_notifications_edit'))
+                    ->visible(fn (PushNotificationLog $record): bool => $record->status !== PushNotificationStatus::Scheduled),
                 DeleteAction::make()
                     ->successNotificationTitle(__('app.push_notifications_deleted')),
             ])

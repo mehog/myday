@@ -7,6 +7,7 @@ use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\LinkMode;
 use App\Support\MediaDisk;
+use Database\Factories\WeddingEventFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,6 +16,7 @@ use Illuminate\Support\Str;
 
 class WeddingEvent extends Model
 {
+    /** @use HasFactory<WeddingEventFactory> */
     use HasFactory;
 
     protected $fillable = [
