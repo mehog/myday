@@ -9,7 +9,27 @@
         </div>
     </section>
 @elseif (! $event->acceptsRsvps())
-    <section class="invitation-section py-20 px-6" id="rsvp">
+    <section
+        class="invitation-section py-20 px-6 pb-28"
+        id="rsvp"
+        x-data="{
+            showCalendarModal: false,
+            subscribing: false,
+            subscribed: false,
+            pushError: null,
+            subscribeUrl: @js(! empty($isPersonalLink) && $guest ? route('push.subscribe', $guest->token) : null),
+            pushErrorMessages: @js([
+                'push_ios_update' => __('app.push_ios_update'),
+                'push_error_not_supported' => __('app.push_error_not_supported'),
+                'push_error_denied' => __('app.push_error_denied'),
+                'push_error_config' => __('app.push_error_config'),
+                'push_error_server' => __('app.push_error_server'),
+                'push_error_unknown' => __('app.push_error_unknown'),
+            ]),
+        }"
+        x-init="$watch('showCalendarModal', v => v ? $dispatch('story-modal-open') : $dispatch('story-modal-close'))"
+        @keydown.escape.window="showCalendarModal = false"
+    >
         <div class="max-w-xl mx-auto text-center invitation-fade-in">
             <p class="text-sm uppercase tracking-[0.3em] text-[var(--color-text-muted)] mb-3">{{ __('invitation.rsvp') }}</p>
             <h2 class="invitation-heading text-4xl text-[var(--color-text)] mb-4">{{ __('invitation.confirm_attendance') }}</h2>
@@ -41,6 +61,53 @@
                 </div>
             @endif
         </div>
+
+        @if ($guest && $guest->hasResponded() && $guest->rsvp_status === \App\RsvpStatus::Yes)
+            <div
+                x-show="showCalendarModal"
+                x-transition.opacity
+                class="fixed inset-0 z-[105] flex items-center justify-center bg-black/80 p-4"
+                @click.self="showCalendarModal = false"
+                style="display: none;"
+            >
+                <div
+                    x-show="showCalendarModal"
+                    x-transition
+                    class="w-full max-w-md rounded-2xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)] p-8 text-center"
+                    @click.stop
+                >
+                    <h3 class="invitation-heading text-2xl text-[var(--color-text)] mb-2">
+                        {{ __('invitation.add_to_calendar') }}
+                    </h3>
+                    <p class="invitation-body text-[var(--color-text-muted)] mb-8">
+                        {{ __('invitation.add_to_calendar_description') }}
+                    </p>
+                    <div class="flex flex-col gap-3">
+                        <a
+                            href="{{ $event->googleCalendarUrl() }}"
+                            target="_blank"
+                            rel="noopener"
+                            class="rsvp-btn rsvp-btn-yes w-full py-4 rounded-xl invitation-heading text-lg transition"
+                        >
+                            {{ __('invitation.add_to_google_calendar') }}
+                        </a>
+                        <a
+                            href="{{ route('invitation.ics', $event->slug) }}"
+                            class="rsvp-btn rsvp-btn-no w-full py-4 rounded-xl invitation-heading text-lg transition"
+                        >
+                            {{ __('invitation.download_ics') }}
+                        </a>
+                        <button
+                            type="button"
+                            class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition mt-2"
+                            @click="showCalendarModal = false"
+                        >
+                            {{ __('invitation.rsvp_cancel_btn') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @endif
     </section>
 @else
 <section
