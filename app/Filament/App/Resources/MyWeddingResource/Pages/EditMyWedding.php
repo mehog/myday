@@ -11,6 +11,15 @@ class EditMyWedding extends EditRecord
 {
     protected static string $resource = MyWeddingResource::class;
 
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        if ($this->record->hasEnded()) {
+            unset($data['wedding_date'], $data['rsvp_deadline']);
+        }
+
+        return $data;
+    }
+
     protected function getHeaderActions(): array
     {
         return [

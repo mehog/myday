@@ -110,6 +110,14 @@ class InvitationPage extends Component
             return;
         }
 
+        if (! $this->event->acceptsRsvps()) {
+            return;
+        }
+
+        if (! $this->guest && $this->event->hasEnded()) {
+            return;
+        }
+
         $rsvpStatus = RsvpStatus::from($status);
 
         $this->validate([
@@ -163,6 +171,10 @@ class InvitationPage extends Component
 
     public function editRsvp(): void
     {
+        if (! $this->event->acceptsRsvps()) {
+            return;
+        }
+
         $this->isEditing = true;
         $this->plusOneName = $this->guest?->plus_one_name ?? '';
         $this->rsvpNote = $this->guest?->rsvp_note ?? '';

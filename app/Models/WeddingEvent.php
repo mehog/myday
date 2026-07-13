@@ -174,6 +174,24 @@ class WeddingEvent extends Model
         return now()->isSameDay($this->wedding_date);
     }
 
+    public function hasEnded(): bool
+    {
+        return now()->greaterThan($this->wedding_date->copy()->endOfDay());
+    }
+
+    public function acceptsRsvps(): bool
+    {
+        if ($this->hasEnded()) {
+            return false;
+        }
+
+        if ($this->rsvp_deadline !== null && now()->startOfDay()->greaterThan($this->rsvp_deadline->copy()->endOfDay())) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function getHeroImageUrlAttribute(): ?string
     {
         return MediaDisk::url($this->hero_image);

@@ -24,6 +24,8 @@ return [
     'invitation_link' => 'Link pozivnice',
     'your_link' => 'Vaš link: ',
     'wedding_datetime' => 'Datum i vrijeme vjenčanja',
+    'wedding_date_locked' => 'Datum vjenčanja se ne može mijenjati nakon što je prošao dan vjenčanja.',
+    'rsvp_deadline_locked' => 'Rok za potvrdu dolaska se ne može mijenjati nakon što je prošao dan vjenčanja.',
 
     // Wedding form — Design section
     'section_design' => 'Dizajn',

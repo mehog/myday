@@ -8,6 +8,40 @@
             </p>
         </div>
     </section>
+@elseif (! $event->acceptsRsvps())
+    <section class="invitation-section py-20 px-6" id="rsvp">
+        <div class="max-w-xl mx-auto text-center invitation-fade-in">
+            <p class="text-sm uppercase tracking-[0.3em] text-[var(--color-text-muted)] mb-3">{{ __('invitation.rsvp') }}</p>
+            <h2 class="invitation-heading text-4xl text-[var(--color-text)] mb-4">{{ __('invitation.confirm_attendance') }}</h2>
+            <p class="invitation-body text-[var(--color-text-muted)]">
+                @if ($event->hasEnded())
+                    {{ __('invitation.rsvp_closed_after_wedding') }}
+                @else
+                    {{ __('invitation.rsvp_closed_after_deadline') }}
+                @endif
+            </p>
+            @if ($guest && $guest->hasResponded())
+                <div class="mt-8 rounded-2xl border border-[var(--color-primary)]/30 bg-[var(--color-bg-soft)]/80 px-6 py-8">
+                    <p class="invitation-heading text-2xl text-[var(--color-text)] mb-2">
+                        {{ __('invitation.thank_you', ['name' => $guest->name]) }}
+                    </p>
+                    <p class="invitation-body text-[var(--color-text-muted)]">
+                        {{ __('invitation.your_response') }}:
+                        <span class="text-[var(--color-primary)] font-medium">
+                            {{ $guest->rsvp_status->label() }}
+                        </span>
+                    </p>
+                    @if ($guest->rsvp_status === \App\RsvpStatus::Yes)
+                        @include('components.invitation.rsvp-yes-actions', [
+                            'event' => $event,
+                            'guest' => $guest,
+                            'isPersonalLink' => $isPersonalLink ?? false,
+                        ])
+                    @endif
+                </div>
+            @endif
+        </div>
+    </section>
 @else
 <section
     class="invitation-section py-20 px-6 pb-28"
@@ -60,7 +94,7 @@
                         {{ $guest->rsvp_status->label() }}
                     </span>
                 </p>
-                @if (! $isEditing && (! $event->rsvp_deadline || now()->lte($event->rsvp_deadline)))
+                @if (! $isEditing && $event->acceptsRsvps())
                     <button
                         type="button"
                         wire:click="editRsvp"
@@ -85,7 +119,7 @@
                 <p class="invitation-body text-[var(--color-text-muted)]">
                     {{ __('invitation.response_received') }}
                 </p>
-                @if (! $isEditing && (! $event->rsvp_deadline || now()->lte($event->rsvp_deadline)))
+                @if (! $isEditing && $event->acceptsRsvps())
                     <button
                         type="button"
                         wire:click="editRsvp"

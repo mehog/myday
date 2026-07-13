@@ -90,6 +90,8 @@ return [
     'token_required' => 'Diese Einladung erfordert einen persönlichen Link.',
     'token_only_preview_banner' => 'Sie sehen die öffentliche Vorschau. Gäste können diese Einladung nur über ihren persönlichen Link öffnen.',
     'token_only_preview_rsvp' => 'Die Zusage ist nur über den persönlichen Einladungslink jedes Gastes möglich.',
+    'rsvp_closed_after_wedding' => 'Die Zusage ist nicht mehr möglich — die Hochzeit hat bereits stattgefunden.',
+    'rsvp_closed_after_deadline' => 'Die Zusage ist nicht mehr möglich — die Frist ist abgelaufen.',
     'audio_format_error' => 'Das Audioformat wird von Ihrem Gerät nicht unterstützt. Bitte versuchen Sie es mit einem anderen Browser.',
 
     'preview_banner' => 'Dies ist eine Vorschau. Der Link wird freigeschaltet, sobald die Zahlung bestätigt und von einem Admin freigegeben wurde.',

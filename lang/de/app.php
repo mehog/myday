@@ -24,6 +24,8 @@ return [
     'invitation_link' => 'Einladungslink',
     'your_link' => 'Ihr Link: ',
     'wedding_datetime' => 'Hochzeitsdatum und -uhrzeit',
+    'wedding_date_locked' => 'Das Hochzeitsdatum kann nach dem Hochzeitstag nicht mehr geändert werden.',
+    'rsvp_deadline_locked' => 'Die RSVP-Frist kann nach dem Hochzeitstag nicht mehr geändert werden.',
 
     // Wedding form — Design section
     'section_design' => 'Design',

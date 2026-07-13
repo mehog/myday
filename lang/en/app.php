@@ -24,6 +24,8 @@ return [
     'invitation_link' => 'Invitation link',
     'your_link' => 'Your link: ',
     'wedding_datetime' => 'Wedding date and time',
+    'wedding_date_locked' => 'The wedding date cannot be changed after the wedding day has passed.',
+    'rsvp_deadline_locked' => 'The RSVP deadline cannot be changed after the wedding day has passed.',
 
     // Wedding form — Design section
     'section_design' => 'Design',

@@ -48,6 +48,11 @@ class MyWeddingForm
                             ->label(__('app.wedding_datetime'))
                             ->required()
                             ->native(false)
+                            ->disabled(fn (?WeddingEvent $record): bool => $record?->hasEnded() ?? false)
+                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->hasEnded() ?? false))
+                            ->helperText(fn (?WeddingEvent $record): ?string => $record?->hasEnded()
+                                ? __('app.wedding_date_locked')
+                                : null)
                             ->columnSpanFull(),
                     ]),
                 Section::make(__('app.section_design'))
@@ -130,7 +135,12 @@ class MyWeddingForm
                     ->schema([
                         DatePicker::make('rsvp_deadline')
                             ->label(__('app.rsvp_deadline'))
-                            ->native(false),
+                            ->native(false)
+                            ->disabled(fn (?WeddingEvent $record): bool => $record?->hasEnded() ?? false)
+                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->hasEnded() ?? false))
+                            ->helperText(fn (?WeddingEvent $record): ?string => $record?->hasEnded()
+                                ? __('app.rsvp_deadline_locked')
+                                : null),
                         Textarea::make('send_message')
                             ->label(__('app.guest_message'))
                             ->helperText(__('app.guest_message_helper'))

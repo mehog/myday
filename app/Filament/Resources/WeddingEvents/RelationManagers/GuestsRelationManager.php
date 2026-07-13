@@ -171,10 +171,12 @@ class GuestsRelationManager extends RelationManager
             ->emptyStateHeading($this->trans('empty_heading'))
             ->emptyStateDescription($this->trans('empty_description'))
             ->emptyStateActions([
-                CreateAction::make(),
+                CreateAction::make()
+                    ->visible(fn (): bool => ! $this->coupleGuestManagementLocked()),
             ])
             ->headerActions([
-                CreateAction::make(),
+                CreateAction::make()
+                    ->visible(fn (): bool => ! $this->coupleGuestManagementLocked()),
                 Action::make('downloadPlaceCards')
                     ->label($this->trans('place_cards_download'))
                     ->modalHeading($this->trans('place_cards_download'))
@@ -231,6 +233,7 @@ class GuestsRelationManager extends RelationManager
                 Action::make('importCsv')
                     ->label($this->trans('import_csv'))
                     ->icon('heroicon-o-arrow-up-tray')
+                    ->visible(fn (): bool => ! $this->coupleGuestManagementLocked())
                     ->form([
                         FileUpload::make('file')
                             ->label($this->trans('csv_file'))
@@ -398,6 +401,12 @@ class GuestsRelationManager extends RelationManager
             })
             ->livewireClickHandlerEnabled(true)
             ->cancelParentActions();
+    }
+
+    protected function coupleGuestManagementLocked(): bool
+    {
+        return filament()->getCurrentPanel()?->getId() === 'app'
+            && $this->getOwnerRecord()->hasEnded();
     }
 
     protected function trans(string $key, array $replace = []): string
