@@ -91,6 +91,30 @@ class NotificationPreviewSmokeTest extends TestCase
         $this->assertNotEmpty($email->getSubject());
     }
 
+    public function test_admin_enquiry_follow_up_preview_works_without_persisted_enquiry(): void
+    {
+        $user = User::factory()->create(['locale' => Locale::default()]);
+        $wedding = WeddingEvent::withoutEvents(fn () => WeddingEvent::factory()->for($user)->create([
+            'rsvp_deadline' => now()->addDays(7),
+            'is_active' => false,
+        ]));
+        $guest = Guest::withoutEvents(fn () => Guest::factory()->for($wedding)->create([
+            'email' => 'guest@example.com',
+        ]));
+
+        $fixtures = NotificationPreviewFixtures::resolve([
+            'wedding_id' => $wedding->id,
+            'guest_id' => $guest->id,
+            'user_id' => $user->id,
+        ]);
+
+        $notification = $this->preview->buildNotification('admin-enquiry-follow-up', $fixtures);
+        $mail = $notification->toMail(new AnonymousNotifiable);
+
+        $this->assertInstanceOf(MailMessage::class, $mail);
+        $this->assertNotEmpty($mail->subject);
+    }
+
     public function test_preview_command_lists_scenarios(): void
     {
         $this->artisan('notifications:preview', ['--list' => true])

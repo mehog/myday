@@ -15,11 +15,12 @@ class AdminEnquiryFollowUpNotification extends Notification implements ShouldQue
 
     public function __construct(
         public int $enquiryId,
+        public ?Enquiry $enquiry = null,
     ) {}
 
     public function shouldInterrupt(object $notifiable): bool
     {
-        $enquiry = Enquiry::query()->find($this->enquiryId);
+        $enquiry = $this->resolveEnquiry();
 
         if ($enquiry === null) {
             return true;
@@ -38,7 +39,7 @@ class AdminEnquiryFollowUpNotification extends Notification implements ShouldQue
 
     public function toMail(object $notifiable): MailMessage
     {
-        $enquiry = Enquiry::query()->findOrFail($this->enquiryId);
+        $enquiry = $this->resolveEnquiry() ?? Enquiry::query()->findOrFail($this->enquiryId);
 
         return (new MailMessage)
             ->subject(__('notifications.admin_enquiry_follow_up_subject', [
@@ -52,5 +53,18 @@ class AdminEnquiryFollowUpNotification extends Notification implements ShouldQue
             ]))
             ->replyTo($enquiry->email, $enquiry->name)
             ->action(__('notifications.admin_new_enquiry_reply'), 'mailto:'.$enquiry->email);
+    }
+
+    private function resolveEnquiry(): ?Enquiry
+    {
+        if ($this->enquiry !== null) {
+            return $this->enquiry;
+        }
+
+        if ($this->enquiryId === 0) {
+            return null;
+        }
+
+        return Enquiry::query()->find($this->enquiryId);
     }
 }

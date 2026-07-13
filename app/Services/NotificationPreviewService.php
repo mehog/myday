@@ -390,9 +390,9 @@ final class NotificationPreviewService
                 'group' => 'admin',
                 'channel' => 'admin',
                 'target' => 'admin',
-                'factory' => fn (NotificationPreviewFixtures $fixtures): Notification => new AdminEnquiryFollowUpNotification(
-                    $fixtures->enquiry->id ?: 1,
-                ),
+                'factory' => fn (NotificationPreviewFixtures $fixtures): Notification => $fixtures->enquiry->exists
+                    ? new AdminEnquiryFollowUpNotification($fixtures->enquiry->id)
+                    : new AdminEnquiryFollowUpNotification(0, $fixtures->enquiry),
             ],
             [
                 'id' => 'admin-inactive-wedding',
