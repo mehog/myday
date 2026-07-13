@@ -19,6 +19,7 @@ use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -32,6 +33,7 @@ class GuestsTable
             ->modifyQueryUsing(fn (Builder $query) => $query
                 ->withCount('linkVisits')
                 ->withMax('linkVisits as last_visited_at', 'visited_at'))
+            ->defaultSort('id', 'desc')
             ->columns([
                 TextColumn::make('weddingEvent.slug')
                     ->label('Wedding')
@@ -70,7 +72,37 @@ class GuestsTable
             ->filters([
                 SelectFilter::make('wedding_event_id')
                     ->label('Wedding')
-                    ->options(WeddingEvent::query()->pluck('slug', 'id')),
+                    ->searchable()
+                    ->options(fn (): array => WeddingEvent::query()
+                        ->orderByDesc('id')
+                        ->pluck('slug', 'id')
+                        ->all()),
+                SelectFilter::make('rsvp_status')
+                    ->label('RSVP')
+                    ->options([
+                        'pending' => 'Pending',
+                        RsvpStatus::Yes->value => RsvpStatus::Yes->label(),
+                        RsvpStatus::No->value => RsvpStatus::No->label(),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        $value = $data['value'] ?? null;
+
+                        if (blank($value)) {
+                            return $query;
+                        }
+
+                        if ($value === 'pending') {
+                            return $query->whereNull('rsvp_status');
+                        }
+
+                        return $query->where('rsvp_status', $value);
+                    }),
+                TernaryFilter::make('invite_sent_at')
+                    ->label('Invite sent')
+                    ->placeholder('All')
+                    ->trueLabel('Sent')
+                    ->falseLabel('Not sent')
+                    ->nullable(),
                 TrashedFilter::make(),
             ])
             ->recordActions([

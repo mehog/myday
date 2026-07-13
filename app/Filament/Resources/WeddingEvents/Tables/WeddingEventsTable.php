@@ -8,6 +8,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -19,6 +20,7 @@ class WeddingEventsTable
             ->modifyQueryUsing(fn (Builder $query) => $query
                 ->withCount('linkVisits')
                 ->withMax('linkVisits as last_visited_at', 'visited_at'))
+            ->defaultSort('id', 'desc')
             ->columns([
                 TextColumn::make('couple_names')
                     ->label('Couple')
@@ -26,21 +28,28 @@ class WeddingEventsTable
                 TextColumn::make('slug')
                     ->searchable()
                     ->copyable()
-                    ->copyMessage('Slug copied'),
+                    ->copyMessage('Slug copied')
+                    ->toggleable(),
                 TextColumn::make('wedding_date')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('theme')
-                    ->badge(),
+                    ->badge()
+                    ->toggleable(),
                 TextColumn::make('link_mode')
-                    ->badge(),
+                    ->badge()
+                    ->toggleable(),
                 ToggleColumn::make('is_active')
-                    ->label('Active'),
+                    ->label('Active')
+                    ->toggleable(),
                 ToggleColumn::make('is_demo')
-                    ->label('Demo'),
+                    ->label('Demo')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('link_visits_count')
                     ->label('Views')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('last_visited_at')
                     ->label('Last opened')
                     ->since()
@@ -53,7 +62,13 @@ class WeddingEventsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                TernaryFilter::make('is_demo')
+                    ->label('Demo')
+                    ->placeholder('All')
+                    ->trueLabel('Demo only')
+                    ->falseLabel('Hide demos')
+                    ->boolean()
+                    ->default(false),
             ])
             ->recordActions([
                 ViewAction::make(),
