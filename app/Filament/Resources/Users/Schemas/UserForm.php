@@ -3,8 +3,10 @@
 namespace App\Filament\Resources\Users\Schemas;
 
 use App\Models\User;
+use App\Support\Locale;
 use App\Traits\Referrable;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -37,6 +39,20 @@ class UserForm
                     ->label('Administrator')
                     ->helperText('Admins access /admin. Customers access /app.')
                     ->default(false),
+                Select::make('locale')
+                    ->label(__('locale.label'))
+                    ->options(Locale::options())
+                    ->nullable(),
+                Placeholder::make('email_verification_status')
+                    ->label('Email verification')
+                    ->visible(fn (string $operation): bool => $operation === 'edit')
+                    ->content(function (?User $record): string {
+                        if (! $record?->hasVerifiedEmail()) {
+                            return 'Not verified';
+                        }
+
+                        return 'Verified at '.$record->email_verified_at->format('Y-m-d H:i');
+                    }),
                 Section::make(__('referrals.admin_section_referral_link'))
                     ->visible(fn (string $operation, ?User $record): bool => $operation === 'edit' && ! ($record?->is_admin ?? false))
                     ->schema([

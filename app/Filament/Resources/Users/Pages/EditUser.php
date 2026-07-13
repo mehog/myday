@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Users\Pages;
 
 use App\Filament\Resources\ReferralPayouts\ReferralPayoutResource;
 use App\Filament\Resources\Users\UserResource;
+use App\Support\AdminUserVerification;
 use App\Traits\Referrable;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
@@ -69,6 +70,38 @@ class EditUser extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('verifyEmail')
+                ->label('Verify email')
+                ->icon('heroicon-o-check-badge')
+                ->color('success')
+                ->requiresConfirmation()
+                ->modalHeading('Manually verify email?')
+                ->modalDescription(fn (): string => "Mark {$this->record->email} as verified without the user clicking the link.")
+                ->visible(fn (): bool => ! $this->record->hasVerifiedEmail())
+                ->action(function (): void {
+                    AdminUserVerification::verify($this->record);
+
+                    Notification::make()
+                        ->title('Email verified')
+                        ->success()
+                        ->send();
+                }),
+            Action::make('resendVerification')
+                ->label('Resend verification')
+                ->icon('heroicon-o-envelope')
+                ->color('gray')
+                ->requiresConfirmation()
+                ->modalHeading('Resend verification email?')
+                ->modalDescription(fn (): string => "Send a new verification link to {$this->record->email}.")
+                ->visible(fn (): bool => ! $this->record->hasVerifiedEmail())
+                ->action(function (): void {
+                    AdminUserVerification::resend($this->record);
+
+                    Notification::make()
+                        ->title('Verification email sent')
+                        ->success()
+                        ->send();
+                }),
             Action::make('createPayout')
                 ->label(__('referrals.admin_create_payout'))
                 ->icon('heroicon-o-banknotes')
