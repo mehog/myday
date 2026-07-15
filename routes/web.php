@@ -9,6 +9,7 @@ use App\Http\Controllers\DownloadPlaceCardsController;
 use App\Http\Controllers\DownloadSeatingPlanPdfController;
 use App\Http\Controllers\DownloadReferralQrCodeController;
 use App\Http\Controllers\InvitationManifestController;
+use App\Http\Controllers\ReferralProgramController;
 use App\Http\Controllers\ReferralLinkController;
 use App\Http\Controllers\WeddingEventCalendarController;
 use App\Livewire\GuestContactPage;
@@ -22,6 +23,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', LandingPage::class)->name('home');
+
+Route::get('/referral-program', ReferralProgramController::class)->name('referral-program');
 
 Route::post('/lang/{locale}', function (string $locale) {
     Locale::set($locale);

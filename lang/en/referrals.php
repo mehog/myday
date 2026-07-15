@@ -9,6 +9,8 @@ return [
     'fee_badge' => ':fee% commission',
     'buyer_discount_badge' => '15% off for your referrals',
     'link_help' => 'Share this link with couples planning their wedding. They get 15% off any package, and when they sign up and their invitation is activated, you earn commission.',
+    'public_link_help' => 'Share your referral link with couples planning their wedding. They get 15% off any package, and when they sign up and their invitation is activated, you earn commission.',
+    'public_cta' => 'Sign up to get your referral link',
     'payout_info_hint' => 'Add your PayPal or bank details in your profile so we can pay you at the end of each month.',
     'payout_info_link' => 'Edit payout details',
     'copy_link' => 'Copy link',

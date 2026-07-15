@@ -90,6 +90,7 @@ return [
 
     'footer_rights' => 'Alle Rechte vorbehalten.',
     'footer_contact' => 'Kontakt',
+    'footer_referral_program' => 'Empfehlungsprogramm',
 
     'pricing_title' => 'Wählen Sie Ihr Paket',
     'pricing_subtitle' => 'Ein Preis deckt alles ab. Keine versteckten Kosten, kein monatliches Abo.',

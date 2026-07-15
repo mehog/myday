@@ -9,6 +9,8 @@ return [
     'fee_badge' => ':fee% Provision',
     'buyer_discount_badge' => '15% Rabatt für Ihre Empfehlungen',
     'link_help' => 'Teilen Sie diesen Link mit Paaren, die ihre Hochzeit planen. Sie erhalten 15% Rabatt auf jedes Paket, und wenn sie sich registrieren und ihre Einladung aktiviert wird, verdienen Sie Provision.',
+    'public_link_help' => 'Teilen Sie Ihren Empfehlungslink mit Paaren, die ihre Hochzeit planen. Sie erhalten 15% Rabatt auf jedes Paket, und wenn sie sich registrieren und ihre Einladung aktiviert wird, verdienen Sie Provision.',
+    'public_cta' => 'Registrieren Sie sich, um Ihren Empfehlungslink zu erhalten',
     'payout_info_hint' => 'Fügen Sie Ihre PayPal- oder Bankdaten in Ihrem Profil hinzu, damit wir Ihnen am Monatsende auszahlen können.',
     'payout_info_link' => 'Auszahlungsdetails bearbeiten',
     'copy_link' => 'Link kopieren',

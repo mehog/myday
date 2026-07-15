@@ -90,6 +90,7 @@ return [
 
     'footer_rights' => 'Sva prava zadržana.',
     'footer_contact' => 'Kontakt',
+    'footer_referral_program' => 'Program preporuka',
 
     'pricing_title' => 'Odaberite paket',
     'pricing_subtitle' => 'Jedna cijena pokriva sve. Bez skrivenih troškova, bez mjesečne pretplate.',

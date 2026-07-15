@@ -5,4 +5,9 @@
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
+    <url>
+        <loc>{{ route('referral-program') }}</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
 </urlset>

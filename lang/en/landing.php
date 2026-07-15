@@ -90,6 +90,7 @@ return [
 
     'footer_rights' => 'All rights reserved.',
     'footer_contact' => 'Contact',
+    'footer_referral_program' => 'Referral program',
 
     'pricing_title' => 'Choose your plan',
     'pricing_subtitle' => 'One price includes everything. No hidden fees, no monthly subscription.',

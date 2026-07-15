@@ -9,6 +9,8 @@ return [
     'fee_badge' => ':fee% provizije',
     'buyer_discount_badge' => '15% popusta za vaše preporuke',
     'link_help' => 'Podijelite ovaj link parovima koji planiraju vjenčanje. Oni dobijaju 15% popusta na bilo koji paket, a kada se registruju i njihova pozivnica bude aktivirana, zarađujete proviziju.',
+    'public_link_help' => 'Podijelite svoj referral link parovima koji planiraju vjenčanje. Oni dobijaju 15% popusta na bilo koji paket, a kada se registruju i njihova pozivnica bude aktivirana, zarađujete proviziju.',
+    'public_cta' => 'Registrujte se i dobijte svoj referral link',
     'payout_info_hint' => 'Dodajte PayPal ili bankovne podatke u profil kako bismo vam mogli isplatiti na kraju mjeseca.',
     'payout_info_link' => 'Uredi podatke za isplatu',
     'copy_link' => 'Kopiraj link',

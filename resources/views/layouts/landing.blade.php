@@ -11,16 +11,19 @@
         $ogImage = file_exists(public_path('img/og-image.jpg'))
             ? asset('img/og-image.jpg')
             : asset('img/wedding-bckg.webp');
+        $resolvedPageTitle = $pageTitle ?? __('landing.meta_title');
+        $resolvedPageDescription = $pageDescription ?? __('landing.meta_description');
+        $resolvedCanonicalUrl = $canonicalUrl ?? url('/');
     @endphp
 
-    <title>{{ __('landing.meta_title') }} | {{ config('app.name', 'NasDan') }}</title>
-    <meta name="description" content="{{ __('landing.meta_description') }}">
-    <link rel="canonical" href="{{ url('/') }}">
+    <title>{{ $resolvedPageTitle }} | {{ config('app.name', 'NasDan') }}</title>
+    <meta name="description" content="{{ $resolvedPageDescription }}">
+    <link rel="canonical" href="{{ $resolvedCanonicalUrl }}">
 
-    <meta property="og:title" content="{{ __('landing.meta_title') }}">
-    <meta property="og:description" content="{{ __('landing.meta_description') }}">
+    <meta property="og:title" content="{{ $resolvedPageTitle }}">
+    <meta property="og:description" content="{{ $resolvedPageDescription }}">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:url" content="{{ $resolvedCanonicalUrl }}">
     <meta property="og:image" content="{{ $ogImage }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -28,8 +31,8 @@
     <meta property="og:site_name" content="{{ config('app.name', 'NasDan') }}">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ __('landing.meta_title') }}">
-    <meta name="twitter:description" content="{{ __('landing.meta_description') }}">
+    <meta name="twitter:title" content="{{ $resolvedPageTitle }}">
+    <meta name="twitter:description" content="{{ $resolvedPageDescription }}">
     <meta name="twitter:image" content="{{ $ogImage }}">
 
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
@@ -46,7 +49,11 @@
     @livewireStyles
 </head>
 <body class="landing-page antialiased">
-    {{ $slot }}
+    @isset($slot)
+        {{ $slot }}
+    @else
+        @yield('content')
+    @endisset
 
     <div x-data="invitationReturn()" x-cloak>
         <a
