@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'meta_title' => 'NasDan — Digital wedding web invitations',
-    'meta_description' => 'Personalized web invitations for your wedding. Countdown, RSVP, day schedule and more — all on one link.',
+    'meta_title' => 'NasDan - Digital wedding web invitations',
+    'meta_description' => 'Personalized web invitations for your wedding, with a countdown, RSVP, day schedule and more, all on one link.',
 
     'nav_demo' => 'Demo',
     'nav_order' => 'Order',
@@ -12,7 +12,7 @@ return [
     'back_to_invitation' => 'Back to invitation',
 
     'hero_title' => 'Your wedding story deserves more than a photo in a chat',
-    'hero_subtitle' => 'A personalized web invitation with countdown, RSVP, day schedule and venue photos — ready to share in three steps.',
+    'hero_subtitle' => 'A web invitation with a countdown, RSVP, day schedule and venue photos. Set it up and share it in three steps.',
     'hero_cta_demo' => 'View demo',
     'hero_cta_order' => 'Order invitation',
     'hero_cta_create' => 'Create invitation',
@@ -21,25 +21,28 @@ return [
     'benefits_subtitle' => 'Every guest gets an invitation with their name. You see who confirmed. And you send it all directly from the panel.',
 
     'benefit_1_title' => 'Every guest gets their own name',
-    'benefit_1_text' => 'Send each guest a personalized link — as soon as they open the invitation, their name is already there. No confusion, no anonymity.',
+    'benefit_1_text' => 'Every guest gets their own link. Their name is already on the page when they open it, so there is no mix-up about who is invited.',
 
     'benefit_2_title' => 'Send directly from the panel',
-    'benefit_2_text' => 'WhatsApp, Viber or Telegram — choose the platform and send the invitation directly. No copying links, no forgotten guests.',
+    'benefit_2_text' => 'Send straight from WhatsApp, Viber, or Telegram. You pick the app, the invitation goes out, and nobody gets left off the list by accident.',
 
     'benefit_3_title' => 'Confirmations arrive in real time',
-    'benefit_3_text' => 'Every RSVP response appears immediately in your panel. You know exactly who is coming, who is not — and who has not responded yet.',
+    'benefit_3_text' => 'Every RSVP shows up in your panel right away, so you always know who is coming and who still has not answered.',
 
     'benefit_4_title' => 'Visual seating plan',
-    'benefit_4_text' => 'Arrange confirmed guests on an interactive canvas, assign seats to tables, and export a complete guest list with the seating layout as a PDF.',
+    'benefit_4_text' => 'Arrange guests on an interactive floor plan, assign them to tables, then export the full list with the seating layout as a PDF.',
 
     'interaction_title' => 'Messages and memories from your guests',
     'interaction_subtitle' => 'On the wedding day and for 30 days after, guests can reach out to you directly through the invitation.',
     'interaction_1_title' => 'Text messages',
-    'interaction_1_text' => 'Guests write heartfelt notes straight from the invitation — warm wishes, congratulations and kind words land in your panel.',
+    'interaction_1_text' => 'Guests can write a note straight from the invitation. Wishes, congratulations, whatever they want to say lands right in your panel.',
     'interaction_2_title' => 'Audio messages',
     'interaction_2_text' => 'Let guests record a voice message. Hear their laughter, excitement and personal greetings long after the day is over.',
     'interaction_3_title' => 'Photo sharing',
-    'interaction_3_text' => 'Guests upload photos from the wedding day and the days that follow — for 30 days after the celebration, all in one place for you.',
+    'interaction_3_text' => 'Guests upload photos from the big day and the days after. Everything lands in one place for you, for 30 days after the celebration.',
+    'interaction_demo_name' => 'Amina',
+    'interaction_demo_message' => 'Wishing you both a lifetime of love, can\'t wait to celebrate with you!',
+    'interaction_demo_voice_label' => 'Voice message',
 
     'steps_title' => 'How does it work?',
     'steps_subtitle' => 'Create your invitation yourself online in three simple steps.',
@@ -48,10 +51,10 @@ return [
     'step_1_text' => 'Sign up and enter the couple\'s details, wedding date, and choose a theme.',
 
     'step_2_title' => 'Get your link right away',
-    'step_2_text' => 'Your invitation link appears immediately in your panel. Preview it anytime — it goes live once payment is confirmed and our team activates it.',
+    'step_2_text' => 'Your link shows up in your panel right away. You can preview it whenever you like; it goes live once payment is confirmed and our team switches it on.',
 
     'step_3_title' => 'Share with guests',
-    'step_3_text' => 'Send one link to everyone — or personalized links for each guest via WhatsApp, Viber, or Telegram.',
+    'step_3_text' => 'Send one link to everyone, or a personalized link to each guest through WhatsApp, Viber, or Telegram.',
 
     'demo_title' => 'See what it looks like',
     'demo_subtitle' => 'Open a demo invitation and experience what your guests will see.',
@@ -89,7 +92,7 @@ return [
     'footer_contact' => 'Contact',
 
     'pricing_title' => 'Choose your plan',
-    'pricing_subtitle' => 'One price, everything included. No hidden fees, no monthly subscription.',
+    'pricing_subtitle' => 'One price includes everything. No hidden fees, no monthly subscription.',
     'pricing_plan_basic_name' => 'Basic',
     'pricing_plan_basic_guests' => 'Up to 100 guests',
     'pricing_plan_basic_price' => '80 EUR',
@@ -108,7 +111,7 @@ return [
     'pricing_feature_1' => 'Public or personalized invitation link',
     'pricing_feature_2' => 'Send via WhatsApp, Viber, Telegram or Messenger',
     'pricing_feature_3' => 'Real-time RSVP confirmations',
-    'pricing_feature_4' => 'Live editing — changes visible instantly',
+    'pricing_feature_4' => 'Live editing, guests see changes instantly',
     'pricing_feature_5' => 'Many visual themes to choose from',
     'pricing_feature_6' => 'Wedding day schedule',
     'pricing_feature_7' => 'Guest management panel',

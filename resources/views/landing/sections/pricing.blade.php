@@ -42,7 +42,7 @@
                     'border border-white/15' => ! $plan['highlighted'],
                 ])>
                     @if ($plan['highlighted'])
-                        <span class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#c9a227] text-[#1a1208] text-xs font-medium uppercase tracking-wider">
+                        <span class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#c9a227] text-[#1a1208] text-xs font-medium uppercase tracking-wider text-center">
                             {{ __('landing.pricing_plan_popular') }}
                         </span>
                     @endif
@@ -67,27 +67,23 @@
             @endforeach
         </div>
 
-        <div class="landing-card rounded-2xl border border-white/15 p-6 sm:p-8 landing-fade-in">
-            <h3 class="landing-heading text-xl text-[#faf6ee] mb-6 text-center">
-                {{ __('landing.pricing_features_title') }}
-            </h3>
+        <div class="landing-fade-in">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="landing-label text-xs text-[#c9a227] uppercase whitespace-nowrap">
+                    {{ __('landing.pricing_features_title') }}
+                </span>
+                <span class="h-px flex-1 bg-white/10"></span>
+            </div>
 
-            <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-4">
+            <ul class="grid sm:grid-cols-2 gap-x-10 gap-y-4">
                 @foreach (range(1, 14) as $i)
-                    <li class="flex items-start gap-3">
-                        <span class="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-[#c9a227]/20 flex items-center justify-center">
-                            <svg class="w-3 h-3 text-[#c9a227]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                        </span>
-                        <span class="landing-body text-sm text-[#d4c4a8] leading-relaxed">
-                            {{ __('landing.pricing_feature_' . $i) }}
-                        </span>
+                    <li class="landing-body text-sm text-[#d4c4a8] leading-relaxed pl-4 border-l border-[#c9a227]/40">
+                        {{ __('landing.pricing_feature_' . $i) }}
                     </li>
                 @endforeach
             </ul>
 
-            <div class="mt-8 text-center">
+            <div class="mt-10 text-center">
                 <a
                     href="{{ route('onboarding', ['locale' => app()->getLocale()]) }}"
                     class="landing-btn-secondary inline-block px-8 py-4 rounded-xl landing-heading text-lg transition"

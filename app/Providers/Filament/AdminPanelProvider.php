@@ -25,6 +25,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->font('Poppins')
             ->globalSearch(false)
             ->colors([
                 'primary' => Color::Amber,

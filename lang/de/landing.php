@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'meta_title' => 'NasDan — Digitale Web-Hochzeitseinladungen',
-    'meta_description' => 'Personalisierte Web-Einladungen für Ihre Hochzeit. Countdown, RSVP, Tagesablauf und mehr — alles auf einem Link.',
+    'meta_title' => 'NasDan - Digitale Web-Hochzeitseinladungen',
+    'meta_description' => 'Personalisierte Web-Einladungen für Ihre Hochzeit, mit Countdown, RSVP, Tagesablauf und mehr, alles auf einem Link.',
 
     'nav_demo' => 'Demo',
     'nav_order' => 'Bestellen',
@@ -12,7 +12,7 @@ return [
     'back_to_invitation' => 'Zurück zur Einladung',
 
     'hero_title' => 'Ihre Hochzeitsgeschichte verdient mehr als ein Foto im Chat',
-    'hero_subtitle' => 'Eine personalisierte Web-Einladung mit Countdown, RSVP, Tagesablauf und Fotos der Location — in drei Schritten bereit zum Teilen.',
+    'hero_subtitle' => 'Eine personalisierte Web-Einladung mit Countdown, RSVP, Tagesablauf und Fotos der Location. In drei Schritten bereit zum Teilen.',
     'hero_cta_demo' => 'Demo ansehen',
     'hero_cta_order' => 'Einladung bestellen',
     'hero_cta_create' => 'Einladung erstellen',
@@ -21,25 +21,28 @@ return [
     'benefits_subtitle' => 'Jeder Gast erhält eine Einladung mit seinem Namen. Sie sehen, wer zugesagt hat. Und alles senden Sie direkt aus dem Panel.',
 
     'benefit_1_title' => 'Jeder Gast bekommt seinen Namen',
-    'benefit_1_text' => 'Senden Sie jedem Gast einen personalisierten Link — sobald er die Einladung öffnet, steht sein Name bereits dort. Keine Verwirrung, keine Anonymität.',
+    'benefit_1_text' => 'Jeder Gast bekommt seinen eigenen Link, und sein Name steht schon dort, sobald er die Einladung öffnet. So gibt es keine Verwechslungen.',
 
     'benefit_2_title' => 'Direkt aus dem Panel senden',
-    'benefit_2_text' => 'WhatsApp, Viber oder Telegram — wählen Sie die Plattform und senden Sie die Einladung direkt. Kein Link-Kopieren, keine vergessenen Gäste.',
+    'benefit_2_text' => 'Sie senden direkt über WhatsApp, Viber oder Telegram, ganz wie es Ihnen passt. Kein Link-Kopieren, und kein Gast wird versehentlich vergessen.',
 
     'benefit_3_title' => 'Bestätigungen in Echtzeit',
-    'benefit_3_text' => 'Jede RSVP-Antwort erscheint sofort in Ihrem Panel. Sie wissen genau, wer kommt, wer nicht — und wer noch nicht geantwortet hat.',
+    'benefit_3_text' => 'Jede RSVP-Antwort erscheint sofort in Ihrem Panel, sodass Sie immer wissen, wer kommt und wer noch nicht geantwortet hat.',
 
     'benefit_4_title' => 'Visueller Sitzplan',
-    'benefit_4_text' => 'Bestätigte Gäste auf einer interaktiven Leinwand anordnen, Plätze an Tischen zuweisen und eine vollständige Gästeliste mit Sitzplan als PDF exportieren.',
+    'benefit_4_text' => 'Ordnen Sie Gäste auf einem interaktiven Sitzplan an, weisen Sie ihnen Tische zu und exportieren Sie die vollständige Gästeliste mit Sitzplan als PDF.',
 
     'interaction_title' => 'Nachrichten und Erinnerungen von Ihren Gästen',
     'interaction_subtitle' => 'Am Hochzeitstag und 30 Tage danach können Gäste Sie direkt über die Einladung erreichen.',
     'interaction_1_title' => 'Textnachrichten',
-    'interaction_1_text' => 'Gäste schreiben herzliche Nachrichten direkt aus der Einladung — warme Wünsche, Glückwünsche und liebe Worte landen in Ihrem Panel.',
+    'interaction_1_text' => 'Gäste können direkt aus der Einladung schreiben. Wünsche, Glückwünsche, was auch immer sie sagen möchten, landet in Ihrem Panel.',
     'interaction_2_title' => 'Audionachrichten',
     'interaction_2_text' => 'Gäste können eine Sprachnachricht aufnehmen. Hören Sie ihr Lachen, ihre Freude und persönlichen Grüße lange nach dem Tag.',
     'interaction_3_title' => 'Fotos teilen',
-    'interaction_3_text' => 'Gäste laden Fotos vom Hochzeitstag und den Tagen danach hoch — 30 Tage nach der Feier, alles an einem Ort für Sie.',
+    'interaction_3_text' => 'Gäste laden Fotos vom Hochzeitstag und den Tagen danach hoch. Alles landet an einem Ort, 30 Tage lang für Sie verfügbar.',
+    'interaction_demo_name' => 'Amina',
+    'interaction_demo_message' => 'Ich wünsche euch eine Liebe fürs Leben, ich kann es kaum erwarten, mit euch zu feiern!',
+    'interaction_demo_voice_label' => 'Sprachnachricht',
 
     'steps_title' => 'Wie funktioniert es?',
     'steps_subtitle' => 'Erstellen Sie Ihre Einladung selbst online in drei einfachen Schritten.',
@@ -48,10 +51,10 @@ return [
     'step_1_text' => 'Registrieren Sie sich und geben Sie Paardaten, Hochzeitsdatum und Thema ein.',
 
     'step_2_title' => 'Link sofort erhalten',
-    'step_2_text' => 'Ihr Einladungslink erscheint sofort in Ihrem Panel. Sie können jederzeit eine Vorschau ansehen — er wird freigeschaltet, sobald die Zahlung bestätigt und von unserem Team aktiviert wurde.',
+    'step_2_text' => 'Ihr Einladungslink erscheint sofort in Ihrem Panel. Sie können jederzeit eine Vorschau ansehen; freigeschaltet wird er, sobald die Zahlung bestätigt und von unserem Team aktiviert wurde.',
 
     'step_3_title' => 'Mit Gästen teilen',
-    'step_3_text' => 'Senden Sie einen Link an alle — oder personalisierte Links für jeden Gast per WhatsApp, Viber oder Telegram.',
+    'step_3_text' => 'Senden Sie einen Link an alle, oder personalisierte Links für jeden Gast per WhatsApp, Viber oder Telegram.',
 
     'demo_title' => 'Sehen Sie, wie es aussieht',
     'demo_subtitle' => 'Öffnen Sie eine Demo-Einladung und erleben Sie, was Ihre Gäste sehen werden.',
@@ -89,7 +92,7 @@ return [
     'footer_contact' => 'Kontakt',
 
     'pricing_title' => 'Wählen Sie Ihr Paket',
-    'pricing_subtitle' => 'Ein Preis, alles inklusive. Keine versteckten Kosten, kein monatliches Abo.',
+    'pricing_subtitle' => 'Ein Preis deckt alles ab. Keine versteckten Kosten, kein monatliches Abo.',
     'pricing_plan_basic_name' => 'Basic',
     'pricing_plan_basic_guests' => 'Bis zu 100 Gäste',
     'pricing_plan_basic_price' => '80 EUR',
@@ -108,7 +111,7 @@ return [
     'pricing_feature_1' => 'Öffentlicher oder personalisierter Einladungslink',
     'pricing_feature_2' => 'Senden über WhatsApp, Viber, Telegram oder Messenger',
     'pricing_feature_3' => 'RSVP-Bestätigungen in Echtzeit',
-    'pricing_feature_4' => 'Live-Bearbeitung — Änderungen sofort sichtbar',
+    'pricing_feature_4' => 'Live-Bearbeitung, Gäste sehen Änderungen sofort',
     'pricing_feature_5' => 'Viele visuelle Themen zur Auswahl',
     'pricing_feature_6' => 'Tagesablauf der Hochzeit',
     'pricing_feature_7' => 'Gästeverwaltungs-Panel',

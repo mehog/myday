@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'meta_title' => 'NasDan — Digitalne web pozivnice za vjenčanje',
-    'meta_description' => 'Personalizovane web pozivnice za vaše vjenčanje. Odbrojavanje, potvrda dolaska, plan dana i više — sve na jednom linku.',
+    'meta_title' => 'NasDan - Digitalne web pozivnice za vjenčanje',
+    'meta_description' => 'Personalizovane web pozivnice za vaše vjenčanje, sa odbrojavanjem, potvrdom dolaska, planom dana i još mnogo toga, sve na jednom linku.',
 
     'nav_demo' => 'Demo',
     'nav_order' => 'Naruči',
@@ -12,7 +12,7 @@ return [
     'back_to_invitation' => 'Nazad na pozivnicu',
 
     'hero_title' => 'Vaša vjenčana priča zaslužuje više od slike u chatu',
-    'hero_subtitle' => 'Personalizovana web pozivnica sa odbrojavanjem, potvrdom dolaska, planom dana i fotografijama lokacije — spremna za dijeljenje u tri koraka.',
+    'hero_subtitle' => 'Personalizovana web pozivnica sa odbrojavanjem, potvrdom dolaska, planom dana i fotografijama lokacije. Spremna za dijeljenje u tri koraka.',
     'hero_cta_demo' => 'Pogledaj demo',
     'hero_cta_order' => 'Naruči pozivnicu',
     'hero_cta_create' => 'Kreiraj pozivnicu',
@@ -21,25 +21,28 @@ return [
     'benefits_subtitle' => 'Svaki gost dobija pozivnicu sa svojim imenom. Vi vidite ko je potvrdio. I sve to šaljete direktno iz panela.',
 
     'benefit_1_title' => 'Svaki gost dobija svoje ime',
-    'benefit_1_text' => 'Pošaljite svakom gostu personalizovani link — čim otvori pozivnicu, njegovo ime je već tu. Nema zbrke, nema anonimnosti.',
+    'benefit_1_text' => 'Svaki gost dobija svoj link, a njegovo ime je već tu čim ga otvori. Tako nema zabune oko toga ko je pozvan.',
 
     'benefit_2_title' => 'Šaljete direktno iz panela',
-    'benefit_2_text' => 'WhatsApp, Viber ili Telegram — odaberite platformu i pošaljite pozivnicu direktno. Bez kopiranja linkova, bez zaboravljenih gostiju.',
+    'benefit_2_text' => 'Šaljete direktno preko WhatsAppa, Vibera ili Telegrama, kako god vam odgovara. Nema kopiranja linkova ni gostiju koji slučajno ostanu bez pozivnice.',
 
     'benefit_3_title' => 'Potvrde stižu u realnom vremenu',
-    'benefit_3_text' => 'Svaka potvrda dolaska se odmah pojavljuje u vašem panelu. Znate tačno ko dolazi, ko ne — i ko još nije odgovorio.',
+    'benefit_3_text' => 'Svaka potvrda dolaska odmah se pojavi u vašem panelu, tako da uvijek znate ko dolazi i ko još nije odgovorio.',
 
     'benefit_4_title' => 'Vizuelni plan sjedenja',
-    'benefit_4_text' => 'Rasporedite potvrđene goste na interaktivnom platnu, dodijelite mjesta za stolove i izvezite kompletnu listu gostiju sa planom sjedenja kao PDF.',
+    'benefit_4_text' => 'Rasporedite goste na interaktivnom planu, dodijelite im mjesta za stolovima, a zatim izvezite kompletnu listu sa planom sjedenja kao PDF.',
 
     'interaction_title' => 'Poruke i uspomene od vaših gostiju',
     'interaction_subtitle' => 'Na dan vjenčanja i 30 dana nakon toga, gosti vam se mogu obratiti direktno kroz pozivnicu.',
     'interaction_1_title' => 'Tekstualne poruke',
-    'interaction_1_text' => 'Gosti pišu iskrene poruke direktno iz pozivnice — tople želje, čestitke i lijepa slova stižu u vaš panel.',
+    'interaction_1_text' => 'Gosti mogu napisati poruku direktno iz pozivnice. Tople želje, čestitke, šta god požele da kažu, sve stiže u vaš panel.',
     'interaction_2_title' => 'Audio poruke',
     'interaction_2_text' => 'Gosti mogu snimiti glasovnu poruku. Čujte njihov smijeh, uzbuđenje i lične pozdrave i nakon što prođe taj dan.',
     'interaction_3_title' => 'Dijeljenje fotografija',
-    'interaction_3_text' => 'Gosti uploaduju fotografije sa dana vjenčanja i dana nakon toga — 30 dana nakon proslave, sve na jednom mjestu za vas.',
+    'interaction_3_text' => 'Gosti uploaduju fotografije sa dana vjenčanja i dana koji slijede. Sve se sliva na jedno mjesto, dostupno vam 30 dana nakon proslave.',
+    'interaction_demo_name' => 'Amina',
+    'interaction_demo_message' => 'Želim vam ljubav koja traje cijeli život, jedva čekam da proslavim s vama!',
+    'interaction_demo_voice_label' => 'Glasovna poruka',
 
     'steps_title' => 'Kako funkcionira?',
     'steps_subtitle' => 'Napravite pozivnicu sami online u tri jednostavna koraka.',
@@ -48,10 +51,10 @@ return [
     'step_1_text' => 'Registrujte se i unesite podatke o paru, datum vjenčanja i odaberite temu pozivnice.',
 
     'step_2_title' => 'Odmah dobijete link',
-    'step_2_text' => 'Link vaše pozivnice odmah je dostupan u panelu. Možete je pregledati bilo kada — postaje aktivna nakon potvrde uplate i odobrenja administratora.',
+    'step_2_text' => 'Link vaše pozivnice odmah je dostupan u panelu. Možete je pregledati kad god želite; postaje aktivna nakon potvrde uplate i odobrenja administratora.',
 
     'step_3_title' => 'Dijelite s gostima',
-    'step_3_text' => 'Pošaljite jedan link svima — ili personalizovane linkove svakom gostu putem WhatsAppa, Vibera ili Telegrama.',
+    'step_3_text' => 'Pošaljite jedan link svima, ili personalizovan link svakom gostu putem WhatsAppa, Vibera ili Telegrama.',
 
     'demo_title' => 'Pogledajte kako izgleda',
     'demo_subtitle' => 'Otvorite demo pozivnicu i doživite iskustvo vaših gostiju.',
@@ -89,7 +92,7 @@ return [
     'footer_contact' => 'Kontakt',
 
     'pricing_title' => 'Odaberite paket',
-    'pricing_subtitle' => 'Jedna cijena, sve uključeno. Bez skrivenih troškova, bez mjesečne pretplate.',
+    'pricing_subtitle' => 'Jedna cijena pokriva sve. Bez skrivenih troškova, bez mjesečne pretplate.',
     'pricing_plan_basic_name' => 'Osnovni',
     'pricing_plan_basic_guests' => 'Do 100 gostiju',
     'pricing_plan_basic_price' => '80 BAM',
@@ -108,7 +111,7 @@ return [
     'pricing_feature_1' => 'Javni ili personalizovani link pozivnice',
     'pricing_feature_2' => 'Slanje putem WhatsApp, Viber, Telegram ili Messenger',
     'pricing_feature_3' => 'Potvrde dolaska u realnom vremenu',
-    'pricing_feature_4' => 'Izmjene uživo — gosti vide odmah',
+    'pricing_feature_4' => 'Izmjene uživo, gosti odmah vide promjene',
     'pricing_feature_5' => 'Brojne vizuelne teme na izbor',
     'pricing_feature_6' => 'Plan dana vjenčanja',
     'pricing_feature_7' => 'Panel za upravljanje gostima',

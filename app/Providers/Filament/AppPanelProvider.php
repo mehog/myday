@@ -35,6 +35,7 @@ class AppPanelProvider extends PanelProvider
             ->brandLogo(asset('icons/nd-logo-transparent.webp'))
             ->brandLogoHeight('2.25rem')
             ->viteTheme('resources/css/filament/app/theme.css')
+            ->font('Poppins')
             ->globalSearch(false)
             ->databaseNotifications()
             ->profile(EditProfile::class)
