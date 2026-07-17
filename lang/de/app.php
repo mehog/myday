@@ -43,7 +43,7 @@ return [
     'share_mode' => 'Freigabemodus',
     'hero_image' => 'Titelbild',
     'youtube_song' => 'YouTube-Lied',
-    'youtube_helper' => 'Fügen Sie den YouTube-Link Ihres Liedes ein (z. B. https://www.youtube.com/watch?v=... oder https://youtu.be/...)',
+    'youtube_helper' => 'Fügen Sie den YouTube-Link Ihres Liedes ein (z. B. https://www.youtube.com/watch?v=...&t=18s oder https://youtu.be/...)',
     'motto' => 'Hochzeitsmotto',
     'motto_helper' => 'Ein kurzes Zitat oder eine Botschaft auf der Einladung (max. 2 Sätze).',
 

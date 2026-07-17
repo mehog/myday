@@ -77,7 +77,7 @@ class WeddingEventForm
                             ->label('YouTube URL')
                             ->url()
                             ->maxLength(500)
-                            ->helperText('Zalijepite YouTube link pjesme (npr. https://www.youtube.com/watch?v=... ili https://youtu.be/...)')
+                            ->helperText('Zalijepite YouTube link pjesme (npr. https://www.youtube.com/watch?v=...&t=18s ili https://youtu.be/...)')
                             ->columnSpanFull(),
                         Textarea::make('motto')
                             ->label('Wedding motto')

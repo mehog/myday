@@ -60,6 +60,9 @@
                         modestbranding: 1,
                         fs: 0,
                         iv_load_policy: 3,
+                        @if ($event->youtube_start_seconds)
+                        start: {{ $event->youtube_start_seconds }},
+                        @endif
                     },
                     events: {
                         onReady: function () {

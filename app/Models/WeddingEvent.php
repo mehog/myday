@@ -220,6 +220,27 @@ class WeddingEvent extends Model
         return null;
     }
 
+    public function getYoutubeStartSecondsAttribute(): ?int
+    {
+        if (! $this->music_url) {
+            return null;
+        }
+
+        $query = parse_url($this->music_url, PHP_URL_QUERY);
+
+        if (! is_string($query) || $query === '') {
+            return null;
+        }
+
+        parse_str($query, $params);
+
+        if (! isset($params['t'])) {
+            return null;
+        }
+
+        return $this->parseYoutubeTimestampParam((string) $params['t']);
+    }
+
     public function getYoutubeEmbedUrlAttribute(): ?string
     {
         $videoId = $this->youtube_video_id;
@@ -228,6 +249,53 @@ class WeddingEvent extends Model
             return null;
         }
 
-        return "https://www.youtube.com/embed/{$videoId}?autoplay=0&controls=1&rel=0&modestbranding=1&fs=0&iv_load_policy=3";
+        $url = "https://www.youtube.com/embed/{$videoId}?autoplay=0&controls=1&rel=0&modestbranding=1&fs=0&iv_load_policy=3";
+
+        if ($this->youtube_start_seconds) {
+            $url .= '&start='.$this->youtube_start_seconds;
+        }
+
+        return $url;
+    }
+
+    private function parseYoutubeTimestampParam(string $value): ?int
+    {
+        if ($value === '') {
+            return null;
+        }
+
+        if (ctype_digit($value)) {
+            $seconds = (int) $value;
+
+            return $seconds > 0 ? $seconds : null;
+        }
+
+        if (preg_match('/^(\d+)s$/', $value, $matches)) {
+            $seconds = (int) $matches[1];
+
+            return $seconds > 0 ? $seconds : null;
+        }
+
+        $seconds = 0;
+        $hasMatch = false;
+
+        if (preg_match_all('/(\d+)([hms])/', $value, $matches, PREG_SET_ORDER)) {
+            foreach ($matches as $match) {
+                $hasMatch = true;
+                $amount = (int) $match[1];
+
+                match ($match[2]) {
+                    'h' => $seconds += $amount * 3600,
+                    'm' => $seconds += $amount * 60,
+                    's' => $seconds += $amount,
+                };
+            }
+        }
+
+        if (! $hasMatch) {
+            return null;
+        }
+
+        return $seconds > 0 ? $seconds : null;
     }
 }

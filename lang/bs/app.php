@@ -43,7 +43,7 @@ return [
     'share_mode' => 'Način dijeljenja',
     'hero_image' => 'Naslovna fotografija',
     'youtube_song' => 'YouTube pjesma',
-    'youtube_helper' => 'Zalijepite YouTube link pjesme (npr. https://www.youtube.com/watch?v=... ili https://youtu.be/...)',
+    'youtube_helper' => 'Zalijepite YouTube link pjesme (npr. https://www.youtube.com/watch?v=...&t=18s ili https://youtu.be/...)',
     'motto' => 'Moto vjenčanja',
     'motto_helper' => 'Kratka rečenica ili poruka na pozivnici (max. 2 rečenice).',
 

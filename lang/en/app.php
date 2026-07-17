@@ -43,7 +43,7 @@ return [
     'share_mode' => 'Sharing mode',
     'hero_image' => 'Hero image',
     'youtube_song' => 'YouTube song',
-    'youtube_helper' => 'Paste the YouTube link of your song (e.g. https://www.youtube.com/watch?v=... or https://youtu.be/...)',
+    'youtube_helper' => 'Paste the YouTube link of your song (e.g. https://www.youtube.com/watch?v=...&t=18s or https://youtu.be/...)',
     'motto' => 'Wedding motto',
     'motto_helper' => 'A short quote or message shown on the invitation (max 2 sentences).',
 
