@@ -19,7 +19,11 @@ use Illuminate\Support\Facades\Hash;
 
 class MarketingDemoSeeder extends Seeder
 {
-    private const USER_EMAIL = 'jasmina-djordje@nasdan.ba';
+    public bool $overwrite = false;
+
+    public bool $skipped = false;
+
+    private const USER_EMAIL = 'jasmin-djordje@nasdan.ba';
 
     private const EVENT_SLUG = 'jasmina-djordje';
 
@@ -52,6 +56,7 @@ class MarketingDemoSeeder extends Seeder
         'Bašić', 'Čaušević', 'Dervišević', 'Eminić', 'Fazlić', 'Gavrić', 'Halilović', 'Ibrahimović', 'Jahić', 'Kadrić',
         'Latić', 'Memić', 'Nuhić', 'Osmanović', 'Pavlić', 'Redžić', 'Smajić', 'Tahirović', 'Usenić', 'Vuković',
         'Zukorlić', 'Ahmetović', 'Bajramović', 'Cerimagić', 'Dizdarević', 'Fejzić', 'Glamočak', 'Hrustić', 'Ibišević', 'Janković',
+        'Kurtović', 'Musić', 'Pehlivanović', 'Ramić', 'Suljić', 'Terzić', 'Užičanin', 'Vranić', 'Zornić', 'Čelić',
     ];
 
     /** @var list<string> */
@@ -62,10 +67,17 @@ class MarketingDemoSeeder extends Seeder
     ];
 
     /** @var list<string> */
-    private const PLUS_ONE_LAST_NAMES = [
-        'Hadžić', 'Kovačević', 'Begović', 'Delić', 'Softić', 'Hodžić', 'Imamović', 'Mehić', 'Salihović', 'Duraković',
-        'Hasanović', 'Jusić', 'Karić', 'Mujić', 'Omeragić', 'Pirić', 'Salkić', 'Tihić', 'Zukić', 'Avdić',
-        'Bašić', 'Čaušević', 'Dervišević', 'Eminić', 'Fazlić', 'Gavrić', 'Halilović', 'Ibrahimović', 'Jahić', 'Kadrić',
+    private const RSVP_NOTES = [
+        'Sa velikom radošću potvrđujemo dolazak. Vidimo se u džamiji!',
+        'Hvala na prekrasnoj pozivnici. Dolazimo cijela porodica.',
+        'Jedva čekamo vaš veliki dan. Čestitamo unaprijed!',
+        'Potvrđujemo dolazak za nas dvoje. Sretno vam!',
+        'Biće nam čast biti dio ovog posebnog dana.',
+        'Radujemo se nikahu i proslavi. Do tada!',
+        'Hvala vam što ste nas uključili. Vidimo se uskoro!',
+        'Neka vam Allah blagoslovi brak. Dolazimo sa radošću.',
+        'Nažalost ne možemo doći zbog obaveza van grada. Sretno vam!',
+        'Moramo otkazati dolazak zbog porodičnih obaveza. Čestitamo od srca!',
     ];
 
     /** @var list<string> */
@@ -104,6 +116,15 @@ class MarketingDemoSeeder extends Seeder
 
     public function run(): void
     {
+        $userExists = User::query()->where('email', self::USER_EMAIL)->exists();
+        $eventExists = WeddingEvent::query()->where('slug', self::EVENT_SLUG)->exists();
+
+        if (! $this->overwrite && ($userExists || $eventExists)) {
+            $this->skipped = true;
+
+            return;
+        }
+
         $user = User::query()->updateOrCreate(
             ['email' => self::USER_EMAIL],
             [
@@ -168,17 +189,19 @@ TEXT,
         for ($index = 0; $index < self::GUEST_COUNT; $index++) {
             $guestNumber = $index + 1;
             $firstName = self::FIRST_NAMES[$index % count(self::FIRST_NAMES)];
-            $lastName = self::LAST_NAMES[intdiv($index, count(self::FIRST_NAMES)) % count(self::LAST_NAMES)];
+            $lastName = self::LAST_NAMES[$index % count(self::LAST_NAMES)];
             $plusOneAllowed = $index % 5 < 2;
             $rsvpStatus = $this->rsvpStatusForIndex($index);
             $respondedAt = $rsvpStatus !== null
                 ? $weddingDate->copy()->subDays(45 - ($index % 20))
                 : null;
 
+            $rsvpNote = $this->rsvpNoteForIndex($index);
+
             $plusOneName = null;
             if ($plusOneAllowed && $rsvpStatus === RsvpStatus::Yes && $index % 4 !== 3) {
                 $plusOneFirst = self::PLUS_ONE_FIRST_NAMES[$index % count(self::PLUS_ONE_FIRST_NAMES)];
-                $plusOneLast = self::PLUS_ONE_LAST_NAMES[intdiv($index, 3) % count(self::PLUS_ONE_LAST_NAMES)];
+                $plusOneLast = self::LAST_NAMES[($index + 17) % count(self::LAST_NAMES)];
                 $plusOneName = "{$plusOneFirst} {$plusOneLast}";
             }
 
@@ -191,6 +214,7 @@ TEXT,
                 'plus_one_name' => $plusOneName,
                 'rsvp_status' => $rsvpStatus,
                 'rsvp_responded_at' => $respondedAt,
+                'rsvp_note' => $rsvpNote,
                 'invite_sent_at' => $rsvpStatus === RsvpStatus::Yes || $index % 3 === 0
                     ? $weddingDate->copy()->subDays(60 - ($index % 15))
                     : null,
@@ -216,6 +240,19 @@ TEXT,
                     : $weddingDate->copy()->subDays(10 + ($messageIndex % 5)),
             ]);
         }
+    }
+
+    private function rsvpNoteForIndex(int $index): ?string
+    {
+        if ($index < 8) {
+            return self::RSVP_NOTES[$index];
+        }
+
+        if ($index >= self::CONFIRMED_COUNT && $index < self::CONFIRMED_COUNT + 2) {
+            return self::RSVP_NOTES[$index - self::CONFIRMED_COUNT + 8];
+        }
+
+        return null;
     }
 
     private function rsvpStatusForIndex(int $index): ?RsvpStatus
