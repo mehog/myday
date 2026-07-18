@@ -1,7 +1,3 @@
-@php
-    $siteUrl = parse_url(config('app.url'), PHP_URL_HOST) ?: config('app.url');
-@endphp
-
 <div class="pc-preview-outer">
     <p class="pc-preview-label">{{ __('guests.place_cards_preview') }}</p>
 
@@ -29,9 +25,14 @@
             <div class="pc-preview-fold"></div>
 
             <div class="pc-preview-front">
-                <div class="pc-preview-qr" aria-hidden="true"></div>
-                <div class="pc-preview-name">{{ __('guests.place_cards_preview_guest') }}</div>
-                <div class="pc-preview-plus-one">&amp; {{ __('guests.place_cards_preview_plus_one') }}</div>
+                <div class="pc-preview-content">
+                    <div class="pc-preview-qr" aria-hidden="true"></div>
+                    <div class="pc-preview-cta">
+                        <div class="pc-preview-cta-rule"></div>
+                        <div class="pc-preview-scan-cta">{{ __('guests.place_cards_scan_cta') }}</div>
+                        <div class="pc-preview-cta-rule"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -96,23 +97,53 @@
         left: 0;
         width: 240px;
         height: 137px;
+        padding: 7px;
+    }
+
+    .pc-preview-content {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
-        text-align: center;
-        padding-top: 14px;
+        justify-content: center;
+        height: 100%;
+        padding: 0 6px;
     }
 
     .pc-preview-qr {
-        width: 40px;
-        height: 40px;
-        margin-bottom: 8px;
+        flex: 0 0 42%;
+        width: 56px;
+        height: 56px;
+        margin: 0 auto;
         background:
             linear-gradient(90deg, currentColor 2px, transparent 2px) 0 0 / 8px 8px,
             linear-gradient(currentColor 2px, transparent 2px) 0 0 / 8px 8px;
         opacity: 0.35;
         border: 2px solid currentColor;
+    }
+
+    .pc-preview-cta {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 0 4px;
+    }
+
+    .pc-preview-scan-cta {
+        font-size: 9px;
+        font-weight: 700;
+        line-height: 1.35;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        white-space: pre-line;
+    }
+
+    .pc-preview-cta-rule {
+        width: 70%;
+        height: 0;
+        border-top: 1px solid var(--pc-accent, #C9A227);
+        margin: 4px auto;
     }
 
     .pc-preview-name {

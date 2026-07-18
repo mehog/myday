@@ -48,6 +48,7 @@ return [
     'place_cards_empty' => 'No confirmed guests yet. Place cards can be generated once at least one guest has accepted the invitation.',
     'place_cards_modal_description' => 'Customize the card colors to match your wedding style. Defaults come from your invitation theme, but you can change them freely.',
     'place_cards_print_hint' => 'The cards are print-ready. Download and print them at any print shop, or at home on quality cardstock.',
+    'place_cards_scan_cta' => "Scan and\nshare our\nmemories",
     'place_cards_preview' => 'Preview',
     'place_cards_preview_guest' => 'Ana Kovačević',
     'place_cards_preview_plus_one' => 'Marko Kovač',

@@ -61,9 +61,21 @@
             left: 0;
             width: 88.9mm;
             height: 50.8mm;
-            text-align: center;
-            padding-top: 18mm;
             transform: rotate(180deg);
+        }
+
+        .back-content {
+            width: 100%;
+            height: 50.8mm;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .back-content td {
+            height: 50.8mm;
+            vertical-align: middle;
+            text-align: center;
+            padding: 0 3mm;
         }
 
         .card-fold {
@@ -81,8 +93,53 @@
             left: 0;
             width: 88.9mm;
             height: 50.8mm;
+            padding: 0;
+        }
+
+        .front-content {
+            width: 100%;
+            height: 50.8mm;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .front-content td {
+            height: 50.8mm;
+            vertical-align: middle;
             text-align: center;
-            padding-top: 6mm;
+        }
+
+        .front-qr-cell {
+            width: 42%;
+            padding: 0 2mm;
+        }
+
+        .front-cta-cell {
+            width: 58%;
+            padding: 0 3mm;
+        }
+
+        .card-qr {
+            width: 30mm;
+            height: 30mm;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .scan-cta {
+            font-size: 7pt;
+            font-weight: bold;
+            line-height: 1.35;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            white-space: pre-line;
+        }
+
+        .cta-rule {
+            width: 70%;
+            height: 0;
+            border-top: 0.3mm solid {{ $colors['accent'] }};
+            margin: 1.5mm auto;
         }
 
         .card-site-url {
@@ -93,13 +150,6 @@
             line-height: 1;
             text-align: right;
             opacity: 0.65;
-        }
-
-        .card-qr {
-            width: 16mm;
-            height: 16mm;
-            display: block;
-            margin: 0 auto 2mm;
         }
 
         .guest-name {
@@ -205,20 +255,33 @@
                                 <span class="cut-mark cut-mark-bottom-right-v"></span>
 
                                 <div class="card-back">
-                                    <div class="guest-name">{!! \App\Support\PdfEmoji::toHtml($card['name'], '14pt') !!}</div>
-                                    @if (! empty($card['plus_one']))
-                                        <div class="plus-one-name">&amp; {!! \App\Support\PdfEmoji::toHtml($card['plus_one'], '9pt') !!}</div>
-                                    @endif
+                                    <table class="back-content">
+                                        <tr>
+                                            <td>
+                                                <div class="guest-name">{!! \App\Support\PdfEmoji::toHtml($card['name'], '14pt') !!}</div>
+                                                @if (! empty($card['plus_one']))
+                                                    <div class="plus-one-name">&amp; {!! \App\Support\PdfEmoji::toHtml($card['plus_one'], '9pt') !!}</div>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
 
                                 <div class="card-fold"></div>
 
                                 <div class="card-front">
-                                    <img class="card-qr" src="{{ $card['qr'] }}" alt="">
-                                    <div class="guest-name">{!! \App\Support\PdfEmoji::toHtml($card['name'], '14pt') !!}</div>
-                                    @if (! empty($card['plus_one']))
-                                        <div class="plus-one-name">&amp; {!! \App\Support\PdfEmoji::toHtml($card['plus_one'], '9pt') !!}</div>
-                                    @endif
+                                    <table class="front-content">
+                                        <tr>
+                                            <td class="front-qr-cell">
+                                                <img class="card-qr" src="{{ $card['qr'] }}" alt="">
+                                            </td>
+                                            <td class="front-cta-cell">
+                                                <div class="cta-rule"></div>
+                                                <div class="scan-cta">{{ __('guests.place_cards_scan_cta') }}</div>
+                                                <div class="cta-rule"></div>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
 
                                 <div class="card-site-url">{{ $siteUrl }}</div>

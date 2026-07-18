@@ -48,6 +48,7 @@ return [
     'place_cards_empty' => 'Još nema potvrđenih gostiju. Kartice za stolove možete preuzeti kada barem jedan gost prihvati pozivnicu.',
     'place_cards_modal_description' => 'Prilagodite boje kartica prema vašem stilu vjenčanja. Zadane boje su preuzete iz vaše pozivnice, ali ih možete slobodno promijeniti.',
     'place_cards_print_hint' => 'Kartice su spremne za štampu. Možete ih preuzeti i odštampati kod bilo koje štamparije ili kod kuće na kvalitetnom papiru.',
+    'place_cards_scan_cta' => "Skeniraj\ni podijeli\nnaše uspomene",
     'place_cards_preview' => 'Pregled',
     'place_cards_preview_guest' => 'Ana Kovačević',
     'place_cards_preview_plus_one' => 'Marko Kovač',

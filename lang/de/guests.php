@@ -48,6 +48,7 @@ return [
     'place_cards_empty' => 'Noch keine bestätigten Gäste. Tischkarten können erstellt werden, sobald mindestens ein Gast zugesagt hat.',
     'place_cards_modal_description' => 'Passen Sie die Farben an Ihren Hochzeitsstil an. Die Standardfarben stammen von Ihrem Einladungsthema, Sie können sie aber frei ändern.',
     'place_cards_print_hint' => 'Die Karten sind druckfertig. Laden Sie sie herunter und drucken Sie sie in jeder Druckerei oder zu Hause auf hochwertigem Karton.',
+    'place_cards_scan_cta' => "Scanne und\nteile unsere\nErinnerungen",
     'place_cards_preview' => 'Vorschau',
     'place_cards_preview_guest' => 'Anna Müller',
     'place_cards_preview_plus_one' => 'Max Müller',
