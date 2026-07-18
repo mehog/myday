@@ -2,7 +2,7 @@
 
 return [
 
-    'nav_label' => 'Preporuke',
+    'nav_label' => 'Preporuci prijatelju',
     'page_title' => 'Preporuke',
     'page_subheading' => 'Zaradite :fee% provizije kada neko koga preporučite aktivira svoju vjenčanu pozivnicu.',
     'your_link_label' => 'Vaš referral link',

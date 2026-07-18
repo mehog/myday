@@ -2,7 +2,7 @@
 
 return [
 
-    'nav_label' => 'Empfehlungen',
+    'nav_label' => 'Freund empfehlen',
     'page_title' => 'Empfehlungen',
     'page_subheading' => 'Verdienen Sie :fee% Provision, wenn jemand, den Sie empfehlen, seine Hochzeitseinladung aktiviert.',
     'your_link_label' => 'Ihr Empfehlungslink',
