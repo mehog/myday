@@ -28,6 +28,8 @@
     </header>
 
     <main class="pt-24 pb-16">
+        @php($referralCookieDays = \App\Support\Referral::cookieExpiryDays())
+
         <section class="landing-section px-6 py-12">
             <div class="max-w-4xl mx-auto text-center landing-fade-in">
                 <h1 class="landing-heading text-3xl sm:text-4xl md:text-5xl text-[#faf6ee] mb-4">
@@ -50,7 +52,7 @@
                 <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
                     @foreach ([
                         ['title' => __('referrals.step_1_title'), 'desc' => __('referrals.step_1_desc')],
-                        ['title' => __('referrals.step_2_title'), 'desc' => __('referrals.step_2_desc')],
+                        ['title' => __('referrals.step_2_title'), 'desc' => __('referrals.step_2_desc', ['days' => $referralCookieDays])],
                         ['title' => __('referrals.step_3_title', ['fee' => number_format($fee, 0)]), 'desc' => __('referrals.step_3_desc')],
                         ['title' => __('referrals.step_4_title'), 'desc' => __('referrals.step_4_desc')],
                     ] as $index => $step)
@@ -81,7 +83,7 @@
                     </span>
                 </div>
                 <p class="landing-body text-[#d4c4a8] leading-relaxed">
-                    {{ __('referrals.public_link_help') }}
+                    {{ __('referrals.public_link_help', ['days' => $referralCookieDays]) }}
                 </p>
             </div>
         </section>
