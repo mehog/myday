@@ -2,7 +2,7 @@
 
 return [
 
-    'nav_label' => 'Referrals',
+    'nav_label' => 'Refer a friend',
     'page_title' => 'Referrals',
     'page_subheading' => 'Earn :fee% commission when someone you refer activates their wedding invitation.',
     'your_link_label' => 'Your referral link',
