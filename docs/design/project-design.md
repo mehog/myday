@@ -161,7 +161,7 @@ Each theme exposes CSS variables (`--color-bg`, `--color-text`, `--color-primary
 | `envelope` | Envelope opens |
 | `wax-seal` | Seal breaks |
 | `curtain` | Curtains part |
-| `polaroid` | Photo develops |
+| `storybook` | Storybook cover opens to luminous spread |
 
 Reveals should feel short and tactile; never block access if JS fails.
 

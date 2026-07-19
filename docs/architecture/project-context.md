@@ -314,7 +314,7 @@ myday/
 │   └── views/
 │       ├── components/                 # Blade view components
 │       │   ├── invitation/             # All invitation sub-components
-│       │   │   ├── reveals/            # envelope, wax-seal, curtain, polaroid
+│       │   │   ├── reveals/            # envelope, wax-seal, curtain, storybook
 │       │   │   ├── templates/          # classic, editorial, story
 │       │   │   ├── hero.blade.php
 │       │   │   ├── countdown.blade.php
@@ -563,7 +563,7 @@ Polymorphic (`subscribable_type`, `subscribable_id`):
 |------|--------|
 | `InvitationTheme` | `amber-gold`, `royal-wedding`, `lavender-dream`, `winter-magic`, `pearl-white`, `dusty-rose` |
 | `InvitationTemplate` | `classic`, `editorial`, `story` |
-| `InvitationReveal` | `envelope`, `wax-seal`, `curtain`, `polaroid` |
+| `InvitationReveal` | `envelope`, `wax-seal`, `curtain`, `storybook` |
 | `LinkMode` | `public`, `token_only` |
 | `LinkType` | `public`, `personal` |
 | `RsvpStatus` | `yes`, `no` |
@@ -899,7 +899,7 @@ One-time animations played before showing the full invitation:
 | `envelope` | Envelope opens to reveal invitation |
 | `wax-seal` | Wax seal breaks/melts away |
 | `curtain` | Curtains part to reveal |
-| `polaroid` | Polaroid photo develops/fades in |
+| `storybook` | Storybook cover opens; spread fades into invitation |
 
 Reveals are Alpine.js-driven, play once per session (sessionStorage flag).
 

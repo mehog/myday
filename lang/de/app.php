@@ -39,7 +39,7 @@ return [
     'reveal_envelope' => 'Umschlag',
     'reveal_wax_seal' => 'Wachssiegel',
     'reveal_curtain' => 'Vorhang',
-    'reveal_polaroid' => 'Polaroid-Fall',
+    'reveal_storybook' => 'Buchöffnung',
     'share_mode' => 'Freigabemodus',
     'hero_image' => 'Titelbild',
     'youtube_song' => 'YouTube-Lied',

@@ -64,13 +64,13 @@ class InvitationPage extends Component
         if ($this->event->is_demo) {
             $this->previewTheme = $this->event->theme->value;
             $this->previewTemplate = $this->event->template->value;
-            $this->previewReveal = $this->event->reveal_animation?->value ?? '';
+            $this->previewReveal = $this->normalizeRevealValue($this->event->reveal_animation?->value ?? '');
 
             $stored = session("demo_preview.{$this->event->id}", []);
             if ($stored) {
                 $this->previewTheme = $stored['theme'] ?? $this->previewTheme;
                 $this->previewTemplate = $stored['template'] ?? $this->previewTemplate;
-                $this->previewReveal = $stored['reveal'] ?? $this->previewReveal;
+                $this->previewReveal = $this->normalizeRevealValue($stored['reveal'] ?? $this->previewReveal);
             }
         }
 
@@ -215,8 +215,13 @@ class InvitationPage extends Component
         session()->put("demo_preview.{$this->event->id}", [
             'theme' => $this->previewTheme,
             'template' => $this->previewTemplate,
-            'reveal' => $this->previewReveal,
+            'reveal' => $this->normalizeRevealValue($this->previewReveal),
         ]);
+    }
+
+    protected function normalizeRevealValue(string $value): string
+    {
+        return $value === 'polaroid' ? 'storybook' : $value;
     }
 
     public function render()
@@ -230,7 +235,7 @@ class InvitationPage extends Component
             : $this->event->template;
 
         $activeReveal = $this->event->is_demo
-            ? ($this->previewReveal !== '' ? InvitationReveal::from($this->previewReveal) : null)
+            ? ($this->previewReveal !== '' ? InvitationReveal::from($this->normalizeRevealValue($this->previewReveal)) : null)
             : $this->event->reveal_animation;
 
         return view('livewire.invitation-page', [
