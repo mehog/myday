@@ -2,6 +2,8 @@
 
 > This document is a complete reference for the NasDan/MyDay wedding invitation platform, intended to give AI assistants full context about the project's architecture, features, codebase, and design decisions.
 
+> **Docs index:** [../README.md](../README.md) · **Product / visual design:** [../design/project-design.md](../design/project-design.md)
+
 ---
 
 ## Table of Contents

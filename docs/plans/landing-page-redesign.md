@@ -1,5 +1,7 @@
 # NasDan Landing Page Redesign Plan
 
+> Part of [docs/](../README.md). Design system: [project-design.md](../design/project-design.md).
+
 Goal: make the landing page read as something a human designer and copywriter built, not a generated template. This covers two problems found in the current page: the copy has the rhythm and habits of AI writing, and the layout leans on the same generic template pattern repeated section after section. Font: Poppins, sans-serif, everywhere.
 
 ## 1. What's currently giving it away
