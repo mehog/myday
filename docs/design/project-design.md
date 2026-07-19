@@ -154,7 +154,7 @@ Each theme exposes CSS variables (`--color-bg`, `--color-text`, `--color-primary
 | `editorial` | Magazine asymmetry, bold type |
 | `story` | Scroll narrative, section-by-section |
 
-**Reveals** (one-shot, Alpine + `sessionStorage`):
+**Reveals** (one-shot, vanilla JS + Livewire handoff):
 
 | Key | Metaphor |
 |-----|----------|
@@ -162,6 +162,7 @@ Each theme exposes CSS variables (`--color-bg`, `--color-text`, `--color-primary
 | `wax-seal` | Seal breaks |
 | `curtain` | Curtains part |
 | `storybook` | Storybook cover opens to luminous spread |
+| `garden-gate` | Moonlit garden gate opens onto a luminous path |
 
 Reveals should feel short and tactile; never block access if JS fails.
 

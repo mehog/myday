@@ -8,6 +8,7 @@ enum InvitationReveal: string
     case WaxSeal = 'wax-seal';
     case Curtain = 'curtain';
     case Storybook = 'storybook';
+    case GardenGate = 'garden-gate';
 
     public function label(): string
     {
@@ -16,6 +17,7 @@ enum InvitationReveal: string
             self::WaxSeal => __('app.reveal_wax_seal'),
             self::Curtain => __('app.reveal_curtain'),
             self::Storybook => __('app.reveal_storybook'),
+            self::GardenGate => __('app.reveal_garden_gate'),
         };
     }
 }

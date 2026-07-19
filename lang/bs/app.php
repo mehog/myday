@@ -40,6 +40,7 @@ return [
     'reveal_wax_seal' => 'Pečat',
     'reveal_curtain' => 'Zavjese',
     'reveal_storybook' => 'Otvaranje knjige',
+    'reveal_garden_gate' => 'Mjesečina kroz vrtna vrata',
     'share_mode' => 'Način dijeljenja',
     'hero_image' => 'Naslovna fotografija',
     'youtube_song' => 'YouTube pjesma',

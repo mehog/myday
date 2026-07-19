@@ -314,7 +314,7 @@ myday/
 │   └── views/
 │       ├── components/                 # Blade view components
 │       │   ├── invitation/             # All invitation sub-components
-│       │   │   ├── reveals/            # envelope, wax-seal, curtain, storybook
+│       │   │   ├── reveals/            # envelope, wax-seal, curtain, storybook, garden-gate
 │       │   │   ├── templates/          # classic, editorial, story
 │       │   │   ├── hero.blade.php
 │       │   │   ├── countdown.blade.php
@@ -563,7 +563,7 @@ Polymorphic (`subscribable_type`, `subscribable_id`):
 |------|--------|
 | `InvitationTheme` | `amber-gold`, `royal-wedding`, `lavender-dream`, `winter-magic`, `pearl-white`, `dusty-rose` |
 | `InvitationTemplate` | `classic`, `editorial`, `story` |
-| `InvitationReveal` | `envelope`, `wax-seal`, `curtain`, `storybook` |
+| `InvitationReveal` | `envelope`, `wax-seal`, `curtain`, `storybook`, `garden-gate` |
 | `LinkMode` | `public`, `token_only` |
 | `LinkType` | `public`, `personal` |
 | `RsvpStatus` | `yes`, `no` |
@@ -892,7 +892,7 @@ Each theme defines: primary/secondary colors, font pairings, background patterns
 
 Templates define the structural layout of sections within the theme's color palette.
 
-### Reveal Animations (4)
+### Reveal Animations (5)
 One-time animations played before showing the full invitation:
 | Key | Animation |
 |-----|-----------|
@@ -900,8 +900,9 @@ One-time animations played before showing the full invitation:
 | `wax-seal` | Wax seal breaks/melts away |
 | `curtain` | Curtains part to reveal |
 | `storybook` | Storybook cover opens; spread fades into invitation |
+| `garden-gate` | Moonlit garden gate unlatches and swings open onto a luminous path |
 
-Reveals are Alpine.js-driven, play once per session (sessionStorage flag).
+Reveals use inline vanilla JS in Blade partials. On tap, they set Livewire `invitationRevealed`, dispatch `invitation:revealed`, and restore scroll — no Alpine.js or sessionStorage.
 
 ---
 
