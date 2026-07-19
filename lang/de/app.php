@@ -41,6 +41,7 @@ return [
     'reveal_curtain' => 'Vorhang',
     'reveal_storybook' => 'Buchöffnung',
     'reveal_garden_gate' => 'Mondlicht-Gartentor',
+    'reveal_sunrise_bloom' => 'Sonnenaufgangsblüte',
     'share_mode' => 'Freigabemodus',
     'hero_image' => 'Titelbild',
     'youtube_song' => 'YouTube-Lied',

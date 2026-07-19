@@ -163,6 +163,7 @@ Each theme exposes CSS variables (`--color-bg`, `--color-text`, `--color-primary
 | `curtain` | Curtains part |
 | `storybook` | Storybook cover opens to luminous spread |
 | `garden-gate` | Moonlit garden gate opens onto a luminous path |
+| `sunrise-bloom` | Sunrise light opens closed buds into full floral bloom |
 
 Reveals should feel short and tactile; never block access if JS fails.
 

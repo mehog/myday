@@ -221,7 +221,11 @@ class InvitationPage extends Component
 
     protected function normalizeRevealValue(string $value): string
     {
-        return $value === 'polaroid' ? 'storybook' : $value;
+        return match ($value) {
+            'polaroid' => 'storybook',
+            'starlit-constellation' => 'sunrise-bloom',
+            default => $value,
+        };
     }
 
     public function render()

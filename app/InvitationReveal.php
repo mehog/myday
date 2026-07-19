@@ -9,6 +9,7 @@ enum InvitationReveal: string
     case Curtain = 'curtain';
     case Storybook = 'storybook';
     case GardenGate = 'garden-gate';
+    case SunriseBloom = 'sunrise-bloom';
 
     public function label(): string
     {
@@ -18,6 +19,7 @@ enum InvitationReveal: string
             self::Curtain => __('app.reveal_curtain'),
             self::Storybook => __('app.reveal_storybook'),
             self::GardenGate => __('app.reveal_garden_gate'),
+            self::SunriseBloom => __('app.reveal_sunrise_bloom'),
         };
     }
 }

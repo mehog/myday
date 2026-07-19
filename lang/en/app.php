@@ -41,6 +41,7 @@ return [
     'reveal_curtain' => 'Curtain reveal',
     'reveal_storybook' => 'Storybook opening',
     'reveal_garden_gate' => 'Moonlit garden gate',
+    'reveal_sunrise_bloom' => 'Sunrise floral bloom',
     'share_mode' => 'Sharing mode',
     'hero_image' => 'Hero image',
     'youtube_song' => 'YouTube song',

@@ -41,6 +41,7 @@ return [
     'reveal_curtain' => 'Zavjese',
     'reveal_storybook' => 'Otvaranje knjige',
     'reveal_garden_gate' => 'Mjesečina kroz vrtna vrata',
+    'reveal_sunrise_bloom' => 'Cvjetanje na izlasku sunca',
     'share_mode' => 'Način dijeljenja',
     'hero_image' => 'Naslovna fotografija',
     'youtube_song' => 'YouTube pjesma',
