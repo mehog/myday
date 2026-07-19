@@ -164,6 +164,7 @@ Each theme exposes CSS variables (`--color-bg`, `--color-text`, `--color-primary
 | `storybook` | Storybook cover opens to luminous spread |
 | `garden-gate` | Moonlit garden gate opens onto a luminous path |
 | `sunrise-bloom` | Sunrise light opens closed buds into full floral bloom |
+| `royal-crest-doors` | Wax crest unlocks; palace doors open into a sunlit ballroom |
 
 Reveals should feel short and tactile; never block access if JS fails.
 

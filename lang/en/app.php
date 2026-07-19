@@ -42,6 +42,7 @@ return [
     'reveal_storybook' => 'Storybook opening',
     'reveal_garden_gate' => 'Moonlit garden gate',
     'reveal_sunrise_bloom' => 'Sunrise floral bloom',
+    'reveal_royal_crest_doors' => 'Royal crest doors',
     'share_mode' => 'Sharing mode',
     'hero_image' => 'Hero image',
     'youtube_song' => 'YouTube song',

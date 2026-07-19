@@ -42,6 +42,7 @@ return [
     'reveal_storybook' => 'Buchöffnung',
     'reveal_garden_gate' => 'Mondlicht-Gartentor',
     'reveal_sunrise_bloom' => 'Sonnenaufgangsblüte',
+    'reveal_royal_crest_doors' => 'Königliche Wappentür',
     'share_mode' => 'Freigabemodus',
     'hero_image' => 'Titelbild',
     'youtube_song' => 'YouTube-Lied',

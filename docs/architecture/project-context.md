@@ -314,7 +314,7 @@ myday/
 │   └── views/
 │       ├── components/                 # Blade view components
 │       │   ├── invitation/             # All invitation sub-components
-│       │   │   ├── reveals/            # envelope, wax-seal, curtain, storybook, garden-gate, sunrise-bloom
+│       │   │   ├── reveals/            # envelope, wax-seal, curtain, storybook, garden-gate, sunrise-bloom, royal-crest-doors
 │       │   │   ├── templates/          # classic, editorial, story
 │       │   │   ├── hero.blade.php
 │       │   │   ├── countdown.blade.php
@@ -563,7 +563,7 @@ Polymorphic (`subscribable_type`, `subscribable_id`):
 |------|--------|
 | `InvitationTheme` | `amber-gold`, `royal-wedding`, `lavender-dream`, `winter-magic`, `pearl-white`, `dusty-rose` |
 | `InvitationTemplate` | `classic`, `editorial`, `story` |
-| `InvitationReveal` | `envelope`, `wax-seal`, `curtain`, `storybook`, `garden-gate`, `sunrise-bloom` |
+| `InvitationReveal` | `envelope`, `wax-seal`, `curtain`, `storybook`, `garden-gate`, `sunrise-bloom`, `royal-crest-doors` |
 | `LinkMode` | `public`, `token_only` |
 | `LinkType` | `public`, `personal` |
 | `RsvpStatus` | `yes`, `no` |
@@ -892,7 +892,7 @@ Each theme defines: primary/secondary colors, font pairings, background patterns
 
 Templates define the structural layout of sections within the theme's color palette.
 
-### Reveal Animations (6)
+### Reveal Animations (7)
 One-time animations played before showing the full invitation:
 | Key | Animation |
 |-----|-----------|
@@ -902,6 +902,7 @@ One-time animations played before showing the full invitation:
 | `storybook` | Storybook cover opens; spread fades into invitation |
 | `garden-gate` | Moonlit garden gate unlatches and swings open onto a luminous path |
 | `sunrise-bloom` | Closed buds tighten; vines unfurl; warm sunrise iris opens into full bloom |
+| `royal-crest-doors` | Wax crest unlocks; palace doors swing open into a sunlit ballroom |
 
 Reveals use inline vanilla JS in Blade partials. On tap, they set Livewire `invitationRevealed`, dispatch `invitation:revealed`, and restore scroll — no Alpine.js or sessionStorage.
 

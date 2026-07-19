@@ -62,18 +62,11 @@
         }
 
         .seal-photo-stage::after {
-            content: '';
-            position: absolute;
-            z-index: 8;
-            inset: 0;
-            pointer-events: none;
-            background: radial-gradient(circle at 50% 44%, rgba(255, 248, 228, 0.55), transparent 34%);
-            opacity: 0;
-            transition: opacity 0.55s ease;
+            content: none;
         }
 
         .seal-photo-stage.seal-is-opening::after {
-            animation: seal-stage-bloom 1.2s ease-out both;
+            animation: none;
         }
 
         .seal-photo-stage.seal-is-fading {
@@ -90,11 +83,17 @@
         .seal-photo-trigger {
             position: absolute;
             inset: 0;
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
             height: 100%;
             margin: 0;
-            padding: 0;
+            padding:
+                max(0px, env(safe-area-inset-top))
+                max(0px, env(safe-area-inset-right))
+                max(0px, env(safe-area-inset-bottom))
+                max(0px, env(safe-area-inset-left));
             border: 0;
             border-radius: 0;
             font: inherit;
@@ -107,9 +106,43 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        .seal-photo-canvas {
+            position: relative;
+            width: min(577px, 100vw, calc(100dvh * 9 / 16));
+            aspect-ratio: 9 / 16;
+            max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+            container-type: inline-size;
+            container-name: seal-canvas;
+            overflow: hidden;
+            isolation: isolate;
+            background: #f1e9dd;
+            box-shadow:
+                0 24px 60px rgba(80, 55, 30, 0.12),
+                0 0 0 1px rgba(121, 89, 48, 0.08);
+        }
+
+        .seal-photo-canvas::after {
+            content: '';
+            position: absolute;
+            z-index: 8;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 44%, rgba(255, 248, 228, 0.55), transparent 34%);
+            opacity: 0;
+            transition: opacity 0.55s ease;
+        }
+
+        .seal-photo-stage.seal-is-opening .seal-photo-canvas::after {
+            animation: seal-stage-bloom 1.2s ease-out both;
+        }
+
         .seal-photo-trigger:focus-visible {
+            outline: none;
+        }
+
+        .seal-photo-trigger:focus-visible .seal-photo-canvas {
             outline: 2px solid rgba(184, 139, 66, 0.95);
-            outline-offset: -8px;
+            outline-offset: -4px;
         }
 
         .seal-photo-trigger[aria-expanded='true'] {
@@ -215,14 +248,14 @@
         }
 
         .seal-ribbon-fx-h {
-            width: clamp(120px, 34vw, 220px);
+            width: clamp(120px, 34cqw, 220px);
             height: 3px;
             transform: translate(-50%, -50%);
         }
 
         .seal-ribbon-fx-v {
             width: 3px;
-            height: clamp(120px, 34vw, 220px);
+            height: clamp(120px, 34cqw, 220px);
             transform: translate(-50%, -50%);
         }
 
@@ -242,8 +275,8 @@
             position: absolute;
             left: 50%;
             top: 46%;
-            width: clamp(62px, 16vw, 92px);
-            height: clamp(62px, 16vw, 92px);
+            width: clamp(62px, 16cqw, 92px);
+            height: clamp(62px, 16cqw, 92px);
             transform: translate(-50%, -50%);
             z-index: 2;
             filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.38));
@@ -367,7 +400,7 @@
             z-index: 6;
             left: 50%;
             top: 44%;
-            width: clamp(100px, 28vw, 220px);
+            width: clamp(100px, 28cqw, 220px);
             aspect-ratio: 1;
             border-radius: 50%;
             opacity: 0;
@@ -396,7 +429,7 @@
             z-index: 5;
             left: 50%;
             top: 30%;
-            width: min(70vw, 520px);
+            width: min(70cqw, 520px);
             color: var(--seal-ink);
             text-align: center;
             text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
@@ -430,15 +463,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: clamp(10px, 2.2vw, 18px);
-            margin-bottom: clamp(12px, 2.2vh, 22px);
+            gap: clamp(10px, 2.2cqw, 18px);
+            margin-bottom: clamp(12px, 2.2cqh, 22px);
             color: var(--seal-gold);
         }
 
         .seal-open-ornament::before,
         .seal-open-ornament::after {
             content: '';
-            width: clamp(34px, 10vw, 84px);
+            width: clamp(34px, 10cqw, 84px);
             height: 1px;
             background: linear-gradient(90deg, transparent, currentColor);
         }
@@ -448,7 +481,7 @@
         }
 
         .seal-open-ornament svg {
-            width: clamp(15px, 3.2vw, 23px);
+            width: clamp(15px, 3.2cqw, 23px);
             height: auto;
         }
 
@@ -459,19 +492,19 @@
         }
 
         .seal-open-eyebrow {
-            margin-bottom: clamp(9px, 1.8vh, 16px);
+            margin-bottom: clamp(9px, 1.8cqh, 16px);
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(9px, 2.2vw, 13px);
+            font-size: clamp(9px, 2.2cqw, 13px);
             font-weight: 500;
             line-height: 1.35;
-            letter-spacing: clamp(3px, 0.8vw, 6px);
+            letter-spacing: clamp(3px, 0.8cqw, 6px);
             text-transform: uppercase;
             color: var(--seal-gold);
         }
 
         .seal-open-names {
             font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(34px, 9vw, 76px);
+            font-size: clamp(34px, 9cqw, 76px);
             font-weight: 600;
             font-style: italic;
             line-height: 1.03;
@@ -480,18 +513,18 @@
 
         .seal-open-rule {
             display: block;
-            width: clamp(62px, 16vw, 120px);
+            width: clamp(62px, 16cqw, 120px);
             height: 1px;
-            margin: clamp(15px, 2.5vh, 24px) auto clamp(11px, 2vh, 18px);
+            margin: clamp(15px, 2.5cqh, 24px) auto clamp(11px, 2cqh, 18px);
             background: linear-gradient(90deg, transparent, var(--seal-gold), transparent);
         }
 
         .seal-open-meta {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(8px, 2vw, 12px);
+            font-size: clamp(8px, 2cqw, 12px);
             font-weight: 500;
             line-height: 1.55;
-            letter-spacing: clamp(1.3px, 0.45vw, 3px);
+            letter-spacing: clamp(1.3px, 0.45cqw, 3px);
             text-transform: uppercase;
             color: color-mix(in srgb, var(--seal-ink) 72%, white);
         }
@@ -500,21 +533,21 @@
             position: absolute;
             z-index: 7;
             left: 50%;
-            bottom: max(7vh, calc(env(safe-area-inset-bottom) + 26px));
+            bottom: max(7%, calc(env(safe-area-inset-bottom) + 12px));
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
             width: max-content;
-            max-width: 88vw;
-            padding: 12px 18px;
+            max-width: 88cqw;
+            padding: clamp(10px, 2.4cqw, 12px) clamp(14px, 3.2cqw, 18px);
             border: 1px solid rgba(121, 89, 48, 0.18);
             border-radius: 999px;
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(9px, 2.4vw, 12px);
+            font-size: clamp(9px, 2.4cqw, 12px);
             font-weight: 500;
             line-height: 1;
-            letter-spacing: clamp(3px, 0.9vw, 6px);
+            letter-spacing: clamp(2px, 0.9cqw, 6px);
             text-transform: uppercase;
             white-space: nowrap;
             color: rgba(74, 51, 29, 0.77);
@@ -576,37 +609,23 @@
             }
         }
 
-        @media (orientation: landscape) {
-            .seal-photo-image {
-                object-fit: contain;
-            }
-
+        @container seal-canvas (max-width: 381px) {
             .seal-open-copy {
-                top: 22%;
-                width: min(38vw, 460px);
+                width: 88%;
             }
 
             .seal-open-names {
-                font-size: clamp(30px, 5vw, 58px);
+                font-size: clamp(28px, 8.5cqw, 42px);
             }
 
             .seal-tap-hint {
-                bottom: max(5vh, calc(env(safe-area-inset-bottom) + 18px));
+                letter-spacing: clamp(1.5px, 0.7cqw, 4px);
+                padding: 10px 14px;
             }
 
             .seal-wax-overlay {
-                top: 44%;
-            }
-
-            .seal-ribbon-fx {
-                top: 44%;
-            }
-        }
-
-        @media (max-width: 430px) and (min-height: 760px) {
-            .seal-open-copy {
-                top: 28%;
-                width: 72vw;
+                width: clamp(54px, 15cqw, 78px);
+                height: clamp(54px, 15cqw, 78px);
             }
         }
 
@@ -615,7 +634,7 @@
             .seal-photo-particle,
             .seal-is-opening .seal-center-light,
             .seal-is-opening .seal-crack-line path,
-            .seal-photo-stage.seal-is-opening::after {
+            .seal-photo-stage.seal-is-opening .seal-photo-canvas::after {
                 animation: none;
             }
 
@@ -656,6 +675,7 @@
             aria-label="{{ __('invitation.envelope_open') }}"
             aria-expanded="false"
         >
+            <span class="seal-photo-canvas">
             <span class="seal-photo-media" aria-hidden="true">
                 <img
                     class="seal-photo-image seal-photo-open"
@@ -709,6 +729,7 @@
             </span>
 
             <span class="seal-tap-hint">{{ __('invitation.envelope_tap') }}</span>
+            </span>
         </button>
     </div>
 

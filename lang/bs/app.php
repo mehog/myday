@@ -42,6 +42,7 @@ return [
     'reveal_storybook' => 'Otvaranje knjige',
     'reveal_garden_gate' => 'Mjesečina kroz vrtna vrata',
     'reveal_sunrise_bloom' => 'Cvjetanje na izlasku sunca',
+    'reveal_royal_crest_doors' => 'Kraljevska vrata s grbom',
     'share_mode' => 'Način dijeljenja',
     'hero_image' => 'Naslovna fotografija',
     'youtube_song' => 'YouTube pjesma',

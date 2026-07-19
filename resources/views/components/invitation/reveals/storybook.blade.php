@@ -59,18 +59,11 @@
         }
 
         .story-photo-stage::after {
-            content: '';
-            position: absolute;
-            z-index: 8;
-            inset: 0;
-            pointer-events: none;
-            background: radial-gradient(circle at 50% 44%, rgba(255, 248, 228, 0.56), transparent 34%);
-            opacity: 0;
-            transition: opacity 0.55s ease;
+            content: none;
         }
 
         .story-photo-stage.story-is-opening::after {
-            animation: story-stage-bloom 1.2s ease-out both;
+            animation: none;
         }
 
         .story-photo-stage.story-is-fading {
@@ -87,11 +80,17 @@
         .story-photo-trigger {
             position: absolute;
             inset: 0;
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
             height: 100%;
             margin: 0;
-            padding: 0;
+            padding:
+                max(0px, env(safe-area-inset-top))
+                max(0px, env(safe-area-inset-right))
+                max(0px, env(safe-area-inset-bottom))
+                max(0px, env(safe-area-inset-left));
             border: 0;
             border-radius: 0;
             font: inherit;
@@ -104,9 +103,43 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        .story-photo-canvas {
+            position: relative;
+            width: min(577px, 100vw, calc(100dvh * 9 / 16));
+            aspect-ratio: 9 / 16;
+            max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+            container-type: inline-size;
+            container-name: story-canvas;
+            overflow: hidden;
+            isolation: isolate;
+            background: #f1e9dd;
+            box-shadow:
+                0 24px 60px rgba(80, 55, 30, 0.12),
+                0 0 0 1px rgba(121, 89, 48, 0.08);
+        }
+
+        .story-photo-canvas::after {
+            content: '';
+            position: absolute;
+            z-index: 8;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 44%, rgba(255, 248, 228, 0.56), transparent 34%);
+            opacity: 0;
+            transition: opacity 0.55s ease;
+        }
+
+        .story-photo-stage.story-is-opening .story-photo-canvas::after {
+            animation: story-stage-bloom 1.2s ease-out both;
+        }
+
         .story-photo-trigger:focus-visible {
+            outline: none;
+        }
+
+        .story-photo-trigger:focus-visible .story-photo-canvas {
             outline: 2px solid rgba(184, 139, 66, 0.95);
-            outline-offset: -8px;
+            outline-offset: -4px;
         }
 
         .story-photo-trigger[aria-expanded='true'] {
@@ -213,8 +246,8 @@
             z-index: 6;
             left: 50%;
             top: 44%;
-            width: clamp(4px, 1vw, 8px);
-            height: clamp(120px, 32vh, 260px);
+            width: clamp(4px, 1cqw, 8px);
+            height: clamp(120px, 32cqh, 260px);
             border-radius: 999px;
             opacity: 0;
             pointer-events: none;
@@ -244,8 +277,8 @@
             z-index: 6;
             left: 50%;
             top: 44%;
-            width: clamp(90px, 24vw, 180px);
-            height: clamp(140px, 36vh, 300px);
+            width: clamp(90px, 24cqw, 180px);
+            height: clamp(140px, 36cqh, 300px);
             border-radius: 50%;
             opacity: 0;
             pointer-events: none;
@@ -273,7 +306,7 @@
             z-index: 5;
             left: 50%;
             top: 30%;
-            width: min(70vw, 520px);
+            width: min(70cqw, 520px);
             color: var(--story-ink);
             text-align: center;
             text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
@@ -307,15 +340,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: clamp(10px, 2.2vw, 18px);
-            margin-bottom: clamp(12px, 2.2vh, 22px);
+            gap: clamp(10px, 2.2cqw, 18px);
+            margin-bottom: clamp(12px, 2.2cqh, 22px);
             color: var(--story-gold);
         }
 
         .story-open-ornament::before,
         .story-open-ornament::after {
             content: '';
-            width: clamp(34px, 10vw, 84px);
+            width: clamp(34px, 10cqw, 84px);
             height: 1px;
             background: linear-gradient(90deg, transparent, currentColor);
         }
@@ -325,7 +358,7 @@
         }
 
         .story-open-ornament svg {
-            width: clamp(15px, 3.2vw, 23px);
+            width: clamp(15px, 3.2cqw, 23px);
             height: auto;
         }
 
@@ -336,19 +369,19 @@
         }
 
         .story-open-eyebrow {
-            margin-bottom: clamp(9px, 1.8vh, 16px);
+            margin-bottom: clamp(9px, 1.8cqh, 16px);
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(9px, 2.2vw, 13px);
+            font-size: clamp(9px, 2.2cqw, 13px);
             font-weight: 500;
             line-height: 1.35;
-            letter-spacing: clamp(3px, 0.8vw, 6px);
+            letter-spacing: clamp(3px, 0.8cqw, 6px);
             text-transform: uppercase;
             color: var(--story-gold);
         }
 
         .story-open-names {
             font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(34px, 9vw, 76px);
+            font-size: clamp(34px, 9cqw, 76px);
             font-weight: 600;
             font-style: italic;
             line-height: 1.03;
@@ -357,18 +390,18 @@
 
         .story-open-rule {
             display: block;
-            width: clamp(62px, 16vw, 120px);
+            width: clamp(62px, 16cqw, 120px);
             height: 1px;
-            margin: clamp(15px, 2.5vh, 24px) auto clamp(11px, 2vh, 18px);
+            margin: clamp(15px, 2.5cqh, 24px) auto clamp(11px, 2cqh, 18px);
             background: linear-gradient(90deg, transparent, var(--story-gold), transparent);
         }
 
         .story-open-meta {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(8px, 2vw, 12px);
+            font-size: clamp(8px, 2cqw, 12px);
             font-weight: 500;
             line-height: 1.55;
-            letter-spacing: clamp(1.3px, 0.45vw, 3px);
+            letter-spacing: clamp(1.3px, 0.45cqw, 3px);
             text-transform: uppercase;
             color: color-mix(in srgb, var(--story-ink) 72%, white);
         }
@@ -377,21 +410,21 @@
             position: absolute;
             z-index: 7;
             left: 50%;
-            bottom: max(7vh, calc(env(safe-area-inset-bottom) + 26px));
+            bottom: max(7%, calc(env(safe-area-inset-bottom) + 12px));
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
             width: max-content;
-            max-width: 88vw;
-            padding: 12px 18px;
+            max-width: 88cqw;
+            padding: clamp(10px, 2.4cqw, 12px) clamp(14px, 3.2cqw, 18px);
             border: 1px solid rgba(121, 89, 48, 0.18);
             border-radius: 999px;
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(9px, 2.4vw, 12px);
+            font-size: clamp(9px, 2.4cqw, 12px);
             font-weight: 500;
             line-height: 1;
-            letter-spacing: clamp(3px, 0.9vw, 6px);
+            letter-spacing: clamp(2px, 0.9cqw, 6px);
             text-transform: uppercase;
             white-space: nowrap;
             color: rgba(74, 51, 29, 0.77);
@@ -453,30 +486,18 @@
             }
         }
 
-        @media (orientation: landscape) {
-            .story-photo-image,
-            .story-cover-image {
-                object-fit: contain;
-            }
-
+        @container story-canvas (max-width: 381px) {
             .story-open-copy {
-                top: 22%;
-                width: min(38vw, 460px);
+                width: 88%;
             }
 
             .story-open-names {
-                font-size: clamp(30px, 5vw, 58px);
+                font-size: clamp(28px, 8.5cqw, 42px);
             }
 
             .story-tap-hint {
-                bottom: max(5vh, calc(env(safe-area-inset-bottom) + 18px));
-            }
-        }
-
-        @media (max-width: 430px) and (min-height: 760px) {
-            .story-open-copy {
-                top: 28%;
-                width: 72vw;
+                letter-spacing: clamp(1.5px, 0.7cqw, 4px);
+                padding: 10px 14px;
             }
         }
 
@@ -485,7 +506,7 @@
             .story-photo-particle,
             .story-is-opening .story-edge-glint,
             .story-is-opening .story-gutter-light,
-            .story-photo-stage.story-is-opening::after {
+            .story-photo-stage.story-is-opening .story-photo-canvas::after {
                 animation: none;
             }
 
@@ -519,6 +540,7 @@
             aria-label="{{ __('invitation.envelope_open') }}"
             aria-expanded="false"
         >
+            <span class="story-photo-canvas">
             <span class="story-photo-media" aria-hidden="true">
                 <img
                     class="story-photo-image story-photo-open"
@@ -559,6 +581,7 @@
             </span>
 
             <span class="story-tap-hint">{{ __('invitation.envelope_tap') }}</span>
+            </span>
         </button>
     </div>
 

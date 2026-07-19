@@ -59,18 +59,11 @@
         }
 
         .env-photo-stage::after {
-            content: '';
-            position: absolute;
-            z-index: 8;
-            inset: 0;
-            pointer-events: none;
-            background: radial-gradient(circle at 50% 45%, rgba(255, 251, 239, 0.52), transparent 32%);
-            opacity: 0;
-            transition: opacity 0.55s ease;
+            content: none;
         }
 
         .env-photo-stage.env-is-opening::after {
-            animation: env-photo-flash 1.15s ease-out both;
+            animation: none;
         }
 
         .env-photo-stage.env-is-fading {
@@ -87,11 +80,17 @@
         .env-photo-envelope {
             position: absolute;
             inset: 0;
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
             height: 100%;
             margin: 0;
-            padding: 0;
+            padding:
+                max(0px, env(safe-area-inset-top))
+                max(0px, env(safe-area-inset-right))
+                max(0px, env(safe-area-inset-bottom))
+                max(0px, env(safe-area-inset-left));
             border: 0;
             border-radius: 0;
             font: inherit;
@@ -104,9 +103,43 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        .env-photo-canvas {
+            position: relative;
+            width: min(577px, 100vw, calc(100dvh * 9 / 16));
+            aspect-ratio: 9 / 16;
+            max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+            container-type: inline-size;
+            container-name: env-canvas;
+            overflow: hidden;
+            isolation: isolate;
+            background: #eee5d8;
+            box-shadow:
+                0 24px 60px rgba(80, 55, 30, 0.12),
+                0 0 0 1px rgba(121, 89, 48, 0.08);
+        }
+
+        .env-photo-canvas::after {
+            content: '';
+            position: absolute;
+            z-index: 8;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 45%, rgba(255, 251, 239, 0.52), transparent 32%);
+            opacity: 0;
+            transition: opacity 0.55s ease;
+        }
+
+        .env-photo-stage.env-is-opening .env-photo-canvas::after {
+            animation: env-photo-flash 1.15s ease-out both;
+        }
+
         .env-photo-envelope:focus-visible {
+            outline: none;
+        }
+
+        .env-photo-envelope:focus-visible .env-photo-canvas {
             outline: 2px solid rgba(184, 139, 66, 0.95);
-            outline-offset: -8px;
+            outline-offset: -4px;
         }
 
         .env-photo-envelope[aria-expanded='true'] {
@@ -193,7 +226,7 @@
             z-index: 6;
             left: 50%;
             top: 44.5%;
-            width: clamp(86px, 22vw, 160px);
+            width: clamp(86px, 22cqw, 160px);
             aspect-ratio: 1;
             border: 1px solid rgba(255, 243, 205, 0.68);
             border-radius: 50%;
@@ -220,7 +253,7 @@
             z-index: 5;
             left: 50%;
             top: 29%;
-            width: min(70vw, 520px);
+            width: min(70cqw, 520px);
             color: var(--env-ink);
             text-align: center;
             text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
@@ -254,15 +287,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: clamp(10px, 2.2vw, 18px);
-            margin-bottom: clamp(12px, 2.2vh, 22px);
+            gap: clamp(10px, 2.2cqw, 18px);
+            margin-bottom: clamp(12px, 2.2cqh, 22px);
             color: var(--env-gold);
         }
 
         .env-open-ornament::before,
         .env-open-ornament::after {
             content: '';
-            width: clamp(34px, 10vw, 84px);
+            width: clamp(34px, 10cqw, 84px);
             height: 1px;
             background: linear-gradient(90deg, transparent, currentColor);
         }
@@ -272,7 +305,7 @@
         }
 
         .env-open-ornament svg {
-            width: clamp(15px, 3.2vw, 23px);
+            width: clamp(15px, 3.2cqw, 23px);
             height: auto;
         }
 
@@ -283,19 +316,19 @@
         }
 
         .env-open-eyebrow {
-            margin-bottom: clamp(9px, 1.8vh, 16px);
+            margin-bottom: clamp(9px, 1.8cqh, 16px);
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(9px, 2.2vw, 13px);
+            font-size: clamp(9px, 2.2cqw, 13px);
             font-weight: 500;
             line-height: 1.35;
-            letter-spacing: clamp(3px, 0.8vw, 6px);
+            letter-spacing: clamp(3px, 0.8cqw, 6px);
             text-transform: uppercase;
             color: var(--env-gold);
         }
 
         .env-open-names {
             font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(34px, 9vw, 76px);
+            font-size: clamp(34px, 9cqw, 76px);
             font-weight: 600;
             font-style: italic;
             line-height: 1.03;
@@ -304,18 +337,18 @@
 
         .env-open-rule {
             display: block;
-            width: clamp(62px, 16vw, 120px);
+            width: clamp(62px, 16cqw, 120px);
             height: 1px;
-            margin: clamp(15px, 2.5vh, 24px) auto clamp(11px, 2vh, 18px);
+            margin: clamp(15px, 2.5cqh, 24px) auto clamp(11px, 2cqh, 18px);
             background: linear-gradient(90deg, transparent, var(--env-gold), transparent);
         }
 
         .env-open-meta {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(8px, 2vw, 12px);
+            font-size: clamp(8px, 2cqw, 12px);
             font-weight: 500;
             line-height: 1.55;
-            letter-spacing: clamp(1.3px, 0.45vw, 3px);
+            letter-spacing: clamp(1.3px, 0.45cqw, 3px);
             text-transform: uppercase;
             color: color-mix(in srgb, var(--env-ink) 72%, white);
         }
@@ -324,21 +357,21 @@
             position: absolute;
             z-index: 7;
             left: 50%;
-            bottom: max(7vh, calc(env(safe-area-inset-bottom) + 26px));
+            bottom: max(7%, calc(env(safe-area-inset-bottom) + 12px));
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
             width: max-content;
-            max-width: 88vw;
-            padding: 12px 18px;
+            max-width: 88cqw;
+            padding: clamp(10px, 2.4cqw, 12px) clamp(14px, 3.2cqw, 18px);
             border: 1px solid rgba(121, 89, 48, 0.18);
             border-radius: 999px;
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(9px, 2.4vw, 12px);
+            font-size: clamp(9px, 2.4cqw, 12px);
             font-weight: 500;
             line-height: 1;
-            letter-spacing: clamp(3px, 0.9vw, 6px);
+            letter-spacing: clamp(2px, 0.9cqw, 6px);
             text-transform: uppercase;
             white-space: nowrap;
             color: rgba(74, 51, 29, 0.77);
@@ -399,29 +432,22 @@
             }
         }
 
-        @media (orientation: landscape) {
-            .env-photo-image {
-                object-fit: contain;
-            }
-
+        @container env-canvas (max-width: 381px) {
             .env-open-copy {
-                top: 22%;
-                width: min(38vw, 460px);
+                width: 88%;
             }
 
             .env-open-names {
-                font-size: clamp(30px, 5vw, 58px);
+                font-size: clamp(28px, 8.5cqw, 42px);
             }
 
             .env-tap-hint {
-                bottom: max(5vh, calc(env(safe-area-inset-bottom) + 18px));
+                letter-spacing: clamp(1.5px, 0.7cqw, 4px);
+                padding: 10px 14px;
             }
-        }
 
-        @media (max-width: 430px) and (min-height: 760px) {
-            .env-open-copy {
-                top: 27.5%;
-                width: 72vw;
+            .env-seal-light {
+                width: clamp(72px, 20cqw, 132px);
             }
         }
 
@@ -429,7 +455,7 @@
             .env-tap-hint::before,
             .env-photo-particle,
             .env-is-opening .env-seal-light,
-            .env-photo-stage.env-is-opening::after {
+            .env-photo-stage.env-is-opening .env-photo-canvas::after {
                 animation: none;
             }
 
@@ -456,6 +482,7 @@
             aria-label="{{ __('invitation.envelope_open') }}"
             aria-expanded="false"
         >
+            <span class="env-photo-canvas">
             <span class="env-photo-media" aria-hidden="true">
                 <img
                     class="env-photo-image env-photo-open"
@@ -492,6 +519,7 @@
             </span>
 
             <span class="env-tap-hint">{{ __('invitation.envelope_tap') }}</span>
+            </span>
         </button>
     </div>
 

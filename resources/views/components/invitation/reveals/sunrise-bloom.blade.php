@@ -61,18 +61,11 @@
         }
 
         .bloom-photo-stage::after {
-            content: '';
-            position: absolute;
-            z-index: 8;
-            inset: 0;
-            pointer-events: none;
-            background: radial-gradient(circle at 50% 46%, rgba(255, 228, 196, 0.52), transparent 36%);
-            opacity: 0;
-            transition: opacity 0.55s ease;
+            content: none;
         }
 
         .bloom-photo-stage.bloom-is-opening::after {
-            animation: bloom-stage-bloom 1.25s ease-out both;
+            animation: none;
         }
 
         .bloom-photo-stage.bloom-is-fading {
@@ -89,11 +82,17 @@
         .bloom-photo-trigger {
             position: absolute;
             inset: 0;
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
             height: 100%;
             margin: 0;
-            padding: 0;
+            padding:
+                max(0px, env(safe-area-inset-top))
+                max(0px, env(safe-area-inset-right))
+                max(0px, env(safe-area-inset-bottom))
+                max(0px, env(safe-area-inset-left));
             border: 0;
             border-radius: 0;
             font: inherit;
@@ -106,9 +105,43 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        .bloom-photo-canvas {
+            position: relative;
+            width: min(577px, 100vw, calc(100dvh * 9 / 16));
+            aspect-ratio: 9 / 16;
+            max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+            container-type: inline-size;
+            container-name: bloom-canvas;
+            overflow: hidden;
+            isolation: isolate;
+            background: var(--bloom-sky);
+            box-shadow:
+                0 24px 60px rgba(184, 139, 66, 0.12),
+                0 0 0 1px rgba(184, 139, 66, 0.08);
+        }
+
+        .bloom-photo-canvas::after {
+            content: '';
+            position: absolute;
+            z-index: 8;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 46%, rgba(255, 228, 196, 0.52), transparent 36%);
+            opacity: 0;
+            transition: opacity 0.55s ease;
+        }
+
+        .bloom-photo-stage.bloom-is-opening .bloom-photo-canvas::after {
+            animation: bloom-stage-bloom 1.25s ease-out both;
+        }
+
         .bloom-photo-trigger:focus-visible {
+            outline: none;
+        }
+
+        .bloom-photo-trigger:focus-visible .bloom-photo-canvas {
             outline: 2px solid rgba(184, 139, 66, 0.95);
-            outline-offset: -8px;
+            outline-offset: -4px;
         }
 
         .bloom-photo-trigger[aria-expanded='true'] {
@@ -194,10 +227,10 @@
             position: absolute;
             left: 50%;
             top: 46%;
-            width: clamp(88px, 24vw, 168px);
-            height: clamp(110px, 28vw, 200px);
-            margin-left: calc(clamp(88px, 24vw, 168px) / -2);
-            margin-top: calc(clamp(110px, 28vw, 200px) / -2);
+            width: clamp(88px, 24cqw, 168px);
+            height: clamp(110px, 28cqw, 200px);
+            margin-left: calc(clamp(88px, 24cqw, 168px) / -2);
+            margin-top: calc(clamp(110px, 28cqw, 200px) / -2);
             border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
             background: color-mix(in srgb, var(--bloom-blossom) 72%, white);
             opacity: 0.72;
@@ -223,8 +256,8 @@
             z-index: 5;
             left: 50%;
             top: 46%;
-            width: min(78vw, 340px);
-            height: min(78vw, 340px);
+            width: min(78cqw, 340px);
+            height: min(78cqw, 340px);
             transform: translate(-50%, -50%);
             pointer-events: none;
             overflow: visible;
@@ -275,8 +308,8 @@
             z-index: 6;
             left: 50%;
             top: 46%;
-            width: clamp(130px, 36vw, 270px);
-            height: clamp(130px, 36vw, 270px);
+            width: clamp(130px, 36cqw, 270px);
+            height: clamp(130px, 36cqw, 270px);
             border-radius: 50%;
             opacity: 0;
             pointer-events: none;
@@ -304,7 +337,7 @@
             z-index: 5;
             left: 50%;
             top: 31%;
-            width: min(70vw, 520px);
+            width: min(70cqw, 520px);
             color: var(--bloom-ink);
             text-align: center;
             text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72);
@@ -338,15 +371,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: clamp(10px, 2.2vw, 18px);
-            margin-bottom: clamp(12px, 2.2vh, 22px);
+            gap: clamp(10px, 2.2cqw, 18px);
+            margin-bottom: clamp(12px, 2.2cqh, 22px);
             color: var(--bloom-gold);
         }
 
         .bloom-open-ornament::before,
         .bloom-open-ornament::after {
             content: '';
-            width: clamp(34px, 10vw, 84px);
+            width: clamp(34px, 10cqw, 84px);
             height: 1px;
             background: linear-gradient(90deg, transparent, currentColor);
         }
@@ -356,7 +389,7 @@
         }
 
         .bloom-open-ornament svg {
-            width: clamp(18px, 3.6vw, 26px);
+            width: clamp(18px, 3.6cqw, 26px);
             height: auto;
         }
 
@@ -367,19 +400,19 @@
         }
 
         .bloom-open-eyebrow {
-            margin-bottom: clamp(9px, 1.8vh, 16px);
+            margin-bottom: clamp(9px, 1.8cqh, 16px);
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(9px, 2.2vw, 13px);
+            font-size: clamp(9px, 2.2cqw, 13px);
             font-weight: 500;
             line-height: 1.35;
-            letter-spacing: clamp(3px, 0.8vw, 6px);
+            letter-spacing: clamp(3px, 0.8cqw, 6px);
             text-transform: uppercase;
             color: var(--bloom-gold);
         }
 
         .bloom-open-names {
             font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(34px, 9vw, 76px);
+            font-size: clamp(34px, 9cqw, 76px);
             font-weight: 600;
             font-style: italic;
             line-height: 1.03;
@@ -388,18 +421,18 @@
 
         .bloom-open-rule {
             display: block;
-            width: clamp(62px, 16vw, 120px);
+            width: clamp(62px, 16cqw, 120px);
             height: 1px;
-            margin: clamp(15px, 2.5vh, 24px) auto clamp(11px, 2vh, 18px);
+            margin: clamp(15px, 2.5cqh, 24px) auto clamp(11px, 2cqh, 18px);
             background: linear-gradient(90deg, transparent, var(--bloom-gold), transparent);
         }
 
         .bloom-open-meta {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(8px, 2vw, 12px);
+            font-size: clamp(8px, 2cqw, 12px);
             font-weight: 500;
             line-height: 1.55;
-            letter-spacing: clamp(1.3px, 0.45vw, 3px);
+            letter-spacing: clamp(1.3px, 0.45cqw, 3px);
             text-transform: uppercase;
             color: color-mix(in srgb, var(--bloom-ink) 72%, white);
         }
@@ -408,21 +441,21 @@
             position: absolute;
             z-index: 7;
             left: 50%;
-            bottom: max(7vh, calc(env(safe-area-inset-bottom) + 26px));
+            bottom: max(7%, calc(env(safe-area-inset-bottom) + 12px));
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
             width: max-content;
-            max-width: 88vw;
-            padding: 12px 18px;
+            max-width: 88cqw;
+            padding: clamp(10px, 2.4cqw, 12px) clamp(14px, 3.2cqw, 18px);
             border: 1px solid rgba(184, 139, 66, 0.2);
             border-radius: 999px;
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(9px, 2.4vw, 12px);
+            font-size: clamp(9px, 2.4cqw, 12px);
             font-weight: 500;
             line-height: 1;
-            letter-spacing: clamp(3px, 0.9vw, 6px);
+            letter-spacing: clamp(2px, 0.9cqw, 6px);
             text-transform: uppercase;
             white-space: nowrap;
             color: rgba(68, 48, 32, 0.82);
@@ -483,29 +516,25 @@
             }
         }
 
-        @media (orientation: landscape) {
-            .bloom-photo-image {
-                object-fit: contain;
-            }
-
+        @container bloom-canvas (max-width: 381px) {
             .bloom-open-copy {
-                top: 22%;
-                width: min(38vw, 460px);
+                width: 88%;
             }
 
             .bloom-open-names {
-                font-size: clamp(30px, 5vw, 58px);
+                font-size: clamp(28px, 8.5cqw, 42px);
             }
 
             .bloom-tap-hint {
-                bottom: max(5vh, calc(env(safe-area-inset-bottom) + 18px));
+                letter-spacing: clamp(1.5px, 0.7cqw, 4px);
+                padding: 10px 14px;
             }
-        }
 
-        @media (max-width: 430px) and (min-height: 760px) {
-            .bloom-open-copy {
-                top: 28%;
-                width: 72vw;
+            .bloom-petal {
+                width: clamp(72px, 22cqw, 140px);
+                height: clamp(90px, 26cqw, 168px);
+                margin-left: calc(clamp(72px, 22cqw, 140px) / -2);
+                margin-top: calc(clamp(90px, 26cqw, 168px) / -2);
             }
         }
 
@@ -513,7 +542,7 @@
             .bloom-tap-hint::before,
             .bloom-petal-particle,
             .bloom-is-opening .bloom-sunrise-glow,
-            .bloom-photo-stage.bloom-is-opening::after,
+            .bloom-photo-stage.bloom-is-opening .bloom-photo-canvas::after,
             .bloom-is-opening .bloom-vine-line {
                 animation: none;
             }
@@ -554,6 +583,7 @@
             aria-label="{{ __('invitation.envelope_open') }}"
             aria-expanded="false"
         >
+            <span class="bloom-photo-canvas">
             <span class="bloom-photo-media" aria-hidden="true">
                 <img
                     class="bloom-photo-image bloom-photo-open"
@@ -607,6 +637,7 @@
             </span>
 
             <span class="bloom-tap-hint">{{ __('invitation.envelope_tap') }}</span>
+            </span>
         </button>
     </div>
 
