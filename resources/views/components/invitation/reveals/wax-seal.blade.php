@@ -3,379 +3,206 @@
         $sealDate = $event->wedding_date->format('d · m · Y');
         $sealMeta = collect([$sealDate, $event->location_name])->filter()->implode(' — ');
 
-        $sealPalettes = [
-            'amber-gold' => [
-                '--seal-navy-1' => '#1a1208',
-                '--seal-navy-2' => '#2a1f0f',
-                '--seal-flap-2' => '#3d2910',
-                '--seal-liner' => '#f5e6c8',
-                '--seal-paper' => '#fbf6ee',
-                '--seal-ink' => '#1a1208',
-                '--seal-gold' => '#c9a227',
-                '--seal-bg-1' => '#0d0a04',
-                '--seal-bg-2' => '#1a1208',
-            ],
-            'royal-wedding' => [
-                '--seal-navy-1' => '#0f1a2e',
-                '--seal-navy-2' => '#1a2744',
-                '--seal-flap-2' => '#1e3a5f',
-                '--seal-liner' => '#d4e0f0',
-                '--seal-paper' => '#f8f6f0',
-                '--seal-ink' => '#0f1a2e',
-                '--seal-gold' => '#d4af37',
-                '--seal-bg-1' => '#080f1a',
-                '--seal-bg-2' => '#0f1a2e',
-            ],
-            'lavender-dream' => [
-                '--seal-navy-1' => '#2d2438',
-                '--seal-navy-2' => '#3d3249',
-                '--seal-flap-2' => '#9b7bb8',
-                '--seal-liner' => '#e8dff5',
-                '--seal-paper' => '#faf8fc',
-                '--seal-ink' => '#2d2438',
-                '--seal-gold' => '#c9b8e0',
-                '--seal-bg-1' => '#1a1220',
-                '--seal-bg-2' => '#2d2438',
-            ],
-            'winter-magic' => [
-                '--seal-navy-1' => '#1a2332',
-                '--seal-navy-2' => '#243044',
-                '--seal-flap-2' => '#7eb8da',
-                '--seal-liner' => '#e8f4fc',
-                '--seal-paper' => '#f0f8ff',
-                '--seal-ink' => '#1a2332',
-                '--seal-gold' => '#7eb8da',
-                '--seal-bg-1' => '#0d1520',
-                '--seal-bg-2' => '#1a2332',
-            ],
-            'pearl-white' => [
-                '--seal-navy-1' => '#8C7355',
-                '--seal-navy-2' => '#6E5A42',
-                '--seal-flap-2' => '#a88b6a',
-                '--seal-liner' => '#E8E0D5',
-                '--seal-paper' => '#FAFAF8',
-                '--seal-ink' => '#1C1917',
-                '--seal-gold' => '#8C7355',
-                '--seal-bg-1' => '#5a4535',
-                '--seal-bg-2' => '#6E5A42',
-            ],
-            'dusty-rose' => [
-                '--seal-navy-1' => '#B5706A',
-                '--seal-navy-2' => '#9A5A55',
-                '--seal-flap-2' => '#c98580',
-                '--seal-liner' => '#E8C9C4',
-                '--seal-paper' => '#F9F1EE',
-                '--seal-ink' => '#2D1B16',
-                '--seal-gold' => '#B5706A',
-                '--seal-bg-1' => '#7a3a35',
-                '--seal-bg-2' => '#9A5A55',
-            ],
-            'paper-ink' => [
-                '--seal-navy-1' => '#9A7B4F',
-                '--seal-navy-2' => '#7A623E',
-                '--seal-flap-2' => '#b8956a',
-                '--seal-liner' => '#C4B59A',
-                '--seal-paper' => '#F3EDE3',
-                '--seal-ink' => '#3A2E24',
-                '--seal-gold' => '#9A7B4F',
-                '--seal-bg-1' => '#5a4a32',
-                '--seal-bg-2' => '#7A623E',
-            ],
+        $sealAccents = [
+            'amber-gold' => ['ink' => '#332516', 'gold' => '#b88b42', 'wax' => '#a83b57'],
+            'royal-wedding' => ['ink' => '#172944', 'gold' => '#b18b32', 'wax' => '#8b3a4a'],
+            'lavender-dream' => ['ink' => '#463653', 'gold' => '#9b7bb8', 'wax' => '#7a5a8a'],
+            'winter-magic' => ['ink' => '#20364b', 'gold' => '#6299ba', 'wax' => '#4a7a9a'],
+            'pearl-white' => ['ink' => '#33291f', 'gold' => '#8C7355', 'wax' => '#8C7355'],
+            'dusty-rose' => ['ink' => '#532f2c', 'gold' => '#B5706A', 'wax' => '#9A5A55'],
+            'paper-ink' => ['ink' => '#3A2E24', 'gold' => '#9A7B4F', 'wax' => '#7A623E'],
         ];
 
-        $sealPalette = $sealPalettes[$event->theme->value] ?? $sealPalettes['amber-gold'];
-
-        $sealSunburstPoints = collect(range(0, 35))->map(function (int $i) {
-            $angle = deg2rad($i * 10 - 90);
-            $radius = $i % 2 === 0 ? 34 : 27;
-
-            return [
-                'x' => round(38 + $radius * cos($angle), 1),
-                'y' => round(38 + $radius * sin($angle), 1),
-            ];
-        });
-
-        $sealSunburst = $sealSunburstPoints
-            ->map(fn (array $point) => "{$point['x']}px {$point['y']}px")
-            ->implode(', ');
-
-        $sealCrackPoints = collect(range(0, 7))->map(function (int $i) {
-            $y = 6 + ($i * 9);
-            $x = 38 + ($i % 2 === 0 ? 5 : -5);
-
-            return [
-                'x' => round($x, 1),
-                'y' => round($y, 1),
-            ];
-        });
-
-        $sealLeftArc = $sealSunburstPoints
-            ->filter(fn (array $point) => $point['x'] <= 38.05)
-            ->sortBy(fn (array $point) => atan2($point['y'] - 38, $point['x'] - 38))
-            ->values();
-
-        $sealRightArc = $sealSunburstPoints
-            ->filter(fn (array $point) => $point['x'] >= 37.95)
-            ->sortByDesc(fn (array $point) => atan2($point['y'] - 38, $point['x'] - 38))
-            ->values();
-
-        $formatPoints = fn ($points) => collect($points)
-            ->map(fn (array $point) => "{$point['x']}px {$point['y']}px")
-            ->implode(', ');
-
-        $sealHalfLeftClip = 'polygon('.$formatPoints(
-            $sealCrackPoints->merge($sealLeftArc->reverse())
-        ).')';
-
-        $sealHalfRightClip = 'polygon('.$formatPoints(
-            $sealCrackPoints->reverse()->merge($sealRightArc)
-        ).')';
+        $sealAccent = $sealAccents[$event->theme->value] ?? $sealAccents['amber-gold'];
+        $sealClosedUrl = asset('img/wax-seal-reveal/nasdan-wax-seal-closed.webp');
+        $sealOpenUrl = asset('img/wax-seal-reveal/nasdan-wax-seal-open.webp');
     @endphp
 
     <style>
         :root {
-            --seal-open: 1400;
-            --seal-hold: 1000;
-            --seal-zoom: 600;
-            @foreach ($sealPalette as $var => $val)
-                {{ $var }}: {{ $val }};
-            @endforeach
-            --seal-wax-1: color-mix(in srgb, var(--seal-gold), #ffffff 45%);
-            --seal-wax-2: var(--seal-gold);
-            --seal-wax-3: color-mix(in srgb, var(--seal-gold), #000000 42%);
+            --seal-crossfade: 1350;
+            --seal-hold: 900;
+            --seal-zoom: 900;
+            --seal-ink: {{ $sealAccent['ink'] }};
+            --seal-gold: {{ $sealAccent['gold'] }};
+            --seal-wax: {{ $sealAccent['wax'] }};
+            --seal-wax-light: color-mix(in srgb, var(--seal-wax), #ffffff 38%);
+            --seal-wax-dark: color-mix(in srgb, var(--seal-wax), #000000 32%);
         }
 
-        .seal-stage {
+        .seal-photo-stage,
+        .seal-photo-stage * {
+            box-sizing: border-box;
+        }
+
+        .seal-photo-stage {
+            --seal-closed-image: url('{{ $sealClosedUrl }}');
             position: fixed;
             inset: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 1400px;
-            transition: opacity 0.5s ease;
             z-index: 100;
-            font-family: 'Montserrat', sans-serif;
-            background: radial-gradient(
-                ellipse 85% 70% at 50% 45%,
-                color-mix(in srgb, var(--seal-bg-2) 88%, black) 0%,
-                var(--seal-bg-1) 52%,
-                #050403 100%
-            );
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow: hidden;
+            isolation: isolate;
+            background: #120c0a;
+            opacity: 1;
+            transition: opacity 0.78s ease, filter 0.78s ease;
         }
 
-        .seal-stage.seal-gone {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .seal-card {
-            position: relative;
-            width: 300px;
-            height: 380px;
-            cursor: pointer;
-            transform-style: preserve-3d;
-            animation: seal-bob 6s ease-in-out infinite;
-        }
-
-        .seal-card.seal-breaking {
-            animation: none;
-            pointer-events: none;
-        }
-
-        @keyframes seal-bob {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-9px); }
-        }
-
-        .seal-card::after {
-            content: "";
+        .seal-photo-stage::before {
+            content: '';
             position: absolute;
-            left: 50%;
-            bottom: -34px;
-            width: 70%;
-            height: 26px;
-            background: rgba(0, 0, 0, 0.4);
-            filter: blur(16px);
-            border-radius: 50%;
-            transform: translateX(-50%);
-            transition: 0.6s ease;
+            z-index: -2;
+            inset: -28px;
+            background-image: var(--seal-closed-image);
+            background-position: center;
+            background-size: cover;
+            filter: blur(22px) saturate(0.72) brightness(0.88);
+            transform: scale(1.08);
         }
 
-        .seal-card.seal-breaking::after {
-            width: 56%;
-            opacity: 0.6;
+        .seal-photo-stage::after {
+            content: '';
+            position: absolute;
+            z-index: 8;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 44%, rgba(255, 248, 228, 0.55), transparent 34%);
+            opacity: 0;
+            transition: opacity 0.55s ease;
         }
 
-        .seal-inner {
+        .seal-photo-stage.seal-is-opening::after {
+            animation: seal-stage-bloom 1.2s ease-out both;
+        }
+
+        .seal-photo-stage.seal-is-fading {
+            opacity: 0;
+            filter: brightness(1.08) blur(2px);
+            pointer-events: none;
+        }
+
+        @keyframes seal-stage-bloom {
+            0%, 100% { opacity: 0; }
+            36% { opacity: 0.58; }
+        }
+
+        .seal-photo-trigger {
             position: absolute;
             inset: 0;
-            border-radius: 16px;
-            overflow: hidden;
-            background: linear-gradient(180deg, #fffdf8, var(--seal-paper));
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            transform: scale(0.97);
-            transition: transform 0.7s cubic-bezier(0.2, 0.9, 0.25, 1) 0.4s,
-                opacity 0.5s ease,
-                filter 0.5s ease;
+            display: block;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            border-radius: 0;
+            font: inherit;
+            color: inherit;
+            background: transparent;
+            cursor: pointer;
+            outline: none;
+            touch-action: manipulation;
+            -webkit-appearance: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .seal-inner::before {
-            content: "";
-            position: absolute;
-            inset: 12px;
-            border: 1px solid color-mix(in srgb, var(--seal-gold) 55%, transparent);
-            border-radius: 9px;
+        .seal-photo-trigger:focus-visible {
+            outline: 2px solid rgba(184, 139, 66, 0.95);
+            outline-offset: -8px;
+        }
+
+        .seal-photo-trigger[aria-expanded='true'] {
+            cursor: default;
             pointer-events: none;
         }
 
-        .seal-inner-body {
-            color: var(--seal-ink);
-            line-height: 1;
-            padding: 0 22px;
+        .seal-photo-media {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            background: #f1e9dd;
+            transform: scale(1);
+            transform-origin: 50% 44%;
+            transition: transform 0.95s cubic-bezier(0.65, 0, 0.35, 1), filter 0.7s ease;
+            will-change: transform, filter;
         }
 
-        .seal-eyebrow {
+        .seal-photo-media::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 4;
+            pointer-events: none;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 24%),
+                radial-gradient(ellipse at center, transparent 54%, rgba(40, 24, 16, 0.14) 100%);
+        }
+
+        .seal-photo-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
             display: block;
-            font-size: 10px;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--seal-gold);
-            margin-bottom: 12px;
+            object-fit: cover;
+            object-position: center center;
+            user-select: none;
+            -webkit-user-drag: none;
+            will-change: opacity, transform, filter;
         }
 
-        .seal-names {
-            font-family: 'Playfair Display', serif;
-            font-size: 32px;
-            font-weight: 600;
-            font-style: italic;
-            color: var(--seal-ink);
+        .seal-photo-closed {
+            z-index: 2;
+            opacity: 1;
+            filter: brightness(1);
+            transform: scale(1);
+            transition:
+                opacity 1.05s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 1.45s cubic-bezier(0.2, 0.75, 0.22, 1),
+                filter 1s ease;
         }
 
-        .seal-rule {
-            width: 44px;
-            height: 1px;
-            background: var(--seal-gold);
-            margin: 14px auto 10px;
-            position: relative;
+        .seal-photo-open {
+            z-index: 1;
+            opacity: 0;
+            filter: brightness(1.08) blur(2px);
+            transform: scale(1.035);
+            transition:
+                opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.14s,
+                transform 1.65s cubic-bezier(0.16, 1, 0.3, 1) 0.1s,
+                filter 1.1s ease 0.1s;
         }
 
-        .seal-rule::after {
-            content: "♥";
+        .seal-is-opening .seal-photo-closed {
+            opacity: 0;
+            filter: brightness(1.1) blur(2px);
+            transform: scale(1.02);
+        }
+
+        .seal-is-opening .seal-photo-open {
+            opacity: 1;
+            filter: brightness(1) blur(0);
+            transform: scale(1);
+        }
+
+        .seal-is-zooming .seal-photo-media {
+            filter: brightness(1.09);
+            transform: scale(1.16);
+        }
+
+        .seal-fx-layer {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .seal-ribbon-fx {
             position: absolute;
             left: 50%;
-            top: 50%;
-            transform: translate(-50%, -52%);
-            background: var(--seal-paper);
-            color: var(--seal-gold);
-            font-size: 11px;
-            padding: 0 6px;
-        }
-
-        .seal-meta {
-            font-size: 11px;
-            letter-spacing: 2px;
-            color: #8a8ca0;
-            text-transform: uppercase;
-        }
-
-        .seal-door {
-            position: absolute;
-            top: 0;
-            height: 100%;
-            width: 50%;
-            z-index: 4;
-            overflow: hidden;
-            background:
-                repeating-linear-gradient(
-                    45deg,
-                    transparent 0,
-                    transparent 7px,
-                    color-mix(in srgb, var(--seal-gold) 8%, transparent) 7px,
-                    color-mix(in srgb, var(--seal-gold) 8%, transparent) 8px
-                ),
-                linear-gradient(155deg, var(--seal-navy-1) 0%, var(--seal-navy-2) 58%, color-mix(in srgb, var(--seal-navy-1) 70%, black) 100%);
-            box-shadow: inset 0 -14px 34px rgba(0, 0, 0, 0.22),
-                inset 0 1px 0 color-mix(in srgb, var(--seal-gold) 18%, transparent);
-            transition: transform 0.75s cubic-bezier(0.5, 0.05, 0.2, 1),
-                opacity 0.6s ease;
-        }
-
-        .seal-door.seal-left {
-            left: 0;
-            transform-origin: left center;
-            border-radius: 16px 2px 2px 16px;
-        }
-
-        .seal-door.seal-right {
-            right: 0;
-            transform-origin: right center;
-            border-radius: 2px 16px 16px 2px;
-        }
-
-        .seal-door::before {
-            content: "";
-            position: absolute;
-            top: 16px;
-            bottom: 16px;
-            width: 1px;
-            background: color-mix(in srgb, var(--seal-gold) 70%, transparent);
-        }
-
-        .seal-door.seal-left::before { right: 0; }
-        .seal-door.seal-right::before { left: 0; }
-
-        .seal-door::after {
-            content: "";
-            position: absolute;
-            inset: 14px;
-            border: 1px solid color-mix(in srgb, var(--seal-gold) 40%, transparent);
-            border-radius: 8px;
-            box-shadow:
-                inset 0 0 0 1px color-mix(in srgb, var(--seal-gold) 12%, transparent),
-                0 0 0 1px color-mix(in srgb, var(--seal-gold) 8%, transparent);
-        }
-
-        .seal-door-ornament {
-            position: absolute;
-            width: 34px;
-            height: 34px;
-            color: color-mix(in srgb, var(--seal-gold) 35%, transparent);
-            pointer-events: none;
+            top: 46%;
             z-index: 1;
-        }
-
-        .seal-door.seal-left .seal-door-ornament {
-            top: 18px;
-            left: 18px;
-        }
-
-        .seal-door.seal-right .seal-door-ornament {
-            top: 18px;
-            right: 18px;
-            transform: scaleX(-1);
-        }
-
-        .seal-door.seal-left .seal-door-ornament.seal-ornament-bl {
-            top: auto;
-            left: 18px;
-            bottom: 18px;
-            transform: scaleY(-1);
-        }
-
-        .seal-door.seal-right .seal-door-ornament.seal-ornament-br {
-            top: auto;
-            right: 18px;
-            bottom: 18px;
-            transform: scale(-1, -1);
-        }
-
-        .seal-ribbon {
-            position: absolute;
-            z-index: 5;
             pointer-events: none;
             background: linear-gradient(
                 180deg,
@@ -384,322 +211,546 @@
                 color-mix(in srgb, var(--seal-gold) 38%, black)
             );
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
-            transition: opacity 0.45s ease 0.18s, transform 0.5s ease 0.18s;
+            transition: opacity 0.45s ease 0.12s, transform 0.55s cubic-bezier(0.5, 0.05, 0.2, 1) 0.12s;
         }
 
-        .seal-ribbon-h {
-            left: 0;
-            right: 0;
-            top: 50%;
+        .seal-ribbon-fx-h {
+            width: clamp(120px, 34vw, 220px);
             height: 3px;
-            transform: translateY(-50%);
-        }
-
-        .seal-ribbon-v {
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            width: 3px;
-            transform: translateX(-50%);
-        }
-
-        .seal-card.seal-breaking .seal-ribbon {
-            opacity: 0;
-            transform: scale(0.92);
-        }
-
-        .seal-card.seal-breaking .seal-ribbon-h {
-            transform: translateY(-50%) scaleX(0.85);
-        }
-
-        .seal-card.seal-breaking .seal-ribbon-v {
-            transform: translateX(-50%) scaleY(0.85);
-        }
-
-        /* flip the doors open — flip the sign of rotateY if they open inward */
-        .seal-card.seal-breaking .seal-door.seal-left {
-            transform: rotateY(-125deg) translateZ(30px);
-            opacity: 0;
-            transition-delay: 0.4s;
-        }
-
-        .seal-card.seal-breaking .seal-door.seal-right {
-            transform: rotateY(125deg) translateZ(30px);
-            opacity: 0;
-            transition-delay: 0.46s;
-        }
-
-        .seal-card.seal-breaking .seal-inner {
-            transform: scale(1);
-        }
-
-        .seal-wax {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 76px;
-            height: 76px;
             transform: translate(-50%, -50%);
-            z-index: 6;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
+        }
+
+        .seal-ribbon-fx-v {
+            width: 3px;
+            height: clamp(120px, 34vw, 220px);
+            transform: translate(-50%, -50%);
+        }
+
+        .seal-is-opening .seal-ribbon-fx {
+            opacity: 0;
+        }
+
+        .seal-is-opening .seal-ribbon-fx-h {
+            transform: translate(-50%, -50%) scaleX(0.72);
+        }
+
+        .seal-is-opening .seal-ribbon-fx-v {
+            transform: translate(-50%, -50%) scaleY(0.72);
+        }
+
+        .seal-wax-overlay {
+            position: absolute;
+            left: 50%;
+            top: 46%;
+            width: clamp(62px, 16vw, 92px);
+            height: clamp(62px, 16vw, 92px);
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.38));
+            transition: transform 0.18s ease, opacity 0.35s ease 0.45s;
+        }
+
+        .seal-is-pressing .seal-wax-overlay {
+            transform: translate(-50%, -50%) scale(0.92);
+        }
+
+        .seal-is-opening .seal-wax-overlay {
+            opacity: 0;
         }
 
         .seal-wax-surface {
             background: radial-gradient(
                 ellipse 70% 55% at 48% 22%,
-                var(--seal-wax-1) 0%,
-                var(--seal-wax-2) 65%,
-                var(--seal-wax-3) 100%
+                var(--seal-wax-light) 0%,
+                var(--seal-wax) 65%,
+                var(--seal-wax-dark) 100%
             );
-            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.22),
+            box-shadow:
+                inset 0 1px 2px rgba(255, 255, 255, 0.22),
                 inset 0 -3px 5px rgba(0, 0, 0, 0.28);
         }
 
         .seal-wax-base {
             position: absolute;
             inset: 0;
-            clip-path: polygon({{ $sealSunburst }});
+            border-radius: 50%;
+            clip-path: polygon(
+                50% 0%, 62% 8%, 74% 4%, 84% 14%, 96% 12%, 92% 26%,
+                100% 38%, 90% 48%, 96% 62%, 84% 68%, 82% 84%, 68% 88%,
+                62% 100%, 50% 92%, 38% 100%, 32% 88%, 18% 84%, 16% 68%,
+                4% 62%, 10% 48%, 0% 38%, 8% 26%, 4% 12%, 16% 14%, 26% 4%, 38% 8%
+            );
             transition: opacity 0.2s ease;
         }
 
-        .seal-wax-base::after {
-            content: "";
-            position: absolute;
-            inset: 9px;
-            border-radius: 50%;
-            border: 1px solid color-mix(in srgb, var(--seal-wax-3) 55%, transparent);
-            box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--seal-wax-1) 35%, transparent);
-            pointer-events: none;
-        }
-
-        .seal-half {
+        .seal-wax-half {
             position: absolute;
             inset: 0;
+            border-radius: 50%;
             opacity: 0;
-            transition: transform 0.55s cubic-bezier(0.4, 0.1, 0.3, 1) 0.12s,
-                opacity 0.5s ease 0.12s;
+            transition:
+                transform 0.55s cubic-bezier(0.4, 0.1, 0.3, 1) 0.14s,
+                opacity 0.45s ease 0.14s;
         }
 
-        .seal-half.seal-left {
-            clip-path: {{ $sealHalfLeftClip }};
+        .seal-wax-left {
+            clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
         }
 
-        .seal-half.seal-right {
-            clip-path: {{ $sealHalfRightClip }};
+        .seal-wax-right {
+            clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
         }
 
-        .seal-card.seal-breaking .seal-wax-base {
-            opacity: 0;
-        }
-
-        .seal-card.seal-breaking .seal-half {
-            opacity: 1;
-        }
-
-        .seal-card.seal-breaking .seal-emblem {
-            opacity: 0;
-            transition: opacity 0.25s ease 0.1s;
-        }
-
-        .seal-emblem {
+        .seal-wax-emblem {
             position: absolute;
             inset: 0;
             z-index: 2;
             pointer-events: none;
         }
 
-        .seal-emblem path {
-            fill: rgba(0, 0, 0, 0.28);
+        .seal-wax-emblem path {
+            fill: rgba(0, 0, 0, 0.26);
             filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.12));
         }
 
-        .seal-crack {
+        .seal-crack-line {
             position: absolute;
             inset: 0;
             z-index: 3;
-            opacity: 0;
             pointer-events: none;
         }
 
-        .seal-crack path {
-            stroke: rgba(255, 248, 220, 0.95);
-            stroke-width: 2;
+        .seal-crack-line path {
             fill: none;
+            stroke: rgba(255, 248, 220, 0.95);
+            stroke-width: 2.2;
             stroke-linecap: round;
+            stroke-linejoin: round;
             filter: drop-shadow(0 0 3px rgba(255, 240, 190, 0.8));
+            stroke-dasharray: 120;
+            stroke-dashoffset: 120;
         }
 
-        .seal-card.seal-breaking .seal-crack {
-            animation: seal-crack 0.45s ease forwards;
+        .seal-is-opening .seal-crack-line path {
+            animation: seal-crack-draw 0.55s ease forwards;
         }
 
-        @keyframes seal-crack {
-            0% { opacity: 0; }
-            25% { opacity: 1; }
-            100% { opacity: 0; }
+        @keyframes seal-crack-draw {
+            to { stroke-dashoffset: 0; }
         }
 
-        .seal-card.seal-breaking .seal-half.seal-left {
-            transform: translate(-18px, 14px) rotate(-16deg);
+        .seal-is-opening .seal-wax-base {
             opacity: 0;
         }
 
-        .seal-card.seal-breaking .seal-half.seal-right {
-            transform: translate(18px, 14px) rotate(16deg);
+        .seal-is-opening .seal-wax-half {
+            opacity: 1;
+        }
+
+        .seal-is-opening .seal-wax-emblem {
+            opacity: 0;
+            transition: opacity 0.2s ease 0.08s;
+        }
+
+        .seal-is-opening .seal-wax-left {
+            transform: translate(-14px, 10px) rotate(-14deg);
             opacity: 0;
         }
 
-        .seal-card.seal-zoom .seal-inner {
-            transform: scale(4.8) translateY(-6px);
+        .seal-is-opening .seal-wax-right {
+            transform: translate(14px, 10px) rotate(14deg);
             opacity: 0;
-            filter: blur(6px);
-            transition: transform 0.6s cubic-bezier(0.5, 0, 0.85, 0.35),
-                opacity 0.5s ease-in 0.1s,
-                filter 0.55s ease-in;
         }
 
-        .seal-hearts {
+        .seal-center-light {
             position: absolute;
-            inset: 0;
-            z-index: 8;
+            z-index: 6;
+            left: 50%;
+            top: 44%;
+            width: clamp(100px, 28vw, 220px);
+            aspect-ratio: 1;
+            border-radius: 50%;
+            opacity: 0;
             pointer-events: none;
-            overflow: visible;
+            background: radial-gradient(
+                circle at center,
+                rgba(255, 248, 220, 0.68) 0%,
+                rgba(255, 228, 160, 0.24) 42%,
+                transparent 72%
+            );
+            transform: translate(-50%, -50%) scale(0.35);
         }
 
-        .seal-hearts .seal-h {
+        .seal-is-opening .seal-center-light {
+            animation: seal-center-bloom 1.05s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
+        }
+
+        @keyframes seal-center-bloom {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.35); }
+            30% { opacity: 0.92; }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1.55); }
+        }
+
+        .seal-open-copy {
             position: absolute;
-            will-change: transform, opacity;
-            animation: seal-rise var(--dur, 2.4s) ease-out forwards;
+            z-index: 5;
+            left: 50%;
+            top: 30%;
+            width: min(70vw, 520px);
+            color: var(--seal-ink);
+            text-align: center;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+            opacity: 0;
+            filter: blur(3px);
+            transform: translate(-50%, 28px) scale(0.97);
+            transition:
+                opacity 0.9s ease 0.74s,
+                transform 1.05s cubic-bezier(0.16, 1, 0.3, 1) 0.72s,
+                filter 0.8s ease 0.72s;
+            pointer-events: none;
         }
 
-        @keyframes seal-rise {
-            0% {
-                transform: translate(-50%, 0) scale(0.2) rotate(0);
-                opacity: 0;
-            }
-            14% { opacity: 1; }
-            100% {
-                transform: translate(calc(-50% + var(--dx)), var(--dy)) scale(var(--sc)) rotate(var(--rot));
-                opacity: 0;
-            }
+        .seal-is-opening .seal-open-copy {
+            opacity: 1;
+            filter: blur(0);
+            transform: translate(-50%, 0) scale(1);
         }
 
-        .seal-hint {
+        .seal-is-zooming .seal-open-copy {
+            opacity: 0;
+            filter: blur(3px);
+            transform: translate(-50%, -12px) scale(1.12);
+            transition:
+                opacity 0.52s ease,
+                transform 0.85s cubic-bezier(0.65, 0, 0.35, 1),
+                filter 0.55s ease;
+        }
+
+        .seal-open-ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(10px, 2.2vw, 18px);
+            margin-bottom: clamp(12px, 2.2vh, 22px);
+            color: var(--seal-gold);
+        }
+
+        .seal-open-ornament::before,
+        .seal-open-ornament::after {
+            content: '';
+            width: clamp(34px, 10vw, 84px);
+            height: 1px;
+            background: linear-gradient(90deg, transparent, currentColor);
+        }
+
+        .seal-open-ornament::after {
+            background: linear-gradient(90deg, currentColor, transparent);
+        }
+
+        .seal-open-ornament svg {
+            width: clamp(15px, 3.2vw, 23px);
+            height: auto;
+        }
+
+        .seal-open-eyebrow,
+        .seal-open-names,
+        .seal-open-meta {
+            display: block;
+        }
+
+        .seal-open-eyebrow {
+            margin-bottom: clamp(9px, 1.8vh, 16px);
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(9px, 2.2vw, 13px);
+            font-weight: 500;
+            line-height: 1.35;
+            letter-spacing: clamp(3px, 0.8vw, 6px);
+            text-transform: uppercase;
+            color: var(--seal-gold);
+        }
+
+        .seal-open-names {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(34px, 9vw, 76px);
+            font-weight: 600;
+            font-style: italic;
+            line-height: 1.03;
+            text-wrap: balance;
+        }
+
+        .seal-open-rule {
+            display: block;
+            width: clamp(62px, 16vw, 120px);
+            height: 1px;
+            margin: clamp(15px, 2.5vh, 24px) auto clamp(11px, 2vh, 18px);
+            background: linear-gradient(90deg, transparent, var(--seal-gold), transparent);
+        }
+
+        .seal-open-meta {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(8px, 2vw, 12px);
+            font-weight: 500;
+            line-height: 1.55;
+            letter-spacing: clamp(1.3px, 0.45vw, 3px);
+            text-transform: uppercase;
+            color: color-mix(in srgb, var(--seal-ink) 72%, white);
+        }
+
+        .seal-tap-hint {
+            position: absolute;
+            z-index: 7;
+            left: 50%;
+            bottom: max(7vh, calc(env(safe-area-inset-bottom) + 26px));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: max-content;
+            max-width: 88vw;
+            padding: 12px 18px;
+            border: 1px solid rgba(121, 89, 48, 0.18);
+            border-radius: 999px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(9px, 2.4vw, 12px);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: clamp(3px, 0.9vw, 6px);
+            text-transform: uppercase;
+            white-space: nowrap;
+            color: rgba(74, 51, 29, 0.77);
+            background: rgba(255, 251, 244, 0.46);
+            box-shadow: 0 8px 28px rgba(80, 55, 30, 0.08);
+            backdrop-filter: blur(8px);
+            transform: translateX(-50%);
+            transition: opacity 0.4s ease, transform 0.5s ease;
+        }
+
+        .seal-tap-hint::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            flex: 0 0 auto;
+            border-radius: 50%;
+            background: var(--seal-gold);
+            animation: seal-tap-pulse 1.9s ease-out infinite;
+        }
+
+        .seal-is-opening .seal-tap-hint,
+        .seal-is-pressing .seal-tap-hint {
+            opacity: 0;
+            transform: translate(-50%, 12px);
+        }
+
+        @keyframes seal-tap-pulse {
+            0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--seal-gold) 45%, transparent); }
+            100% { box-shadow: 0 0 0 10px transparent; }
+        }
+
+        .seal-photo-particles {
+            position: absolute;
+            z-index: 7;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .seal-photo-particle {
             position: absolute;
             left: 50%;
-            bottom: -64px;
-            transform: translateX(-50%);
-            font-size: 10px;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.5);
-            transition: opacity 0.3s ease;
-            white-space: nowrap;
+            top: 46%;
+            width: var(--size);
+            height: var(--size);
+            border-radius: var(--radius, 50%);
+            background: var(--color, #e4bc70);
+            box-shadow: 0 0 8px color-mix(in srgb, var(--color, #e4bc70) 60%, transparent);
+            opacity: 0;
+            animation: seal-photo-dust var(--duration) ease-out forwards;
         }
 
-        .seal-card.seal-breaking .seal-hint {
-            opacity: 0;
+        @keyframes seal-photo-dust {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.2) rotate(0deg); }
+            18% { opacity: 0.92; }
+            100% {
+                opacity: 0;
+                transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(var(--scale)) rotate(var(--rot));
+            }
+        }
+
+        @media (orientation: landscape) {
+            .seal-photo-image {
+                object-fit: contain;
+            }
+
+            .seal-open-copy {
+                top: 22%;
+                width: min(38vw, 460px);
+            }
+
+            .seal-open-names {
+                font-size: clamp(30px, 5vw, 58px);
+            }
+
+            .seal-tap-hint {
+                bottom: max(5vh, calc(env(safe-area-inset-bottom) + 18px));
+            }
+
+            .seal-wax-overlay {
+                top: 44%;
+            }
+
+            .seal-ribbon-fx {
+                top: 44%;
+            }
+        }
+
+        @media (max-width: 430px) and (min-height: 760px) {
+            .seal-open-copy {
+                top: 28%;
+                width: 72vw;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .seal-card { animation: none; }
-            .seal-door,
-            .seal-half,
-            .seal-ribbon,
-            .seal-wax-base,
-            .seal-inner { transition-duration: 0.001s; }
+            .seal-tap-hint::before,
+            .seal-photo-particle,
+            .seal-is-opening .seal-center-light,
+            .seal-is-opening .seal-crack-line path,
+            .seal-photo-stage.seal-is-opening::after {
+                animation: none;
+            }
+
+            .seal-photo-stage,
+            .seal-photo-media,
+            .seal-photo-image,
+            .seal-wax-overlay,
+            .seal-wax-half,
+            .seal-ribbon-fx,
+            .seal-open-copy,
+            .seal-tap-hint,
+            .seal-fx-layer {
+                transition-duration: 0.01ms !important;
+                transition-delay: 0ms !important;
+            }
+
+            .seal-is-opening .seal-wax-left,
+            .seal-is-opening .seal-wax-right {
+                transform: none;
+                opacity: 0;
+            }
+
+            .seal-is-opening .seal-crack-line path {
+                stroke-dashoffset: 0;
+            }
         }
     </style>
 
-    <div class="seal-stage" id="seal-stage" wire:ignore>
-        <div
-            class="seal-card"
-            id="seal-card"
-            role="button"
-            tabindex="0"
+    <div
+        class="seal-photo-stage"
+        id="seal-photo-stage"
+        wire:ignore
+    >
+        <button
+            type="button"
+            class="seal-photo-trigger"
+            id="seal-photo-trigger"
             aria-label="{{ __('invitation.envelope_open') }}"
+            aria-expanded="false"
         >
-            <div class="seal-inner">
-                <div class="seal-inner-body">
-                    <span class="seal-eyebrow">{{ __('invitation.save_the_date') }}</span>
-                    <div class="seal-names">{{ $event->couple_names }}</div>
-                    <div class="seal-rule"></div>
-                    @if ($sealMeta)
-                        <div class="seal-meta">{{ $sealMeta }}</div>
-                    @endif
-                </div>
-            </div>
+            <span class="seal-photo-media" aria-hidden="true">
+                <img
+                    class="seal-photo-image seal-photo-open"
+                    src="{{ $sealOpenUrl }}"
+                    alt=""
+                    loading="eager"
+                    decoding="async"
+                >
+                <img
+                    class="seal-photo-image seal-photo-closed"
+                    src="{{ $sealClosedUrl }}"
+                    alt=""
+                    loading="eager"
+                    decoding="async"
+                    fetchpriority="high"
+                >
+            </span>
 
-            <div class="seal-door seal-left">
-                <svg class="seal-door-ornament" viewBox="0 0 34 34" aria-hidden="true">
-                    <path fill="currentColor" d="M17 2 C14 6 10 8 6 10 C10 12 12 16 12 20 C14 17 17 16 20 17 C17 14 16 10 17 6 C18 10 17 14 20 17 C22 16 24 17 26 20 C26 16 28 12 32 10 C28 8 24 6 21 2 C20 6 18 8 17 10 C16 8 14 6 17 2 Z"/>
-                </svg>
-                <svg class="seal-door-ornament seal-ornament-bl" viewBox="0 0 34 34" aria-hidden="true">
-                    <path fill="currentColor" d="M17 2 C14 6 10 8 6 10 C10 12 12 16 12 20 C14 17 17 16 20 17 C17 14 16 10 17 6 C18 10 17 14 20 17 C22 16 24 17 26 20 C26 16 28 12 32 10 C28 8 24 6 21 2 C20 6 18 8 17 10 C16 8 14 6 17 2 Z"/>
-                </svg>
-            </div>
-            <div class="seal-door seal-right">
-                <svg class="seal-door-ornament" viewBox="0 0 34 34" aria-hidden="true">
-                    <path fill="currentColor" d="M17 2 C14 6 10 8 6 10 C10 12 12 16 12 20 C14 17 17 16 20 17 C17 14 16 10 17 6 C18 10 17 14 20 17 C22 16 24 17 26 20 C26 16 28 12 32 10 C28 8 24 6 21 2 C20 6 18 8 17 10 C16 8 14 6 17 2 Z"/>
-                </svg>
-                <svg class="seal-door-ornament seal-ornament-br" viewBox="0 0 34 34" aria-hidden="true">
-                    <path fill="currentColor" d="M17 2 C14 6 10 8 6 10 C10 12 12 16 12 20 C14 17 17 16 20 17 C17 14 16 10 17 6 C18 10 17 14 20 17 C22 16 24 17 26 20 C26 16 28 12 32 10 C28 8 24 6 21 2 C20 6 18 8 17 10 C16 8 14 6 17 2 Z"/>
-                </svg>
-            </div>
+            <span class="seal-fx-layer" aria-hidden="true">
+                <span class="seal-ribbon-fx seal-ribbon-fx-h"></span>
+                <span class="seal-ribbon-fx seal-ribbon-fx-v"></span>
 
-            <div class="seal-ribbon seal-ribbon-h" aria-hidden="true"></div>
-            <div class="seal-ribbon seal-ribbon-v" aria-hidden="true"></div>
+                <span class="seal-wax-overlay">
+                    <span class="seal-wax-base seal-wax-surface"></span>
+                    <span class="seal-wax-half seal-wax-left seal-wax-surface"></span>
+                    <span class="seal-wax-half seal-wax-right seal-wax-surface"></span>
+                    <svg class="seal-wax-emblem" viewBox="0 0 76 76">
+                        <path d="M38 52 C29 45 21 40 21 32 C21 26 28 23 32 28 C34 31 38 31 41 28 C45 23 52 26 52 32 C52 40 44 45 38 52 Z"/>
+                    </svg>
+                    <svg class="seal-crack-line" viewBox="0 0 76 76">
+                        <path d="M38 6 L43 15 L33 24 L43 33 L33 42 L43 51 L34 60 L40 70"/>
+                    </svg>
+                </span>
+            </span>
 
-            <div class="seal-wax" aria-hidden="true">
-                <div class="seal-wax-base seal-wax-surface"></div>
-                <div class="seal-half seal-left seal-wax-surface"></div>
-                <div class="seal-half seal-right seal-wax-surface"></div>
-                <svg class="seal-emblem" viewBox="0 0 76 76">
-                    <path d="M38 52 C29 45 21 40 21 32 C21 26 28 23 32 28 C34 31 38 31 41 28 C45 23 52 26 52 32 C52 40 44 45 38 52 Z"/>
-                </svg>
-                <svg class="seal-crack" viewBox="0 0 76 76"><path d="M38 6 L43 15 L33 24 L43 33 L33 42 L43 51 L34 60 L40 70"/></svg>
-            </div>
+            <span class="seal-center-light" aria-hidden="true"></span>
+            <span class="seal-photo-particles" id="seal-photo-particles" aria-hidden="true"></span>
 
-            <div class="seal-hearts" id="seal-hearts" aria-hidden="true"></div>
-            <span class="seal-hint text-center">{{ __('invitation.envelope_tap') }}</span>
-        </div>
+            <span class="seal-open-copy">
+                <span class="seal-open-ornament" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M12 21c-5.4-3.65-8.8-6.5-8.8-10.45A4.55 4.55 0 0 1 12 8.92a4.55 4.55 0 0 1 8.8 1.63C20.8 14.5 17.4 17.35 12 21Z" fill="currentColor"/>
+                    </svg>
+                </span>
+                <span class="seal-open-eyebrow">{{ __('invitation.save_the_date') }}</span>
+                <span class="seal-open-names">{{ $event->couple_names }}</span>
+                <span class="seal-open-rule" aria-hidden="true"></span>
+                @if ($sealMeta)
+                    <span class="seal-open-meta">{{ $sealMeta }}</span>
+                @endif
+            </span>
+
+            <span class="seal-tap-hint">{{ __('invitation.envelope_tap') }}</span>
+        </button>
     </div>
 
     <script>
         (function () {
-            const card = document.getElementById('seal-card');
-            const stage = document.getElementById('seal-stage');
-            const layer = document.getElementById('seal-hearts');
-            const colors = ['#e2506a', '#ff86a0', '#ffc9d4', '#c9a24b', '#ffffff'];
-            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const stage = document.getElementById('seal-photo-stage');
+            const trigger = document.getElementById('seal-photo-trigger');
+            const particleLayer = document.getElementById('seal-photo-particles');
 
+            if (!stage || !trigger) {
+                return;
+            }
+
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             const css = getComputedStyle(document.documentElement);
-            const OPEN = parseInt(css.getPropertyValue('--seal-open'), 10) || 1400;
-            const HOLD = parseInt(css.getPropertyValue('--seal-hold'), 10) || 1000;
-            const ZOOM = parseInt(css.getPropertyValue('--seal-zoom'), 10) || 600;
+            const CROSSFADE = parseInt(css.getPropertyValue('--seal-crossfade'), 10) || 1350;
+            const HOLD = parseInt(css.getPropertyValue('--seal-hold'), 10) || 900;
+            const ZOOM = parseInt(css.getPropertyValue('--seal-zoom'), 10) || 900;
+            const waxColor = css.getPropertyValue('--seal-wax').trim() || '#a83b57';
+            const previousBodyOverflow = document.body.style.overflow;
 
-            const MAX_HEARTS = 24;
             let started = false;
-            let heartTimer = null;
+            let finished = false;
             let revealedToLivewire = false;
 
             document.body.style.overflow = 'hidden';
 
             function showInviteContent() {
-                const el = document.getElementById('invitation-content');
+                const content = document.getElementById('invitation-content');
 
-                if (!el) {
+                if (!content) {
                     return;
                 }
 
-                el.style.opacity = '1';
-                el.style.pointerEvents = 'auto';
+                content.style.opacity = '1';
+                content.style.pointerEvents = 'auto';
 
                 if (revealedToLivewire) {
                     return;
                 }
 
-                const root = el.closest('[wire\\:id]');
+                const root = content.closest('[wire\\:id]');
 
                 if (root && window.Livewire) {
                     const component = Livewire.find(root.getAttribute('wire:id'));
@@ -712,31 +763,77 @@
             }
 
             function finishReveal() {
-                document.body.style.overflow = '';
-                showInviteContent();
-                document.dispatchEvent(new CustomEvent('invitation:revealed'));
-            }
-
-            function spawnHeart() {
-                if (!layer || layer.childElementCount >= MAX_HEARTS) {
+                if (finished) {
                     return;
                 }
 
-                const el = document.createElement('span');
-                el.className = 'seal-h';
-                const size = 10 + Math.random() * 14;
-                el.style.left = (30 + Math.random() * 40) + '%';
-                el.style.top = (40 + Math.random() * 18) + '%';
-                el.style.setProperty('--dx', (Math.random() * 120 - 60).toFixed(0) + 'px');
-                el.style.setProperty('--dy', (-150 - Math.random() * 120).toFixed(0) + 'px');
-                el.style.setProperty('--sc', (0.7 + Math.random() * 0.7).toFixed(2));
-                el.style.setProperty('--rot', (Math.random() * 120 - 60).toFixed(0) + 'deg');
-                el.style.setProperty('--dur', (2 + Math.random() * 1.4).toFixed(2) + 's');
-                const c = colors[Math.floor(Math.random() * colors.length)];
-                el.innerHTML = `<svg width="${size}" height="${size}" viewBox="0 0 24 24">
-                    <path d="M12 21c-5.6-3.8-9.6-6.9-9.6-11.3A4.7 4.7 0 0 1 12 6.3 4.7 4.7 0 0 1 21.6 9.7C21.6 14.1 17.6 17.2 12 21z" fill="${c}"/></svg>`;
-                layer.appendChild(el);
-                el.addEventListener('animationend', () => el.remove());
+                finished = true;
+                document.body.style.overflow = previousBodyOverflow;
+                showInviteContent();
+                document.dispatchEvent(new CustomEvent('invitation:revealed'));
+
+                window.setTimeout(() => {
+                    stage.hidden = true;
+                }, 800);
+            }
+
+            function spawnParticle(index) {
+                if (!particleLayer || particleLayer.childElementCount >= 24) {
+                    return;
+                }
+
+                const particle = document.createElement('span');
+                particle.className = 'seal-photo-particle';
+                const isWax = index % 3 === 0;
+                const size = isWax
+                    ? (3 + Math.random() * 4).toFixed(1) + 'px'
+                    : (2 + Math.random() * 4).toFixed(1) + 'px';
+
+                particle.style.setProperty('--size', size);
+                particle.style.setProperty('--height', size);
+                particle.style.setProperty('--dx', (Math.random() * 220 - 110).toFixed(0) + 'px');
+                particle.style.setProperty('--dy', (Math.random() * 180 - 120).toFixed(0) + 'px');
+                particle.style.setProperty('--scale', (0.45 + Math.random() * 1).toFixed(2));
+                particle.style.setProperty('--rot', (Math.random() * 140 - 70).toFixed(0) + 'deg');
+                particle.style.setProperty('--duration', (0.8 + Math.random() * 0.8).toFixed(2) + 's');
+                particle.style.setProperty('--color', isWax ? waxColor : (index % 4 === 1 ? '#fff7dc' : '#e4bc70'));
+                particle.style.setProperty('--radius', isWax ? '18%' : '50%');
+
+                particleLayer.appendChild(particle);
+                particle.addEventListener('animationend', () => particle.remove(), { once: true });
+            }
+
+            function releaseParticles() {
+                for (let index = 0; index < 22; index++) {
+                    window.setTimeout(() => spawnParticle(index), index * 28);
+                }
+            }
+
+            function beginOpening() {
+                stage.classList.remove('seal-is-pressing');
+                stage.classList.add('seal-is-opening');
+
+                if (reduceMotion) {
+                    window.setTimeout(showInviteContent, 180);
+                    window.setTimeout(() => {
+                        stage.classList.add('seal-is-fading');
+                        finishReveal();
+                    }, 420);
+                    return;
+                }
+
+                window.setTimeout(releaseParticles, 160);
+
+                window.setTimeout(() => {
+                    stage.classList.add('seal-is-zooming');
+                }, CROSSFADE + HOLD);
+
+                window.setTimeout(showInviteContent, CROSSFADE + HOLD + 170);
+
+                window.setTimeout(() => {
+                    stage.classList.add('seal-is-fading');
+                    finishReveal();
+                }, CROSSFADE + HOLD + ZOOM);
             }
 
             function reveal() {
@@ -745,39 +842,16 @@
                 }
 
                 started = true;
+                trigger.setAttribute('aria-expanded', 'true');
+
                 window.envYtPlayOnGesture?.();
 
-                if (reduce) {
-                    stage.classList.add('seal-gone');
-                    finishReveal();
-                    return;
-                }
+                stage.classList.add('seal-is-pressing');
 
-                card.classList.add('seal-breaking');
-                heartTimer = setInterval(spawnHeart, 170);
-
-                setTimeout(() => {
-                    clearInterval(heartTimer);
-                    card.classList.add('seal-zoom');
-                }, OPEN + HOLD);
-
-                setTimeout(() => {
-                    showInviteContent();
-                }, OPEN + HOLD + 150);
-
-                setTimeout(() => {
-                    stage.classList.add('seal-gone');
-                    finishReveal();
-                }, OPEN + HOLD + ZOOM);
+                window.setTimeout(beginOpening, reduceMotion ? 0 : 120);
             }
 
-            card.addEventListener('click', reveal);
-            card.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    reveal();
-                }
-            });
+            trigger.addEventListener('click', reveal, { once: true });
         })();
     </script>
 @endif
