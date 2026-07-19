@@ -3,414 +3,611 @@
         $curtainDate = $event->wedding_date->format('d · m · Y');
         $curtainMeta = collect([$curtainDate, $event->location_name])->filter()->implode(' — ');
 
-        $curtainPalettes = [
-            'amber-gold' => [
-                '--curtain-navy-1' => '#1a1208',
-                '--curtain-navy-2' => '#2a1f0f',
-                '--curtain-flap-2' => '#3d2910',
-                '--curtain-liner' => '#f5e6c8',
-                '--curtain-paper' => '#fbf6ee',
-                '--curtain-ink' => '#1a1208',
-                '--curtain-gold' => '#c9a227',
-                '--curtain-bg-1' => '#0d0a04',
-                '--curtain-bg-2' => '#1a1208',
-            ],
-            'royal-wedding' => [
-                '--curtain-navy-1' => '#0f1a2e',
-                '--curtain-navy-2' => '#1a2744',
-                '--curtain-flap-2' => '#1e3a5f',
-                '--curtain-liner' => '#d4e0f0',
-                '--curtain-paper' => '#f8f6f0',
-                '--curtain-ink' => '#0f1a2e',
-                '--curtain-gold' => '#d4af37',
-                '--curtain-bg-1' => '#080f1a',
-                '--curtain-bg-2' => '#0f1a2e',
-            ],
-            'lavender-dream' => [
-                '--curtain-navy-1' => '#2d2438',
-                '--curtain-navy-2' => '#3d3249',
-                '--curtain-flap-2' => '#9b7bb8',
-                '--curtain-liner' => '#e8dff5',
-                '--curtain-paper' => '#faf8fc',
-                '--curtain-ink' => '#2d2438',
-                '--curtain-gold' => '#c9b8e0',
-                '--curtain-bg-1' => '#1a1220',
-                '--curtain-bg-2' => '#2d2438',
-            ],
-            'winter-magic' => [
-                '--curtain-navy-1' => '#1a2332',
-                '--curtain-navy-2' => '#243044',
-                '--curtain-flap-2' => '#7eb8da',
-                '--curtain-liner' => '#e8f4fc',
-                '--curtain-paper' => '#f0f8ff',
-                '--curtain-ink' => '#1a2332',
-                '--curtain-gold' => '#7eb8da',
-                '--curtain-bg-1' => '#0d1520',
-                '--curtain-bg-2' => '#1a2332',
-            ],
-            'pearl-white' => [
-                '--curtain-navy-1' => '#8C7355',
-                '--curtain-navy-2' => '#6E5A42',
-                '--curtain-flap-2' => '#a88b6a',
-                '--curtain-liner' => '#E8E0D5',
-                '--curtain-paper' => '#FAFAF8',
-                '--curtain-ink' => '#1C1917',
-                '--curtain-gold' => '#8C7355',
-                '--curtain-bg-1' => '#5a4535',
-                '--curtain-bg-2' => '#6E5A42',
-            ],
-            'dusty-rose' => [
-                '--curtain-navy-1' => '#B5706A',
-                '--curtain-navy-2' => '#9A5A55',
-                '--curtain-flap-2' => '#c98580',
-                '--curtain-liner' => '#E8C9C4',
-                '--curtain-paper' => '#F9F1EE',
-                '--curtain-ink' => '#2D1B16',
-                '--curtain-gold' => '#B5706A',
-                '--curtain-bg-1' => '#7a3a35',
-                '--curtain-bg-2' => '#9A5A55',
-            ],
-            'paper-ink' => [
-                '--curtain-navy-1' => '#9A7B4F',
-                '--curtain-navy-2' => '#7A623E',
-                '--curtain-flap-2' => '#b8956a',
-                '--curtain-liner' => '#C4B59A',
-                '--curtain-paper' => '#F3EDE3',
-                '--curtain-ink' => '#3A2E24',
-                '--curtain-gold' => '#9A7B4F',
-                '--curtain-bg-1' => '#5a4a32',
-                '--curtain-bg-2' => '#7A623E',
-            ],
+        $curtainAccents = [
+            'amber-gold' => ['ink' => '#332516', 'gold' => '#b88b42'],
+            'royal-wedding' => ['ink' => '#172944', 'gold' => '#b18b32'],
+            'lavender-dream' => ['ink' => '#463653', 'gold' => '#9b7bb8'],
+            'winter-magic' => ['ink' => '#20364b', 'gold' => '#6299ba'],
+            'pearl-white' => ['ink' => '#33291f', 'gold' => '#8C7355'],
+            'dusty-rose' => ['ink' => '#532f2c', 'gold' => '#B5706A'],
+            'paper-ink' => ['ink' => '#3A2E24', 'gold' => '#9A7B4F'],
         ];
 
-        $curtainPalette = $curtainPalettes[$event->theme->value] ?? $curtainPalettes['amber-gold'];
+        $curtainAccent = $curtainAccents[$event->theme->value] ?? $curtainAccents['amber-gold'];
+        $curtainClosedUrl = asset('img/curtain-reveal/nasdan-curtain-closed.webp');
+        $curtainOpenUrl = asset('img/curtain-reveal/nasdan-curtain-open.webp');
     @endphp
 
     <style>
         :root {
-            --curtain-open: 1300;
-            --curtain-hold: 1000;
-            --curtain-zoom: 600;
-            @foreach ($curtainPalette as $var => $val)
-                {{ $var }}: {{ $val }};
-            @endforeach
+            --curtain-crossfade: 1350;
+            --curtain-hold: 900;
+            --curtain-zoom: 900;
+            --curtain-ink: {{ $curtainAccent['ink'] }};
+            --curtain-gold: {{ $curtainAccent['gold'] }};
         }
 
-        .curtain-stage {
+        .curtain-photo-stage,
+        .curtain-photo-stage * {
+            box-sizing: border-box;
+        }
+
+        .curtain-photo-stage {
+            --curtain-closed-image: url('{{ $curtainClosedUrl }}');
             position: fixed;
             inset: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 1600px;
-            transition: opacity 0.5s ease;
             z-index: 100;
-            cursor: pointer;
-            font-family: 'Montserrat', sans-serif;
-            background: radial-gradient(
-                120% 90% at 50% 12%,
-                color-mix(in srgb, var(--curtain-navy-2) 55%, white) 0%,
-                color-mix(in srgb, var(--curtain-bg-2) 72%, white) 45%,
-                color-mix(in srgb, var(--curtain-bg-1) 60%, white) 100%
-            );
-        }
-
-        .curtain-stage.curtain-gone {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .curtain-inner {
-            position: relative;
-            width: 300px;
-            height: 380px;
-            border-radius: 16px;
+            min-height: 100vh;
+            min-height: 100dvh;
             overflow: hidden;
-            z-index: 2;
-            background: linear-gradient(180deg, #fffdf9, var(--curtain-paper));
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            transform: scale(0.96);
-            opacity: 0.85;
-            transition: transform 0.8s cubic-bezier(0.2, 0.9, 0.25, 1) 0.35s,
-                opacity 0.6s ease 0.35s,
-                filter 0.5s ease;
+            isolation: isolate;
+            background: #1a0f12;
+            opacity: 1;
+            transition: opacity 0.78s ease, filter 0.78s ease;
         }
 
-        .curtain-inner::before {
-            content: "";
+        .curtain-photo-stage::before {
+            content: '';
             position: absolute;
-            inset: 12px;
-            border: 1px solid color-mix(in srgb, var(--curtain-gold) 55%, transparent);
-            border-radius: 9px;
+            z-index: -2;
+            inset: -28px;
+            background-image: var(--curtain-closed-image);
+            background-position: center;
+            background-size: cover;
+            filter: blur(22px) saturate(0.72) brightness(0.88);
+            transform: scale(1.08);
+        }
+
+        .curtain-photo-stage::after {
+            content: '';
+            position: absolute;
+            z-index: 8;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 42%, rgba(255, 244, 214, 0.58), transparent 34%);
+            opacity: 0;
+            transition: opacity 0.55s ease;
+        }
+
+        .curtain-photo-stage.curtain-is-opening::after {
+            animation: curtain-stage-bloom 1.25s ease-out both;
+        }
+
+        .curtain-photo-stage.curtain-is-fading {
+            opacity: 0;
+            filter: brightness(1.08) blur(2px);
             pointer-events: none;
         }
 
-        .curtain-inner-body {
-            color: var(--curtain-ink);
-            line-height: 1;
-            padding: 0 22px;
+        @keyframes curtain-stage-bloom {
+            0%, 100% { opacity: 0; }
+            35% { opacity: 0.62; }
         }
 
-        .curtain-eyebrow {
+        .curtain-photo-trigger {
+            position: absolute;
+            inset: 0;
             display: block;
-            font-size: 10px;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--curtain-gold);
-            margin-bottom: 12px;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            border-radius: 0;
+            font: inherit;
+            color: inherit;
+            background: transparent;
+            cursor: pointer;
+            outline: none;
+            touch-action: manipulation;
+            -webkit-appearance: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .curtain-names {
-            font-family: 'Playfair Display', serif;
-            font-size: 32px;
-            font-weight: 600;
-            font-style: italic;
-            color: var(--curtain-ink);
+        .curtain-photo-trigger:focus-visible {
+            outline: 2px solid rgba(184, 139, 66, 0.95);
+            outline-offset: -8px;
         }
 
-        .curtain-rule {
-            width: 44px;
-            height: 1px;
-            background: var(--curtain-gold);
-            margin: 14px auto 10px;
-            position: relative;
+        .curtain-photo-trigger[aria-expanded='true'] {
+            cursor: default;
+            pointer-events: none;
         }
 
-        .curtain-rule::after {
-            content: "♥";
+        .curtain-photo-media {
             position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -52%);
-            background: var(--curtain-paper);
-            color: var(--curtain-gold);
-            font-size: 11px;
-            padding: 0 6px;
+            inset: 0;
+            overflow: hidden;
+            background: #120a0d;
+            transform: scale(1);
+            transform-origin: 50% 42%;
+            transition: transform 0.95s cubic-bezier(0.65, 0, 0.35, 1), filter 0.7s ease;
+            will-change: transform, filter;
         }
 
-        .curtain-meta {
-            font-size: 11px;
-            letter-spacing: 2px;
-            color: #9a8580;
-            text-transform: uppercase;
-        }
-
-        .curtain-rod {
+        .curtain-photo-media::after {
+            content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 15px;
-            z-index: 5;
-            background: linear-gradient(180deg,
-                color-mix(in srgb, var(--curtain-gold), #fff 45%),
-                var(--curtain-gold),
-                color-mix(in srgb, var(--curtain-gold), #000 35%));
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            inset: 0;
+            z-index: 4;
+            pointer-events: none;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 22%),
+                radial-gradient(ellipse at center, transparent 52%, rgba(20, 8, 12, 0.22) 100%);
         }
 
-        .curtain-rod::before,
-        .curtain-rod::after {
-            content: "";
+        .curtain-photo-image {
             position: absolute;
-            top: 50%;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            transform: translateY(-50%);
-            background: radial-gradient(circle at 35% 30%,
-                color-mix(in srgb, var(--curtain-gold), #fff 55%),
-                var(--curtain-gold) 60%,
-                color-mix(in srgb, var(--curtain-gold), #000 40%));
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center center;
+            user-select: none;
+            -webkit-user-drag: none;
+            will-change: opacity, transform, filter;
         }
 
-        .curtain-rod::before { left: -6px; }
-        .curtain-rod::after { right: -6px; }
+        .curtain-photo-open {
+            z-index: 1;
+            opacity: 0;
+            filter: brightness(1.08) blur(2px);
+            transform: scale(1.03);
+            transition:
+                opacity 1.15s cubic-bezier(0.4, 0, 0.2, 1) 0.18s,
+                transform 1.55s cubic-bezier(0.16, 1, 0.3, 1) 0.12s,
+                filter 1.05s ease 0.12s;
+        }
+
+        .curtain-panels {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            perspective: 1400px;
+        }
 
         .curtain-panel {
             position: absolute;
             top: 0;
             bottom: 0;
-            width: 51%;
-            z-index: 4;
+            width: 50.5%;
             overflow: hidden;
-            background:
-                repeating-linear-gradient(90deg,
-                    rgba(0, 0, 0, 0.30) 0, rgba(0, 0, 0, 0) 20px,
-                    rgba(255, 255, 255, 0.09) 34px, rgba(0, 0, 0, 0) 48px, rgba(0, 0, 0, 0.30) 64px),
-                linear-gradient(180deg,
-                    color-mix(in srgb, var(--curtain-navy-2), #fff 10%),
-                    var(--curtain-navy-1) 55%,
-                    color-mix(in srgb, var(--curtain-navy-1), #000 18%));
-            transition: transform 1.1s cubic-bezier(0.6, 0.02, 0.2, 1);
+            transform: translateX(0) rotateY(0deg);
+            transition:
+                transform 1.15s cubic-bezier(0.55, 0.02, 0.18, 1),
+                opacity 0.85s ease 0.35s,
+                filter 0.9s ease;
+            will-change: transform, opacity, filter;
         }
 
-        .curtain-panel::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(105deg, transparent 32%, rgba(255, 255, 255, 0.16) 48%, transparent 64%);
-            transform: translateX(-60%);
-            animation: curtain-shimmer 6.5s ease-in-out infinite;
-        }
-
-        @keyframes curtain-shimmer {
-            0%, 100% { transform: translateX(-60%); }
-            50% { transform: translateX(60%); }
-        }
-
-        .curtain-left {
+        .curtain-panel-left {
             left: 0;
             transform-origin: left center;
-            box-shadow: inset -20px 0 34px rgba(0, 0, 0, 0.4);
+            box-shadow: inset -18px 0 36px rgba(0, 0, 0, 0.35);
         }
 
-        .curtain-right {
+        .curtain-panel-right {
             right: 0;
             transform-origin: right center;
-            box-shadow: inset 20px 0 34px rgba(0, 0, 0, 0.4);
+            box-shadow: inset 18px 0 36px rgba(0, 0, 0, 0.35);
         }
 
-        /* draw the curtains apart — flip the rotateY sign if the fold looks off */
-        .curtain-stage.curtain-parting .curtain-left {
-            transform: translateX(-102%) rotateY(12deg) scaleX(0.9);
+        .curtain-panel-image {
+            position: absolute;
+            top: 0;
+            width: 200%;
+            height: 100%;
+            max-width: none;
+            object-fit: cover;
+            object-position: center center;
+            user-select: none;
+            -webkit-user-drag: none;
         }
 
-        .curtain-stage.curtain-parting .curtain-right {
-            transform: translateX(102%) rotateY(-12deg) scaleX(0.9);
+        .curtain-panel-left .curtain-panel-image {
+            left: 0;
+            object-position: left center;
         }
 
-        .curtain-stage.curtain-parting .curtain-inner {
-            transform: scale(1);
+        .curtain-panel-right .curtain-panel-image {
+            right: 0;
+            object-position: right center;
+        }
+
+        .curtain-is-opening .curtain-photo-open {
             opacity: 1;
+            filter: brightness(1) blur(0);
+            transform: scale(1);
         }
 
-        .curtain-stage.curtain-zoom .curtain-inner {
-            transform: scale(4.8) translateY(-6px);
+        .curtain-is-opening .curtain-panel-left {
+            transform: translateX(-104%) rotateY(14deg) scaleX(0.94);
+            opacity: 0.92;
+            filter: brightness(0.92);
+        }
+
+        .curtain-is-opening .curtain-panel-right {
+            transform: translateX(104%) rotateY(-14deg) scaleX(0.94);
+            opacity: 0.92;
+            filter: brightness(0.92);
+        }
+
+        .curtain-is-zooming .curtain-photo-media {
+            filter: brightness(1.1);
+            transform: scale(1.16);
+        }
+
+        .curtain-center-light {
+            position: absolute;
+            z-index: 6;
+            left: 50%;
+            top: 42%;
+            width: clamp(120px, 34vw, 260px);
+            height: clamp(160px, 42vh, 340px);
+            border-radius: 50%;
             opacity: 0;
-            filter: blur(6px);
-            transition: transform 0.6s cubic-bezier(0.5, 0, 0.85, 0.35),
-                opacity 0.5s ease-in 0.1s,
-                filter 0.55s ease-in;
-        }
-
-        .curtain-hearts {
-            position: absolute;
-            inset: 0;
-            z-index: 8;
             pointer-events: none;
-            overflow: visible;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(255, 248, 220, 0.72) 0%,
+                rgba(255, 228, 160, 0.28) 38%,
+                transparent 72%
+            );
+            transform: translate(-50%, -50%) scale(0.4);
         }
 
-        .curtain-hearts .curtain-h {
+        .curtain-is-opening .curtain-center-light {
+            animation: curtain-center-bloom 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
+        }
+
+        @keyframes curtain-center-bloom {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+            28% { opacity: 0.95; }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1.35); }
+        }
+
+        .curtain-open-copy {
             position: absolute;
-            will-change: transform, opacity;
-            animation: curtain-rise var(--dur, 2.4s) ease-out forwards;
+            z-index: 5;
+            left: 50%;
+            top: 31%;
+            width: min(70vw, 520px);
+            color: var(--curtain-ink);
+            text-align: center;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+            opacity: 0;
+            filter: blur(3px);
+            transform: translate(-50%, 28px) scale(0.97);
+            transition:
+                opacity 0.9s ease 0.72s,
+                transform 1.05s cubic-bezier(0.16, 1, 0.3, 1) 0.7s,
+                filter 0.8s ease 0.7s;
+            pointer-events: none;
         }
 
-        @keyframes curtain-rise {
-            0% {
-                transform: translate(-50%, 0) scale(0.2) rotate(0);
-                opacity: 0;
-            }
-            14% { opacity: 1; }
-            100% {
-                transform: translate(calc(-50% + var(--dx)), var(--dy)) scale(var(--sc)) rotate(var(--rot));
-                opacity: 0;
-            }
+        .curtain-is-opening .curtain-open-copy {
+            opacity: 1;
+            filter: blur(0);
+            transform: translate(-50%, 0) scale(1);
         }
 
-        .curtain-hint {
+        .curtain-is-zooming .curtain-open-copy {
+            opacity: 0;
+            filter: blur(3px);
+            transform: translate(-50%, -12px) scale(1.12);
+            transition:
+                opacity 0.52s ease,
+                transform 0.85s cubic-bezier(0.65, 0, 0.35, 1),
+                filter 0.55s ease;
+        }
+
+        .curtain-open-ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(10px, 2.2vw, 18px);
+            margin-bottom: clamp(12px, 2.2vh, 22px);
+            color: var(--curtain-gold);
+        }
+
+        .curtain-open-ornament::before,
+        .curtain-open-ornament::after {
+            content: '';
+            width: clamp(34px, 10vw, 84px);
+            height: 1px;
+            background: linear-gradient(90deg, transparent, currentColor);
+        }
+
+        .curtain-open-ornament::after {
+            background: linear-gradient(90deg, currentColor, transparent);
+        }
+
+        .curtain-open-ornament svg {
+            width: clamp(15px, 3.2vw, 23px);
+            height: auto;
+        }
+
+        .curtain-open-eyebrow,
+        .curtain-open-names,
+        .curtain-open-meta {
+            display: block;
+        }
+
+        .curtain-open-eyebrow {
+            margin-bottom: clamp(9px, 1.8vh, 16px);
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(9px, 2.2vw, 13px);
+            font-weight: 500;
+            line-height: 1.35;
+            letter-spacing: clamp(3px, 0.8vw, 6px);
+            text-transform: uppercase;
+            color: var(--curtain-gold);
+        }
+
+        .curtain-open-names {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(34px, 9vw, 76px);
+            font-weight: 600;
+            font-style: italic;
+            line-height: 1.03;
+            text-wrap: balance;
+        }
+
+        .curtain-open-rule {
+            display: block;
+            width: clamp(62px, 16vw, 120px);
+            height: 1px;
+            margin: clamp(15px, 2.5vh, 24px) auto clamp(11px, 2vh, 18px);
+            background: linear-gradient(90deg, transparent, var(--curtain-gold), transparent);
+        }
+
+        .curtain-open-meta {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(8px, 2vw, 12px);
+            font-weight: 500;
+            line-height: 1.55;
+            letter-spacing: clamp(1.3px, 0.45vw, 3px);
+            text-transform: uppercase;
+            color: color-mix(in srgb, var(--curtain-ink) 72%, white);
+        }
+
+        .curtain-tap-hint {
+            position: absolute;
+            z-index: 7;
+            left: 50%;
+            bottom: max(7vh, calc(env(safe-area-inset-bottom) + 26px));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: max-content;
+            max-width: 88vw;
+            padding: 12px 18px;
+            border: 1px solid rgba(121, 89, 48, 0.18);
+            border-radius: 999px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(9px, 2.4vw, 12px);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: clamp(3px, 0.9vw, 6px);
+            text-transform: uppercase;
+            white-space: nowrap;
+            color: rgba(255, 248, 240, 0.82);
+            background: rgba(26, 18, 8, 0.42);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+            backdrop-filter: blur(8px);
+            transform: translateX(-50%);
+            transition: opacity 0.4s ease, transform 0.5s ease;
+        }
+
+        .curtain-tap-hint::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            flex: 0 0 auto;
+            border-radius: 50%;
+            background: var(--curtain-gold);
+            animation: curtain-tap-pulse 1.9s ease-out infinite;
+        }
+
+        .curtain-is-opening .curtain-tap-hint {
+            opacity: 0;
+            transform: translate(-50%, 12px);
+        }
+
+        @keyframes curtain-tap-pulse {
+            0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--curtain-gold) 45%, transparent); }
+            100% { box-shadow: 0 0 0 10px transparent; }
+        }
+
+        .curtain-photo-particles {
+            position: absolute;
+            z-index: 7;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .curtain-photo-particle {
             position: absolute;
             left: 50%;
-            bottom: 48px;
-            transform: translateX(-50%);
-            font-size: 10px;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.7);
-            z-index: 6;
-            transition: opacity 0.3s ease;
-            white-space: nowrap;
+            top: 42%;
+            width: var(--size);
+            height: var(--size);
+            border-radius: 50%;
+            background: #e4bc70;
+            box-shadow: 0 0 10px rgba(228, 188, 112, 0.7);
+            opacity: 0;
+            animation: curtain-photo-dust var(--duration) ease-out forwards;
         }
 
-        .curtain-stage.curtain-parting .curtain-hint {
-            opacity: 0;
+        @keyframes curtain-photo-dust {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.2); }
+            18% { opacity: 0.9; }
+            100% {
+                opacity: 0;
+                transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(var(--scale));
+            }
+        }
+
+        @media (orientation: landscape) {
+            .curtain-photo-image,
+            .curtain-panel-image {
+                object-fit: contain;
+            }
+
+            .curtain-open-copy {
+                top: 22%;
+                width: min(38vw, 460px);
+            }
+
+            .curtain-open-names {
+                font-size: clamp(30px, 5vw, 58px);
+            }
+
+            .curtain-tap-hint {
+                bottom: max(5vh, calc(env(safe-area-inset-bottom) + 18px));
+            }
+        }
+
+        @media (max-width: 430px) and (min-height: 760px) {
+            .curtain-open-copy {
+                top: 28%;
+                width: 72vw;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .curtain-panel::after { animation: none; }
+            .curtain-tap-hint::before,
+            .curtain-photo-particle,
+            .curtain-is-opening .curtain-center-light,
+            .curtain-photo-stage.curtain-is-opening::after {
+                animation: none;
+            }
+
+            .curtain-photo-stage,
+            .curtain-photo-media,
+            .curtain-photo-image,
             .curtain-panel,
-            .curtain-inner { transition-duration: 0.001s; }
+            .curtain-panel-image,
+            .curtain-open-copy,
+            .curtain-tap-hint {
+                transition-duration: 0.01ms !important;
+                transition-delay: 0ms !important;
+            }
+
+            .curtain-is-opening .curtain-panel-left,
+            .curtain-is-opening .curtain-panel-right {
+                transform: none;
+                opacity: 0;
+            }
         }
     </style>
 
     <div
-        class="curtain-stage"
-        id="curtain-stage"
+        class="curtain-photo-stage"
+        id="curtain-photo-stage"
         wire:ignore
-        role="button"
-        tabindex="0"
-        aria-label="{{ __('invitation.envelope_open') }}"
     >
-        <div class="curtain-inner">
-            <div class="curtain-inner-body">
-                <span class="curtain-eyebrow">{{ __('invitation.save_the_date') }}</span>
-                <div class="curtain-names">{{ $event->couple_names }}</div>
-                <div class="curtain-rule"></div>
+        <button
+            type="button"
+            class="curtain-photo-trigger"
+            id="curtain-photo-trigger"
+            aria-label="{{ __('invitation.envelope_open') }}"
+            aria-expanded="false"
+        >
+            <span class="curtain-photo-media" aria-hidden="true">
+                <img
+                    class="curtain-photo-image curtain-photo-open"
+                    src="{{ $curtainOpenUrl }}"
+                    alt=""
+                    loading="eager"
+                    decoding="async"
+                >
+
+                <span class="curtain-panels">
+                    <span class="curtain-panel curtain-panel-left">
+                        <img
+                            class="curtain-panel-image"
+                            src="{{ $curtainClosedUrl }}"
+                            alt=""
+                            loading="eager"
+                            decoding="async"
+                            fetchpriority="high"
+                        >
+                    </span>
+                    <span class="curtain-panel curtain-panel-right">
+                        <img
+                            class="curtain-panel-image"
+                            src="{{ $curtainClosedUrl }}"
+                            alt=""
+                            loading="eager"
+                            decoding="async"
+                        >
+                    </span>
+                </span>
+            </span>
+
+            <span class="curtain-center-light" aria-hidden="true"></span>
+            <span class="curtain-photo-particles" id="curtain-photo-particles" aria-hidden="true"></span>
+
+            <span class="curtain-open-copy">
+                <span class="curtain-open-ornament" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M12 21c-5.4-3.65-8.8-6.5-8.8-10.45A4.55 4.55 0 0 1 12 8.92a4.55 4.55 0 0 1 8.8 1.63C20.8 14.5 17.4 17.35 12 21Z" fill="currentColor"/>
+                    </svg>
+                </span>
+                <span class="curtain-open-eyebrow">{{ __('invitation.save_the_date') }}</span>
+                <span class="curtain-open-names">{{ $event->couple_names }}</span>
+                <span class="curtain-open-rule" aria-hidden="true"></span>
                 @if ($curtainMeta)
-                    <div class="curtain-meta">{{ $curtainMeta }}</div>
+                    <span class="curtain-open-meta">{{ $curtainMeta }}</span>
                 @endif
-            </div>
-        </div>
+            </span>
 
-        <div class="curtain-rod"></div>
-        <div class="curtain-panel curtain-left"></div>
-        <div class="curtain-panel curtain-right"></div>
-
-        <div class="curtain-hearts" id="curtain-hearts" aria-hidden="true"></div>
-        <span class="curtain-hint text-center">{{ __('invitation.envelope_tap') }}</span>
+            <span class="curtain-tap-hint">{{ __('invitation.envelope_tap') }}</span>
+        </button>
     </div>
 
     <script>
         (function () {
-            const stage = document.getElementById('curtain-stage');
-            const layer = document.getElementById('curtain-hearts');
-            const colors = ['#e2506a', '#ff86a0', '#ffc9d4', '#c9a24b', '#ffffff'];
-            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const stage = document.getElementById('curtain-photo-stage');
+            const trigger = document.getElementById('curtain-photo-trigger');
+            const particleLayer = document.getElementById('curtain-photo-particles');
 
+            if (!stage || !trigger) {
+                return;
+            }
+
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             const css = getComputedStyle(document.documentElement);
-            const OPEN = parseInt(css.getPropertyValue('--curtain-open'), 10) || 1300;
-            const HOLD = parseInt(css.getPropertyValue('--curtain-hold'), 10) || 1000;
-            const ZOOM = parseInt(css.getPropertyValue('--curtain-zoom'), 10) || 600;
+            const CROSSFADE = parseInt(css.getPropertyValue('--curtain-crossfade'), 10) || 1350;
+            const HOLD = parseInt(css.getPropertyValue('--curtain-hold'), 10) || 900;
+            const ZOOM = parseInt(css.getPropertyValue('--curtain-zoom'), 10) || 900;
+            const previousBodyOverflow = document.body.style.overflow;
 
-            const MAX_HEARTS = 24;
             let started = false;
-            let heartTimer = null;
+            let finished = false;
             let revealedToLivewire = false;
 
             document.body.style.overflow = 'hidden';
 
             function showInviteContent() {
-                const el = document.getElementById('invitation-content');
+                const content = document.getElementById('invitation-content');
 
-                if (!el) {
+                if (!content) {
                     return;
                 }
 
-                el.style.opacity = '1';
-                el.style.pointerEvents = 'auto';
+                content.style.opacity = '1';
+                content.style.pointerEvents = 'auto';
 
                 if (revealedToLivewire) {
                     return;
                 }
 
-                const root = el.closest('[wire\\:id]');
+                const root = content.closest('[wire\\:id]');
 
                 if (root && window.Livewire) {
                     const component = Livewire.find(root.getAttribute('wire:id'));
@@ -423,31 +620,42 @@
             }
 
             function finishReveal() {
-                document.body.style.overflow = '';
-                showInviteContent();
-                document.dispatchEvent(new CustomEvent('invitation:revealed'));
-            }
-
-            function spawnHeart() {
-                if (!layer || layer.childElementCount >= MAX_HEARTS) {
+                if (finished) {
                     return;
                 }
 
-                const el = document.createElement('span');
-                el.className = 'curtain-h';
-                const size = 10 + Math.random() * 14;
-                el.style.left = (38 + Math.random() * 24) + '%';
-                el.style.top = (36 + Math.random() * 20) + '%';
-                el.style.setProperty('--dx', (Math.random() * 140 - 70).toFixed(0) + 'px');
-                el.style.setProperty('--dy', (-160 - Math.random() * 130).toFixed(0) + 'px');
-                el.style.setProperty('--sc', (0.7 + Math.random() * 0.7).toFixed(2));
-                el.style.setProperty('--rot', (Math.random() * 120 - 60).toFixed(0) + 'deg');
-                el.style.setProperty('--dur', (2 + Math.random() * 1.4).toFixed(2) + 's');
-                const c = colors[Math.floor(Math.random() * colors.length)];
-                el.innerHTML = `<svg width="${size}" height="${size}" viewBox="0 0 24 24">
-                    <path d="M12 21c-5.6-3.8-9.6-6.9-9.6-11.3A4.7 4.7 0 0 1 12 6.3 4.7 4.7 0 0 1 21.6 9.7C21.6 14.1 17.6 17.2 12 21z" fill="${c}"/></svg>`;
-                layer.appendChild(el);
-                el.addEventListener('animationend', () => el.remove());
+                finished = true;
+                document.body.style.overflow = previousBodyOverflow;
+                showInviteContent();
+                document.dispatchEvent(new CustomEvent('invitation:revealed'));
+
+                window.setTimeout(() => {
+                    stage.hidden = true;
+                }, 800);
+            }
+
+            function spawnDust(index) {
+                if (!particleLayer || particleLayer.childElementCount >= 22) {
+                    return;
+                }
+
+                const particle = document.createElement('span');
+                particle.className = 'curtain-photo-particle';
+                particle.style.setProperty('--size', (2 + Math.random() * 5).toFixed(1) + 'px');
+                particle.style.setProperty('--dx', (Math.random() * 240 - 120).toFixed(0) + 'px');
+                particle.style.setProperty('--dy', (Math.random() * 200 - 130).toFixed(0) + 'px');
+                particle.style.setProperty('--scale', (0.5 + Math.random() * 1.1).toFixed(2));
+                particle.style.setProperty('--duration', (0.85 + Math.random() * 0.75).toFixed(2) + 's');
+                particle.style.background = index % 4 === 0 ? '#fff7dc' : '#e4bc70';
+
+                particleLayer.appendChild(particle);
+                particle.addEventListener('animationend', () => particle.remove(), { once: true });
+            }
+
+            function releaseDust() {
+                for (let index = 0; index < 20; index++) {
+                    window.setTimeout(() => spawnDust(index), index * 30);
+                }
             }
 
             function reveal() {
@@ -456,39 +664,36 @@
                 }
 
                 started = true;
+                trigger.setAttribute('aria-expanded', 'true');
+
                 window.envYtPlayOnGesture?.();
 
-                if (reduce) {
-                    stage.classList.add('curtain-gone');
-                    finishReveal();
+                stage.classList.add('curtain-is-opening');
+
+                if (reduceMotion) {
+                    window.setTimeout(showInviteContent, 180);
+                    window.setTimeout(() => {
+                        stage.classList.add('curtain-is-fading');
+                        finishReveal();
+                    }, 420);
                     return;
                 }
 
-                stage.classList.add('curtain-parting');
-                heartTimer = setInterval(spawnHeart, 170);
+                window.setTimeout(releaseDust, 140);
 
-                setTimeout(() => {
-                    clearInterval(heartTimer);
-                    stage.classList.add('curtain-zoom');
-                }, OPEN + HOLD);
+                window.setTimeout(() => {
+                    stage.classList.add('curtain-is-zooming');
+                }, CROSSFADE + HOLD);
 
-                setTimeout(() => {
-                    showInviteContent();
-                }, OPEN + HOLD + 150);
+                window.setTimeout(showInviteContent, CROSSFADE + HOLD + 170);
 
-                setTimeout(() => {
-                    stage.classList.add('curtain-gone');
+                window.setTimeout(() => {
+                    stage.classList.add('curtain-is-fading');
                     finishReveal();
-                }, OPEN + HOLD + ZOOM);
+                }, CROSSFADE + HOLD + ZOOM);
             }
 
-            stage.addEventListener('click', reveal);
-            stage.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    reveal();
-                }
-            });
+            trigger.addEventListener('click', reveal, { once: true });
         })();
     </script>
 @endif
