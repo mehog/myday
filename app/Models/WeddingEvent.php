@@ -6,6 +6,7 @@ use App\InvitationReveal;
 use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\LinkMode;
+use App\PlanTier;
 use App\Support\MediaDisk;
 use Database\Factories\WeddingEventFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,6 +39,8 @@ class WeddingEvent extends Model
         'rsvp_deadline',
         'is_active',
         'is_demo',
+        'plan_tier',
+        'guest_limit',
         'send_message',
         'motto',
         'seating_plan',
@@ -50,6 +53,8 @@ class WeddingEvent extends Model
             'rsvp_deadline' => 'date',
             'is_active' => 'boolean',
             'is_demo' => 'boolean',
+            'plan_tier' => PlanTier::class,
+            'guest_limit' => 'integer',
             'theme' => InvitationTheme::class,
             'template' => InvitationTemplate::class,
             'reveal_animation' => InvitationReveal::class,
@@ -104,9 +109,92 @@ class WeddingEvent extends Model
         return $this->hasMany(GuestMessage::class)->latest();
     }
 
+    public function dodoPayments(): HasMany
+    {
+        return $this->hasMany(DodoPayment::class);
+    }
+
     public function getCoupleNamesAttribute(): string
     {
         return "{$this->groom_name} & {$this->bride_name}";
+    }
+
+    public function hasPaidPlan(): bool
+    {
+        return $this->plan_tier !== null;
+    }
+
+    public function activeGuestCount(): int
+    {
+        return $this->guests()->count();
+    }
+
+    public function remainingGuestSlots(): ?int
+    {
+        if (! $this->hasPaidPlan()) {
+            return null;
+        }
+
+        if ($this->guest_limit === null) {
+            return null;
+        }
+
+        return max(0, $this->guest_limit - $this->activeGuestCount());
+    }
+
+    public function canAddGuests(int $count = 1): bool
+    {
+        if ($count < 1) {
+            return false;
+        }
+
+        if (! $this->hasPaidPlan()) {
+            return true;
+        }
+
+        if ($this->guest_limit === null) {
+            return true;
+        }
+
+        return ($this->activeGuestCount() + $count) <= $this->guest_limit;
+    }
+
+    public function requiredTierForCurrentGuests(): PlanTier
+    {
+        return PlanTier::minimumForGuestCount($this->activeGuestCount());
+    }
+
+    public function canPurchaseTier(PlanTier $tier): bool
+    {
+        if (! $tier->coversGuestCount($this->activeGuestCount())) {
+            return false;
+        }
+
+        if ($this->plan_tier === null) {
+            return true;
+        }
+
+        return $tier->sortOrder() > $this->plan_tier->sortOrder();
+    }
+
+    public function applyPlanTier(PlanTier $tier): void
+    {
+        if ($this->plan_tier !== null && ! $tier->isAtLeast($this->plan_tier)) {
+            return;
+        }
+
+        $this->forceFill([
+            'plan_tier' => $tier,
+            'guest_limit' => $tier->guestLimit(),
+            'is_active' => true,
+        ])->save();
+    }
+
+    public function revokePaidAccess(): void
+    {
+        $this->forceFill([
+            'is_active' => false,
+        ])->save();
     }
 
     public function getPublicUrlAttribute(): string

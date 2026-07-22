@@ -6,7 +6,7 @@ return [
     'dashboard_label' => 'Overview',
     'dashboard_title' => 'Overview',
     'pending_activation_title' => 'Invitation pending activation',
-    'pending_activation_body' => 'The link will go live once payment is confirmed and an admin approves it. You can preview it in the meantime.',
+    'pending_activation_body' => 'Choose a plan and complete payment to activate your public invitation link. You can preview and build it in the meantime.',
     'edit_invitation' => 'Edit invitation',
     'preview_invitation' => 'Preview invitation',
     'no_invitation' => 'Your invitation has not been created yet. Contact the NasDan team to set it up.',

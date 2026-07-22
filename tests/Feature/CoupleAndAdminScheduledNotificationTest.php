@@ -13,15 +13,15 @@ use App\Notifications\CoupleActivationReminderNotification;
 use App\Notifications\CoupleOnboardingTipNotification;
 use App\ScheduledNotificationType;
 use App\Services\WeddingScheduledNotificationService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Notification;
+use Tests\Concerns\RefreshInMemoryDatabase;
 use Tests\TestCase;
 use Thomasjohnkane\Snooze\Models\ScheduledNotification as ScheduledNotificationModel;
 
 class CoupleAndAdminScheduledNotificationTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshInMemoryDatabase;
 
     private WeddingScheduledNotificationService $service;
 

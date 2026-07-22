@@ -28,6 +28,35 @@ class UsersTable
                 TextColumn::make('email')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('signup_ipstack')
+                    ->label('Country')
+                    ->formatStateUsing(function ($state) {
+                        if (! $state) {
+                            return '—';
+                        }
+
+                        $data = is_object($state) ? $state : (object) $state;
+                        $flag = $data->location->country_flag_emoji ?? '';
+                        $country = $data->country_name ?? 'Unknown';
+                        $city = $data->city ?? '';
+
+                        return trim($flag.' '.$country.($city !== '' ? "\n".$city : ''));
+                    })
+                    ->placeholder('—')
+                    ->toggleable(),
+                TextColumn::make('pricing_region')
+                    ->label('Pricing region')
+                    ->getStateUsing(fn (User $record): string => $record->pricingRegion()->label())
+                    ->toggleable(),
+                TextColumn::make('pricing_currency')
+                    ->label('Currency')
+                    ->getStateUsing(fn (User $record): string => $record->pricingCurrency())
+                    ->toggleable(),
+                TextColumn::make('weddingEvent.plan_tier')
+                    ->label('Plan')
+                    ->formatStateUsing(fn ($state) => $state?->label() ?? '—')
+                    ->placeholder('—')
+                    ->toggleable(),
                 IconColumn::make('email_verified_at')
                     ->label('Verified')
                     ->boolean(),

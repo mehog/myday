@@ -6,7 +6,7 @@ return [
     'dashboard_label' => 'Übersicht',
     'dashboard_title' => 'Übersicht',
     'pending_activation_title' => 'Einladung wartet auf Freischaltung',
-    'pending_activation_body' => 'Der Link wird freigeschaltet, sobald die Zahlung bestätigt und von einem Admin freigegeben wurde. In der Zwischenzeit können Sie eine Vorschau ansehen.',
+    'pending_activation_body' => 'Wählen Sie einen Plan und schließen Sie die Zahlung ab, um Ihren öffentlichen Link freizuschalten. Bis dahin können Sie die Einladung vorbereiten.',
     'edit_invitation' => 'Einladung bearbeiten',
     'preview_invitation' => 'Einladung ansehen',
     'no_invitation' => 'Ihre Einladung wurde noch nicht erstellt. Kontaktieren Sie das NasDan-Team, um sie einzurichten.',

@@ -39,4 +39,8 @@ return [
         'id' => env('GOOGLE_ANALYTICS_ID'),
     ],
 
+    'ipstack' => [
+        'access_key' => env('IPSTACK_ACCESS_KEY', ''),
+    ],
+
 ];

@@ -8,12 +8,12 @@ use App\Models\User;
 use App\Models\WeddingEvent;
 use App\ReferralPayoutStatus;
 use App\Support\AdminDashboardMetrics;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Concerns\RefreshInMemoryDatabase;
 use Tests\TestCase;
 
 class AdminDashboardMetricsTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshInMemoryDatabase;
 
     public function test_pending_activations_count_excludes_active_and_demo_weddings(): void
     {

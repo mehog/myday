@@ -5,12 +5,12 @@ namespace Tests\Feature;
 use App\InvitationReveal;
 use App\Models\User;
 use App\Models\WeddingEvent;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Concerns\RefreshInMemoryDatabase;
 
 class WaxSealRevealTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshInMemoryDatabase;
 
     public function test_active_invitation_renders_wax_seal_reveal_stage(): void
     {

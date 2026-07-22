@@ -10,15 +10,15 @@ use App\Notifications\Preview\PushMirrorPreviewNotification;
 use App\Services\NotificationPreviewFixtures;
 use App\Services\NotificationPreviewService;
 use App\Support\Locale;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Symfony\Component\Mime\Email;
+use Tests\Concerns\RefreshInMemoryDatabase;
 use Tests\TestCase;
 
 class NotificationPreviewSmokeTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshInMemoryDatabase;
 
     private NotificationPreviewService $preview;
 

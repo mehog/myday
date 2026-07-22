@@ -149,6 +149,12 @@ class InvitationPage extends Component
                 'anonymousName.required' => __('invitation.name_required'),
             ]);
 
+            if (! $this->event->canAddGuests()) {
+                $this->addError('anonymousName', __('pricing.guest_limit_rsvp'));
+
+                return;
+            }
+
             $this->guest = $this->event->guests()->create([
                 'name' => $this->anonymousName,
                 'rsvp_status' => $rsvpStatus,

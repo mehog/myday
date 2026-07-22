@@ -7,13 +7,13 @@ use App\Livewire\InvitationPage;
 use App\Models\Guest;
 use App\Models\User;
 use App\Models\WeddingEvent;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use Tests\Concerns\RefreshInMemoryDatabase;
 use Tests\TestCase;
 
 class TokenOnlyInvitationPreviewTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshInMemoryDatabase;
 
     public function test_guest_cannot_open_public_link_when_token_only(): void
     {

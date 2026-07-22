@@ -11,13 +11,13 @@ use App\Models\User;
 use App\Models\WeddingEvent;
 use App\RsvpStatus;
 use Filament\Facades\Filament;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use Tests\Concerns\RefreshInMemoryDatabase;
 use Tests\TestCase;
 
 class PostWeddingInviteLockTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshInMemoryDatabase;
 
     public function test_wedding_has_ended_after_calendar_day(): void
     {

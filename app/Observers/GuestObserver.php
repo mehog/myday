@@ -2,7 +2,9 @@
 
 namespace App\Observers;
 
+use App\Exceptions\GuestLimitExceededException;
 use App\Models\Guest;
+use App\Models\WeddingEvent;
 use App\Services\WeddingScheduledNotificationService;
 
 class GuestObserver
@@ -10,6 +12,33 @@ class GuestObserver
     public function __construct(
         private readonly WeddingScheduledNotificationService $scheduledNotifications,
     ) {}
+
+    public function creating(Guest $guest): void
+    {
+        $this->ensureWithinGuestLimit($guest);
+    }
+
+    public function restoring(Guest $guest): void
+    {
+        $this->ensureWithinGuestLimit($guest);
+    }
+
+    private function ensureWithinGuestLimit(Guest $guest): void
+    {
+        $wedding = $guest->weddingEvent;
+
+        if ($wedding === null && $guest->wedding_event_id) {
+            $wedding = WeddingEvent::query()->find($guest->wedding_event_id);
+        }
+
+        if ($wedding === null) {
+            return;
+        }
+
+        if (! $wedding->canAddGuests()) {
+            throw new GuestLimitExceededException($wedding);
+        }
+    }
 
     public function created(Guest $guest): void
     {

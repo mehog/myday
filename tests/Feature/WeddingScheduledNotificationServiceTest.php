@@ -15,14 +15,14 @@ use App\PushNotificationStatus;
 use App\RsvpStatus;
 use App\ScheduledNotificationType;
 use App\Services\WeddingScheduledNotificationService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
+use Tests\Concerns\RefreshInMemoryDatabase;
 use Tests\TestCase;
 use Thomasjohnkane\Snooze\Models\ScheduledNotification as ScheduledNotificationModel;
 
 class WeddingScheduledNotificationServiceTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshInMemoryDatabase;
 
     private WeddingScheduledNotificationService $service;
 

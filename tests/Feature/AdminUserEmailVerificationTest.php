@@ -8,15 +8,15 @@ use App\Support\AdminUserVerification;
 use Filament\Facades\Filament;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
+use Tests\Concerns\RefreshInMemoryDatabase;
 use Tests\TestCase;
 
 class AdminUserEmailVerificationTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshInMemoryDatabase;
 
     public function test_admin_can_manually_verify_unverified_user(): void
     {

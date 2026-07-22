@@ -6,7 +6,7 @@ return [
     'dashboard_label' => 'Pregled',
     'dashboard_title' => 'Pregled',
     'pending_activation_title' => 'Pozivnica čeka aktivaciju',
-    'pending_activation_body' => 'Link će biti aktivan nakon potvrde uplate i odobrenja administratora. Do tada možete pregledati pozivnicu.',
+    'pending_activation_body' => 'Odaberite paket i izvršite uplatu da aktivirate javni link. Do tada možete pregledati i uređivati pozivnicu.',
     'edit_invitation' => 'Uredi pozivnicu',
     'preview_invitation' => 'Pregled pozivnice',
     'no_invitation' => 'Vaša pozivnica nije još kreirana. Kontaktirajte NasDan tim da vam je postavi.',

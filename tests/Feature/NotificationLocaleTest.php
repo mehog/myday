@@ -10,14 +10,14 @@ use App\Notifications\CoupleOnboardingTipNotification;
 use App\Notifications\GuestRsvpReminderNotification;
 use App\Support\AdminNotifier;
 use App\Support\Locale;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Symfony\Component\Mime\Email;
+use Tests\Concerns\RefreshInMemoryDatabase;
 use Tests\TestCase;
 
 class NotificationLocaleTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshInMemoryDatabase;
 
     public function test_user_preferred_locale_uses_profile_or_app_default(): void
     {

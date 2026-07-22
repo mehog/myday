@@ -3,14 +3,16 @@
 use App\Actions\StorePushSubscriptionAction;
 use App\Actions\StoreUserPushSubscriptionAction;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\DodoCheckoutController;
+use App\Http\Controllers\DodoWebhookController;
 use App\Http\Controllers\DownloadBrochureController;
 use App\Http\Controllers\DownloadGuestPhotosController;
 use App\Http\Controllers\DownloadPlaceCardsController;
-use App\Http\Controllers\DownloadSeatingPlanPdfController;
 use App\Http\Controllers\DownloadReferralQrCodeController;
+use App\Http\Controllers\DownloadSeatingPlanPdfController;
 use App\Http\Controllers\InvitationManifestController;
-use App\Http\Controllers\ReferralProgramController;
 use App\Http\Controllers\ReferralLinkController;
+use App\Http\Controllers\ReferralProgramController;
 use App\Http\Controllers\WeddingEventCalendarController;
 use App\Livewire\GuestContactPage;
 use App\Livewire\GuestPushNotificationsPage;
@@ -75,6 +77,12 @@ Route::get('/robots.txt', function () {
 
     return response($content, 200, ['Content-Type' => 'text/plain']);
 })->name('robots');
+
+Route::post('/webhooks/dodo', DodoWebhookController::class)->name('dodo.webhook');
+
+Route::post('/app-api/dodo/checkout', DodoCheckoutController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('dodo.checkout');
 
 Route::get('/app-api/guest-messages/photos/download/{message?}', DownloadGuestPhotosController::class)
     ->middleware(['auth', 'verified'])

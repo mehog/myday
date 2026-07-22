@@ -42,6 +42,12 @@ class AppDashboard extends BaseDashboard
                 ->body(__('app.pending_activation_body'))
                 ->warning()
                 ->persistent()
+                ->actions([
+                    Action::make('pricing')
+                        ->label(__('pricing.pending_activation_cta'))
+                        ->url(PricingPage::getUrl())
+                        ->button(),
+                ])
                 ->send();
         }
     }

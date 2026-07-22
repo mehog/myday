@@ -3,15 +3,14 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Tests\Concerns\RefreshInMemoryDatabase;
 
 abstract class TestCase extends BaseTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
+    use RefreshInMemoryDatabase;
 
-        // RefreshDatabase (and similar) must never touch a real database.
-        // phpunit.xml forces sqlite :memory:; abort if that config is overridden.
+    protected function setUpTraits()
+    {
         if (! app()->environment('testing')) {
             $this->fail('Tests must run with APP_ENV=testing.');
         }
@@ -19,5 +18,7 @@ abstract class TestCase extends BaseTestCase
         if (config('database.default') !== 'sqlite' || config('database.connections.sqlite.database') !== ':memory:') {
             $this->fail('Tests must use the sqlite :memory: connection from phpunit.xml.');
         }
+
+        return parent::setUpTraits();
     }
 }

@@ -172,11 +172,13 @@ class GuestsRelationManager extends RelationManager
             ->emptyStateDescription($this->trans('empty_description'))
             ->emptyStateActions([
                 CreateAction::make()
-                    ->visible(fn (): bool => ! $this->coupleGuestManagementLocked()),
+                    ->visible(fn (): bool => ! $this->coupleGuestManagementLocked() && $this->canAddMoreGuests())
+                    ->before(fn (CreateAction $action) => $this->guardGuestCapacity($action)),
             ])
             ->headerActions([
                 CreateAction::make()
-                    ->visible(fn (): bool => ! $this->coupleGuestManagementLocked()),
+                    ->visible(fn (): bool => ! $this->coupleGuestManagementLocked() && $this->canAddMoreGuests())
+                    ->before(fn (CreateAction $action) => $this->guardGuestCapacity($action)),
                 Action::make('downloadPlaceCards')
                     ->label($this->trans('place_cards_download'))
                     ->modalHeading($this->trans('place_cards_download'))
@@ -233,7 +235,7 @@ class GuestsRelationManager extends RelationManager
                 Action::make('importCsv')
                     ->label($this->trans('import_csv'))
                     ->icon('heroicon-o-arrow-up-tray')
-                    ->visible(fn (): bool => ! $this->coupleGuestManagementLocked())
+                    ->visible(fn (): bool => ! $this->coupleGuestManagementLocked() && $this->canAddMoreGuests())
                     ->form([
                         FileUpload::make('file')
                             ->label($this->trans('csv_file'))
@@ -244,7 +246,19 @@ class GuestsRelationManager extends RelationManager
                     ])
                     ->action(function (array $data): void {
                         $contents = Storage::disk('local')->get($data['file']);
-                        $count = GuestImporter::importFromContents($this->getOwnerRecord(), $contents);
+
+                        try {
+                            $count = GuestImporter::importFromContents($this->getOwnerRecord(), $contents);
+                        } catch (\Throwable $e) {
+                            Storage::disk('local')->delete($data['file']);
+
+                            Notification::make()
+                                ->title($e->getMessage())
+                                ->danger()
+                                ->send();
+
+                            return;
+                        }
 
                         Storage::disk('local')->delete($data['file']);
 
@@ -407,6 +421,30 @@ class GuestsRelationManager extends RelationManager
     {
         return filament()->getCurrentPanel()?->getId() === 'app'
             && $this->getOwnerRecord()->hasEnded();
+    }
+
+    protected function canAddMoreGuests(): bool
+    {
+        return $this->getOwnerRecord()->canAddGuests();
+    }
+
+    protected function guardGuestCapacity(CreateAction $action): void
+    {
+        $wedding = $this->getOwnerRecord();
+
+        if ($wedding->canAddGuests()) {
+            return;
+        }
+
+        Notification::make()
+            ->title(__('pricing.guest_limit_reached', [
+                'count' => $wedding->activeGuestCount(),
+                'limit' => $wedding->guest_limit ?? 0,
+            ]))
+            ->danger()
+            ->send();
+
+        $action->halt();
     }
 
     protected function trans(string $key, array $replace = []): string

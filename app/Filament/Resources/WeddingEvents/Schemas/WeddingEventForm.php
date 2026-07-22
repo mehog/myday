@@ -2,17 +2,18 @@
 
 namespace App\Filament\Resources\WeddingEvents\Schemas;
 
-use App\Models\User;
 use App\InvitationReveal;
 use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\LinkMode;
+use App\Models\User;
+use App\PlanTier;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -111,6 +112,23 @@ class WeddingEventForm
                         Toggle::make('is_demo')
                             ->label('Demo invitation')
                             ->helperText('Shows a live theme and layout switcher on the public invitation page. Changes are preview-only and are not saved.'),
+                        Select::make('plan_tier')
+                            ->label('Plan tier')
+                            ->options(collect(PlanTier::cases())->mapWithKeys(
+                                fn (PlanTier $tier) => [$tier->value => $tier->label()]
+                            ))
+                            ->nullable()
+                            ->native(false)
+                            ->live()
+                            ->afterStateUpdated(function ($state, callable $set): void {
+                                $tier = is_string($state) ? PlanTier::tryFrom($state) : null;
+                                $set('guest_limit', $tier?->guestLimit());
+                            }),
+                        TextInput::make('guest_limit')
+                            ->label('Guest limit')
+                            ->numeric()
+                            ->nullable()
+                            ->helperText('Leave empty for unlimited (Deluxe) or unpaid weddings.'),
                     ]),
                 Section::make('Invite message')
                     ->schema([

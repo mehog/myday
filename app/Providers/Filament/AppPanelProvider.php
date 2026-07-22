@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\App\Pages\Auth\EditProfile;
+use App\Filament\App\Pages\PricingPage;
 use App\Filament\App\Pages\ReferralsPage;
 use App\Http\Middleware\SetAppLocale;
 use Filament\Http\Middleware\Authenticate;
@@ -54,6 +55,7 @@ class AppPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\Filament\App\Resources')
             ->discoverPages(in: app_path('Filament/App/Pages'), for: 'App\Filament\App\Pages')
             ->pages([
+                PricingPage::class,
                 ReferralsPage::class,
             ])
             ->discoverWidgets(in: app_path('Filament/App/Widgets'), for: 'App\Filament\App\Widgets')

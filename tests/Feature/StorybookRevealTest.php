@@ -5,13 +5,13 @@ namespace Tests\Feature;
 use App\InvitationReveal;
 use App\Models\User;
 use App\Models\WeddingEvent;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Tests\Concerns\RefreshInMemoryDatabase;
 use Tests\TestCase;
 
 class StorybookRevealTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshInMemoryDatabase;
 
     public function test_active_invitation_renders_storybook_reveal_stage(): void
     {
