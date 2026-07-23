@@ -40,7 +40,7 @@ return [
      */
     'classes' => [
         'container' => 'text-base text-[#1a1208] items-end z-30 flex-col m-4 gap-3',
-        'bubble' => 'hidden sm:block | bg-[#c9a227] rounded-full shadow-lg w-14 h-14 text-[#1a1208] p-4 relative cursor-pointer',
+        'bubble' => 'bg-[#c9a227] rounded-full shadow-lg w-14 h-14 text-[#1a1208] p-4 relative cursor-pointer',
         'input' => 'bg-gray-100 border border-gray-200 w-full max-w-full p-2 rounded-sm shadow-input text-gray-800 text-base',
         'button' => 'inline-block place-center px-4 py-3 h-10 border-0 bg-[#c9a227] hover:bg-[#a8841a] active:bg-[#a8841a] overflow-hidden rounded-sm text-[#1a1208] leading-none no-underline text-center cursor-pointer',
     ],
