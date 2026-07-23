@@ -65,6 +65,8 @@
         </a>
     </div>
 
+    <x-support-bubble />
+
     @livewireScripts
 </body>
 </html>

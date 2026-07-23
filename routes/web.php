@@ -26,6 +26,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', LandingPage::class)->name('home');
 
+Route::supportBubble();
+
 Route::get('/referral-program', ReferralProgramController::class)->name('referral-program');
 
 Route::post('/lang/{locale}', function (string $locale) {

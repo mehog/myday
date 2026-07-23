@@ -43,4 +43,9 @@ return [
         'access_key' => env('IPSTACK_ACCESS_KEY', ''),
     ],
 
+    'telegram' => [
+        'support_bot_token' => env('TELEGRAM_SUPPORT_BOT_TOKEN'),
+        'support_chat_id' => env('TELEGRAM_SUPPORT_CHAT_ID'),
+    ],
+
 ];

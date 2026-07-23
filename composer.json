@@ -19,6 +19,7 @@
         "livewire/livewire": "^3.5",
         "resend/resend-laravel": "^1.4",
         "spatie/laravel-pdf": "^2.12",
+        "spatie/laravel-support-bubble": "^1.9",
         "thomasjohnkane/snooze": "^2.9"
     },
     "require-dev": {

@@ -2,6 +2,9 @@
 
 @source '../../../../app/Filament/App/**/*';
 @source '../../../../resources/views/filament/app/**/*';
+@source '../../../../resources/views/components/app/**/*';
+@source '../../../../vendor/spatie/laravel-support-bubble/resources/views/**/*.blade.php';
+@source '../../../../config/support-bubble.php';
 
 @layer components {
     .fi-body:has(.fi-simple-layout) {
