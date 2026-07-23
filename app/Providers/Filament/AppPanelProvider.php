@@ -39,7 +39,7 @@ class AppPanelProvider extends PanelProvider
             ->font('Poppins')
             ->globalSearch(false)
             ->databaseNotifications()
-            ->profile(EditProfile::class)
+            ->profile(EditProfile::class, isSimple: false)
             ->topNavigation()
             ->colors([
                 'primary' => Color::hex('#c9a227'),
