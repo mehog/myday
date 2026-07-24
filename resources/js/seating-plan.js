@@ -771,14 +771,28 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
                 return;
             }
 
-            const lastSeat = table.seats[table.chair_count - 1];
-            if (lastSeat && !window.confirm(labels.remove_chair_confirm)) {
+            while (table.seats.length < table.chair_count) {
+                table.seats.push(null);
+            }
+
+            const emptyIndex = table.seats.findIndex((seat) => seat === null);
+
+            if (emptyIndex !== -1) {
+                table.seats.splice(emptyIndex, 1);
+                table.chair_count -= 1;
+                renderAll();
+                onSelectionChange?.(table);
+                return;
+            }
+
+            if (!window.confirm(labels.remove_chair_confirm)) {
                 return;
             }
 
             table.chair_count -= 1;
             table.seats.pop();
             renderAll();
+            emitSeats();
             onSelectionChange?.(table);
         },
 

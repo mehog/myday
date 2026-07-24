@@ -371,6 +371,37 @@ class GuestsRelationManager extends RelationManager
                                 ->success()
                                 ->send();
                         }),
+                    Action::make('editPlusOneSeatingName')
+                        ->label($this->trans('seating_name'))
+                        ->modalHeading($this->trans('seating_name'))
+                        ->modalDescription($this->trans('seating_name_description'))
+                        ->icon('heroicon-o-identification')
+                        ->color('gray')
+                        ->visible(fn (Guest $record): bool => filled($record->plus_one_name))
+                        ->fillForm(fn (Guest $record): array => [
+                            'plus_one_seating_name' => $record->plus_one_seating_name,
+                        ])
+                        ->form(fn (Guest $record): array => [
+                            Placeholder::make('plus_one_name')
+                                ->label($this->trans('field_plus_one_name'))
+                                ->content($record->plus_one_name ?? '—'),
+                            TextInput::make('plus_one_seating_name')
+                                ->label($this->trans('field_plus_one_seating_name'))
+                                ->helperText($this->trans('field_plus_one_seating_name_helper'))
+                                ->maxLength(255),
+                        ])
+                        ->action(function (array $data, Guest $record): void {
+                            $record->update([
+                                'plus_one_seating_name' => filled($data['plus_one_seating_name'] ?? null)
+                                    ? trim($data['plus_one_seating_name'])
+                                    : null,
+                            ]);
+
+                            Notification::make()
+                                ->title($this->trans('seating_name_saved'))
+                                ->success()
+                                ->send();
+                        }),
                     EditAction::make(),
                     DeleteAction::make(),
                     RestoreAction::make(),

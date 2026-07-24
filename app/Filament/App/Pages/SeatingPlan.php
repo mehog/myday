@@ -88,7 +88,7 @@ class SeatingPlan extends Page
             $wedding->guests()
                 ->where('rsvp_status', RsvpStatus::Yes)
                 ->orderBy('name')
-                ->get(['id', 'name', 'plus_one_name'])
+                ->get(['id', 'name', 'plus_one_name', 'plus_one_seating_name'])
                 ->flatMap(function (Guest $guest): array {
                     $entries = [
                         [
@@ -99,10 +99,12 @@ class SeatingPlan extends Page
                         ],
                     ];
 
-                    if (filled($guest->plus_one_name)) {
+                    $plusOneName = $guest->plusOneDisplayName();
+
+                    if (filled($plusOneName)) {
                         $entries[] = [
                             'id' => -$guest->id,
-                            'name' => $guest->plus_one_name.' ('.$guest->name.')',
+                            'name' => $plusOneName.' ('.$guest->name.')',
                             'is_plus_one' => true,
                             'is_couple' => false,
                         ];

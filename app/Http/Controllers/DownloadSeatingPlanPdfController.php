@@ -28,7 +28,7 @@ class DownloadSeatingPlanPdfController extends Controller
 
         $guests = $wedding->guests()
             ->where('rsvp_status', RsvpStatus::Yes)
-            ->get(['id', 'name', 'plus_one_name']);
+            ->get(['id', 'name', 'plus_one_name', 'plus_one_seating_name']);
         $seatingPlan = $wedding->seating_plan ?? ['tables' => []];
 
         $nameMap = [
@@ -39,8 +39,10 @@ class DownloadSeatingPlanPdfController extends Controller
         foreach ($guests as $guest) {
             $nameMap[(string) $guest->id] = $guest->name;
 
-            if (filled($guest->plus_one_name)) {
-                $nameMap[(string) -$guest->id] = $guest->plus_one_name;
+            $plusOneName = $guest->plusOneDisplayName();
+
+            if (filled($plusOneName)) {
+                $nameMap[(string) -$guest->id] = $plusOneName;
             }
         }
 

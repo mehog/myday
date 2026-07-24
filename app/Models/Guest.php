@@ -31,6 +31,7 @@ class Guest extends Model implements HasLocalePreference
         'phone',
         'plus_one_allowed',
         'plus_one_name',
+        'plus_one_seating_name',
         'token',
         'rsvp_status',
         'rsvp_responded_at',
@@ -85,6 +86,17 @@ class Guest extends Model implements HasLocalePreference
     public function hasResponded(): bool
     {
         return $this->rsvp_status !== null;
+    }
+
+    public function plusOneDisplayName(): ?string
+    {
+        if (! filled($this->plus_one_name)) {
+            return null;
+        }
+
+        return filled($this->plus_one_seating_name)
+            ? $this->plus_one_seating_name
+            : $this->plus_one_name;
     }
 
     public function getPersonalUrlAttribute(): string

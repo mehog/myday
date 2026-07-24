@@ -44,9 +44,11 @@ class DownloadPlaceCardsController extends Controller
                 'qr-code' => 'true',
             ]);
 
+            $plusOneName = $guest->plusOneDisplayName();
+
             return [
                 'name' => Str::limit($guest->name, 25),
-                'plus_one' => filled($guest->plus_one_name) ? Str::limit($guest->plus_one_name, 40) : null,
+                'plus_one' => filled($plusOneName) ? Str::limit($plusOneName, 40) : null,
                 'qr' => $this->qrDataUri($contactUrl),
             ];
         })->all();
