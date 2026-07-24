@@ -165,19 +165,6 @@ class SeatingPlan extends Page
         }
     }
 
-    public function exportPdf(string $imageDataUrl): void
-    {
-        $wedding = auth()->user()?->weddingEvent;
-
-        abort_unless($wedding instanceof WeddingEvent, 404);
-
-        $imageDataUri = str_starts_with($imageDataUrl, 'data:image/')
-            ? $imageDataUrl
-            : 'data:image/png;base64,'.$imageDataUrl;
-
-        session(['seating_plan_pdf_image' => $imageDataUri]);
-    }
-
     protected function getHeaderActions(): array
     {
         return [
@@ -193,7 +180,7 @@ class SeatingPlan extends Page
                 ->extraAttributes([
                     'id' => 'seating-export-pdf-btn',
                     'wire:loading.attr' => 'disabled',
-                    'wire:target' => 'exportPdf',
+                    'wire:target' => 'save',
                 ])
                 ->alpineClickHandler('window.seatingPlanEditor?.exportPdf()'),
         ];

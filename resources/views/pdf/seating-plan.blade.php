@@ -126,18 +126,6 @@
         .unassigned-section {
             break-before: column;
         }
-
-        .canvas-page {
-            page-break-before: always;
-        }
-
-        .canvas-image {
-            width: 100%;
-            max-height: 273mm;
-            object-fit: contain;
-            display: block;
-            margin: 0 auto;
-        }
     </style>
 </head>
 <body>
@@ -207,9 +195,5 @@
             </div>
         </div>
     @endif
-
-    <div class="canvas-page">
-        <img src="{{ $imageDataUri }}" alt="{{ __('seating.pdf_title') }}" class="canvas-image">
-    </div>
 </body>
 </html>

@@ -22,10 +22,6 @@ class DownloadSeatingPlanPdfController extends Controller
 
         abort_unless($wedding instanceof WeddingEvent, 404);
 
-        $imageDataUri = session()->pull('seating_plan_pdf_image');
-
-        abort_unless(is_string($imageDataUri), 422);
-
         $guests = $wedding->guests()
             ->where('rsvp_status', RsvpStatus::Yes)
             ->with('children')
@@ -80,7 +76,6 @@ class DownloadSeatingPlanPdfController extends Controller
 
         return Pdf::view('pdf.seating-plan', [
             'weddingEvent' => $wedding,
-            'imageDataUri' => $imageDataUri,
             'logoDataUri' => $this->logoDataUri(),
             'tables' => $tables,
             'unassigned' => $unassigned,
