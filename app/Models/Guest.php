@@ -83,6 +83,11 @@ class Guest extends Model implements HasLocalePreference
         return $this->hasMany(GuestMessage::class)->latest();
     }
 
+    public function children(): HasMany
+    {
+        return $this->hasMany(GuestChild::class)->orderBy('sort_order')->orderBy('id');
+    }
+
     public function hasResponded(): bool
     {
         return $this->rsvp_status !== null;

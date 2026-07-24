@@ -318,6 +318,69 @@
                     </div>
                 @endif
 
+                @if ($guest)
+                    <div
+                        x-show="pending === 'yes'"
+                        x-cloak
+                        class="mb-6 text-left"
+                    >
+                        <div class="mb-2 flex items-center justify-between gap-3">
+                            <label class="block text-sm text-[var(--color-text-muted)]">
+                                {{ __('invitation.children_question') }}
+                            </label>
+                            @if (count($childNames) < \App\Models\GuestChild::MAX_PER_GUEST)
+                                <button
+                                    type="button"
+                                    wire:click="addChildName"
+                                    class="text-sm text-[var(--color-primary)] hover:underline transition"
+                                >
+                                    {{ __('invitation.children_add') }}
+                                </button>
+                            @endif
+                        </div>
+
+                        <p class="text-sm text-[var(--color-text-muted)] mb-3">
+                            {{ __('invitation.children_helper_text') }}
+                        </p>
+
+                        <div class="space-y-2">
+                            @forelse ($childNames as $index => $childName)
+                                <div class="flex items-center gap-2" wire:key="child-name-{{ $index }}">
+                                    <input
+                                        type="text"
+                                        wire:model="childNames.{{ $index }}"
+                                        class="w-full rounded-xl border border-white/10 bg-[var(--color-bg)] px-4 py-3 text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary)] focus:outline-none"
+                                        placeholder="{{ __('invitation.children_name_placeholder') }}"
+                                    >
+                                    <button
+                                        type="button"
+                                        wire:click="removeChildName({{ $index }})"
+                                        class="shrink-0 rounded-lg px-2 py-2 text-sm text-[var(--color-text-muted)] hover:text-red-400 transition"
+                                        aria-label="{{ __('invitation.children_remove') }}"
+                                    >
+                                        &times;
+                                    </button>
+                                </div>
+                            @empty
+                                <button
+                                    type="button"
+                                    wire:click="addChildName"
+                                    class="w-full rounded-xl border border-dashed border-white/15 px-4 py-3 text-sm text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/40 hover:text-[var(--color-primary)] transition"
+                                >
+                                    {{ __('invitation.children_add') }}
+                                </button>
+                            @endforelse
+                        </div>
+
+                        @error('childNames')
+                            <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
+                        @enderror
+                        @error('childNames.*')
+                            <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
+                @endif
+
                 <div class="mb-6 text-left">
                     <label for="rsvpNote" class="block text-sm text-[var(--color-text-muted)] mb-2">
                         {{ __('invitation.rsvp_note_label') }}

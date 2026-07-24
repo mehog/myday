@@ -3,6 +3,7 @@
 namespace App\Filament\App\Widgets;
 
 use App\Filament\App\Resources\GuestMessagesResource;
+use App\Models\GuestChild;
 use App\RsvpStatus;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -24,12 +25,28 @@ class WeddingOverviewWidget extends StatsOverviewWidget
             ->where('rsvp_status', RsvpStatus::Yes)
             ->whereNotNull('plus_one_name')
             ->count();
-        $confirmed = $confirmedGuests + $plusOnes;
+        $children = GuestChild::query()
+            ->whereIn(
+                'guest_id',
+                $wedding->guests()->where('rsvp_status', RsvpStatus::Yes)->select('id'),
+            )
+            ->count();
+        $confirmed = $confirmedGuests + $plusOnes + $children;
         $responded = $wedding->guests()->whereNotNull('rsvp_status')->count();
         $responseRate = $guestCount > 0 ? round(($responded / $guestCount) * 100) : 0;
         $daysUntil = (int) now()->startOfDay()->diffInDays($wedding->wedding_date->copy()->startOfDay(), false);
         $messageCount = $wedding->guestMessages()->count();
         $unseenCount = $wedding->guestMessages()->whereNull('seen_at')->count();
+
+        $confirmedDescription = match (true) {
+            $plusOnes > 0 && $children > 0 => __('app.stat_confirmed_desc_plus_ones_children', [
+                'plus_ones' => $plusOnes,
+                'children' => $children,
+            ]),
+            $plusOnes > 0 => __('app.stat_confirmed_desc_plus_ones', ['count' => $plusOnes]),
+            $children > 0 => __('app.stat_confirmed_desc_children', ['count' => $children]),
+            default => __('app.stat_confirmed_desc'),
+        };
 
         return [
             Stat::make(__('app.stat_guests'), (string) $guestCount)
@@ -38,9 +55,7 @@ class WeddingOverviewWidget extends StatsOverviewWidget
                     : __('app.stat_guests_desc'))
                 ->icon('heroicon-o-users'),
             Stat::make(__('app.stat_confirmed'), (string) $confirmed)
-                ->description($plusOnes > 0
-                    ? __('app.stat_confirmed_desc_plus_ones', ['count' => $plusOnes])
-                    : __('app.stat_confirmed_desc'))
+                ->description($confirmedDescription)
                 ->icon('heroicon-o-check-circle')
                 ->color('success'),
             Stat::make(__('app.stat_responded'), "{$responseRate}%")

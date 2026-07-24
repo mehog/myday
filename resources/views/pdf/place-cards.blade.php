@@ -167,6 +167,22 @@
             opacity: 0.85;
         }
 
+        .children-names {
+            margin-top: 1.2mm;
+            font-size: 7.5pt;
+            line-height: 1.25;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        .child-name {
+            margin-top: 0.4mm;
+        }
+
+        .child-name:first-child {
+            margin-top: 0;
+        }
+
         .pdf-emoji {
             display: inline-block;
             vertical-align: -0.15em;
@@ -261,6 +277,13 @@
                                                 <div class="guest-name">{!! \App\Support\PdfEmoji::toHtml($card['name'], '14pt') !!}</div>
                                                 @if (! empty($card['plus_one']))
                                                     <div class="plus-one-name">&amp; {!! \App\Support\PdfEmoji::toHtml($card['plus_one'], '9pt') !!}</div>
+                                                @endif
+                                                @if (! empty($card['children']))
+                                                    <div class="children-names">
+                                                        @foreach ($card['children'] as $childName)
+                                                            <div class="child-name">{!! \App\Support\PdfEmoji::toHtml($childName, '7.5pt') !!}</div>
+                                                        @endforeach
+                                                    </div>
                                                 @endif
                                             </td>
                                         </tr>

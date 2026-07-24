@@ -422,9 +422,20 @@ The application has **32 migrations** creating the following tables:
 | `rsvp_note` | text | Nullable, guest note with RSVP |
 | `plus_one_allowed` | boolean | Whether guest can bring a +1 |
 | `plus_one_name` | varchar | Nullable, +1's name if confirmed |
+| `plus_one_seating_name` | varchar | Nullable formal +1 name for seating/place cards |
 | `invite_sent_at` | timestamp | Nullable |
 | `invite_platform` | varchar | Nullable, see InvitePlatform enum |
 | `deleted_at` | timestamp | Soft deletes |
+| `created_at`, `updated_at` | timestamp | |
+
+### `guest_children`
+| Column | Type | Notes |
+|--------|------|-------|
+| `id` | bigint UNSIGNED | Primary key; seating assignee key is `child:{id}` |
+| `guest_id` | FK → guests | Cascade delete; child does not get a separate invitation |
+| `name` | varchar | Guest-entered or couple-entered name |
+| `seating_name` | varchar | Nullable formal override for seating/place cards |
+| `sort_order` | unsigned smallint | Display order |
 | `created_at`, `updated_at` | timestamp | |
 
 ### `schedule_items`
@@ -691,6 +702,7 @@ Features:
 - RSVP form:
   - Yes/No radio
   - Plus-one section (if `plus_one_allowed`)
+  - Optional children names (no separate invitations; stored in `guest_children`)
   - Notes/message field
   - Guests can edit their RSVP
   - Anonymous RSVP on public links creates a guest record on the fly

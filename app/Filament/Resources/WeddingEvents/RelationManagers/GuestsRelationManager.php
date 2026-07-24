@@ -5,7 +5,9 @@ namespace App\Filament\Resources\WeddingEvents\RelationManagers;
 use App\Filament\Imports\GuestImporter;
 use App\InvitePlatform;
 use App\Models\Guest;
+use App\Models\GuestChild;
 use App\RsvpStatus;
+use App\Services\SyncGuestChildren;
 use App\Support\Clipboard;
 use App\Support\MessengerLinks;
 use Filament\Actions\Action;
@@ -22,6 +24,7 @@ use Filament\Actions\RestoreBulkAction;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -84,7 +87,7 @@ class GuestsRelationManager extends RelationManager
     {
         return $table
             ->modifyQueryUsing(fn (Builder $query) => $query
-                ->with('weddingEvent')
+                ->with(['weddingEvent', 'children'])
                 ->withMax('linkVisits as last_visited_at', 'visited_at'))
             ->recordTitleAttribute('name')
             ->columns([
@@ -131,6 +134,14 @@ class GuestsRelationManager extends RelationManager
                 TextColumn::make('plus_one_name')
                     ->label($this->trans('field_plus_one_name'))
                     ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: false),
+                TextColumn::make('children_names')
+                    ->label($this->trans('field_children'))
+                    ->getStateUsing(fn (Guest $record): string => $record->children
+                        ->map(fn (GuestChild $child): string => $child->displayName())
+                        ->implode(', '))
+                    ->placeholder('—')
+                    ->wrap()
                     ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('rsvp_note')
                     ->label($this->trans('field_rsvp_note'))
@@ -399,6 +410,57 @@ class GuestsRelationManager extends RelationManager
 
                             Notification::make()
                                 ->title($this->trans('seating_name_saved'))
+                                ->success()
+                                ->send();
+                        }),
+                    Action::make('editChildren')
+                        ->label($this->trans('children'))
+                        ->modalHeading($this->trans('children'))
+                        ->modalDescription($this->trans('children_description'))
+                        ->icon('heroicon-o-user-group')
+                        ->color('gray')
+                        ->fillForm(fn (Guest $record): array => [
+                            'children' => $record->children
+                                ->map(fn (GuestChild $child): array => [
+                                    'id' => $child->id,
+                                    'name' => $child->name,
+                                    'seating_name' => $child->seating_name,
+                                ])
+                                ->all(),
+                        ])
+                        ->form([
+                            Repeater::make('children')
+                                ->label($this->trans('field_children'))
+                                ->helperText($this->trans('children_helper'))
+                                ->schema([
+                                    TextInput::make('id')
+                                        ->hidden()
+                                        ->dehydrated(),
+                                    TextInput::make('name')
+                                        ->label($this->trans('field_child_name'))
+                                        ->required()
+                                        ->maxLength(255),
+                                    TextInput::make('seating_name')
+                                        ->label($this->trans('field_child_seating_name'))
+                                        ->helperText($this->trans('field_child_seating_name_helper'))
+                                        ->maxLength(255),
+                                ])
+                                ->defaultItems(0)
+                                ->reorderable()
+                                ->reorderableWithButtons()
+                                ->collapsible()
+                                ->itemLabel(fn (array $state): ?string => $state['name'] ?? null)
+                                ->addActionLabel($this->trans('children_add'))
+                                ->maxItems(GuestChild::MAX_PER_GUEST),
+                        ])
+                        ->action(function (array $data, Guest $record): void {
+                            app(SyncGuestChildren::class)->syncFromAdmin(
+                                $record,
+                                $data['children'] ?? [],
+                            );
+
+                            Notification::make()
+                                ->title($this->trans('children_saved'))
                                 ->success()
                                 ->send();
                         }),

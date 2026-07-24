@@ -59,7 +59,7 @@ class SeatingPlan extends Page
     }
 
     /**
-     * @return Collection<int, array{id: int|string, name: string, is_plus_one: bool, is_couple: bool}>
+     * @return Collection<int, array{id: int|string, name: string, is_plus_one: bool, is_child: bool, is_couple: bool}>
      */
     public function getGuests(): Collection
     {
@@ -74,12 +74,14 @@ class SeatingPlan extends Page
                 'id' => 'bride',
                 'name' => $wedding->bride_name,
                 'is_plus_one' => false,
+                'is_child' => false,
                 'is_couple' => true,
             ],
             [
                 'id' => 'groom',
                 'name' => $wedding->groom_name,
                 'is_plus_one' => false,
+                'is_child' => false,
                 'is_couple' => true,
             ],
         ]);
@@ -87,6 +89,7 @@ class SeatingPlan extends Page
         return $couple->concat(
             $wedding->guests()
                 ->where('rsvp_status', RsvpStatus::Yes)
+                ->with('children')
                 ->orderBy('name')
                 ->get(['id', 'name', 'plus_one_name', 'plus_one_seating_name'])
                 ->flatMap(function (Guest $guest): array {
@@ -95,6 +98,7 @@ class SeatingPlan extends Page
                             'id' => $guest->id,
                             'name' => $guest->name,
                             'is_plus_one' => false,
+                            'is_child' => false,
                             'is_couple' => false,
                         ],
                     ];
@@ -106,6 +110,17 @@ class SeatingPlan extends Page
                             'id' => -$guest->id,
                             'name' => $plusOneName.' ('.$guest->name.')',
                             'is_plus_one' => true,
+                            'is_child' => false,
+                            'is_couple' => false,
+                        ];
+                    }
+
+                    foreach ($guest->children as $child) {
+                        $entries[] = [
+                            'id' => $child->seatingAssigneeKey(),
+                            'name' => $child->displayName().' ('.$guest->name.')',
+                            'is_plus_one' => false,
+                            'is_child' => true,
                             'is_couple' => false,
                         ];
                     }

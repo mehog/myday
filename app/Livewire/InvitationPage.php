@@ -9,8 +9,10 @@ use App\Jobs\RecordLinkVisit;
 use App\Jobs\SendCoupleRsvpNotificationJob;
 use App\LinkType;
 use App\Models\Guest;
+use App\Models\GuestChild;
 use App\Models\WeddingEvent;
 use App\RsvpStatus;
+use App\Services\SyncGuestChildren;
 use App\Support\Locale;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -25,6 +27,9 @@ class InvitationPage extends Component
     public string $anonymousName = '';
 
     public string $plusOneName = '';
+
+    /** @var list<string> */
+    public array $childNames = [];
 
     public string $rsvpNote = '';
 
@@ -122,6 +127,8 @@ class InvitationPage extends Component
 
         $this->validate([
             'rsvpNote' => ['nullable', 'string', 'max:500'],
+            'childNames' => ['nullable', 'array', 'max:'.GuestChild::MAX_PER_GUEST],
+            'childNames.*' => ['nullable', 'string', 'max:255'],
         ]);
 
         if ($this->guest) {
@@ -142,6 +149,13 @@ class InvitationPage extends Component
 
             $this->guest->update($updateData);
             $this->guest->refresh();
+
+            app(SyncGuestChildren::class)->syncFromNames(
+                $this->guest,
+                $rsvpStatus === RsvpStatus::Yes ? $this->childNames : [],
+            );
+
+            $this->guest->load('children');
         } else {
             $this->validate([
                 'anonymousName' => ['required', 'string', 'max:255'],
@@ -183,8 +197,30 @@ class InvitationPage extends Component
 
         $this->isEditing = true;
         $this->plusOneName = $this->guest?->plus_one_name ?? '';
+        $this->childNames = $this->guest
+            ? $this->guest->children()->pluck('name')->all()
+            : [];
         $this->rsvpNote = $this->guest?->rsvp_note ?? '';
         $this->rsvpSubmitted = false;
+    }
+
+    public function addChildName(): void
+    {
+        if (count($this->childNames) >= GuestChild::MAX_PER_GUEST) {
+            return;
+        }
+
+        $this->childNames[] = '';
+    }
+
+    public function removeChildName(int $index): void
+    {
+        if (! array_key_exists($index, $this->childNames)) {
+            return;
+        }
+
+        unset($this->childNames[$index]);
+        $this->childNames = array_values($this->childNames);
     }
 
     public function switchLocale(string $locale): void

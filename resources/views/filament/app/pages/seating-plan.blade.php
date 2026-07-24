@@ -346,8 +346,8 @@
                                 class="cursor-pointer px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-white/5"
                                 :class="{
                                     'text-rose-600 dark:text-rose-400 font-medium': guest.is_couple,
-                                    'text-gray-500 dark:text-gray-400': guest.is_plus_one && !guest.is_couple,
-                                    'text-gray-900 dark:text-white': !guest.is_plus_one && !guest.is_couple,
+                                    'text-gray-500 dark:text-gray-400': (guest.is_plus_one || guest.is_child) && !guest.is_couple,
+                                    'text-gray-900 dark:text-white': !guest.is_plus_one && !guest.is_child && !guest.is_couple,
                                 }"
                                 x-on:click="assignGuest(guest.id)"
                                 x-text="guest.name"

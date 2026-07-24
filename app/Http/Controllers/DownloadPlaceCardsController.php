@@ -30,6 +30,7 @@ class DownloadPlaceCardsController extends Controller
 
         $guests = $weddingEvent->guests()
             ->where('rsvp_status', RsvpStatus::Yes)
+            ->with('children')
             ->orderBy('name')
             ->get();
 
@@ -49,6 +50,10 @@ class DownloadPlaceCardsController extends Controller
             return [
                 'name' => Str::limit($guest->name, 25),
                 'plus_one' => filled($plusOneName) ? Str::limit($plusOneName, 40) : null,
+                'children' => $guest->children
+                    ->map(fn ($child): string => Str::limit($child->displayName(), 40))
+                    ->values()
+                    ->all(),
                 'qr' => $this->qrDataUri($contactUrl),
             ];
         })->all();

@@ -6,12 +6,29 @@ const COLORS = {
     chairEmpty: '#d1d5db',
     chairAssigned: '#c9a227',
     chairCouple: '#f43f5e',
+    chairChild: '#22c55e',
     chairStroke: '#9ca3af',
     selection: '#3b82f6',
     handle: '#3b82f6',
     grid: '#e5e7eb',
     label: '#374151',
 };
+
+function chairFillForGuest(guestId) {
+    if (guestId === null || guestId === undefined) {
+        return COLORS.chairEmpty;
+    }
+
+    if (guestId === 'bride' || guestId === 'groom') {
+        return COLORS.chairCouple;
+    }
+
+    if (typeof guestId === 'string' && guestId.startsWith('child:')) {
+        return COLORS.chairChild;
+    }
+
+    return COLORS.chairAssigned;
+}
 
 const CHAIR_RADIUS = 12;
 const CHAIR_OFFSET = 22;
@@ -382,13 +399,12 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
         positions.forEach((position, index) => {
             const guestId = tableData.seats[index] ?? null;
             const assigned = guestId !== null;
-            const isCouple = guestId === 'bride' || guestId === 'groom';
 
             const chair = new Konva.Circle({
                 x: position.x,
                 y: position.y,
                 radius: CHAIR_RADIUS,
-                fill: assigned ? (isCouple ? COLORS.chairCouple : COLORS.chairAssigned) : COLORS.chairEmpty,
+                fill: chairFillForGuest(guestId),
                 stroke: COLORS.chairStroke,
                 strokeWidth: 1,
                 name: 'chair',
