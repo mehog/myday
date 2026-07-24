@@ -148,6 +148,7 @@ class GuestContactPage extends Component
 
         if ($this->isDemo) {
             $this->dispatch('demo-message-sent');
+            $this->dispatch('photos-submitted');
 
             return;
         }
@@ -182,6 +183,7 @@ class GuestContactPage extends Component
 
         $this->reset('photoFiles');
         $this->markMessageSent('photo');
+        $this->dispatch('photos-submitted');
     }
 
     protected function ensureCanSendMessage(): void

@@ -8,8 +8,8 @@ use App\GuestMessageType;
 use App\Models\GuestMessage;
 use BackedEnum;
 use Filament\Actions\ViewAction;
-use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -66,103 +66,99 @@ class GuestMessagesResource extends Resource
         return $schema
             ->columns(2)
             ->components([
-            Section::make(__('app.guest_messages_col_message'))
-                ->columnSpanFull()
-                ->collapsible()
-                ->visible(fn (GuestMessage $record): bool => $record->type === GuestMessageType::Text)
-                ->schema([
-                    TextEntry::make('content')
-                        ->hiddenLabel()
-                        ->prose(),
-                ]),
-            Section::make(__('app.guest_messages_col_photo'))
-                ->columnSpanFull()
-                ->collapsible()
-                ->visible(fn (GuestMessage $record): bool => $record->type === GuestMessageType::Photo)
-                ->schema([
-                    TextEntry::make('photo_count')
-                        ->hiddenLabel()
-                        ->getStateUsing(fn (GuestMessage $record): string => __('app.guest_messages_col_photo_count', [
-                            'count' => count($record->file_paths ?? []),
-                        ])),
-                    ImageEntry::make('file_paths')
-                        ->hiddenLabel()
-                        ->disk(config('filesystems.media_disk'))
-                        ->extraImgAttributes([
-                            'class' => '!max-w-full w-full h-auto object-contain',
-                        ])
-                        ->wrap()
-                        ->columnSpanFull(),
-                ]),
-            Section::make(__('app.guest_messages_col_audio'))
-                ->columnSpanFull()
-                ->collapsible()
-                ->visible(fn (GuestMessage $record): bool => $record->type === GuestMessageType::Audio)
-                ->schema([
-                    TextEntry::make('file_path')
-                        ->hiddenLabel()
-                        ->formatStateUsing(fn (): string => __('app.guest_messages_listen'))
-                        ->url(fn (GuestMessage $record): ?string => $record->fileUrl())
-                        ->openUrlInNewTab(),
-                ]),
-            Section::make(__('app.guest_messages_detail_info'))
-                ->columnSpan(fn (GuestMessage $record): int|string => $record->hasFingerprint() ? 1 : 'full')
-                ->collapsible()
-                ->collapsed()
-                ->columns(2)
-                ->schema([
-                    TextEntry::make('sender_name')
-                        ->label(__('app.guest_messages_col_sender')),
-                    TextEntry::make('type')
-                        ->label(__('app.guest_messages_col_type'))
-                        ->badge()
-                        ->formatStateUsing(fn (?GuestMessageType $state): ?string => $state?->label())
-                        ->color(fn (?GuestMessageType $state): string => match ($state) {
-                            GuestMessageType::Text => 'info',
-                            GuestMessageType::Audio => 'warning',
-                            GuestMessageType::Photo => 'success',
-                            default => 'gray',
-                        }),
-                    TextEntry::make('created_at')
-                        ->label(__('app.guest_messages_col_sent_at'))
-                        ->dateTime(),
-                ]),
-            Section::make(__('app.guest_messages_device_section'))
-                ->collapsible()
-                ->collapsed()
-                ->visible(fn (GuestMessage $record): bool => $record->hasFingerprint())
-                ->columns(2)
-                ->schema([
-                    TextEntry::make('deviceSummary')
-                        ->label(__('app.guest_messages_sent_from'))
-                        ->getStateUsing(fn (GuestMessage $record): ?string => $record->deviceSummary())
-                        ->placeholder('—'),
-                    TextEntry::make('invitation_device')
-                        ->label(__('app.guest_messages_opened_from'))
-                        ->getStateUsing(function (GuestMessage $record): ?string {
-                            $visit = $record->guest?->latestPersonalLinkVisit;
+                Section::make(__('app.guest_messages_col_message'))
+                    ->columnSpanFull()
+                    ->collapsible()
+                    ->visible(fn (GuestMessage $record): bool => $record->type === GuestMessageType::Text)
+                    ->schema([
+                        TextEntry::make('content')
+                            ->hiddenLabel()
+                            ->prose(),
+                    ]),
+                Section::make(__('app.guest_messages_col_photo'))
+                    ->columnSpanFull()
+                    ->collapsible()
+                    ->visible(fn (GuestMessage $record): bool => $record->type === GuestMessageType::Photo)
+                    ->schema([
+                        TextEntry::make('photo_count')
+                            ->hiddenLabel()
+                            ->getStateUsing(fn (GuestMessage $record): string => __('app.guest_messages_col_photo_count', [
+                                'count' => count($record->file_paths ?? []),
+                            ])),
+                        ViewEntry::make('file_paths')
+                            ->hiddenLabel()
+                            ->view('filament.app.resources.guest-messages.photo-gallery')
+                            ->columnSpanFull(),
+                    ]),
+                Section::make(__('app.guest_messages_col_audio'))
+                    ->columnSpanFull()
+                    ->collapsible()
+                    ->visible(fn (GuestMessage $record): bool => $record->type === GuestMessageType::Audio)
+                    ->schema([
+                        TextEntry::make('file_path')
+                            ->hiddenLabel()
+                            ->formatStateUsing(fn (): string => __('app.guest_messages_listen'))
+                            ->url(fn (GuestMessage $record): ?string => $record->fileUrl())
+                            ->openUrlInNewTab(),
+                    ]),
+                Section::make(__('app.guest_messages_detail_info'))
+                    ->columnSpan(fn (GuestMessage $record): int|string => $record->hasFingerprint() ? 1 : 'full')
+                    ->collapsible()
+                    ->collapsed()
+                    ->columns(2)
+                    ->schema([
+                        TextEntry::make('sender_name')
+                            ->label(__('app.guest_messages_col_sender')),
+                        TextEntry::make('type')
+                            ->label(__('app.guest_messages_col_type'))
+                            ->badge()
+                            ->formatStateUsing(fn (?GuestMessageType $state): ?string => $state?->label())
+                            ->color(fn (?GuestMessageType $state): string => match ($state) {
+                                GuestMessageType::Text => 'info',
+                                GuestMessageType::Audio => 'warning',
+                                GuestMessageType::Photo => 'success',
+                                default => 'gray',
+                            }),
+                        TextEntry::make('created_at')
+                            ->label(__('app.guest_messages_col_sent_at'))
+                            ->dateTime(),
+                    ]),
+                Section::make(__('app.guest_messages_device_section'))
+                    ->collapsible()
+                    ->collapsed()
+                    ->visible(fn (GuestMessage $record): bool => $record->hasFingerprint())
+                    ->columns(2)
+                    ->schema([
+                        TextEntry::make('deviceSummary')
+                            ->label(__('app.guest_messages_sent_from'))
+                            ->getStateUsing(fn (GuestMessage $record): ?string => $record->deviceSummary())
+                            ->placeholder('—'),
+                        TextEntry::make('invitation_device')
+                            ->label(__('app.guest_messages_opened_from'))
+                            ->getStateUsing(function (GuestMessage $record): ?string {
+                                $visit = $record->guest?->latestPersonalLinkVisit;
 
-                            if (! $visit) {
-                                return null;
-                            }
+                                if (! $visit) {
+                                    return null;
+                                }
 
-                            $parts = array_filter([
-                                $visit->browser,
-                                $visit->os,
-                                $visit->device_type,
-                            ]);
+                                $parts = array_filter([
+                                    $visit->browser,
+                                    $visit->os,
+                                    $visit->device_type,
+                                ]);
 
-                            return $parts === [] ? null : implode(' / ', $parts);
-                        })
-                        ->placeholder('—'),
-                    TextEntry::make('visit_match')
-                        ->label(__('app.guest_messages_visit_match_label'))
-                        ->badge()
-                        ->getStateUsing(fn (GuestMessage $record): string => $record->visitMatch()->label())
-                        ->color(fn (GuestMessage $record): string => $record->visitMatch()->color())
-                        ->columnSpanFull(),
-                ]),
-        ]);
+                                return $parts === [] ? null : implode(' / ', $parts);
+                            })
+                            ->placeholder('—'),
+                        TextEntry::make('visit_match')
+                            ->label(__('app.guest_messages_visit_match_label'))
+                            ->badge()
+                            ->getStateUsing(fn (GuestMessage $record): string => $record->visitMatch()->label())
+                            ->color(fn (GuestMessage $record): string => $record->visitMatch()->color())
+                            ->columnSpanFull(),
+                    ]),
+            ]);
     }
 
     public static function table(Table $table): Table
