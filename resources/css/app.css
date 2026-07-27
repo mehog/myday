@@ -739,8 +739,113 @@
     border-color: color-mix(in srgb, #c9a227 30%, transparent);
 }
 
+.landing-browser-frame {
+    border-radius: 1rem;
+    border: 1px solid color-mix(in srgb, #c9a227 28%, transparent);
+    background: #0f0b06;
+    overflow: hidden;
+    box-shadow:
+        0 24px 60px color-mix(in srgb, #000 45%, transparent),
+        0 0 0 1px color-mix(in srgb, #faf6ee 4%, transparent);
+}
+
+.landing-browser-chrome {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.65rem 0.85rem;
+    border-bottom: 1px solid color-mix(in srgb, #faf6ee 8%, transparent);
+    background: color-mix(in srgb, #2a1f0f 85%, #000);
+}
+
+.landing-browser-chrome span {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, #d4c4a8 35%, transparent);
+}
+
+.landing-browser-chrome span:nth-child(1) {
+    background: #c97b7b;
+}
+
+.landing-browser-chrome span:nth-child(2) {
+    background: #c9a227;
+}
+
+.landing-browser-chrome span:nth-child(3) {
+    background: #7f9f78;
+}
+
+.landing-browser-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.landing-phone-frame {
+    border-radius: 1.65rem;
+    border: 3px solid color-mix(in srgb, #faf6ee 18%, #2a1f0f);
+    background: #0f0b06;
+    overflow: hidden;
+    box-shadow:
+        0 28px 50px color-mix(in srgb, #000 55%, transparent),
+        inset 0 0 0 1px color-mix(in srgb, #c9a227 20%, transparent);
+}
+
+.landing-phone-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.landing-hero-visual {
+    min-height: 22rem;
+}
+
+.landing-hero-dashboard {
+    width: 92%;
+    margin-left: auto;
+    transform: rotate(1.5deg);
+}
+
+.landing-hero-phone {
+    position: absolute;
+    left: 0;
+    bottom: -1.25rem;
+    width: 42%;
+    max-width: 11.5rem;
+    transform: rotate(-4deg);
+}
+
+@media (min-width: 640px) {
+    .landing-hero-visual {
+        min-height: 26rem;
+    }
+
+    .landing-hero-phone {
+        max-width: 13.5rem;
+        bottom: -1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .landing-hero-visual {
+        min-height: 28rem;
+    }
+
+    .landing-hero-phone {
+        max-width: 14.5rem;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .landing-fade-in {
         animation: none;
+    }
+
+    .landing-hero-dashboard,
+    .landing-hero-phone {
+        transform: none;
     }
 }

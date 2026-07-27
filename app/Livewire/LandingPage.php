@@ -30,8 +30,14 @@ class LandingPage extends Component
         $suffix = $locale !== 'bs' ? '-'.$locale : '';
 
         $configs = [
-            'islamic' => ['slug' => 'demo-islamsko'.$suffix],
-            'christian' => ['slug' => 'demo-krscansko'.$suffix],
+            'islamic' => [
+                'slug' => 'demo-islamsko'.$suffix,
+                'thumb' => 'img/landing/demo-classic-mobile.webp',
+            ],
+            'christian' => [
+                'slug' => 'demo-krscansko'.$suffix,
+                'thumb' => 'img/landing/demo-editorial-mobile.webp',
+            ],
         ];
 
         $demos = [];
@@ -53,6 +59,7 @@ class LandingPage extends Component
                 'slug' => $event->slug,
                 'couple' => $event->couple_names,
                 'theme' => $event->theme->label(),
+                'thumb' => $config['thumb'],
                 'publicUrl' => LocaleUrl::withLocale(route('invitation.show', $event->slug)),
                 'personalUrl' => $guest
                     ? LocaleUrl::withLocale(route('invitation.guest', [$event->slug, $guest->token]))

@@ -1,6 +1,6 @@
 <section
     id="demo"
-    class="landing-section px-6 py-20 bg-[#2a1f0f]/50 scroll-mt-20"
+    class="landing-section px-6 py-20 scroll-mt-20"
     x-data="{
         modalOpen: false,
         publicUrl: '',
@@ -34,14 +34,28 @@
 
         <div class="grid md:grid-cols-2 gap-6">
             @foreach ($demos as $demo)
-                <div class="landing-card rounded-2xl border border-[#c9a227]/25 overflow-hidden landing-fade-in">
-                    <div class="aspect-video bg-gradient-to-br from-[#2a1f0f] to-[#1a1208] flex flex-col items-center justify-center p-8 border-b border-white/5">
-                        <p class="landing-heading text-3xl sm:text-4xl text-[#faf6ee] mb-2 text-center">
-                            {{ $demo['couple'] }}
-                        </p>
-                        <p class="landing-body text-[#c9a227]">{{ $demo['theme'] }}</p>
+                <div class="landing-card rounded-2xl border border-[#c9a227]/25 overflow-hidden landing-fade-in bg-[#2a1f0f]/40">
+                    <div class="aspect-[4/5] sm:aspect-video bg-[#1a1208] relative overflow-hidden border-b border-white/5">
+                        @if (! empty($demo['thumb']))
+                            <img
+                                src="{{ asset($demo['thumb']) }}"
+                                alt="{{ __('landing.demo_thumb_alt', ['couple' => $demo['couple']]) }}"
+                                width="390"
+                                height="844"
+                                class="absolute inset-0 w-full h-full object-cover object-top"
+                                loading="lazy"
+                                decoding="async"
+                            >
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#1a1208] via-transparent to-transparent opacity-80"></div>
+                        @endif
+                        <div class="absolute inset-x-0 bottom-0 p-6 text-center">
+                            <p class="landing-heading text-2xl sm:text-3xl text-[#faf6ee] mb-1">
+                                {{ $demo['couple'] }}
+                            </p>
+                            <p class="landing-body text-[#c9a227]">{{ $demo['theme'] }}</p>
+                        </div>
                     </div>
-                    <div class="p-8 text-center">
+                    <div class="p-6 sm:p-8 text-center">
                         <button
                             type="button"
                             class="landing-btn-primary px-10 py-4 rounded-xl landing-heading text-lg transition"
@@ -55,7 +69,6 @@
         </div>
     </div>
 
-    {{-- Link type modal --}}
     <div
         x-show="modalOpen"
         x-transition.opacity

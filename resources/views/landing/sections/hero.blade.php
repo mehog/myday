@@ -11,6 +11,9 @@
             >
         </a>
         <nav class="flex items-center gap-4 sm:gap-6">
+            <a href="#features" class="text-sm text-[#d4c4a8] hover:text-[#c9a227] transition hidden sm:inline">
+                {{ __('landing.nav_features') }}
+            </a>
             <a href="#demo" class="text-sm text-[#d4c4a8] hover:text-[#c9a227] transition hidden sm:inline">
                 {{ __('landing.nav_demo') }}
             </a>
@@ -33,33 +36,55 @@
     </div>
 </header>
 
-<section class="landing-hero min-h-screen flex items-center justify-center px-6 pt-24 pb-16">
-    <div class="max-w-3xl mx-auto text-center landing-fade-in">
-        <h1 class="landing-heading text-4xl sm:text-5xl md:text-6xl font-semibold text-[#faf6ee] leading-tight mb-6">
-            {{ __('landing.hero_title') }}
-        </h1>
-        <p class="landing-body text-lg sm:text-xl text-[#d4c4a8] max-w-2xl mx-auto mb-10">
-            {{ __('landing.hero_subtitle') }}
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-                href="#demo"
-                class="landing-btn-primary px-8 py-4 rounded-xl landing-heading text-lg transition"
-            >
-                {{ __('landing.hero_cta_demo') }}
-            </a>
-            <a
-                href="{{ route('onboarding', ['locale' => app()->getLocale()]) }}"
-                class="landing-btn-secondary px-8 py-4 rounded-xl landing-heading text-lg transition"
-            >
-                {{ __('landing.hero_cta_create') }}
-            </a>
-            <a
-                href="#naruči"
-                class="landing-btn-secondary px-8 py-4 rounded-xl landing-heading text-lg transition hidden sm:inline-flex items-center justify-center"
-            >
-                {{ __('landing.hero_cta_order') }}
-            </a>
+<section class="landing-hero min-h-[100svh] flex items-center px-6 pt-28 pb-16 overflow-hidden">
+    <div class="max-w-6xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="landing-fade-in text-center lg:text-left">
+            <h1 class="landing-heading text-4xl sm:text-5xl md:text-[3.25rem] font-semibold text-[#faf6ee] leading-tight mb-6">
+                {{ __('landing.hero_title') }}
+            </h1>
+            <p class="landing-body text-lg sm:text-xl text-[#d4c4a8] max-w-xl mx-auto lg:mx-0 mb-10">
+                {{ __('landing.hero_subtitle') }}
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <a
+                    href="{{ route('onboarding', ['locale' => app()->getLocale()]) }}"
+                    class="landing-btn-primary px-8 py-4 rounded-xl landing-heading text-lg transition inline-flex items-center justify-center"
+                >
+                    {{ __('landing.hero_cta_create') }}
+                </a>
+                <a
+                    href="#demo"
+                    class="landing-btn-secondary px-8 py-4 rounded-xl landing-heading text-lg transition inline-flex items-center justify-center"
+                >
+                    {{ __('landing.hero_cta_demo') }}
+                </a>
+            </div>
+        </div>
+
+        <div class="landing-hero-visual landing-fade-in relative mx-auto w-full max-w-lg lg:max-w-none">
+            <div class="landing-browser-frame landing-hero-dashboard" aria-hidden="true">
+                <div class="landing-browser-chrome">
+                    <span></span><span></span><span></span>
+                </div>
+                <img
+                    src="{{ asset('img/landing/hero-dashboard-desktop.webp') }}"
+                    alt=""
+                    width="1600"
+                    height="1000"
+                    class="w-full h-auto"
+                    fetchpriority="high"
+                >
+            </div>
+            <div class="landing-phone-frame landing-hero-phone">
+                <img
+                    src="{{ asset('img/landing/hero-invitation-mobile.webp') }}"
+                    alt="{{ __('landing.hero_image_alt') }}"
+                    width="390"
+                    height="844"
+                    class="w-full h-auto"
+                    fetchpriority="high"
+                >
+            </div>
         </div>
     </div>
 </section>

@@ -1,54 +1,19 @@
-<section class="landing-section px-6 py-20">
-    <div class="max-w-5xl mx-auto">
+<section class="landing-section px-6 pt-20 pb-28 sm:pb-32 bg-[#2a1f0f]/50">
+    <div class="max-w-6xl mx-auto">
         <div class="text-center mb-14 landing-fade-in">
+            <p class="landing-label text-xs uppercase text-[#c9a227] mb-3">
+                {{ __('landing.interaction_eyebrow') }}
+            </p>
             <h2 class="landing-heading text-3xl sm:text-4xl text-[#faf6ee] mb-4">
                 {{ __('landing.interaction_title') }}
             </h2>
-            <p class="landing-body text-[#d4c4a8]">
+            <p class="landing-body text-[#d4c4a8] max-w-2xl mx-auto">
                 {{ __('landing.interaction_subtitle') }}
             </p>
         </div>
 
-        <div class="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] gap-10 lg:gap-14 items-center">
-            <div class="order-2 lg:order-1 landing-fade-in">
-                <div class="rounded-2xl border border-[#c9a227]/25 bg-[#2a1f0f] p-6 max-w-sm mx-auto lg:mx-0 space-y-5">
-                    <div class="flex items-start gap-3">
-                        <div class="w-9 h-9 rounded-full bg-[#c9a227]/20 flex items-center justify-center landing-heading text-sm text-[#c9a227] shrink-0">
-                            {{ mb_substr(__('landing.interaction_demo_name'), 0, 1) }}
-                        </div>
-                        <div>
-                            <p class="landing-heading text-sm text-[#faf6ee] mb-1">{{ __('landing.interaction_demo_name') }}</p>
-                            <p class="landing-body text-sm text-[#d4c4a8] leading-relaxed">&ldquo;{{ __('landing.interaction_demo_message') }}&rdquo;</p>
-                        </div>
-                    </div>
-
-                    <div class="h-px bg-white/10"></div>
-
-                    <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-full bg-[#c9a227]/20 flex items-center justify-center shrink-0">
-                            <svg class="w-4 h-4 text-[#c9a227]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
-                            </svg>
-                        </div>
-                        <div class="flex-1">
-                            <p class="landing-heading text-sm text-[#faf6ee] mb-1.5">{{ __('landing.interaction_demo_voice_label') }}</p>
-                            <div class="h-1.5 rounded-full bg-white/10">
-                                <div class="h-1.5 w-2/3 rounded-full bg-[#c9a227]"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="h-px bg-white/10"></div>
-
-                    <div class="grid grid-cols-3 gap-2">
-                        <div class="aspect-square rounded-lg bg-[#1a1208] border border-white/10"></div>
-                        <div class="aspect-square rounded-lg bg-[#1a1208] border border-white/10"></div>
-                        <div class="aspect-square rounded-lg bg-[#1a1208] border border-white/10"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="order-1 lg:order-2 space-y-8 landing-fade-in">
+        <div class="grid lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] gap-10 lg:gap-14 items-center">
+            <div class="landing-fade-in space-y-8 order-2 lg:order-1">
                 @foreach ([
                     [
                         'title' => __('landing.interaction_1_title'),
@@ -68,7 +33,7 @@
                 ] as $feature)
                     <div class="flex gap-4">
                         <div class="w-9 h-9 rounded-full bg-[#c9a227]/20 flex items-center justify-center shrink-0">
-                            <svg class="w-4 h-4 text-[#c9a227]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 text-[#c9a227]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 {!! $feature['icon'] !!}
                             </svg>
                         </div>
@@ -78,6 +43,34 @@
                         </div>
                     </div>
                 @endforeach
+            </div>
+
+            <div class="landing-fade-in relative order-1 lg:order-2">
+                <div class="landing-browser-frame">
+                    <div class="landing-browser-chrome" aria-hidden="true">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <img
+                        src="{{ asset('img/landing/feature-messages-desktop.webp') }}"
+                        alt="{{ __('landing.interaction_inbox_alt') }}"
+                        width="1600"
+                        height="1000"
+                        class="w-full h-auto"
+                        loading="lazy"
+                        decoding="async"
+                    >
+                </div>
+                <div class="landing-phone-frame absolute -bottom-6 -left-2 sm:left-4 w-[38%] max-w-[180px] shadow-2xl">
+                    <img
+                        src="{{ asset('img/landing/feature-guest-upload-mobile.webp') }}"
+                        alt="{{ __('landing.interaction_upload_alt') }}"
+                        width="390"
+                        height="844"
+                        class="w-full h-auto"
+                        loading="lazy"
+                        decoding="async"
+                    >
+                </div>
             </div>
         </div>
     </div>
