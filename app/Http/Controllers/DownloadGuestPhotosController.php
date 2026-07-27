@@ -21,7 +21,14 @@ class DownloadGuestPhotosController extends Controller
         $validated = $request->validate([
             'indexes' => ['sometimes', 'array', 'min:1'],
             'indexes.*' => ['integer', 'min:0'],
+            'selections' => ['sometimes', 'array', 'min:1'],
+            'selections.*.message' => ['required', 'integer'],
+            'selections.*.index' => ['required', 'integer', 'min:0'],
         ]);
+
+        if (isset($validated['selections'])) {
+            return $this->downloadSelections($wedding->id, $validated['selections']);
+        }
 
         $indexes = isset($validated['indexes'])
             ? array_values(array_unique(array_map('intval', $validated['indexes'])))
@@ -68,6 +75,54 @@ class DownloadGuestPhotosController extends Controller
             : 'guest-photos.zip';
 
         return $this->downloadZip($photos, $filename);
+    }
+
+    /**
+     * @param  list<array{message: int, index: int}>  $selections
+     */
+    protected function downloadSelections(int $weddingEventId, array $selections): BinaryFileResponse|StreamedResponse
+    {
+        $normalized = collect($selections)
+            ->map(fn (array $selection): array => [
+                'message' => (int) $selection['message'],
+                'index' => (int) $selection['index'],
+            ])
+            ->unique(fn (array $selection): string => $selection['message'].':'.$selection['index'])
+            ->values();
+
+        abort_if($normalized->isEmpty(), 404);
+
+        $messageIds = $normalized->pluck('message')->unique()->values();
+
+        $messages = GuestMessage::query()
+            ->where('wedding_event_id', $weddingEventId)
+            ->where('type', GuestMessageType::Photo)
+            ->whereIn('id', $messageIds)
+            ->get()
+            ->keyBy('id');
+
+        abort_if($messages->count() !== $messageIds->count(), 404);
+
+        $selectedPaths = $normalized
+            ->map(function (array $selection) use ($messages): ?string {
+                $message = $messages->get($selection['message']);
+                $path = $message?->file_paths[$selection['index']] ?? null;
+
+                return is_string($path) && $path !== '' ? $path : null;
+            })
+            ->filter()
+            ->values();
+
+        abort_if($selectedPaths->count() !== $normalized->count(), 404);
+
+        if ($selectedPaths->count() === 1) {
+            return $this->downloadSingle($selectedPaths->first());
+        }
+
+        return $this->downloadZip(
+            collect([(object) ['file_paths' => $selectedPaths->all()]]),
+            'guest-photos-selected.zip',
+        );
     }
 
     protected function downloadSingle(string $path): StreamedResponse|BinaryFileResponse

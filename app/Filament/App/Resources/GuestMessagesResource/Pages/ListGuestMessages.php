@@ -19,16 +19,24 @@ class ListGuestMessages extends ListRecords
 
     protected function getHeaderActions(): array
     {
+        $hasPhotos = GuestMessage::query()
+            ->where('wedding_event_id', auth()->user()?->weddingEvent?->id ?? 0)
+            ->where('type', GuestMessageType::Photo)
+            ->exists();
+
         return [
+            Action::make('viewAllPhotos')
+                ->label(__('app.guest_messages_view_all_photos'))
+                ->icon('heroicon-o-photo')
+                ->color('gray')
+                ->url(GuestMessagesResource::getUrl('photos'))
+                ->visible($hasPhotos),
             Action::make('downloadPhotos')
                 ->label(__('app.guest_messages_download_photos'))
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('gray')
                 ->url(route('guest-messages.photos.download'))
-                ->visible(fn (): bool => GuestMessage::query()
-                    ->where('wedding_event_id', auth()->user()?->weddingEvent?->id ?? 0)
-                    ->where('type', GuestMessageType::Photo)
-                    ->exists()),
+                ->visible($hasPhotos),
         ];
     }
 }

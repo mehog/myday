@@ -3,6 +3,7 @@
 namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\GuestMessagesResource\Pages\ListGuestMessages;
+use App\Filament\App\Resources\GuestMessagesResource\Pages\ViewAllGuestPhotos;
 use App\Filament\App\Resources\GuestMessagesResource\Pages\ViewGuestMessage;
 use App\GuestMessageType;
 use App\Models\GuestMessage;
@@ -251,6 +252,7 @@ class GuestMessagesResource extends Resource
     {
         return [
             'index' => ListGuestMessages::route('/'),
+            'photos' => ViewAllGuestPhotos::route('/fotografije'),
             'view' => ViewGuestMessage::route('/{record}'),
         ];
     }
