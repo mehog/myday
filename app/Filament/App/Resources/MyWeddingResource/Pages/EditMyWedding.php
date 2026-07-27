@@ -13,11 +13,17 @@ class EditMyWedding extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        if ($this->record->hasEnded()) {
-            unset($data['wedding_date'], $data['rsvp_deadline']);
+        if ($this->record->isArchived()) {
+            return [];
         }
 
         return $data;
+    }
+
+    protected function getSaveFormAction(): Action
+    {
+        return parent::getSaveFormAction()
+            ->visible(fn (): bool => ! $this->record->isArchived());
     }
 
     protected function getHeaderActions(): array

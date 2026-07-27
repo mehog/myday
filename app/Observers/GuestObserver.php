@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Exceptions\GuestLimitExceededException;
+use App\Exceptions\WeddingArchivedException;
 use App\Models\Guest;
 use App\Models\WeddingEvent;
 use App\Services\WeddingScheduledNotificationService;
@@ -15,21 +16,47 @@ class GuestObserver
 
     public function creating(Guest $guest): void
     {
+        $this->ensureCoupleCanMutateGuestList($guest);
         $this->ensureWithinGuestLimit($guest);
+    }
+
+    public function updating(Guest $guest): void
+    {
+        $this->ensureCoupleCanMutateGuestList($guest);
+    }
+
+    public function deleting(Guest $guest): void
+    {
+        $this->ensureCoupleCanMutateGuestList($guest);
     }
 
     public function restoring(Guest $guest): void
     {
+        $this->ensureCoupleCanMutateGuestList($guest);
         $this->ensureWithinGuestLimit($guest);
+    }
+
+    public function forceDeleting(Guest $guest): void
+    {
+        $this->ensureCoupleCanMutateGuestList($guest);
+    }
+
+    private function ensureCoupleCanMutateGuestList(Guest $guest): void
+    {
+        $wedding = $this->resolveWedding($guest);
+
+        if ($wedding === null) {
+            return;
+        }
+
+        if ($wedding->isCoupleMutationLocked()) {
+            throw new WeddingArchivedException($wedding);
+        }
     }
 
     private function ensureWithinGuestLimit(Guest $guest): void
     {
-        $wedding = $guest->weddingEvent;
-
-        if ($wedding === null && $guest->wedding_event_id) {
-            $wedding = WeddingEvent::query()->find($guest->wedding_event_id);
-        }
+        $wedding = $this->resolveWedding($guest);
 
         if ($wedding === null) {
             return;
@@ -38,6 +65,17 @@ class GuestObserver
         if (! $wedding->canAddGuests()) {
             throw new GuestLimitExceededException($wedding);
         }
+    }
+
+    private function resolveWedding(Guest $guest): ?WeddingEvent
+    {
+        $wedding = $guest->weddingEvent;
+
+        if ($wedding === null && $guest->wedding_event_id) {
+            $wedding = WeddingEvent::query()->find($guest->wedding_event_id);
+        }
+
+        return $wedding;
     }
 
     public function created(Guest $guest): void

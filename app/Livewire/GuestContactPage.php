@@ -66,10 +66,7 @@ class GuestContactPage extends Component
 
     public function canSendPhotos(): bool
     {
-        $start = $this->event->wedding_date->copy()->startOfDay();
-        $end = $this->event->wedding_date->copy()->addDays(30)->endOfDay();
-
-        return now()->gte($start) && now()->lte($end);
+        return $this->event->acceptsGuestPhotos();
     }
 
     public function submitText(): void

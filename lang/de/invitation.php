@@ -81,6 +81,7 @@ return [
     'download_ics' => 'Für Apple / Outlook herunterladen (.ics)',
     'add_to_calendar' => 'Zum Kalender hinzufügen',
     'send_message_to_newlyweds' => 'Nachricht an das Brautpaar senden',
+    'share_photos_and_messages' => 'Fotos & Nachrichten teilen',
     'view_notifications' => 'Benachrichtigungen anzeigen',
     'push_notifications_page_title' => 'Benachrichtigungen',
     'push_notifications_page_description' => 'Alle Nachrichten vom Brautpaar.',

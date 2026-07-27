@@ -6,6 +6,7 @@ use App\Filament\App\Resources\MyWeddingResource;
 use App\Filament\App\Widgets\RecentGuestMessagesWidget;
 use App\Filament\App\Widgets\VisitChartWidget;
 use App\Filament\App\Widgets\VisitStatsWidget;
+use App\Filament\App\Widgets\WeddingMemoriesWidget;
 use App\Filament\App\Widgets\WeddingOverviewWidget;
 use App\Support\Clipboard;
 use BackedEnum;
@@ -29,7 +30,25 @@ class AppDashboard extends BaseDashboard
 
     public function getTitle(): string
     {
+        $wedding = auth()->user()?->weddingEvent;
+
+        if ($wedding?->isArchived()) {
+            return __('app.memories_dashboard_title');
+        }
+
         return __('app.dashboard_title');
+    }
+
+    /**
+     * @return int | array<string, ?int>
+     */
+    public function getColumns(): int|array
+    {
+        if (auth()->user()?->weddingEvent?->isArchived()) {
+            return 1;
+        }
+
+        return 2;
     }
 
     public function mount(): void
@@ -54,8 +73,16 @@ class AppDashboard extends BaseDashboard
 
     public function getWidgets(): array
     {
-        if (! auth()->user()?->weddingEvent) {
+        $wedding = auth()->user()?->weddingEvent;
+
+        if (! $wedding) {
             return [];
+        }
+
+        if ($wedding->isArchived()) {
+            return [
+                WeddingMemoriesWidget::class,
+            ];
         }
 
         return [
@@ -76,8 +103,10 @@ class AppDashboard extends BaseDashboard
 
         $actions = [
             Action::make('edit')
-                ->label(__('app.edit_invitation'))
-                ->icon('heroicon-o-pencil-square')
+                ->label($wedding->isArchived()
+                    ? __('app.view_invitation')
+                    : __('app.edit_invitation'))
+                ->icon($wedding->isArchived() ? 'heroicon-o-eye' : 'heroicon-o-pencil-square')
                 ->url(MyWeddingResource::getUrl('edit', ['record' => $wedding])),
             Action::make('preview')
                 ->label(__('app.preview_invitation'))
@@ -103,6 +132,10 @@ class AppDashboard extends BaseDashboard
 
         if (! $wedding) {
             return __('app.no_invitation');
+        }
+
+        if ($wedding->isArchived()) {
+            return $wedding->couple_names.' — '.__('app.wedding_archived_badge');
         }
 
         if (! $wedding->is_active) {

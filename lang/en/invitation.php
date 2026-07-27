@@ -82,6 +82,7 @@ return [
     'add_to_calendar' => 'Add to calendar',
     'add_to_calendar_description' => 'Choose how you would like to save the date in your calendar.',
     'send_message_to_newlyweds' => 'Send message to the newlyweds',
+    'share_photos_and_messages' => 'Share photos & messages',
     'view_notifications' => 'View notifications',
     'push_notifications_page_title' => 'Notifications',
     'push_notifications_page_description' => 'All messages sent by the newlyweds.',

@@ -3,6 +3,7 @@
 namespace App\Filament\Imports;
 
 use App\Exceptions\GuestLimitExceededException;
+use App\Exceptions\WeddingArchivedException;
 use App\Models\Guest;
 use App\Models\WeddingEvent;
 use League\Csv\Reader;
@@ -12,6 +13,10 @@ class GuestImporter
 {
     public static function importFromContents(WeddingEvent $event, string $contents): int
     {
+        if ($event->isCoupleMutationLocked()) {
+            throw new RuntimeException(__('app.wedding_archived_guest_lock'));
+        }
+
         $reader = Reader::createFromString($contents);
         $reader->setHeaderOffset(0);
 
@@ -57,6 +62,8 @@ class GuestImporter
                     'email' => $row['email'],
                     'phone' => $row['phone'],
                 ]);
+            } catch (WeddingArchivedException $e) {
+                throw new RuntimeException(__('app.wedding_archived_guest_lock'), previous: $e);
             } catch (GuestLimitExceededException $e) {
                 throw new RuntimeException(
                     __('pricing.guest_limit_import', [

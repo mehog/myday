@@ -23,6 +23,9 @@ class MyWeddingForm
         return $schema
             ->components([
                 Section::make(__('app.section_couple'))
+                    ->description(fn (?WeddingEvent $record): ?string => $record?->isArchived()
+                        ? __('app.wedding_archived_readonly')
+                        : null)
                     ->columnSpanFull()
                     ->collapsible()
                     ->collapsed()
@@ -31,11 +34,15 @@ class MyWeddingForm
                         TextInput::make('groom_name')
                             ->label(__('app.groom_name'))
                             ->required()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
+                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
                         TextInput::make('bride_name')
                             ->label(__('app.bride_name'))
                             ->required()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
+                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
                         TextInput::make('slug')
                             ->label(__('app.invitation_link'))
                             ->readOnly()
@@ -48,9 +55,9 @@ class MyWeddingForm
                             ->label(__('app.wedding_datetime'))
                             ->required()
                             ->native(false)
-                            ->disabled(fn (?WeddingEvent $record): bool => $record?->hasEnded() ?? false)
-                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->hasEnded() ?? false))
-                            ->helperText(fn (?WeddingEvent $record): ?string => $record?->hasEnded()
+                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
+                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false))
+                            ->helperText(fn (?WeddingEvent $record): ?string => $record?->isArchived()
                                 ? __('app.wedding_date_locked')
                                 : null)
                             ->columnSpanFull(),
@@ -65,39 +72,53 @@ class MyWeddingForm
                             ->label(__('app.theme'))
                             ->options(collect(InvitationTheme::cases())->mapWithKeys(fn (InvitationTheme $theme) => [$theme->value => $theme->label()]))
                             ->required()
-                            ->native(false),
+                            ->native(false)
+                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
+                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
                         Select::make('template')
                             ->label(__('app.template'))
                             ->options(collect(InvitationTemplate::cases())->mapWithKeys(fn (InvitationTemplate $template) => [$template->value => $template->label()]))
                             ->required()
-                            ->native(false),
+                            ->native(false)
+                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
+                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
                         Select::make('reveal_animation')
                             ->label(__('app.reveal_animation'))
                             ->options(collect(InvitationReveal::cases())->mapWithKeys(fn (InvitationReveal $reveal) => [$reveal->value => $reveal->label()]))
                             ->nullable()
                             ->placeholder(__('app.reveal_none'))
-                            ->native(false),
+                            ->native(false)
+                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
+                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
                         Select::make('link_mode')
                             ->label(__('app.share_mode'))
                             ->options(collect(LinkMode::cases())->mapWithKeys(fn (LinkMode $mode) => [$mode->value => $mode->label()]))
                             ->required()
-                            ->native(false),
+                            ->native(false)
+                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
+                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
                         FileUpload::make('hero_image')
                             ->label(__('app.hero_image'))
                             ->image()
                             ->directory('hero-images')
-                            ->disk(config('filesystems.media_disk')),
+                            ->disk(config('filesystems.media_disk'))
+                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
+                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
                         TextInput::make('music_url')
                             ->label(__('app.youtube_song'))
                             ->url()
                             ->maxLength(500)
-                            ->helperText(__('app.youtube_helper')),
+                            ->helperText(__('app.youtube_helper'))
+                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
+                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
                         Textarea::make('motto')
                             ->label(__('app.motto'))
                             ->helperText(__('app.motto_helper'))
                             ->maxLength(300)
                             ->rows(3)
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
+                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
                     ]),
                 Section::make(__('app.section_location'))
                     ->columns(2)
@@ -107,11 +128,15 @@ class MyWeddingForm
                         TextInput::make('location_name')
                             ->label(__('app.location_name'))
                             ->maxLength(255)
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
+                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
                         TextInput::make('location_address')
                             ->label(__('app.location_address'))
                             ->maxLength(255)
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
+                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
                         Section::make(__('app.section_coordinates'))
                             ->description(__('app.coordinates_description'))
                             ->collapsed()
@@ -122,11 +147,15 @@ class MyWeddingForm
                                 TextInput::make('location_lat')
                                     ->label(__('app.latitude'))
                                     ->numeric()
-                                    ->step(0.0000001),
+                                    ->step(0.0000001)
+                                    ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
+                                    ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
                                 TextInput::make('location_lng')
                                     ->label(__('app.longitude'))
                                     ->numeric()
-                                    ->step(0.0000001),
+                                    ->step(0.0000001)
+                                    ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
+                                    ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
                             ]),
                     ]),
                 Section::make(__('app.section_rsvp'))
@@ -136,9 +165,9 @@ class MyWeddingForm
                         DatePicker::make('rsvp_deadline')
                             ->label(__('app.rsvp_deadline'))
                             ->native(false)
-                            ->disabled(fn (?WeddingEvent $record): bool => $record?->hasEnded() ?? false)
-                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->hasEnded() ?? false))
-                            ->helperText(fn (?WeddingEvent $record): ?string => $record?->hasEnded()
+                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
+                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false))
+                            ->helperText(fn (?WeddingEvent $record): ?string => $record?->isArchived()
                                 ? __('app.rsvp_deadline_locked')
                                 : null),
                         Textarea::make('send_message')
@@ -146,7 +175,9 @@ class MyWeddingForm
                             ->helperText(__('app.guest_message_helper'))
                             ->placeholder(__('app.guest_message_placeholder'))
                             ->rows(4)
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
+                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
                     ]),
             ]);
     }

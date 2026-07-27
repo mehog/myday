@@ -33,7 +33,7 @@
                     </div>
 
                     <div class="space-y-6">
-                        @includeWhen($event->isWeddingDay(), 'livewire.partials.guest-contact-photos-section')
+                        @includeWhen($event->acceptsGuestPhotos(), 'livewire.partials.guest-contact-photos-section')
 
                         {{-- Text message --}}
                         <div class="rounded-2xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)]/80 p-6">
@@ -216,7 +216,7 @@
                             @enderror
                         </div>
 
-                        @includeUnless($event->isWeddingDay(), 'livewire.partials.guest-contact-photos-section')
+                        @includeUnless($event->acceptsGuestPhotos(), 'livewire.partials.guest-contact-photos-section')
                     </div>
                 </div>
             </section>

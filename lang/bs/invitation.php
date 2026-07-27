@@ -82,6 +82,7 @@ return [
     'add_to_calendar' => 'Dodaj u kalendar',
     'add_to_calendar_description' => 'Odaberite kako želite sačuvati datum u svom kalendaru.',
     'send_message_to_newlyweds' => 'Pošalji poruku mladencima',
+    'share_photos_and_messages' => 'Podijeli fotografije i poruke',
     'view_notifications' => 'Pogledaj obavijesti',
     'push_notifications_page_title' => 'Obavijesti',
     'push_notifications_page_description' => 'Sve poruke koje su mladenci poslali.',

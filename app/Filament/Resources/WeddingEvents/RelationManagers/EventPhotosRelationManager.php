@@ -14,6 +14,7 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class EventPhotosRelationManager extends RelationManager
 {
@@ -21,7 +22,7 @@ class EventPhotosRelationManager extends RelationManager
 
     protected static ?string $title = null;
 
-    public static function getTitle(\Illuminate\Database\Eloquent\Model $ownerRecord, string $pageClass): string
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
     {
         return __('photos.title');
     }
@@ -54,7 +55,7 @@ class EventPhotosRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('path')
             ->defaultSort('sort_order')
-            ->reorderable('sort_order')
+            ->reorderable($this->coupleSetupLocked() ? null : 'sort_order')
             ->columns([
                 ImageColumn::make('path')
                     ->label($this->trans('field_photo'))
@@ -68,23 +69,34 @@ class EventPhotosRelationManager extends RelationManager
                     ->sortable(),
             ])
             ->headerActions([
-                CreateAction::make(),
+                CreateAction::make()
+                    ->visible(fn (): bool => ! $this->coupleSetupLocked()),
             ])
             ->recordActions([
-                EditAction::make(),
-                DeleteAction::make(),
+                EditAction::make()
+                    ->visible(fn (): bool => ! $this->coupleSetupLocked()),
+                DeleteAction::make()
+                    ->visible(fn (): bool => ! $this->coupleSetupLocked()),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->visible(fn (): bool => ! $this->coupleSetupLocked()),
                 ]),
             ])
             ->emptyStateIcon('heroicon-o-photo')
             ->emptyStateHeading($this->trans('empty_heading'))
             ->emptyStateDescription($this->trans('empty_description'))
             ->emptyStateActions([
-                CreateAction::make(),
+                CreateAction::make()
+                    ->visible(fn (): bool => ! $this->coupleSetupLocked()),
             ]);
+    }
+
+    protected function coupleSetupLocked(): bool
+    {
+        return filament()->getCurrentPanel()?->getId() === 'app'
+            && $this->getOwnerRecord()->isArchived();
     }
 
     protected function trans(string $key, array $replace = []): string

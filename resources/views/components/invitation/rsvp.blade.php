@@ -57,12 +57,22 @@
                             'guest' => $guest,
                             'isPersonalLink' => $isPersonalLink ?? false,
                         ])
+                    @elseif ($isPersonalLink ?? false)
+                        @include('components.invitation.rsvp-contact-link', [
+                            'event' => $event,
+                            'guest' => $guest,
+                        ])
                     @endif
                 </div>
+            @elseif ($guest && ($isPersonalLink ?? false))
+                @include('components.invitation.rsvp-contact-link', [
+                    'event' => $event,
+                    'guest' => $guest,
+                ])
             @endif
         </div>
 
-        @if ($guest && $guest->hasResponded() && $guest->rsvp_status === \App\RsvpStatus::Yes)
+        @if (! $event->hasEnded() && $guest && $guest->hasResponded() && $guest->rsvp_status === \App\RsvpStatus::Yes)
             <div
                 x-show="showCalendarModal"
                 x-transition.opacity

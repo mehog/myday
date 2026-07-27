@@ -267,6 +267,30 @@ class WeddingEvent extends Model
         return now()->greaterThan($this->wedding_date->copy()->endOfDay());
     }
 
+    public function isArchived(): bool
+    {
+        return $this->hasEnded();
+    }
+
+    /**
+     * Couples cannot mutate invitation setup or the guest list after the wedding day.
+     * Administrators and unauthenticated system code remain unrestricted.
+     */
+    public function isCoupleMutationLocked(?User $user = null): bool
+    {
+        if (! $this->isArchived()) {
+            return false;
+        }
+
+        $user ??= auth()->user();
+
+        if ($user === null || $user->is_admin) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function acceptsRsvps(): bool
     {
         if ($this->hasEnded()) {
@@ -278,6 +302,14 @@ class WeddingEvent extends Model
         }
 
         return true;
+    }
+
+    public function acceptsGuestPhotos(): bool
+    {
+        $start = $this->wedding_date->copy()->startOfDay();
+        $end = $this->wedding_date->copy()->addDays(30)->endOfDay();
+
+        return now()->greaterThanOrEqualTo($start) && now()->lessThanOrEqualTo($end);
     }
 
     public function getHeroImageUrlAttribute(): ?string

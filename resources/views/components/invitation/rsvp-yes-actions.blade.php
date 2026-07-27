@@ -1,17 +1,21 @@
 <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-    <button
-        type="button"
-        @click="showCalendarModal = true"
-        class="rsvp-btn rsvp-btn-yes rounded-xl px-6 py-3 invitation-heading text-base transition"
-    >
-        {{ __('invitation.add_to_calendar') }}
-    </button>
+    @unless ($event->hasEnded())
+        <button
+            type="button"
+            @click="showCalendarModal = true"
+            class="rsvp-btn rsvp-btn-yes rounded-xl px-6 py-3 invitation-heading text-base transition"
+        >
+            {{ __('invitation.add_to_calendar') }}
+        </button>
+    @endunless
     @if ($guest)
         <a
             href="{{ route('invitation.contact.guest', [$event->slug, $guest->token]) }}"
             class="rsvp-btn rsvp-btn-no rounded-xl px-6 py-3 invitation-heading text-base transition"
         >
-            {{ __('invitation.send_message_to_newlyweds') }}
+            {{ $event->acceptsGuestPhotos()
+                ? __('invitation.share_photos_and_messages')
+                : __('invitation.send_message_to_newlyweds') }}
         </a>
         @if ($event->pushNotificationLogs()->where('status', 'sent')->exists())
             <a

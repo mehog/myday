@@ -183,12 +183,12 @@ class GuestsRelationManager extends RelationManager
             ->emptyStateDescription($this->trans('empty_description'))
             ->emptyStateActions([
                 CreateAction::make()
-                    ->visible(fn (): bool => ! $this->coupleGuestManagementLocked() && $this->canAddMoreGuests())
+                    ->visible(fn (): bool => ! $this->coupleSetupLocked() && $this->canAddMoreGuests())
                     ->before(fn (CreateAction $action) => $this->guardGuestCapacity($action)),
             ])
             ->headerActions([
                 CreateAction::make()
-                    ->visible(fn (): bool => ! $this->coupleGuestManagementLocked() && $this->canAddMoreGuests())
+                    ->visible(fn (): bool => ! $this->coupleSetupLocked() && $this->canAddMoreGuests())
                     ->before(fn (CreateAction $action) => $this->guardGuestCapacity($action)),
                 Action::make('downloadPlaceCards')
                     ->label($this->trans('place_cards_download'))
@@ -246,7 +246,7 @@ class GuestsRelationManager extends RelationManager
                 Action::make('importCsv')
                     ->label($this->trans('import_csv'))
                     ->icon('heroicon-o-arrow-up-tray')
-                    ->visible(fn (): bool => ! $this->coupleGuestManagementLocked() && $this->canAddMoreGuests())
+                    ->visible(fn (): bool => ! $this->coupleSetupLocked() && $this->canAddMoreGuests())
                     ->form([
                         FileUpload::make('file')
                             ->label($this->trans('csv_file'))
@@ -286,6 +286,7 @@ class GuestsRelationManager extends RelationManager
                     ->icon('heroicon-o-paper-airplane')
                     ->color('primary')
                     ->button()
+                    ->visible(fn (): bool => ! $this->coupleSetupLocked())
                     ->modalSubmitAction(false)
                     ->modalCancelAction(fn (Action $action) => $action->label($this->trans('close')))
                     ->fillForm(fn (Guest $record): array => [
@@ -317,6 +318,7 @@ class GuestsRelationManager extends RelationManager
                         ->modalHeading($this->trans('mark_sent'))
                         ->icon('heroicon-o-check-circle')
                         ->color('gray')
+                        ->visible(fn (): bool => ! $this->coupleSetupLocked())
                         ->form([
                             Select::make('invite_platform')
                                 ->label($this->trans('platform'))
@@ -341,6 +343,7 @@ class GuestsRelationManager extends RelationManager
                         ->modalDescription($this->trans('mark_rsvp_description'))
                         ->icon('heroicon-o-pencil-square')
                         ->color('gray')
+                        ->visible(fn (): bool => ! $this->coupleSetupLocked())
                         ->fillForm(fn (Guest $record): array => [
                             'rsvp_status' => $record->rsvp_status?->value,
                             'plus_one_name' => $record->plus_one_name,
@@ -388,7 +391,7 @@ class GuestsRelationManager extends RelationManager
                         ->modalDescription($this->trans('seating_name_description'))
                         ->icon('heroicon-o-identification')
                         ->color('gray')
-                        ->visible(fn (Guest $record): bool => filled($record->plus_one_name))
+                        ->visible(fn (Guest $record): bool => ! $this->coupleSetupLocked() && filled($record->plus_one_name))
                         ->fillForm(fn (Guest $record): array => [
                             'plus_one_seating_name' => $record->plus_one_seating_name,
                         ])
@@ -419,6 +422,7 @@ class GuestsRelationManager extends RelationManager
                         ->modalDescription($this->trans('children_description'))
                         ->icon('heroicon-o-user-group')
                         ->color('gray')
+                        ->visible(fn (): bool => ! $this->coupleSetupLocked())
                         ->fillForm(fn (Guest $record): array => [
                             'children' => $record->children
                                 ->map(fn (GuestChild $child): array => [
@@ -464,10 +468,14 @@ class GuestsRelationManager extends RelationManager
                                 ->success()
                                 ->send();
                         }),
-                    EditAction::make(),
-                    DeleteAction::make(),
-                    RestoreAction::make(),
-                    ForceDeleteAction::make(),
+                    EditAction::make()
+                        ->visible(fn (): bool => ! $this->coupleSetupLocked()),
+                    DeleteAction::make()
+                        ->visible(fn (): bool => ! $this->coupleSetupLocked()),
+                    RestoreAction::make()
+                        ->visible(fn (): bool => ! $this->coupleSetupLocked()),
+                    ForceDeleteAction::make()
+                        ->visible(fn (): bool => ! $this->coupleSetupLocked()),
                 ])
                     ->label($this->trans('more_actions'))
                     ->icon(Heroicon::OutlinedEllipsisVertical)
@@ -476,9 +484,12 @@ class GuestsRelationManager extends RelationManager
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->visible(fn (): bool => ! $this->coupleSetupLocked()),
+                    RestoreBulkAction::make()
+                        ->visible(fn (): bool => ! $this->coupleSetupLocked()),
+                    ForceDeleteBulkAction::make()
+                        ->visible(fn (): bool => ! $this->coupleSetupLocked()),
                 ]),
             ]);
     }
@@ -510,10 +521,10 @@ class GuestsRelationManager extends RelationManager
             ->cancelParentActions();
     }
 
-    protected function coupleGuestManagementLocked(): bool
+    protected function coupleSetupLocked(): bool
     {
         return filament()->getCurrentPanel()?->getId() === 'app'
-            && $this->getOwnerRecord()->hasEnded();
+            && $this->getOwnerRecord()->isArchived();
     }
 
     protected function canAddMoreGuests(): bool
