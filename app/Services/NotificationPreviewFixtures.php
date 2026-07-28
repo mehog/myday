@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Enquiry;
 use App\Models\Guest;
 use App\Models\User;
 use App\Models\WeddingEvent;
@@ -14,7 +13,6 @@ final class NotificationPreviewFixtures
         public WeddingEvent $wedding,
         public User $user,
         public Guest $guest,
-        public Enquiry $enquiry,
     ) {}
 
     /**
@@ -54,25 +52,7 @@ final class NotificationPreviewFixtures
             $guest->setRelation('weddingEvent', $wedding);
         }
 
-        $enquiry = isset($ids['enquiry_id'])
-            ? Enquiry::query()->find($ids['enquiry_id'])
-            : Enquiry::query()->latest()->first();
-
-        if ($enquiry === null) {
-            $enquiry = new Enquiry([
-                'name' => 'Preview Enquirer',
-                'email' => 'enquirer@example.com',
-                'phone' => '+387 61 000 000',
-                'groom_name' => $wedding->groom_name,
-                'bride_name' => $wedding->bride_name,
-                'wedding_date' => $wedding->wedding_date,
-                'notes' => 'Preview enquiry notes for notification testing.',
-            ]);
-            $enquiry->id = 0;
-            $enquiry->created_at = now();
-        }
-
-        return new self($wedding, $user, $guest, $enquiry);
+        return new self($wedding, $user, $guest);
     }
 
     public function applyLocale(?string $locale): void

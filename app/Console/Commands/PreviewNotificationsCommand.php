@@ -16,7 +16,6 @@ class PreviewNotificationsCommand extends Command
                             {--wedding-id= : Wedding event ID for fixture data}
                             {--guest-id= : Guest ID for fixture data}
                             {--user-id= : User ID for fixture data}
-                            {--enquiry-id= : Enquiry ID for fixture data}
                             {--log-id= : Push notification log ID for scheduled-push preview}
                             {--delay= : Seconds to wait between sends (default: config notifications.preview_delay_seconds)}
                             {--force : Allow running in production}';
@@ -67,7 +66,6 @@ class PreviewNotificationsCommand extends Command
             'wedding_id' => $this->option('wedding-id') !== null ? (int) $this->option('wedding-id') : null,
             'guest_id' => $this->option('guest-id') !== null ? (int) $this->option('guest-id') : null,
             'user_id' => $this->option('user-id') !== null ? (int) $this->option('user-id') : null,
-            'enquiry_id' => $this->option('enquiry-id') !== null ? (int) $this->option('enquiry-id') : null,
         ], fn (mixed $value): bool => $value !== null);
 
         $logId = $this->option('log-id') !== null ? (int) $this->option('log-id') : null;

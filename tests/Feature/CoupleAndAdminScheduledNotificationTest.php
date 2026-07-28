@@ -2,12 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Models\Enquiry;
 use App\Models\User;
 use App\Models\WeddingEvent;
-use App\Notifications\AdminEnquiryFollowUpNotification;
 use App\Notifications\AdminInactiveWeddingReminderNotification;
-use App\Notifications\AdminNewEnquiryNotification;
 use App\Notifications\AdminNewSignupNotification;
 use App\Notifications\CoupleActivationReminderNotification;
 use App\Notifications\CoupleOnboardingTipNotification;
@@ -98,39 +95,6 @@ class CoupleAndAdminScheduledNotificationTest extends TestCase
             ScheduledNotificationModel::query()
                 ->where('notification_type', AdminInactiveWeddingReminderNotification::class)
                 ->where('meta->type', ScheduledNotificationType::AdminInactiveWedding14Days->value)
-                ->exists()
-        );
-    }
-
-    public function test_it_schedules_admin_enquiry_follow_up(): void
-    {
-        $enquiry = Enquiry::withoutEvents(fn () => Enquiry::factory()->create([
-            'created_at' => now(),
-        ]));
-
-        $this->service->scheduleEnquiryFollowUp($enquiry);
-
-        $this->assertTrue(
-            ScheduledNotificationModel::query()
-                ->where('notification_type', AdminEnquiryFollowUpNotification::class)
-                ->where('meta->enquiry_id', $enquiry->id)
-                ->exists()
-        );
-    }
-
-    public function test_enquiry_observer_notifies_admins_instantly_and_schedules_follow_up(): void
-    {
-        Notification::fake();
-
-        $admin = User::query()->where('is_admin', true)->firstOrFail();
-        $enquiry = Enquiry::factory()->create();
-
-        Notification::assertSentTo($admin, AdminNewEnquiryNotification::class);
-
-        $this->assertTrue(
-            ScheduledNotificationModel::query()
-                ->where('notification_type', AdminEnquiryFollowUpNotification::class)
-                ->where('meta->enquiry_id', $enquiry->id)
                 ->exists()
         );
     }

@@ -34,22 +34,10 @@ return [
     'couple_activation_subject' => 'Vaša pozivnica još čeka aktivaciju',
     'couple_activation_body' => 'Javni link za :couple još nije aktivan. U međuvremenu možete pripremati goste i pregledati pozivnicu.',
 
-    'admin_new_enquiry_greeting' => 'Novi upit sa landing stranice',
-    'admin_new_enquiry_subject' => 'Upit od :name',
-    'admin_new_enquiry_body' => ':name (:email) je poslao/la upit. Telefon: :phone.',
-    'admin_new_enquiry_couple' => 'Par: :couple',
-    'admin_new_enquiry_wedding_date' => 'Datum vjenčanja: :date',
-    'admin_new_enquiry_notes' => 'Napomene: :notes',
-    'admin_new_enquiry_reply' => 'Odgovori emailom',
-
     'admin_new_signup_greeting' => 'Nova registracija para',
     'admin_new_signup_subject' => 'Nova registracija — :couple',
     'admin_new_signup_body' => ':couple se registrirao/la (:name, :email). Datum vjenčanja: :date. Pozivnica čeka aktivaciju.',
     'admin_new_signup_action' => 'Pregled u adminu',
-
-    'admin_enquiry_follow_up_greeting' => 'Podsjetnik za praćenje upita',
-    'admin_enquiry_follow_up_subject' => 'Kontaktirajte :name',
-    'admin_enquiry_follow_up_body' => 'Prošlo je :days dan(a) od kada je :name (:email) poslao/la upit. Još se nije registrirao/la.',
 
     'admin_inactive_wedding_greeting' => 'Upozorenje o neaktivnoj pozivnici',
     'admin_inactive_wedding_subject' => 'Vjenčanje :couple za :days dana — još neaktivno',

@@ -2,14 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\Enquiry;
 use App\Models\Guest;
 use App\Models\PushNotificationLog;
 use App\Models\User;
 use App\Models\WeddingEvent;
-use App\Notifications\AdminEnquiryFollowUpNotification;
 use App\Notifications\AdminInactiveWeddingReminderNotification;
-use App\Notifications\AdminNewEnquiryNotification;
 use App\Notifications\AdminNewSignupNotification;
 use App\Notifications\CoupleActivationReminderNotification;
 use App\Notifications\CoupleOnboardingTipNotification;
@@ -227,39 +224,9 @@ class WeddingScheduledNotificationService
         $this->scheduleForAdmins($notification, $sendAt, $meta);
     }
 
-    public function notifyAdminsOfNewEnquiry(Enquiry $enquiry): void
-    {
-        if (! AdminNotifier::hasRecipients()) {
-            return;
-        }
-
-        AdminNotifier::notify(new AdminNewEnquiryNotification($enquiry));
-    }
-
-    public function scheduleEnquiryFollowUp(Enquiry $enquiry): void
-    {
-        if (! AdminNotifier::hasRecipients()) {
-            return;
-        }
-
-        $this->cancelEnquiryFollowUp($enquiry);
-
-        $days = (int) config('notifications.admin_enquiry_follow_up_days', 3);
-        $sendAt = $this->daysAfter($enquiry->created_at->copy()->startOfDay(), $days);
-        $notification = new AdminEnquiryFollowUpNotification($enquiry->id);
-        $meta = ScheduledNotificationType::AdminEnquiryFollowUp->meta(enquiryId: $enquiry->id);
-
-        $this->scheduleForAdmins($notification, $sendAt, $meta);
-    }
-
     public function cancelAdminInactiveWeddingReminder(WeddingEvent $event): void
     {
         $this->cancelPendingByMeta('wedding_event_id', $event->id, ScheduledNotificationType::AdminInactiveWedding14Days);
-    }
-
-    public function cancelEnquiryFollowUp(Enquiry $enquiry): void
-    {
-        $this->cancelPendingByMeta('enquiry_id', $enquiry->id, ScheduledNotificationType::AdminEnquiryFollowUp);
     }
 
     private function cancelPendingForUser(User $user, ?ScheduledNotificationType $type = null): void

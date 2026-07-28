@@ -15,7 +15,6 @@ return [
     'hero_title' => 'Your wedding story deserves more than a photo in a chat',
     'hero_subtitle' => 'A web invitation with a countdown, RSVP, day schedule and venue photos. Set it up and share it in three steps.',
     'hero_cta_demo' => 'View demo',
-    'hero_cta_order' => 'Order invitation',
     'hero_cta_create' => 'Create invitation',
     'hero_image_alt' => 'Mobile preview of a personalized NasDan wedding invitation',
 
@@ -110,26 +109,6 @@ return [
 
     'contact_title' => 'Order an invitation',
     'contact_subtitle' => 'Fill in the form and we will get back to you as soon as possible.',
-
-    'form_name' => 'Full name',
-    'form_email' => 'Email address',
-    'form_phone' => 'Phone number',
-    'form_groom' => 'Groom\'s name',
-    'form_bride' => 'Bride\'s name',
-    'form_date' => 'Wedding date',
-    'form_theme' => 'Theme selection',
-    'form_theme_placeholder' => 'Choose a theme',
-    'form_notes' => 'Notes',
-    'form_notes_placeholder' => 'Special requests, questions or additional information...',
-    'form_submit' => 'Send inquiry',
-    'form_saving' => 'Sending...',
-
-    'form_success_title' => 'Thank you!',
-    'form_success_text' => 'We received your inquiry. We will contact you soon.',
-
-    'form_name_required' => 'Please enter your name.',
-    'form_email_required' => 'Please enter your email address.',
-    'form_email_invalid' => 'The email address is not valid.',
 
     'footer_rights' => 'All rights reserved.',
     'footer_contact' => 'Contact',

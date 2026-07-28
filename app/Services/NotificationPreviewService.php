@@ -3,9 +3,7 @@
 namespace App\Services;
 
 use App\Models\PushNotificationLog;
-use App\Notifications\AdminEnquiryFollowUpNotification;
 use App\Notifications\AdminInactiveWeddingReminderNotification;
-use App\Notifications\AdminNewEnquiryNotification;
 use App\Notifications\AdminNewSignupNotification;
 use App\Notifications\CoupleActivationReminderNotification;
 use App\Notifications\CoupleOnboardingTipNotification;
@@ -369,30 +367,12 @@ final class NotificationPreviewService
     {
         return [
             [
-                'id' => 'admin-new-enquiry',
-                'label' => 'Admin — new enquiry',
-                'group' => 'admin',
-                'channel' => 'admin',
-                'target' => 'admin',
-                'factory' => fn (NotificationPreviewFixtures $fixtures): Notification => new AdminNewEnquiryNotification($fixtures->enquiry),
-            ],
-            [
                 'id' => 'admin-new-signup',
                 'label' => 'Admin — new signup',
                 'group' => 'admin',
                 'channel' => 'admin',
                 'target' => 'admin',
                 'factory' => fn (NotificationPreviewFixtures $fixtures): Notification => new AdminNewSignupNotification($fixtures->wedding),
-            ],
-            [
-                'id' => 'admin-enquiry-follow-up',
-                'label' => 'Admin — enquiry follow-up',
-                'group' => 'admin',
-                'channel' => 'admin',
-                'target' => 'admin',
-                'factory' => fn (NotificationPreviewFixtures $fixtures): Notification => $fixtures->enquiry->exists
-                    ? new AdminEnquiryFollowUpNotification($fixtures->enquiry->id)
-                    : new AdminEnquiryFollowUpNotification(0, $fixtures->enquiry),
             ],
             [
                 'id' => 'admin-inactive-wedding',

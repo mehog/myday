@@ -17,7 +17,6 @@ enum ScheduledNotificationType: string
     case CoupleOnboardingDay7 = 'couple_onboarding_day_7';
     case CoupleActivationReminder = 'couple_activation_reminder';
     case AdminInactiveWedding14Days = 'admin_inactive_wedding_14d';
-    case AdminEnquiryFollowUp = 'admin_enquiry_follow_up';
 
     /**
      * @return array<string, int|string>
@@ -27,7 +26,6 @@ enum ScheduledNotificationType: string
         ?int $guestId = null,
         ?int $pushNotificationLogId = null,
         ?int $userId = null,
-        ?int $enquiryId = null,
     ): array {
         return array_filter([
             'wedding_event_id' => $weddingEventId,
@@ -35,7 +33,6 @@ enum ScheduledNotificationType: string
             'type' => $this->value,
             'push_notification_log_id' => $pushNotificationLogId,
             'user_id' => $userId,
-            'enquiry_id' => $enquiryId,
         ], fn (mixed $value): bool => $value !== null);
     }
 

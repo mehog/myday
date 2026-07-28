@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Enquiry;
 use App\Models\ReferralPayout;
 use App\Models\User;
 use App\Models\WeddingEvent;
@@ -75,14 +74,5 @@ class AdminDashboardMetricsTest extends TestCase
 
         $this->assertSame(1, AdminDashboardMetrics::pendingPayoutsCount());
         $this->assertCount(1, AdminDashboardMetrics::pendingPayoutsQuery()->get());
-    }
-
-    public function test_recent_enquiries_count_includes_only_last_seven_days(): void
-    {
-        Enquiry::factory()->create(['created_at' => now()->subDays(2)]);
-        Enquiry::factory()->create(['created_at' => now()->subDays(10)]);
-
-        $this->assertSame(1, AdminDashboardMetrics::recentEnquiriesCount());
-        $this->assertCount(2, AdminDashboardMetrics::recentEnquiriesQuery()->get());
     }
 }

@@ -43,14 +43,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Days after an enquiry to send admin a follow-up reminder
-    |--------------------------------------------------------------------------
-    */
-
-    'admin_enquiry_follow_up_days' => (int) env('ADMIN_ENQUIRY_FOLLOW_UP_DAYS', 3),
-
-    /*
-    |--------------------------------------------------------------------------
     | Seconds to wait between sends in notifications:preview (rate-limit safety)
     |--------------------------------------------------------------------------
     */

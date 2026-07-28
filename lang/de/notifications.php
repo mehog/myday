@@ -34,22 +34,10 @@ return [
     'couple_activation_subject' => 'Ihre Einladung wartet noch auf Aktivierung',
     'couple_activation_body' => 'Der öffentliche Link für :couple ist noch nicht live. Sie können Gäste vorbereiten und die Einladung in der Vorschau ansehen.',
 
-    'admin_new_enquiry_greeting' => 'Neue Landingpage-Anfrage',
-    'admin_new_enquiry_subject' => 'Anfrage von :name',
-    'admin_new_enquiry_body' => ':name (:email) hat eine Anfrage gesendet. Telefon: :phone.',
-    'admin_new_enquiry_couple' => 'Paar: :couple',
-    'admin_new_enquiry_wedding_date' => 'Hochzeitsdatum: :date',
-    'admin_new_enquiry_notes' => 'Notizen: :notes',
-    'admin_new_enquiry_reply' => 'Per E-Mail antworten',
-
     'admin_new_signup_greeting' => 'Neue Paar-Registrierung',
     'admin_new_signup_subject' => 'Neue Registrierung — :couple',
     'admin_new_signup_body' => ':couple hat sich registriert (:name, :email). Hochzeit: :date. Einladung wartet auf Aktivierung.',
     'admin_new_signup_action' => 'Im Admin prüfen',
-
-    'admin_enquiry_follow_up_greeting' => 'Erinnerung zur Anfrage-Nachverfolgung',
-    'admin_enquiry_follow_up_subject' => 'Nachfassen bei :name',
-    'admin_enquiry_follow_up_body' => 'Seit :days Tag(en) hat :name (:email) eine Anfrage gesendet und sich noch nicht registriert.',
 
     'admin_inactive_wedding_greeting' => 'Hinweis: inaktive Einladung',
     'admin_inactive_wedding_subject' => ':couple Hochzeit in :days Tagen — noch inaktiv',

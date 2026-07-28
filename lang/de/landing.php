@@ -15,7 +15,6 @@ return [
     'hero_title' => 'Ihre Hochzeitsgeschichte verdient mehr als ein Foto im Chat',
     'hero_subtitle' => 'Eine personalisierte Web-Einladung mit Countdown, RSVP, Tagesablauf und Fotos der Location. In drei Schritten bereit zum Teilen.',
     'hero_cta_demo' => 'Demo ansehen',
-    'hero_cta_order' => 'Einladung bestellen',
     'hero_cta_create' => 'Einladung erstellen',
     'hero_image_alt' => 'Mobile Vorschau einer personalisierten NasDan-Hochzeitseinladung',
 
@@ -110,26 +109,6 @@ return [
 
     'contact_title' => 'Einladung bestellen',
     'contact_subtitle' => 'Füllen Sie das Formular aus und wir melden uns so schnell wie möglich bei Ihnen.',
-
-    'form_name' => 'Vollständiger Name',
-    'form_email' => 'E-Mail-Adresse',
-    'form_phone' => 'Telefonnummer',
-    'form_groom' => 'Name des Bräutigams',
-    'form_bride' => 'Name der Braut',
-    'form_date' => 'Hochzeitsdatum',
-    'form_theme' => 'Themenauswahl',
-    'form_theme_placeholder' => 'Thema wählen',
-    'form_notes' => 'Anmerkungen',
-    'form_notes_placeholder' => 'Besondere Wünsche, Fragen oder zusätzliche Informationen...',
-    'form_submit' => 'Anfrage senden',
-    'form_saving' => 'Wird gesendet...',
-
-    'form_success_title' => 'Vielen Dank!',
-    'form_success_text' => 'Wir haben Ihre Anfrage erhalten. Wir werden uns bald bei Ihnen melden.',
-
-    'form_name_required' => 'Bitte geben Sie Ihren Namen ein.',
-    'form_email_required' => 'Bitte geben Sie Ihre E-Mail-Adresse ein.',
-    'form_email_invalid' => 'Die E-Mail-Adresse ist ungültig.',
 
     'footer_rights' => 'Alle Rechte vorbehalten.',
     'footer_contact' => 'Kontakt',

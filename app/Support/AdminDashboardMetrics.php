@@ -2,7 +2,6 @@
 
 namespace App\Support;
 
-use App\Models\Enquiry;
 use App\Models\ReferralPayout;
 use App\Models\User;
 use App\Models\WeddingEvent;
@@ -64,22 +63,6 @@ class AdminDashboardMetrics
         return ReferralPayout::query()
             ->with('referrer')
             ->pending()
-            ->orderByDesc('created_at');
-    }
-
-    public static function recentEnquiriesCount(): int
-    {
-        return Enquiry::query()
-            ->where('created_at', '>=', now()->subDays(7))
-            ->count();
-    }
-
-    /**
-     * @return Builder<Enquiry>
-     */
-    public static function recentEnquiriesQuery(): Builder
-    {
-        return Enquiry::query()
             ->orderByDesc('created_at');
     }
 }

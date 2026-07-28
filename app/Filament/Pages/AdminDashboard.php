@@ -10,7 +10,6 @@ use App\Filament\Widgets\PendingPayoutsWidget;
 use App\Filament\Widgets\PlatformOpsStatsWidget;
 use App\Filament\Widgets\PlatformStatsWidget;
 use App\Filament\Widgets\PlatformVisitChartWidget;
-use App\Filament\Widgets\RecentEnquiriesWidget;
 use App\Filament\Widgets\UnverifiedUsersWidget;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -31,7 +30,6 @@ class AdminDashboard extends BaseDashboard
             PlatformOpsStatsWidget::class,
             PendingActivationsWidget::class,
             UnverifiedUsersWidget::class,
-            RecentEnquiriesWidget::class,
             PendingPayoutsWidget::class,
             PlatformStatsWidget::class,
             PlatformVisitChartWidget::class,

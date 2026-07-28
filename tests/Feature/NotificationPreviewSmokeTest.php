@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Enquiry;
 use App\Models\Guest;
 use App\Models\User;
 use App\Models\WeddingEvent;
@@ -74,7 +73,6 @@ class NotificationPreviewSmokeTest extends TestCase
                 'wedding_id' => $this->fixtures->wedding->id,
                 'guest_id' => $this->fixtures->guest->id,
                 'user_id' => $this->fixtures->user->id,
-                'enquiry_id' => $this->fixtures->enquiry->id,
             ],
             locale: 'en',
             delaySeconds: 0,
@@ -89,30 +87,6 @@ class NotificationPreviewSmokeTest extends TestCase
         $email = $messages->last()->getOriginalMessage();
         $this->assertInstanceOf(Email::class, $email);
         $this->assertNotEmpty($email->getSubject());
-    }
-
-    public function test_admin_enquiry_follow_up_preview_works_without_persisted_enquiry(): void
-    {
-        $user = User::factory()->create(['locale' => Locale::default()]);
-        $wedding = WeddingEvent::withoutEvents(fn () => WeddingEvent::factory()->for($user)->create([
-            'rsvp_deadline' => now()->addDays(7),
-            'is_active' => false,
-        ]));
-        $guest = Guest::withoutEvents(fn () => Guest::factory()->for($wedding)->create([
-            'email' => 'guest@example.com',
-        ]));
-
-        $fixtures = NotificationPreviewFixtures::resolve([
-            'wedding_id' => $wedding->id,
-            'guest_id' => $guest->id,
-            'user_id' => $user->id,
-        ]);
-
-        $notification = $this->preview->buildNotification('admin-enquiry-follow-up', $fixtures);
-        $mail = $notification->toMail(new AnonymousNotifiable);
-
-        $this->assertInstanceOf(MailMessage::class, $mail);
-        $this->assertNotEmpty($mail->subject);
     }
 
     public function test_preview_command_lists_scenarios(): void
@@ -150,13 +124,11 @@ class NotificationPreviewSmokeTest extends TestCase
         $guest = Guest::withoutEvents(fn () => Guest::factory()->for($wedding)->create([
             'email' => 'guest@example.com',
         ]));
-        $enquiry = Enquiry::factory()->create();
 
         return NotificationPreviewFixtures::resolve([
             'wedding_id' => $wedding->id,
             'guest_id' => $guest->id,
             'user_id' => $user->id,
-            'enquiry_id' => $enquiry->id,
         ]);
     }
 }

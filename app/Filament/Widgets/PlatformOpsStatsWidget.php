@@ -30,9 +30,6 @@ class PlatformOpsStatsWidget extends StatsOverviewWidget
                 ->description('Awaiting payment')
                 ->icon('heroicon-o-banknotes')
                 ->url(ReferralPayoutResource::getUrl('index')),
-            Stat::make('Recent enquiries', (string) AdminDashboardMetrics::recentEnquiriesCount())
-                ->description('Last 7 days')
-                ->icon('heroicon-o-chat-bubble-left-right'),
         ];
     }
 }

@@ -34,22 +34,10 @@ return [
     'couple_activation_subject' => 'Your invitation is still awaiting activation',
     'couple_activation_body' => 'The public link for :couple is not live yet. You can keep preparing guests and previewing the invitation in the meantime.',
 
-    'admin_new_enquiry_greeting' => 'New landing page enquiry',
-    'admin_new_enquiry_subject' => 'Enquiry from :name',
-    'admin_new_enquiry_body' => ':name (:email) sent an enquiry. Phone: :phone.',
-    'admin_new_enquiry_couple' => 'Couple: :couple',
-    'admin_new_enquiry_wedding_date' => 'Wedding date: :date',
-    'admin_new_enquiry_notes' => 'Notes: :notes',
-    'admin_new_enquiry_reply' => 'Reply by email',
-
     'admin_new_signup_greeting' => 'New couple signup',
     'admin_new_signup_subject' => 'New signup — :couple',
     'admin_new_signup_body' => ':couple signed up (:name, :email). Wedding date: :date. The invitation is pending activation.',
     'admin_new_signup_action' => 'Review in admin',
-
-    'admin_enquiry_follow_up_greeting' => 'Enquiry follow-up reminder',
-    'admin_enquiry_follow_up_subject' => 'Follow up with :name',
-    'admin_enquiry_follow_up_body' => 'It has been :days day(s) since :name (:email) submitted an enquiry. They have not signed up yet.',
 
     'admin_inactive_wedding_greeting' => 'Inactive invitation alert',
     'admin_inactive_wedding_subject' => ':couple wedding in :days days — still inactive',

@@ -15,7 +15,6 @@ return [
     'hero_title' => 'Vaša vjenčana priča zaslužuje više od slike u chatu',
     'hero_subtitle' => 'Personalizovana web pozivnica sa odbrojavanjem, potvrdom dolaska, planom dana i fotografijama lokacije. Spremna za dijeljenje u tri koraka.',
     'hero_cta_demo' => 'Pogledaj demo',
-    'hero_cta_order' => 'Naruči pozivnicu',
     'hero_cta_create' => 'Kreiraj pozivnicu',
     'hero_image_alt' => 'Prikaz personalizovane NasDan pozivnice na telefonu',
 
@@ -110,26 +109,6 @@ return [
 
     'contact_title' => 'Naručite pozivnicu',
     'contact_subtitle' => 'Popunite formular i javićemo vam se u najkraćem roku.',
-
-    'form_name' => 'Ime i prezime',
-    'form_email' => 'Email adresa',
-    'form_phone' => 'Broj telefona',
-    'form_groom' => 'Ime mladoženje',
-    'form_bride' => 'Ime nevjeste',
-    'form_date' => 'Datum vjenčanja',
-    'form_theme' => 'Odabir teme',
-    'form_theme_placeholder' => 'Odaberite temu',
-    'form_notes' => 'Napomena',
-    'form_notes_placeholder' => 'Posebne želje, pitanja ili dodatne informacije...',
-    'form_submit' => 'Pošalji upit',
-    'form_saving' => 'Slanje...',
-
-    'form_success_title' => 'Hvala vam!',
-    'form_success_text' => 'Primili smo vaš upit. Javićemo vam se uskoro.',
-
-    'form_name_required' => 'Molimo unesite vaše ime.',
-    'form_email_required' => 'Molimo unesite email adresu.',
-    'form_email_invalid' => 'Email adresa nije ispravna.',
 
     'footer_rights' => 'Sva prava zadržana.',
     'footer_contact' => 'Kontakt',
