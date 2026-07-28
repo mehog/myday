@@ -64,6 +64,20 @@
         </section>
 
         <section class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-gray-900">
+            <p class="text-sm text-gray-600 dark:text-gray-300">
+                {{ __('pricing.checkout_mor_note') }}
+            </p>
+            <p class="mt-3 text-sm text-gray-600 dark:text-gray-300">
+                {{ __('pricing.checkout_policies_prefix') }}
+                <a href="{{ route('legal.terms') }}" class="font-medium text-primary-600 underline dark:text-primary-400" target="_blank" rel="noopener noreferrer">{{ __('legal.footer_terms') }}</a>
+                {{ __('pricing.checkout_policies_and') }}
+                <a href="{{ route('legal.refund') }}" class="font-medium text-primary-600 underline dark:text-primary-400" target="_blank" rel="noopener noreferrer">{{ __('legal.footer_refund') }}</a>.
+                {{ __('pricing.checkout_faq_prefix') }}
+                <a href="{{ route('legal.faq') }}" class="font-medium text-primary-600 underline dark:text-primary-400" target="_blank" rel="noopener noreferrer">{{ __('legal.footer_faq') }}</a>.
+            </p>
+        </section>
+
+        <section class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-gray-900">
             <h2 class="text-base font-semibold text-gray-950 dark:text-white">
                 {{ __('pricing.features_title') }}
             </h2>

@@ -51,6 +51,7 @@
                         <h3 class="landing-heading text-2xl text-[#faf6ee] mb-2">{{ $plan['name'] }}</h3>
                         <p class="landing-body text-sm text-[#d4c4a8] mb-4">{{ $plan['guests'] }}</p>
                         <p class="landing-heading text-4xl sm:text-5xl text-[#c9a227]">{{ $plan['price'] }}</p>
+                        <p class="landing-body text-xs text-[#d4c4a8]/80 mt-2">{{ __('landing.pricing_one_time') }}</p>
                     </div>
 
                     <a
@@ -83,7 +84,13 @@
                 @endforeach
             </ul>
 
-            <div class="mt-10 text-center">
+            <div class="mt-10 text-center space-y-3">
+                <p class="landing-body text-sm text-[#d4c4a8]">
+                    {{ __('landing.pricing_activation_note') }}
+                </p>
+                <p class="landing-body text-sm text-[#d4c4a8]">
+                    {{ __('landing.pricing_currency_note') }}
+                </p>
                 <a
                     href="{{ route('onboarding', ['locale' => app()->getLocale()]) }}"
                     class="landing-btn-secondary inline-block px-8 py-4 rounded-xl landing-heading text-lg transition"

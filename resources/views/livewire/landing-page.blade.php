@@ -5,6 +5,7 @@
     @include('landing.sections.guest-interaction')
     @include('landing.sections.how-it-works')
     @include('landing.sections.demo', ['demos' => $demos])
+    @include('landing.sections.pricing')
     @include('landing.sections.contact')
     @include('landing.sections.footer')
 </div>

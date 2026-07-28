@@ -6,6 +6,7 @@ return [
 
     'nav_demo' => 'Demo',
     'nav_features' => 'Funktionen',
+    'nav_pricing' => 'Preise',
     'nav_order' => 'Bestellen',
     'nav_create' => 'Einladung erstellen',
     'nav_login' => 'Anmelden',
@@ -137,6 +138,9 @@ return [
 
     'pricing_title' => 'Wählen Sie Ihr Paket',
     'pricing_subtitle' => 'Ein Preis deckt alles ab. Keine versteckten Kosten, kein monatliches Abo.',
+    'pricing_one_time' => 'Einmalzahlung',
+    'pricing_activation_note' => 'Nach Zahlungsbestätigung wird Ihr Tarif im Konto aktiviert, damit Sie die Einladung anpassen und teilen können.',
+    'pricing_currency_note' => 'Angezeigte Beträge sind Beispiele. Im Checkout zahlen Sie in EUR oder BAM, abhängig von Ihrer Preisregion.',
     'pricing_plan_basic_name' => 'Basic',
     'pricing_plan_basic_guests' => 'Bis zu 100 Gäste',
     'pricing_plan_basic_price' => '80 EUR',

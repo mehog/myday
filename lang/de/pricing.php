@@ -47,5 +47,9 @@ return [
     'feature_4' => 'Sitzplan',
     'feature_5' => 'Push-Benachrichtigungen',
     'pending_activation_cta' => 'Preise ansehen & bezahlen',
+    'checkout_mor_note' => 'Zahlungen werden von Dodo Payments als Merchant of Record abgewickelt. Steuer und Rechnungsstellung für die Transaktion erfolgen im Checkout.',
+    'checkout_policies_prefix' => 'Mit dem Fortfahren zum Checkout stimmen Sie unseren',
+    'checkout_policies_and' => 'und',
+    'checkout_faq_prefix' => 'Siehe auch die',
 
 ];

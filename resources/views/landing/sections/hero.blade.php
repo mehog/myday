@@ -14,6 +14,9 @@
             <a href="#features" class="text-sm text-[#d4c4a8] hover:text-[#c9a227] transition hidden sm:inline">
                 {{ __('landing.nav_features') }}
             </a>
+            <a href="#cijene" class="text-sm text-[#d4c4a8] hover:text-[#c9a227] transition hidden sm:inline">
+                {{ __('landing.nav_pricing') }}
+            </a>
             <a href="#demo" class="text-sm text-[#d4c4a8] hover:text-[#c9a227] transition hidden sm:inline">
                 {{ __('landing.nav_demo') }}
             </a>

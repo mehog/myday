@@ -6,6 +6,7 @@ return [
 
     'nav_demo' => 'Demo',
     'nav_features' => 'Features',
+    'nav_pricing' => 'Pricing',
     'nav_order' => 'Order',
     'nav_create' => 'Create invitation',
     'nav_login' => 'Log in',
@@ -137,6 +138,9 @@ return [
 
     'pricing_title' => 'Choose your plan',
     'pricing_subtitle' => 'One price includes everything. No hidden fees, no monthly subscription.',
+    'pricing_one_time' => 'One-time payment',
+    'pricing_activation_note' => 'After payment is confirmed, your invitation plan activates in your account so you can customize and share it.',
+    'pricing_currency_note' => 'Shown amounts are examples. At checkout you pay in EUR or BAM based on your pricing region.',
     'pricing_plan_basic_name' => 'Basic',
     'pricing_plan_basic_guests' => 'Up to 100 guests',
     'pricing_plan_basic_price' => '80 EUR',

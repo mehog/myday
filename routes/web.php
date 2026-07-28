@@ -11,6 +11,7 @@ use App\Http\Controllers\DownloadPlaceCardsController;
 use App\Http\Controllers\DownloadReferralQrCodeController;
 use App\Http\Controllers\DownloadSeatingPlanPdfController;
 use App\Http\Controllers\InvitationManifestController;
+use App\Http\Controllers\LegalPageController;
 use App\Http\Controllers\ReferralLinkController;
 use App\Http\Controllers\ReferralProgramController;
 use App\Http\Controllers\WeddingEventCalendarController;
@@ -29,6 +30,11 @@ Route::get('/', LandingPage::class)->name('home');
 Route::supportBubble();
 
 Route::get('/referral-program', ReferralProgramController::class)->name('referral-program');
+
+Route::get('/terms', LegalPageController::class)->defaults('page', 'terms')->name('legal.terms');
+Route::get('/privacy', LegalPageController::class)->defaults('page', 'privacy')->name('legal.privacy');
+Route::get('/refund-policy', LegalPageController::class)->defaults('page', 'refund-policy')->name('legal.refund');
+Route::get('/faq', LegalPageController::class)->defaults('page', 'faq')->name('legal.faq');
 
 Route::post('/lang/{locale}', function (string $locale) {
     Locale::set($locale);

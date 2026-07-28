@@ -47,5 +47,9 @@ return [
     'feature_4' => 'Raspored sjedenja',
     'feature_5' => 'Push notifikacije',
     'pending_activation_cta' => 'Pogledaj cijene i plati',
+    'checkout_mor_note' => 'Plaćanja obrađuje Dodo Payments kao Merchant of Record. Porez i fakturisanje za transakciju uređuju se na checkoutu.',
+    'checkout_policies_prefix' => 'Nastavkom na checkout prihvatate naše',
+    'checkout_policies_and' => 'i',
+    'checkout_faq_prefix' => 'Pogledajte i',
 
 ];

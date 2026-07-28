@@ -6,6 +6,7 @@ return [
 
     'nav_demo' => 'Demo',
     'nav_features' => 'Funkcije',
+    'nav_pricing' => 'Cijene',
     'nav_order' => 'Naruči',
     'nav_create' => 'Kreiraj pozivnicu',
     'nav_login' => 'Prijavi se',
@@ -137,6 +138,9 @@ return [
 
     'pricing_title' => 'Odaberite paket',
     'pricing_subtitle' => 'Jedna cijena pokriva sve. Bez skrivenih troškova, bez mjesečne pretplate.',
+    'pricing_one_time' => 'Jednokratna uplata',
+    'pricing_activation_note' => 'Nakon potvrde uplate, plan se aktivira na vašem računu kako biste mogli prilagoditi i dijeliti pozivnicu.',
+    'pricing_currency_note' => 'Prikazani iznosi su primjeri. Na checkoutu plaćate u EUR ili BAM, zavisno od vaše cjenovne regije.',
     'pricing_plan_basic_name' => 'Osnovni',
     'pricing_plan_basic_guests' => 'Do 100 gostiju',
     'pricing_plan_basic_price' => '80 BAM',

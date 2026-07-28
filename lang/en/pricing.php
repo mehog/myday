@@ -47,5 +47,9 @@ return [
     'feature_4' => 'Seating plan',
     'feature_5' => 'Push notifications',
     'pending_activation_cta' => 'View pricing & pay',
+    'checkout_mor_note' => 'Payments are processed by Dodo Payments as Merchant of Record. Tax handling and invoicing for the transaction are managed at checkout.',
+    'checkout_policies_prefix' => 'By continuing to checkout you agree to our',
+    'checkout_policies_and' => 'and',
+    'checkout_faq_prefix' => 'See also the',
 
 ];

@@ -49,7 +49,10 @@ class DodoCheckoutTest extends TestCase
             ->get('/app/pricing')
             ->assertOk()
             ->assertSee('Basic')
-            ->assertSee('BAM');
+            ->assertSee('BAM')
+            ->assertSee('Merchant of Record', false)
+            ->assertSee(route('legal.terms'), false)
+            ->assertSee(route('legal.refund'), false);
     }
 
     public function test_checkout_rejects_tier_too_small_for_guest_count(): void
@@ -127,10 +130,12 @@ class DodoCheckoutTest extends TestCase
             ->assertSessionHasErrors('tier');
     }
 
-    public function test_landing_page_no_longer_includes_pricing_section(): void
+    public function test_landing_page_includes_public_pricing_section(): void
     {
-        $this->get('/')
+        $this->get('/?locale=en')
             ->assertOk()
-            ->assertDontSee('id="cijene"', false);
+            ->assertSee('id="cijene"', false)
+            ->assertSee('One-time payment', false)
+            ->assertSee('After payment is confirmed', false);
     }
 }
