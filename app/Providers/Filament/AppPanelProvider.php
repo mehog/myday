@@ -32,6 +32,7 @@ class AppPanelProvider extends PanelProvider
             ->id('app')
             ->path('app')
             ->login()
+            ->passwordReset()
             ->brandName('NasDan')
             ->brandLogo(asset('icons/nd-logo-transparent.webp'))
             ->brandLogoHeight('2.25rem')

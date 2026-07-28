@@ -82,6 +82,7 @@ There are three distinct user-facing surfaces:
 - Resources: MyWedding, GuestMessages, PushNotifications
 - Pages: Dashboard, Referrals, EditProfile
 - Login at `/app/login`
+- Forgot password at `/app/password-reset/request` (reset link emailed to the couple)
 
 ### 3c. Guest Invitation Pages (`/e/{slug}` and `/e/{slug}/{token}`)
 - Fully public or token-protected invitation pages
@@ -646,7 +647,11 @@ All routes are in `routes/web.php`. There is no separate `api.php`.
   - Unverified users redirected to `/onboarding/verify-email`
   - Verification link throttled (6 requests per minute)
   - Signed route with ID + hash
-- **Password reset:** Standard Laravel password reset table and flow
+- **Password reset (couples):** Enabled on the app panel via Filament `->passwordReset()`
+  - Request: `/app/password-reset/request` (`filament.app.auth.password-reset.request`)
+  - Reset: `/app/password-reset/reset` signed URL with `email` + `token` (`filament.app.auth.password-reset.reset`)
+  - Uses Laravel `password_reset_tokens` table / `users` password broker
+  - Reset email links back into the app panel; admins cannot reset via the couple panel (`canAccessPanel`)
 - **Panel access:**
   ```php
   // User::canAccessPanel()
