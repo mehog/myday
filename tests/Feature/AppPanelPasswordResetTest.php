@@ -22,11 +22,18 @@ class AppPanelPasswordResetTest extends TestCase
     {
         parent::setUp();
 
+        $this->withoutVite();
         Filament::setCurrentPanel(Filament::getPanel('app'));
     }
 
     public function test_couple_login_page_links_to_password_reset_request(): void
     {
+        $this->assertTrue(Filament::hasPasswordReset());
+        $this->assertSame(
+            url('/app/password-reset/request'),
+            Filament::getRequestPasswordResetUrl(),
+        );
+
         $this->get('/app/login')
             ->assertOk()
             ->assertSee('/app/password-reset/request', false);
