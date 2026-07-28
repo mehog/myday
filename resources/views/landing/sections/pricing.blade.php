@@ -55,14 +55,14 @@
                     </div>
 
                     <a
-                        href="#naruči"
+                        href="{{ route('onboarding', ['locale' => app()->getLocale()]) }}"
                         @class([
                             'mt-auto w-full py-4 rounded-xl landing-heading text-lg transition text-center',
                             'landing-btn-primary' => $plan['highlighted'],
                             'landing-btn-secondary' => ! $plan['highlighted'],
                         ])
                     >
-                        {{ __('landing.pricing_cta') }}
+                        {{ __('landing.hero_cta_create') }}
                     </a>
                 </div>
             @endforeach
@@ -93,7 +93,7 @@
                 </p>
                 <a
                     href="{{ route('onboarding', ['locale' => app()->getLocale()]) }}"
-                    class="landing-btn-secondary inline-block px-8 py-4 rounded-xl landing-heading text-lg transition"
+                    class="landing-btn-secondary inline-block px-8 py-4 rounded-xl landing-heading text-lg transition mt-6 mb-0"
                 >
                     {{ __('landing.hero_cta_create') }}
                 </a>
