@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Filament\App\Pages\Auth\ResetPassword;
 use App\Models\User;
 use Filament\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 use Filament\Auth\Pages\PasswordReset\RequestPasswordReset;
-use Filament\Auth\Pages\PasswordReset\ResetPassword;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
@@ -90,6 +90,44 @@ class AppPanelPasswordResetTest extends TestCase
             ->assertHasNoFormErrors();
 
         Notification::assertNotSentTo($admin, ResetPasswordNotification::class);
+    }
+
+    public function test_reset_form_hides_email_and_reads_it_from_query_string(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => false,
+            'email' => 'edita.garankic@outlook.com',
+            'password' => Hash::make('old-password'),
+        ]);
+
+        $token = Password::broker()->createToken($user);
+        $url = Filament::getResetPasswordUrl($token, $user);
+        parse_str((string) parse_url($url, PHP_URL_QUERY), $query);
+
+        $component = Livewire::withQueryParams([
+            'email' => $query['email'],
+            'token' => $query['token'],
+            'signature' => $query['signature'],
+        ])->test(ResetPassword::class);
+
+        $component
+            ->assertSuccessful()
+            ->assertSet('email', $user->email)
+            ->assertSet('token', $query['token'])
+            ->assertFormFieldExists('password')
+            ->assertFormFieldExists('passwordConfirmation')
+            ->assertFormFieldDoesNotExist('email')
+            ->assertDontSee(__('filament-panels::auth/pages/password-reset/reset-password.form.email.label'))
+            ->fillForm([
+                'password' => 'Qwerty1234',
+                'passwordConfirmation' => 'Qwerty1234',
+            ])
+            ->call('resetPassword')
+            ->assertHasNoFormErrors()
+            ->assertRedirect(Filament::getLoginUrl());
+
+        $this->assertTrue(Hash::check('Qwerty1234', $user->fresh()->password));
+        $this->assertFalse(Hash::check('old-password', $user->fresh()->password));
     }
 
     public function test_couple_can_reset_password_with_valid_token(): void

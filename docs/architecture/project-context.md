@@ -650,6 +650,7 @@ All routes are in `routes/web.php`. There is no separate `api.php`.
 - **Password reset (couples):** Enabled on the app panel via Filament `->passwordReset()`
   - Request: `/app/password-reset/request` (`filament.app.auth.password-reset.request`)
   - Reset: `/app/password-reset/reset` signed URL with `email` + `token` (`filament.app.auth.password-reset.reset`)
+  - Custom reset page: `App\Filament\App\Pages\Auth\ResetPassword` (no email field; email/token taken from the signed query string)
   - Uses Laravel `password_reset_tokens` table / `users` password broker
   - Reset email links back into the app panel; admins cannot reset via the couple panel (`canAccessPanel`)
 - **Panel access:**
