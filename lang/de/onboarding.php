@@ -23,6 +23,8 @@ return [
     'theme_placeholder' => 'Thema wählen',
     'template' => 'Einladungslayout',
     'template_placeholder' => 'Layout wählen',
+    'reveal_animation' => 'Einstiegsanimation',
+    'design_changeable_note' => 'Thema, Layout und Einstiegsanimation können Sie jederzeit nach dem Erstellen der Einladung ändern.',
     'your_name' => 'Ihr vollständiger Name',
     'email' => 'E-Mail-Adresse',
     'password' => 'Passwort',
@@ -33,6 +35,8 @@ return [
     'review_wedding_date' => 'Hochzeitsdatum',
     'review_theme' => 'Thema',
     'review_template' => 'Layout',
+    'review_reveal_animation' => 'Einstiegsanimation',
+    'review_after_signup_note' => 'Nach der Registrierung können Sie Ihren eigenen Song, ein Titelbild, Gäste, den Tagesablauf und mehr hinzufügen.',
 
     'next' => 'Weiter',
     'back' => 'Zurück',

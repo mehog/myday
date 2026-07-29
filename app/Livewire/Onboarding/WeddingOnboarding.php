@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Onboarding;
 
+use App\InvitationReveal;
 use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\LinkMode;
@@ -32,6 +33,8 @@ class WeddingOnboarding extends Component
     public string $theme = '';
 
     public string $template = '';
+
+    public string $reveal_animation = '';
 
     public string $your_name = '';
 
@@ -105,6 +108,9 @@ class WeddingOnboarding extends Component
                 'wedding_date' => Carbon::parse($this->wedding_date)->startOfDay(),
                 'theme' => InvitationTheme::from($this->theme),
                 'template' => InvitationTemplate::from($this->template),
+                'reveal_animation' => $this->reveal_animation !== ''
+                    ? InvitationReveal::from($this->reveal_animation)
+                    : null,
                 'link_mode' => LinkMode::Public,
                 'is_active' => false,
             ]);
@@ -136,11 +142,15 @@ class WeddingOnboarding extends Component
         return view('livewire.onboarding.wedding-onboarding', [
             'themes' => InvitationTheme::cases(),
             'templates' => InvitationTemplate::cases(),
+            'reveals' => InvitationReveal::cases(),
             'selectedTheme' => $this->theme !== ''
                 ? InvitationTheme::tryFrom($this->theme)
                 : null,
             'selectedTemplate' => $this->template !== ''
                 ? InvitationTemplate::tryFrom($this->template)
+                : null,
+            'selectedReveal' => $this->reveal_animation !== ''
+                ? InvitationReveal::tryFrom($this->reveal_animation)
                 : null,
         ])->title(__('onboarding.meta_title'));
     }
@@ -157,6 +167,7 @@ class WeddingOnboarding extends Component
                 'wedding_date' => ['required', 'date', 'after:today'],
                 'theme' => ['required', 'string', Rule::in(array_column(InvitationTheme::cases(), 'value'))],
                 'template' => ['required', 'string', Rule::in(array_column(InvitationTemplate::cases(), 'value'))],
+                'reveal_animation' => ['nullable', 'string', Rule::in(array_column(InvitationReveal::cases(), 'value'))],
             ],
             2 => [
                 'your_name' => ['required', 'string', 'max:255'],

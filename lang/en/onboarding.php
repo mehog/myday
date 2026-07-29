@@ -23,6 +23,8 @@ return [
     'theme_placeholder' => 'Choose a theme',
     'template' => 'Invitation layout',
     'template_placeholder' => 'Choose a layout',
+    'reveal_animation' => 'Entry animation',
+    'design_changeable_note' => 'You can change the theme, layout, and entry animation at any time after creating your invitation.',
     'your_name' => 'Your full name',
     'email' => 'Email address',
     'password' => 'Password',
@@ -33,6 +35,8 @@ return [
     'review_wedding_date' => 'Wedding date',
     'review_theme' => 'Theme',
     'review_template' => 'Layout',
+    'review_reveal_animation' => 'Entry animation',
+    'review_after_signup_note' => 'After signing up, you can add your own song, cover image, guests, day schedule, and more.',
 
     'next' => 'Continue',
     'back' => 'Back',

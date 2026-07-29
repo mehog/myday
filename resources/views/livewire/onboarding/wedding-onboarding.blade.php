@@ -1,6 +1,6 @@
 <div class="min-h-screen flex flex-col">
     <header class="border-b border-white/5 bg-[#1a1208]/80 backdrop-blur-md">
-        <div class="max-w-2xl mx-auto px-6 py-4">
+        <div class="max-w-3xl mx-auto px-6 py-4">
             <a href="{{ route('home') }}" class="inline-flex items-center">
                 <img
                     src="{{ asset('icons/nd-logo-transparent.webp') }}"
@@ -15,7 +15,7 @@
     </header>
 
     <main class="flex-1 px-6 py-10">
-        <div class="max-w-2xl mx-auto landing-fade-in">
+        <div class="max-w-3xl mx-auto landing-fade-in">
             {{-- Progress --}}
             <div class="mb-10">
                 <div class="flex items-center justify-between mb-3">
@@ -73,7 +73,7 @@
                             @error('wedding_date') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
                         </div>
 
-                        <div class="grid sm:grid-cols-2 gap-5">
+                        <div class="grid md:grid-cols-3 gap-5">
                             <div>
                                 <label for="theme" class="block text-sm text-[#d4c4a8] mb-2">{{ __('onboarding.theme') }} *</label>
                                 <select id="theme" wire:model="theme" class="landing-input w-full">
@@ -94,7 +94,21 @@
                                 </select>
                                 @error('template') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
                             </div>
+                            <div>
+                                <label for="reveal_animation" class="block text-sm text-[#d4c4a8] mb-2">{{ __('onboarding.reveal_animation') }}</label>
+                                <select id="reveal_animation" wire:model="reveal_animation" class="landing-input w-full">
+                                    <option value="">{{ __('app.reveal_none') }}</option>
+                                    @foreach ($reveals as $revealOption)
+                                        <option value="{{ $revealOption->value }}">{{ $revealOption->label() }}</option>
+                                    @endforeach
+                                </select>
+                                @error('reveal_animation') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
+                            </div>
                         </div>
+
+                        <p class="landing-body text-sm text-[#d4c4a8]/90">
+                            {{ __('onboarding.design_changeable_note') }}
+                        </p>
 
                         <button type="submit" class="w-full landing-btn-primary py-4 rounded-xl landing-heading text-lg transition">
                             {{ __('onboarding.next') }}
@@ -184,6 +198,10 @@
                                     <dt class="text-[#d4c4a8]">{{ __('onboarding.review_template') }}</dt>
                                     <dd class="text-[#faf6ee] text-right">{{ $selectedTemplate?->label() }}</dd>
                                 </div>
+                                <div class="flex justify-between gap-4">
+                                    <dt class="text-[#d4c4a8]">{{ __('onboarding.review_reveal_animation') }}</dt>
+                                    <dd class="text-[#faf6ee] text-right">{{ $selectedReveal?->label() ?? __('app.reveal_none') }}</dd>
+                                </div>
                             </dl>
                         </div>
 
@@ -200,6 +218,10 @@
                                 </div>
                             </dl>
                         </div>
+
+                        <p class="landing-body text-sm text-[#d4c4a8]/90">
+                            {{ __('onboarding.review_after_signup_note') }}
+                        </p>
                     </div>
 
                     <div class="flex gap-4">

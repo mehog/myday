@@ -23,6 +23,8 @@ return [
     'theme_placeholder' => 'Odaberite temu',
     'template' => 'Izgled pozivnice',
     'template_placeholder' => 'Odaberite izgled',
+    'reveal_animation' => 'Ulazna animacija',
+    'design_changeable_note' => 'Temu, izgled i ulaznu animaciju možete promijeniti u bilo kojem trenutku nakon kreiranja pozivnice.',
     'your_name' => 'Vaše ime i prezime',
     'email' => 'Email adresa',
     'password' => 'Lozinka',
@@ -33,6 +35,8 @@ return [
     'review_wedding_date' => 'Datum vjenčanja',
     'review_theme' => 'Tema',
     'review_template' => 'Izgled',
+    'review_reveal_animation' => 'Ulazna animacija',
+    'review_after_signup_note' => 'Nakon registracije možete dodati svoju pjesmu, naslovnu fotografiju, goste, plan dana i još mnogo toga.',
 
     'next' => 'Nastavi',
     'back' => 'Nazad',
