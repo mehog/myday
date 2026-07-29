@@ -1,7 +1,7 @@
 @if (! $isPreview)
     @php
         $crestDate = $event->wedding_date->format('d · m · Y');
-        $crestMeta = collect([$crestDate, $event->location_name])->filter()->implode(' — ');
+        $crestMeta = collect([$crestDate, $event->primaryLocationName()])->filter()->implode(' — ');
 
         $crestAccents = [
             'amber-gold' => ['ink' => '#332516', 'gold' => '#b88b42', 'marble' => '#f8f2e8', 'sun' => '#fff4dc', 'wax' => '#c49a3a'],

@@ -7,6 +7,8 @@ use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\LinkMode;
 use App\PlanTier;
+use App\Support\Locale;
+use App\Support\LocaleUrl;
 use App\Support\MediaDisk;
 use Database\Factories\WeddingEventFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -37,11 +39,13 @@ class WeddingEvent extends Model
         'music_url',
         'hero_image',
         'rsvp_deadline',
+        'accommodation_enabled',
         'is_active',
         'is_demo',
         'plan_tier',
         'guest_limit',
         'send_message',
+        'invitation_locale',
         'motto',
         'seating_plan',
     ];
@@ -51,6 +55,7 @@ class WeddingEvent extends Model
         return [
             'wedding_date' => 'datetime',
             'rsvp_deadline' => 'date',
+            'accommodation_enabled' => 'boolean',
             'is_active' => 'boolean',
             'is_demo' => 'boolean',
             'plan_tier' => PlanTier::class,
@@ -70,6 +75,20 @@ class WeddingEvent extends Model
         static::creating(function (WeddingEvent $event) {
             if (empty($event->slug)) {
                 $event->slug = Str::slug($event->groom_name.'-'.$event->bride_name);
+            }
+
+            if (empty($event->invitation_locale)) {
+                $ownerLocale = null;
+
+                if ($event->user_id !== null) {
+                    $ownerLocale = User::query()->whereKey($event->user_id)->value('locale');
+                }
+
+                $event->invitation_locale = Locale::resolve(
+                    $ownerLocale ?? session('locale'),
+                );
+            } else {
+                $event->invitation_locale = Locale::resolve($event->invitation_locale);
             }
         });
     }
@@ -92,6 +111,52 @@ class WeddingEvent extends Model
     public function eventPhotos(): HasMany
     {
         return $this->hasMany(EventPhoto::class)->orderBy('sort_order');
+    }
+
+    public function menuOptions(): HasMany
+    {
+        return $this->hasMany(WeddingMenuOption::class)->orderBy('sort_order')->orderBy('id');
+    }
+
+    public function visibleMenuOptions(): HasMany
+    {
+        return $this->menuOptions()->where('is_visible', true);
+    }
+
+    public function locations(): HasMany
+    {
+        return $this->hasMany(WeddingLocation::class)->orderBy('sort_order')->orderBy('id');
+    }
+
+    public function primaryLocation(): ?WeddingLocation
+    {
+        if ($this->relationLoaded('locations')) {
+            return $this->locations->firstWhere('is_primary', true)
+                ?? $this->locations->first();
+        }
+
+        return $this->locations()->where('is_primary', true)->first()
+            ?? $this->locations()->first();
+    }
+
+    public function hasLocations(): bool
+    {
+        if ($this->relationLoaded('locations')) {
+            return $this->locations->contains(fn (WeddingLocation $location): bool => $location->hasMapContent());
+        }
+
+        return $this->locations()->exists();
+    }
+
+    public function offersMenuChoices(): bool
+    {
+        if ($this->relationLoaded('menuOptions')) {
+            return $this->menuOptions->contains(
+                fn (WeddingMenuOption $option): bool => $option->is_visible,
+            );
+        }
+
+        return $this->visibleMenuOptions()->exists();
     }
 
     public function linkVisits(): HasMany
@@ -197,14 +262,22 @@ class WeddingEvent extends Model
         ])->save();
     }
 
+    public function invitationLocale(): string
+    {
+        return Locale::resolve($this->invitation_locale);
+    }
+
     public function getPublicUrlAttribute(): string
     {
-        return url("/e/{$this->slug}");
+        return LocaleUrl::withLocale(url("/e/{$this->slug}"), $this->invitationLocale());
     }
 
     public function guestUrl(Guest $guest): string
     {
-        return url("/e/{$this->slug}/{$guest->token}");
+        return LocaleUrl::withLocale(
+            url("/e/{$this->slug}/{$guest->token}"),
+            $guest->invitationLocale(),
+        );
     }
 
     public function googleCalendarUrl(): string
@@ -212,10 +285,30 @@ class WeddingEvent extends Model
         $start = $this->wedding_date->format('Ymd');
         $end = $this->wedding_date->copy()->addDay()->format('Ymd');
         $text = urlencode(__('invitation.save_the_date').' — '.$this->couple_names);
-        $loc = urlencode(trim("{$this->location_name} {$this->location_address}"));
+        $location = $this->primaryLocation()?->calendarLocation()
+            ?: trim("{$this->location_name} {$this->location_address}");
+        $loc = urlencode($location);
 
         return 'https://calendar.google.com/calendar/render?action=TEMPLATE'
             ."&text={$text}&dates={$start}/{$end}&location={$loc}";
+    }
+
+    public function primaryLocationName(): ?string
+    {
+        return $this->primaryLocation()?->displayName()
+            ?: ($this->location_name ?: null);
+    }
+
+    public function syncLegacyLocationFromPrimary(): void
+    {
+        $primary = $this->primaryLocation();
+
+        $this->forceFill([
+            'location_name' => $primary?->name,
+            'location_address' => $primary?->address,
+            'location_lat' => $primary?->lat,
+            'location_lng' => $primary?->lng,
+        ])->save();
     }
 
     public function composeSendMessage(Guest $guest): string

@@ -48,4 +48,32 @@ class WeddingEventFactory extends Factory
             'is_active' => false,
         ]);
     }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (WeddingEvent $event): void {
+            if ($event->locations()->exists()) {
+                return;
+            }
+
+            $hasLocation = filled($event->location_name)
+                || filled($event->location_address)
+                || $event->location_lat !== null
+                || $event->location_lng !== null;
+
+            if (! $hasLocation) {
+                return;
+            }
+
+            $event->locations()->create([
+                'label' => null,
+                'name' => $event->location_name,
+                'address' => $event->location_address,
+                'lat' => $event->location_lat,
+                'lng' => $event->location_lng,
+                'is_primary' => true,
+                'sort_order' => 0,
+            ]);
+        });
+    }
 }

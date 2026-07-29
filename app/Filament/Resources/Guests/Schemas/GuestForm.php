@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Guests\Schemas;
 
 use App\Models\WeddingEvent;
+use App\Support\Locale;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -28,6 +29,14 @@ class GuestForm
                 TextInput::make('phone')
                     ->tel()
                     ->maxLength(255),
+                Select::make('invitation_locale')
+                    ->label('Invitation language override')
+                    ->helperText('Leave empty to use the wedding default invitation language.')
+                    ->options(Locale::options())
+                    ->placeholder('Use wedding default')
+                    ->nullable()
+                    ->native(false)
+                    ->dehydrateStateUsing(fn (?string $state): ?string => filled($state) ? $state : null),
                 Toggle::make('plus_one_allowed')
                     ->label('Plus one')
                     ->default(false),

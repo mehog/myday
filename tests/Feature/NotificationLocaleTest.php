@@ -31,13 +31,16 @@ class NotificationLocaleTest extends TestCase
         $this->assertSame(Locale::default(), $userWithInvalidLocale->preferredLocale());
     }
 
-    public function test_guest_preferred_locale_uses_couple_profile_or_app_default(): void
+    public function test_guest_preferred_locale_uses_invitation_locale_chain(): void
     {
         $couple = User::factory()->create(['locale' => 'de']);
         $event = WeddingEvent::factory()->for($couple)->create();
         $guest = Guest::factory()->for($event)->create();
 
         $this->assertSame('de', $guest->preferredLocale());
+
+        $guest->update(['invitation_locale' => 'en']);
+        $this->assertSame('en', $guest->fresh()->preferredLocale());
 
         $coupleWithoutLocale = User::factory()->create(['locale' => null]);
         $eventWithoutLocale = WeddingEvent::factory()->for($coupleWithoutLocale)->create();

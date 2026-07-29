@@ -1,7 +1,7 @@
 @if (! $isPreview)
     @php
         $curtainDate = $event->wedding_date->format('d · m · Y');
-        $curtainMeta = collect([$curtainDate, $event->location_name])->filter()->implode(' — ');
+        $curtainMeta = collect([$curtainDate, $event->primaryLocationName()])->filter()->implode(' — ');
 
         $curtainAccents = [
             'amber-gold' => ['ink' => '#332516', 'gold' => '#b88b42'],

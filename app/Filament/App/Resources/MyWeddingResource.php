@@ -7,6 +7,8 @@ use App\Filament\App\Resources\MyWeddingResource\Pages\ListMyWedding;
 use App\Filament\App\Schemas\MyWeddingForm;
 use App\Filament\Resources\WeddingEvents\RelationManagers\EventPhotosRelationManager;
 use App\Filament\Resources\WeddingEvents\RelationManagers\GuestsRelationManager;
+use App\Filament\Resources\WeddingEvents\RelationManagers\LocationsRelationManager;
+use App\Filament\Resources\WeddingEvents\RelationManagers\MenuOptionsRelationManager;
 use App\Filament\Resources\WeddingEvents\RelationManagers\ScheduleItemsRelationManager;
 use App\Models\WeddingEvent;
 use BackedEnum;
@@ -68,6 +70,8 @@ class MyWeddingResource extends Resource
     {
         return [
             GuestsRelationManager::class,
+            LocationsRelationManager::class,
+            MenuOptionsRelationManager::class,
             ScheduleItemsRelationManager::class,
             EventPhotosRelationManager::class,
         ];

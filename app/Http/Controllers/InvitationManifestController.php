@@ -13,14 +13,14 @@ class InvitationManifestController
             ->where('slug', $slug)
             ->firstOrFail();
 
-        $event->guests()
+        $guest = $event->guests()
             ->where('token', $token)
             ->firstOrFail();
 
         return response()->json([
             'name' => $event->couple_names,
             'short_name' => $event->couple_names,
-            'start_url' => route('invitation.guest', [$event->slug, $token]),
+            'start_url' => $guest->personal_url,
             'scope' => '/',
             'display' => 'standalone',
             'background_color' => '#1a1208',

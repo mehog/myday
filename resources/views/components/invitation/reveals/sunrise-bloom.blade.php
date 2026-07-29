@@ -1,7 +1,7 @@
 @if (! $isPreview)
     @php
         $bloomDate = $event->wedding_date->format('d · m · Y');
-        $bloomMeta = collect([$bloomDate, $event->location_name])->filter()->implode(' — ');
+        $bloomMeta = collect([$bloomDate, $event->primaryLocationName()])->filter()->implode(' — ');
 
         $bloomAccents = [
             'amber-gold' => ['ink' => '#332516', 'gold' => '#b88b42', 'blossom' => '#e8b4a8', 'sky' => '#fef6ee'],

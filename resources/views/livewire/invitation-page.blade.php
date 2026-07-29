@@ -135,6 +135,7 @@
                     'guest' => $guest,
                     'isPersonalLink' => $isPersonalLink,
                     'showRsvpNudge' => $showRsvpNudge,
+                    'visibleMenuOptions' => $visibleMenuOptions,
                 ])
 
                 @include('components.invitation.rsvp-sticky-bar', [

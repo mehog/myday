@@ -1,7 +1,7 @@
 @if (! $isPreview)
     @php
         $envelopeDate = $event->wedding_date->format('d · m · Y');
-        $envelopeMeta = collect([$envelopeDate, $event->location_name])->filter()->implode(' — ');
+        $envelopeMeta = collect([$envelopeDate, $event->primaryLocationName()])->filter()->implode(' — ');
 
         $envAccents = [
             'amber-gold' => ['ink' => '#332516', 'gold' => '#b88b42'],

@@ -3,6 +3,7 @@
 namespace App\Filament\App\Pages;
 
 use App\Filament\App\Resources\MyWeddingResource;
+use App\Filament\App\Widgets\MenuAccommodationSummaryWidget;
 use App\Filament\App\Widgets\RecentGuestMessagesWidget;
 use App\Filament\App\Widgets\VisitChartWidget;
 use App\Filament\App\Widgets\VisitStatsWidget;
@@ -13,6 +14,10 @@ use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Pages\Dashboard as BaseDashboard;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 
 class AppDashboard extends BaseDashboard
@@ -71,6 +76,56 @@ class AppDashboard extends BaseDashboard
         }
     }
 
+    public function content(Schema $schema): Schema
+    {
+        $wedding = auth()->user()?->weddingEvent;
+
+        if (! $wedding) {
+            return $schema->components([]);
+        }
+
+        if ($wedding->isArchived()) {
+            return $schema->components([
+                Grid::make($this->getColumns())
+                    ->schema(fn (): array => $this->getWidgetsSchemaComponents($this->getWidgets())),
+            ]);
+        }
+
+        return $schema->components([
+            Tabs::make(__('app.dashboard_tabs_label'))
+                ->persistTabInQueryString('tab')
+                ->contained(false)
+                ->tabs([
+                    Tab::make(__('app.dashboard_tab_overview'))
+                        ->icon(Heroicon::OutlinedHome)
+                        ->schema([
+                            Grid::make(2)
+                                ->schema(fn (): array => $this->getWidgetsSchemaComponents([
+                                    RecentGuestMessagesWidget::class,
+                                    WeddingOverviewWidget::class,
+                                ])),
+                        ]),
+                    Tab::make(__('app.dashboard_tab_menu_accommodation'))
+                        ->icon(Heroicon::OutlinedCake)
+                        ->schema([
+                            Grid::make(1)
+                                ->schema(fn (): array => $this->getWidgetsSchemaComponents([
+                                    MenuAccommodationSummaryWidget::class,
+                                ])),
+                        ]),
+                    Tab::make(__('app.dashboard_tab_statistics'))
+                        ->icon(Heroicon::OutlinedChartBar)
+                        ->schema([
+                            Grid::make(2)
+                                ->schema(fn (): array => $this->getWidgetsSchemaComponents([
+                                    VisitStatsWidget::class,
+                                    VisitChartWidget::class,
+                                ])),
+                        ]),
+                ]),
+        ]);
+    }
+
     public function getWidgets(): array
     {
         $wedding = auth()->user()?->weddingEvent;
@@ -88,6 +143,7 @@ class AppDashboard extends BaseDashboard
         return [
             RecentGuestMessagesWidget::class,
             WeddingOverviewWidget::class,
+            MenuAccommodationSummaryWidget::class,
             VisitStatsWidget::class,
             VisitChartWidget::class,
         ];

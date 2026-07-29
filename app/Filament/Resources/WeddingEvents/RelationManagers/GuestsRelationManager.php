@@ -6,9 +6,11 @@ use App\Filament\Imports\GuestImporter;
 use App\InvitePlatform;
 use App\Models\Guest;
 use App\Models\GuestChild;
+use App\Models\WeddingMenuOption;
 use App\RsvpStatus;
 use App\Services\SyncGuestChildren;
 use App\Support\Clipboard;
+use App\Support\Locale;
 use App\Support\MessengerLinks;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
@@ -71,6 +73,14 @@ class GuestsRelationManager extends RelationManager
                     ->label($this->trans('field_phone'))
                     ->tel()
                     ->maxLength(255),
+                Select::make('invitation_locale')
+                    ->label($this->trans('field_invitation_locale'))
+                    ->helperText($this->trans('field_invitation_locale_helper'))
+                    ->options(Locale::options())
+                    ->placeholder($this->trans('field_invitation_locale_default'))
+                    ->nullable()
+                    ->native(false)
+                    ->dehydrateStateUsing(fn (?string $state): ?string => filled($state) ? $state : null),
                 Toggle::make('plus_one_allowed')
                     ->label($this->trans('field_plus_one_allowed'))
                     ->helperText($this->trans('field_plus_one_allowed_helper'))
@@ -87,7 +97,7 @@ class GuestsRelationManager extends RelationManager
     {
         return $table
             ->modifyQueryUsing(fn (Builder $query) => $query
-                ->with(['weddingEvent', 'children'])
+                ->with(['weddingEvent', 'children.menuOption', 'menuOption', 'plusOneMenuOption'])
                 ->withMax('linkVisits as last_visited_at', 'visited_at'))
             ->recordTitleAttribute('name')
             ->columns([
@@ -142,6 +152,19 @@ class GuestsRelationManager extends RelationManager
                         ->implode(', '))
                     ->placeholder('—')
                     ->wrap()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                TextColumn::make('menus')
+                    ->label($this->trans('field_menus'))
+                    ->getStateUsing(fn (Guest $record): string => $this->formatGuestMenus($record))
+                    ->placeholder('—')
+                    ->wrap()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                TextColumn::make('accommodation_count')
+                    ->label($this->trans('field_accommodation'))
+                    ->formatStateUsing(fn (?int $state): string => ($state ?? 0) > 0
+                        ? $this->trans('accommodation_count_value', ['count' => $state])
+                        : $this->trans('accommodation_none'))
+                    ->placeholder($this->trans('accommodation_none'))
                     ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('rsvp_note')
                     ->label($this->trans('field_rsvp_note'))
@@ -347,6 +370,9 @@ class GuestsRelationManager extends RelationManager
                         ->fillForm(fn (Guest $record): array => [
                             'rsvp_status' => $record->rsvp_status?->value,
                             'plus_one_name' => $record->plus_one_name,
+                            'menu_option_id' => $record->menu_option_id,
+                            'plus_one_menu_option_id' => $record->plus_one_menu_option_id,
+                            'accommodation_count' => $record->accommodation_count,
                         ])
                         ->form(fn (Guest $record): array => [
                             Select::make('rsvp_status')
@@ -360,17 +386,58 @@ class GuestsRelationManager extends RelationManager
                             TextInput::make('plus_one_name')
                                 ->label($this->trans('field_plus_one_name'))
                                 ->maxLength(255)
-                                ->visible(fn (callable $get): bool => $record->plus_one_allowed && $get('rsvp_status') === RsvpStatus::Yes->value),
+                                ->visible(fn (callable $get): bool => $record->plus_one_allowed && $get('rsvp_status') === RsvpStatus::Yes->value)
+                                ->live(),
+                            Select::make('menu_option_id')
+                                ->label($this->trans('field_menu'))
+                                ->options(fn (): array => $this->menuOptionOptions())
+                                ->native(false)
+                                ->visible(fn (callable $get): bool => $get('rsvp_status') === RsvpStatus::Yes->value
+                                    && $this->menuOptionOptions() !== []),
+                            Select::make('plus_one_menu_option_id')
+                                ->label($this->trans('field_plus_one_menu'))
+                                ->options(fn (): array => $this->menuOptionOptions())
+                                ->native(false)
+                                ->visible(fn (callable $get): bool => $record->plus_one_allowed
+                                    && $get('rsvp_status') === RsvpStatus::Yes->value
+                                    && filled($get('plus_one_name'))
+                                    && $this->menuOptionOptions() !== []),
+                            TextInput::make('accommodation_count')
+                                ->label($this->trans('field_accommodation_count'))
+                                ->numeric()
+                                ->minValue(0)
+                                ->visible(fn (callable $get): bool => $this->getOwnerRecord()->accommodation_enabled
+                                    && $get('rsvp_status') === RsvpStatus::Yes->value),
                         ])
                         ->action(function (array $data, Guest $record): void {
                             $rsvpStatus = RsvpStatus::from($data['rsvp_status']);
 
                             $plusOneName = null;
+                            $menuOptionId = null;
+                            $plusOneMenuOptionId = null;
+                            $accommodationCount = null;
 
-                            if ($rsvpStatus === RsvpStatus::Yes && $record->plus_one_allowed) {
-                                $plusOneName = filled($data['plus_one_name'] ?? null)
-                                    ? trim($data['plus_one_name'])
+                            if ($rsvpStatus === RsvpStatus::Yes) {
+                                if ($record->plus_one_allowed) {
+                                    $plusOneName = filled($data['plus_one_name'] ?? null)
+                                        ? trim($data['plus_one_name'])
+                                        : null;
+                                }
+
+                                $menuOptionId = filled($data['menu_option_id'] ?? null)
+                                    ? (int) $data['menu_option_id']
                                     : null;
+
+                                if ($plusOneName !== null) {
+                                    $plusOneMenuOptionId = filled($data['plus_one_menu_option_id'] ?? null)
+                                        ? (int) $data['plus_one_menu_option_id']
+                                        : null;
+                                }
+
+                                if ($this->getOwnerRecord()->accommodation_enabled) {
+                                    $accommodationCount = max(0, (int) ($data['accommodation_count'] ?? 0));
+                                    $accommodationCount = $accommodationCount > 0 ? $accommodationCount : null;
+                                }
                             }
 
                             $record->update([
@@ -378,6 +445,9 @@ class GuestsRelationManager extends RelationManager
                                 'rsvp_responded_at' => now(),
                                 'rsvp_manual_override' => true,
                                 'plus_one_name' => $plusOneName,
+                                'menu_option_id' => $menuOptionId,
+                                'plus_one_menu_option_id' => $plusOneMenuOptionId,
+                                'accommodation_count' => $accommodationCount,
                             ]);
 
                             Notification::make()
@@ -429,6 +499,7 @@ class GuestsRelationManager extends RelationManager
                                     'id' => $child->id,
                                     'name' => $child->name,
                                     'seating_name' => $child->seating_name,
+                                    'menu_option_id' => $child->menu_option_id,
                                 ])
                                 ->all(),
                         ])
@@ -448,6 +519,11 @@ class GuestsRelationManager extends RelationManager
                                         ->label($this->trans('field_child_seating_name'))
                                         ->helperText($this->trans('field_child_seating_name_helper'))
                                         ->maxLength(255),
+                                    Select::make('menu_option_id')
+                                        ->label($this->trans('field_child_menu'))
+                                        ->options(fn (): array => $this->menuOptionOptions())
+                                        ->native(false)
+                                        ->visible(fn (): bool => $this->menuOptionOptions() !== []),
                                 ])
                                 ->defaultItems(0)
                                 ->reorderable()
@@ -519,6 +595,46 @@ class GuestsRelationManager extends RelationManager
             })
             ->livewireClickHandlerEnabled(true)
             ->cancelParentActions();
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    protected function menuOptionOptions(): array
+    {
+        return $this->getOwnerRecord()
+            ->menuOptions()
+            ->where('is_visible', true)
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get()
+            ->mapWithKeys(fn (WeddingMenuOption $option): array => [
+                $option->id => $option->displayLabel(),
+            ])
+            ->all();
+    }
+
+    protected function formatGuestMenus(Guest $record): string
+    {
+        $parts = [];
+
+        if ($record->menuOption) {
+            $parts[] = $record->name.': '.$record->menuOption->displayLabel();
+        }
+
+        if ($record->plusOneMenuOption && filled($record->plus_one_name)) {
+            $parts[] = $record->plus_one_name.': '.$record->plusOneMenuOption->displayLabel();
+        }
+
+        foreach ($record->children as $child) {
+            if (! $child->menuOption) {
+                continue;
+            }
+
+            $parts[] = $child->displayName().': '.$child->menuOption->displayLabel();
+        }
+
+        return implode(' · ', $parts);
     }
 
     protected function coupleSetupLocked(): bool

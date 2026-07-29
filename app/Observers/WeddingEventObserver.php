@@ -3,16 +3,19 @@
 namespace App\Observers;
 
 use App\Models\WeddingEvent;
+use App\Services\EnsureWeddingMenuOptions;
 use App\Services\WeddingScheduledNotificationService;
 
 class WeddingEventObserver
 {
     public function __construct(
         private readonly WeddingScheduledNotificationService $scheduledNotifications,
+        private readonly EnsureWeddingMenuOptions $ensureWeddingMenuOptions,
     ) {}
 
     public function created(WeddingEvent $event): void
     {
+        $this->ensureWeddingMenuOptions->handle($event);
         $this->scheduledNotifications->syncEvent($event);
         $this->scheduledNotifications->syncCoupleOnboarding($event);
         $this->scheduledNotifications->syncAdminAlertsForEvent($event);

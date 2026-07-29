@@ -292,7 +292,7 @@
             <div
                 x-show="pending !== null"
                 x-transition
-                class="w-full max-w-md rounded-2xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)] p-8 text-center"
+                class="max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto overscroll-contain rounded-2xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)] p-8 text-center"
                 @click.stop
             >
                 <h3 class="invitation-heading text-2xl text-[var(--color-text)] mb-2">
@@ -317,7 +317,7 @@
                         <input
                             id="plusOneName"
                             type="text"
-                            wire:model="plusOneName"
+                            wire:model.live.debounce.300ms="plusOneName"
                             class="w-full rounded-xl border border-white/10 bg-[var(--color-bg)] px-4 py-3 text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary)] focus:outline-none"
                             placeholder="{{ __('invitation.plus_one_name_placeholder') }}"
                         >
@@ -358,7 +358,7 @@
                                 <div class="flex items-center gap-2" wire:key="child-name-{{ $index }}">
                                     <input
                                         type="text"
-                                        wire:model="childNames.{{ $index }}"
+                                        wire:model.live.debounce.300ms="childNames.{{ $index }}"
                                         class="w-full rounded-xl border border-white/10 bg-[var(--color-bg)] px-4 py-3 text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary)] focus:outline-none"
                                         placeholder="{{ __('invitation.children_name_placeholder') }}"
                                     >
@@ -388,6 +388,117 @@
                         @error('childNames.*')
                             <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
                         @enderror
+                    </div>
+                @endif
+
+                @if (($visibleMenuOptions ?? collect())->isNotEmpty())
+                    <div
+                        x-show="pending === 'yes'"
+                        x-cloak
+                        class="mb-6 space-y-4 text-left"
+                    >
+                        <div>
+                            <label for="menuOptionId" class="block text-sm text-[var(--color-text-muted)] mb-2">
+                                {{ __('invitation.menu_question_yourself') }}
+                            </label>
+                            <select
+                                id="menuOptionId"
+                                wire:model="menuOptionId"
+                                class="w-full rounded-xl border border-white/10 bg-[var(--color-bg)] px-4 py-3 text-[var(--color-text)] focus:border-[var(--color-primary)] focus:outline-none"
+                            >
+                                <option value="">{{ __('invitation.menu_placeholder') }}</option>
+                                @foreach ($visibleMenuOptions as $option)
+                                    <option value="{{ $option->id }}">{{ $option->displayLabel() }}</option>
+                                @endforeach
+                            </select>
+                            @error('menuOptionId')
+                                <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        @if ($guest?->plus_one_allowed && filled(trim($plusOneName)))
+                            <div>
+                                <label for="plusOneMenuOptionId" class="block text-sm text-[var(--color-text-muted)] mb-2">
+                                    {{ __('invitation.menu_question_plus_one') }}
+                                </label>
+                                <select
+                                    id="plusOneMenuOptionId"
+                                    wire:model="plusOneMenuOptionId"
+                                    class="w-full rounded-xl border border-white/10 bg-[var(--color-bg)] px-4 py-3 text-[var(--color-text)] focus:border-[var(--color-primary)] focus:outline-none"
+                                >
+                                    <option value="">{{ __('invitation.menu_placeholder') }}</option>
+                                    @foreach ($visibleMenuOptions as $option)
+                                        <option value="{{ $option->id }}">{{ $option->displayLabel() }}</option>
+                                    @endforeach
+                                </select>
+                                @error('plusOneMenuOptionId')
+                                    <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        @endif
+
+                        @if ($guest)
+                            @foreach ($childNames as $index => $childName)
+                                @if (trim((string) $childName) !== '')
+                                    <div wire:key="child-menu-{{ $index }}">
+                                        <label for="childMenuOptionIds.{{ $index }}" class="block text-sm text-[var(--color-text-muted)] mb-2">
+                                            {{ __('invitation.menu_question_child', ['name' => $childName]) }}
+                                        </label>
+                                        <select
+                                            id="childMenuOptionIds.{{ $index }}"
+                                            wire:model="childMenuOptionIds.{{ $index }}"
+                                            class="w-full rounded-xl border border-white/10 bg-[var(--color-bg)] px-4 py-3 text-[var(--color-text)] focus:border-[var(--color-primary)] focus:outline-none"
+                                        >
+                                            <option value="">{{ __('invitation.menu_placeholder') }}</option>
+                                            @foreach ($visibleMenuOptions as $option)
+                                                <option value="{{ $option->id }}">{{ $option->displayLabel() }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error("childMenuOptionIds.{$index}")
+                                            <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                @endif
+                            @endforeach
+                        @endif
+                    </div>
+                @endif
+
+                @if ($event->accommodation_enabled)
+                    <div
+                        x-show="pending === 'yes'"
+                        x-cloak
+                        class="mb-6 text-left"
+                    >
+                        <label class="flex items-start gap-3 text-sm text-[var(--color-text-muted)]">
+                            <input
+                                type="checkbox"
+                                wire:model.live="needsAccommodation"
+                                class="mt-1 rounded border-white/20 bg-[var(--color-bg)] text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                            >
+                            <span>
+                                <span class="block text-[var(--color-text)]">{{ __('invitation.accommodation_question') }}</span>
+                                <span class="block mt-1">{{ __('invitation.accommodation_helper') }}</span>
+                            </span>
+                        </label>
+
+                        @if ($needsAccommodation)
+                            <div class="mt-4">
+                                <label for="accommodationCount" class="block text-sm text-[var(--color-text-muted)] mb-2">
+                                    {{ __('invitation.accommodation_count_label') }}
+                                </label>
+                                <input
+                                    id="accommodationCount"
+                                    type="number"
+                                    min="1"
+                                    wire:model="accommodationCount"
+                                    class="w-full rounded-xl border border-white/10 bg-[var(--color-bg)] px-4 py-3 text-[var(--color-text)] focus:border-[var(--color-primary)] focus:outline-none"
+                                >
+                                @error('accommodationCount')
+                                    <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        @endif
                     </div>
                 @endif
 

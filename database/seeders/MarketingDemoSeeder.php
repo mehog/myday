@@ -13,6 +13,7 @@ use App\Models\GuestMessage;
 use App\Models\User;
 use App\Models\WeddingEvent;
 use App\RsvpStatus;
+use App\Services\EnsureWeddingMenuOptions;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -157,6 +158,7 @@ class MarketingDemoSeeder extends Seeder
                 'link_mode' => LinkMode::TokenOnly,
                 'music_url' => 'https://www.youtube.com/watch?v=2Vv-BfVoq4g',
                 'rsvp_deadline' => $rsvpDeadline,
+                'accommodation_enabled' => true,
                 'is_active' => true,
                 'motto' => 'Dvije duše, jedno srce — zauvijek naše "da".',
                 'send_message' => <<<'TEXT'
@@ -172,6 +174,30 @@ Jasmina & Đorđe
 TEXT,
             ]
         );
+
+        app(EnsureWeddingMenuOptions::class)->handle($event);
+
+        $event->locations()->delete();
+        $event->locations()->createMany([
+            [
+                'label' => 'Džamija',
+                'name' => 'Gazi Husrev-begova džamija',
+                'address' => 'Sarajevo, Bosna i Hercegovina',
+                'lat' => 43.8594,
+                'lng' => 18.4286,
+                'is_primary' => true,
+                'sort_order' => 0,
+            ],
+            [
+                'label' => 'Opština',
+                'name' => 'Općina Stari Grad',
+                'address' => 'Sarajevo, Bosna i Hercegovina',
+                'lat' => 43.8599,
+                'lng' => 18.4310,
+                'is_primary' => false,
+                'sort_order' => 1,
+            ],
+        ]);
 
         $event->scheduleItems()->delete();
         $event->scheduleItems()->createMany([

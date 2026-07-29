@@ -29,9 +29,9 @@
             <p class="text-lg sm:text-xl text-[var(--color-accent)] invitation-body">
                 {{ $event->wedding_date->translatedFormat('l, j. F Y.') }}
             </p>
-            @if ($event->location_name)
+            @if ($event->primaryLocationName())
                 <p class="mt-4 text-[var(--color-text-muted)] invitation-body">
-                    {{ $event->location_name }}
+                    {{ $event->primaryLocationName() }}
                 </p>
             @endif
 
@@ -144,60 +144,58 @@
     </section>
 @endif
 
-@if ($event->location_name || $event->location_address)
-    @php
-        $mapQuery = urlencode($event->location_address ?: $event->location_name);
-        $mapSrc = $event->location_lat && $event->location_lng
-            ? "https://maps.google.com/maps?q={$event->location_lat},{$event->location_lng}&z=15&output=embed"
-            : "https://maps.google.com/maps?q={$mapQuery}&z=15&output=embed";
-        $directionsUrl = $event->location_lat && $event->location_lng
-            ? "https://www.google.com/maps/dir/?api=1&destination={$event->location_lat},{$event->location_lng}"
-            : 'https://www.google.com/maps/search/?api=1&query='.$mapQuery;
-    @endphp
+@php
+    $editorialLocations = $event->relationLoaded('locations')
+        ? $event->locations->filter(fn ($location) => $location->hasMapContent())->values()
+        : collect();
+@endphp
 
-    {{-- Location: side-by-side --}}
+@if ($editorialLocations->isNotEmpty())
+    {{-- Location: side-by-side cards for each venue --}}
     <section class="invitation-section editorial-location py-20 px-6">
-        <div class="max-w-6xl mx-auto invitation-fade-in">
-            <div class="text-center mb-10 lg:hidden">
+        <div class="max-w-6xl mx-auto invitation-fade-in space-y-14">
+            <div class="text-center">
                 <p class="text-sm uppercase tracking-[0.3em] text-[var(--color-text-muted)] mb-3">{{ __('invitation.find_us') }}</p>
                 <h2 class="invitation-heading text-4xl text-[var(--color-text)]">{{ __('invitation.location') }}</h2>
             </div>
 
-            <div class="editorial-location-grid grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-10 items-stretch">
-                <div class="lg:col-span-3 rounded-2xl overflow-hidden border border-[color-mix(in_srgb,var(--color-text)_10%,transparent)] shadow-xl min-h-[18rem]">
-                    <iframe
-                        src="{{ $mapSrc }}"
-                        class="w-full h-72 sm:h-96 lg:h-full min-h-[18rem] border-0"
-                        loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"
-                        title="{{ __('invitation.map_title') }}"
-                    ></iframe>
-                </div>
-
-                <div class="lg:col-span-2 flex flex-col justify-center">
-                    <div class="hidden lg:block mb-6">
-                        <p class="text-sm uppercase tracking-[0.3em] text-[var(--color-text-muted)] mb-3">{{ __('invitation.find_us') }}</p>
-                        <h2 class="invitation-heading text-4xl text-[var(--color-text)]">{{ __('invitation.location') }}</h2>
+            @foreach ($editorialLocations as $location)
+                <div class="editorial-location-grid grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-10 items-stretch">
+                    <div class="lg:col-span-3 rounded-2xl overflow-hidden border border-[color-mix(in_srgb,var(--color-text)_10%,transparent)] shadow-xl min-h-[18rem]">
+                        <iframe
+                            src="{{ $location->mapEmbedUrl() }}"
+                            class="w-full h-72 sm:h-96 lg:h-full min-h-[18rem] border-0"
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="{{ $location->displayName() ?: __('invitation.map_title') }}"
+                        ></iframe>
                     </div>
 
-                    @if ($event->location_name)
-                        <h3 class="invitation-heading text-2xl sm:text-3xl text-[var(--color-text)] mb-3">{{ $event->location_name }}</h3>
-                    @endif
-                    @if ($event->location_address)
-                        <p class="invitation-body text-[var(--color-text-muted)] mb-6">{{ $event->location_address }}</p>
-                    @endif
+                    <div class="lg:col-span-2 flex flex-col justify-center">
+                        @if (filled($location->label))
+                            <p class="text-sm uppercase tracking-[0.25em] text-[var(--color-text-muted)] mb-2">{{ $location->label }}</p>
+                        @endif
+                        @if ($location->name)
+                            <h3 class="invitation-heading text-2xl sm:text-3xl text-[var(--color-text)] mb-3">{{ $location->name }}</h3>
+                        @endif
+                        @if ($location->address)
+                            <p class="invitation-body text-[var(--color-text-muted)] mb-6">{{ $location->address }}</p>
+                        @endif
 
-                    <a
-                        href="{{ $directionsUrl }}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="inline-flex items-center gap-2 self-start text-sm uppercase tracking-[0.2em] text-[var(--color-primary)] hover:text-[var(--color-primary-dark)] transition"
-                    >
-                        {{ __('invitation.get_directions') }}
-                        <span aria-hidden="true">&rarr;</span>
-                    </a>
+                        @if ($location->directionsUrl())
+                            <a
+                                href="{{ $location->directionsUrl() }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex items-center gap-2 self-start text-sm uppercase tracking-[0.2em] text-[var(--color-primary)] hover:text-[var(--color-primary-dark)] transition"
+                            >
+                                {{ __('invitation.get_directions') }}
+                                <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        @endif
+                    </div>
                 </div>
-            </div>
+            @endforeach
         </div>
     </section>
 @endif
@@ -274,4 +272,5 @@
     'event' => $event,
     'guest' => $guest,
     'isPersonalLink' => $isPersonalLink,
+    'visibleMenuOptions' => $visibleMenuOptions ?? collect(),
 ])

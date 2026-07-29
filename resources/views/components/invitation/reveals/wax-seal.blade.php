@@ -1,7 +1,7 @@
 @if (! $isPreview)
     @php
         $sealDate = $event->wedding_date->format('d · m · Y');
-        $sealMeta = collect([$sealDate, $event->location_name])->filter()->implode(' — ');
+        $sealMeta = collect([$sealDate, $event->primaryLocationName()])->filter()->implode(' — ');
 
         $sealAccents = [
             'amber-gold' => ['ink' => '#332516', 'gold' => '#b88b42', 'wax' => '#a83b57'],

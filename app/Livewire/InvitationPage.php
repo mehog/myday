@@ -11,9 +11,12 @@ use App\LinkType;
 use App\Models\Guest;
 use App\Models\GuestChild;
 use App\Models\WeddingEvent;
+use App\Models\WeddingMenuOption;
 use App\RsvpStatus;
 use App\Services\SyncGuestChildren;
 use App\Support\Locale;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -31,7 +34,18 @@ class InvitationPage extends Component
     /** @var list<string> */
     public array $childNames = [];
 
+    /** @var list<string|int|null> */
+    public array $childMenuOptionIds = [];
+
     public string $rsvpNote = '';
+
+    public ?string $menuOptionId = null;
+
+    public ?string $plusOneMenuOptionId = null;
+
+    public bool $needsAccommodation = false;
+
+    public ?int $accommodationCount = null;
 
     public bool $rsvpSubmitted = false;
 
@@ -57,7 +71,7 @@ class InvitationPage extends Component
     {
         $this->event = WeddingEvent::query()
             ->where('slug', $slug)
-            ->with(['scheduleItems', 'eventPhotos'])
+            ->with(['scheduleItems', 'eventPhotos', 'menuOptions', 'locations'])
             ->firstOrFail();
 
         if (! $this->event->canBeViewedBy(auth()->user())) {
@@ -89,6 +103,7 @@ class InvitationPage extends Component
 
         if ($token !== null) {
             $this->guest = $this->event->guests()
+                ->with(['children'])
                 ->where('token', $token)
                 ->firstOrFail();
 
@@ -131,32 +146,11 @@ class InvitationPage extends Component
             'childNames.*' => ['nullable', 'string', 'max:255'],
         ]);
 
-        if ($this->guest) {
-            $updateData = [
-                'rsvp_status' => $rsvpStatus,
-                'rsvp_responded_at' => now(),
-                'rsvp_manual_override' => false,
-                'rsvp_note' => filled($this->rsvpNote) ? trim($this->rsvpNote) : null,
-            ];
+        if ($rsvpStatus === RsvpStatus::Yes) {
+            $this->validateYesPreferences();
+        }
 
-            if ($rsvpStatus === RsvpStatus::Yes && $this->guest->plus_one_allowed) {
-                $updateData['plus_one_name'] = filled($this->plusOneName)
-                    ? trim($this->plusOneName)
-                    : null;
-            } else {
-                $updateData['plus_one_name'] = null;
-            }
-
-            $this->guest->update($updateData);
-            $this->guest->refresh();
-
-            app(SyncGuestChildren::class)->syncFromNames(
-                $this->guest,
-                $rsvpStatus === RsvpStatus::Yes ? $this->childNames : [],
-            );
-
-            $this->guest->load('children');
-        } else {
+        if (! $this->guest) {
             $this->validate([
                 'anonymousName' => ['required', 'string', 'max:255'],
             ], [
@@ -168,14 +162,15 @@ class InvitationPage extends Component
 
                 return;
             }
-
-            $this->guest = $this->event->guests()->create([
-                'name' => $this->anonymousName,
-                'rsvp_status' => $rsvpStatus,
-                'rsvp_responded_at' => now(),
-                'rsvp_note' => filled($this->rsvpNote) ? trim($this->rsvpNote) : null,
-            ]);
         }
+
+        DB::transaction(function () use ($rsvpStatus): void {
+            if ($this->guest) {
+                $this->persistExistingGuestResponse($rsvpStatus);
+            } else {
+                $this->persistAnonymousGuestResponse($rsvpStatus);
+            }
+        });
 
         $this->rsvpSubmitted = true;
         $this->isEditing = false;
@@ -200,7 +195,18 @@ class InvitationPage extends Component
         $this->childNames = $this->guest
             ? $this->guest->children()->pluck('name')->all()
             : [];
+        $this->childMenuOptionIds = $this->guest
+            ? $this->guest->children()->pluck('menu_option_id')->map(fn ($id) => $id !== null ? (string) $id : null)->all()
+            : [];
         $this->rsvpNote = $this->guest?->rsvp_note ?? '';
+        $this->menuOptionId = $this->guest?->menu_option_id !== null
+            ? (string) $this->guest->menu_option_id
+            : null;
+        $this->plusOneMenuOptionId = $this->guest?->plus_one_menu_option_id !== null
+            ? (string) $this->guest->plus_one_menu_option_id
+            : null;
+        $this->needsAccommodation = ($this->guest?->accommodation_count ?? 0) > 0;
+        $this->accommodationCount = $this->guest?->accommodation_count;
         $this->rsvpSubmitted = false;
     }
 
@@ -211,6 +217,7 @@ class InvitationPage extends Component
         }
 
         $this->childNames[] = '';
+        $this->childMenuOptionIds[] = null;
     }
 
     public function removeChildName(int $index): void
@@ -219,13 +226,14 @@ class InvitationPage extends Component
             return;
         }
 
-        unset($this->childNames[$index]);
+        unset($this->childNames[$index], $this->childMenuOptionIds[$index]);
         $this->childNames = array_values($this->childNames);
+        $this->childMenuOptionIds = array_values($this->childMenuOptionIds);
     }
 
     public function switchLocale(string $locale): void
     {
-        Locale::set($locale);
+        Locale::set($locale, persistToUser: false);
     }
 
     public function updatedPreviewTheme(): void
@@ -270,6 +278,165 @@ class InvitationPage extends Component
         };
     }
 
+    protected function validateYesPreferences(): void
+    {
+        $visibleMenuIds = $this->visibleMenuOptionIds();
+        $offersMenus = $visibleMenuIds !== [];
+        $filledChildIndexes = $this->filledChildIndexes();
+        $includesPlusOne = $this->guest?->plus_one_allowed && filled(trim($this->plusOneName));
+        $partySize = 1 + ($includesPlusOne ? 1 : 0) + count($filledChildIndexes);
+
+        $rules = [];
+
+        if ($offersMenus) {
+            $rules['menuOptionId'] = ['required', Rule::in($visibleMenuIds)];
+
+            if ($includesPlusOne) {
+                $rules['plusOneMenuOptionId'] = ['required', Rule::in($visibleMenuIds)];
+            }
+
+            foreach ($filledChildIndexes as $index) {
+                $rules["childMenuOptionIds.{$index}"] = ['required', Rule::in($visibleMenuIds)];
+            }
+        }
+
+        if ($this->event->accommodation_enabled) {
+            $rules['needsAccommodation'] = ['boolean'];
+
+            if ($this->needsAccommodation) {
+                $rules['accommodationCount'] = [
+                    'required',
+                    'integer',
+                    'min:1',
+                    'max:'.$partySize,
+                ];
+            }
+        }
+
+        if ($rules !== []) {
+            $this->validate($rules, [
+                'menuOptionId.required' => __('invitation.menu_required'),
+                'plusOneMenuOptionId.required' => __('invitation.menu_required'),
+                'childMenuOptionIds.*.required' => __('invitation.menu_required'),
+                'accommodationCount.required' => __('invitation.accommodation_count_required'),
+                'accommodationCount.max' => __('invitation.accommodation_count_max'),
+            ]);
+        }
+    }
+
+    protected function persistExistingGuestResponse(RsvpStatus $rsvpStatus): void
+    {
+        $updateData = [
+            'rsvp_status' => $rsvpStatus,
+            'rsvp_responded_at' => now(),
+            'rsvp_manual_override' => false,
+            'rsvp_note' => filled($this->rsvpNote) ? trim($this->rsvpNote) : null,
+        ];
+
+        if ($rsvpStatus === RsvpStatus::Yes) {
+            $includesPlusOne = $this->guest->plus_one_allowed && filled(trim($this->plusOneName));
+
+            $updateData['plus_one_name'] = $includesPlusOne ? trim($this->plusOneName) : null;
+            $updateData['menu_option_id'] = $this->normalizedMenuOptionId($this->menuOptionId);
+            $updateData['plus_one_menu_option_id'] = $includesPlusOne
+                ? $this->normalizedMenuOptionId($this->plusOneMenuOptionId)
+                : null;
+            $updateData['accommodation_count'] = $this->normalizedAccommodationCount();
+        } else {
+            $updateData['plus_one_name'] = null;
+            $updateData['menu_option_id'] = null;
+            $updateData['plus_one_menu_option_id'] = null;
+            $updateData['accommodation_count'] = null;
+        }
+
+        $this->guest->update($updateData);
+        $this->guest->refresh();
+
+        $menuOptionIds = [];
+
+        if ($rsvpStatus === RsvpStatus::Yes) {
+            foreach ($this->filledChildIndexes() as $index) {
+                $menuOptionIds[] = $this->normalizedMenuOptionId($this->childMenuOptionIds[$index] ?? null);
+            }
+        }
+
+        app(SyncGuestChildren::class)->syncFromNames(
+            $this->guest,
+            $rsvpStatus === RsvpStatus::Yes ? $this->childNames : [],
+            $rsvpStatus === RsvpStatus::Yes ? $menuOptionIds : [],
+        );
+
+        $this->guest->load('children');
+    }
+
+    protected function persistAnonymousGuestResponse(RsvpStatus $rsvpStatus): void
+    {
+        $this->guest = $this->event->guests()->create([
+            'name' => $this->anonymousName,
+            'rsvp_status' => $rsvpStatus,
+            'rsvp_responded_at' => now(),
+            'rsvp_note' => filled($this->rsvpNote) ? trim($this->rsvpNote) : null,
+            'menu_option_id' => $rsvpStatus === RsvpStatus::Yes
+                ? $this->normalizedMenuOptionId($this->menuOptionId)
+                : null,
+            'accommodation_count' => $rsvpStatus === RsvpStatus::Yes
+                ? $this->normalizedAccommodationCount()
+                : null,
+        ]);
+    }
+
+    /**
+     * @return list<int>
+     */
+    protected function filledChildIndexes(): array
+    {
+        $indexes = [];
+
+        foreach ($this->childNames as $index => $name) {
+            if (trim((string) $name) !== '') {
+                $indexes[] = $index;
+            }
+        }
+
+        return $indexes;
+    }
+
+    /**
+     * @return list<string>
+     */
+    protected function visibleMenuOptionIds(): array
+    {
+        return $this->event->menuOptions
+            ->filter(fn (WeddingMenuOption $option): bool => $option->is_visible)
+            ->pluck('id')
+            ->map(fn ($id): string => (string) $id)
+            ->values()
+            ->all();
+    }
+
+    protected function normalizedMenuOptionId(string|int|null $value): ?int
+    {
+        if (! filled($value)) {
+            return null;
+        }
+
+        $id = (int) $value;
+        $visibleIds = array_map('intval', $this->visibleMenuOptionIds());
+
+        return in_array($id, $visibleIds, true) ? $id : null;
+    }
+
+    protected function normalizedAccommodationCount(): ?int
+    {
+        if (! $this->event->accommodation_enabled || ! $this->needsAccommodation) {
+            return null;
+        }
+
+        $count = (int) ($this->accommodationCount ?? 0);
+
+        return $count > 0 ? $count : null;
+    }
+
     public function render()
     {
         $activeTheme = $this->event->is_demo && $this->previewTheme !== ''
@@ -291,6 +458,9 @@ class InvitationPage extends Component
             'themes' => InvitationTheme::cases(),
             'templates' => InvitationTemplate::cases(),
             'reveals' => InvitationReveal::cases(),
+            'visibleMenuOptions' => $this->event->menuOptions
+                ->filter(fn (WeddingMenuOption $option): bool => $option->is_visible)
+                ->values(),
             'showRsvpNudge' => $this->isPersonalLink
                 && $this->guest
                 && ! $this->guest->hasResponded()

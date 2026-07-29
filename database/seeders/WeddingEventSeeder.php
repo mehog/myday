@@ -7,6 +7,7 @@ use App\LinkMode;
 use App\Models\Guest;
 use App\Models\User;
 use App\Models\WeddingEvent;
+use App\Services\EnsureWeddingMenuOptions;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -78,6 +79,18 @@ class WeddingEventSeeder extends Seeder
                 ['name' => 'Demo Gost', 'email' => 'demo-islamsko@example.com'],
             ],
             isDemo: true,
+            extraLocations: [
+                [
+                    'label' => 'Opština',
+                    'name' => 'Općina Stari Grad',
+                    'address' => 'Sarajevo, Bosna i Hercegovina',
+                    'lat' => 43.8599,
+                    'lng' => 18.4310,
+                    'is_primary' => false,
+                    'sort_order' => 1,
+                ],
+            ],
+            primaryLocationLabel: 'Džamija',
         );
 
         $this->seedEvent(
@@ -191,6 +204,9 @@ class WeddingEventSeeder extends Seeder
         );
     }
 
+    /**
+     * @param  list<array{label?: string|null, name: string, address?: string|null, lat?: float|null, lng?: float|null, is_primary?: bool, sort_order?: int}>  $extraLocations
+     */
     private function seedEvent(
         string $slug,
         string $groom,
@@ -204,6 +220,8 @@ class WeddingEventSeeder extends Seeder
         array $guests = [],
         ?int $userId = null,
         bool $isDemo = false,
+        array $extraLocations = [],
+        ?string $primaryLocationLabel = null,
     ): void {
         $event = WeddingEvent::query()->updateOrCreate(
             ['slug' => $slug],
@@ -221,9 +239,35 @@ class WeddingEventSeeder extends Seeder
                 'link_mode' => LinkMode::Public,
                 'music_url' => 'https://www.youtube.com/watch?v=450p7goxZqg',
                 'rsvp_deadline' => now()->addMonths(3),
+                'accommodation_enabled' => true,
                 'is_active' => true,
             ]
         );
+
+        app(EnsureWeddingMenuOptions::class)->handle($event);
+
+        $event->locations()->delete();
+        $event->locations()->create([
+            'label' => $primaryLocationLabel,
+            'name' => $locationName,
+            'address' => $locationAddress,
+            'lat' => $lat,
+            'lng' => $lng,
+            'is_primary' => true,
+            'sort_order' => 0,
+        ]);
+
+        foreach ($extraLocations as $location) {
+            $event->locations()->create([
+                'label' => $location['label'] ?? null,
+                'name' => $location['name'],
+                'address' => $location['address'] ?? null,
+                'lat' => $location['lat'] ?? null,
+                'lng' => $location['lng'] ?? null,
+                'is_primary' => $location['is_primary'] ?? false,
+                'sort_order' => $location['sort_order'] ?? 1,
+            ]);
+        }
 
         $event->scheduleItems()->delete();
         $event->scheduleItems()->createMany($schedule);

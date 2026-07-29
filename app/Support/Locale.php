@@ -41,7 +41,7 @@ class Locale
         return App::getLocale();
     }
 
-    public static function set(string $locale): bool
+    public static function set(string $locale, bool $persistToUser = true): bool
     {
         if (! self::isSupported($locale)) {
             return false;
@@ -49,9 +49,11 @@ class Locale
 
         session(['locale' => $locale]);
 
-        $user = auth()->user();
-        if ($user instanceof User) {
-            $user->update(['locale' => $locale]);
+        if ($persistToUser) {
+            $user = auth()->user();
+            if ($user instanceof User) {
+                $user->update(['locale' => $locale]);
+            }
         }
 
         self::apply($locale);
@@ -65,11 +67,6 @@ class Locale
 
         if (is_string($queryLocale) && self::isSupported($queryLocale)) {
             session(['locale' => $queryLocale]);
-
-            $user = auth()->user();
-            if ($user instanceof User) {
-                $user->update(['locale' => $queryLocale]);
-            }
 
             return $queryLocale;
         }

@@ -1,7 +1,7 @@
 @if (! $isPreview)
     @php
         $storyDate = $event->wedding_date->format('d · m · Y');
-        $storyMeta = collect([$storyDate, $event->location_name])->filter()->implode(' — ');
+        $storyMeta = collect([$storyDate, $event->primaryLocationName()])->filter()->implode(' — ');
 
         $storyAccents = [
             'amber-gold' => ['ink' => '#332516', 'gold' => '#b88b42'],

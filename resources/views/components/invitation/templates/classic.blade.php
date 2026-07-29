@@ -9,7 +9,7 @@
     @include('components.invitation.schedule', ['event' => $event])
 @endif
 
-@if ($event->location_name || $event->location_address)
+@if ($event->hasLocations())
     @include('components.invitation.location', ['event' => $event])
 @endif
 
@@ -25,4 +25,5 @@
     'event' => $event,
     'guest' => $guest,
     'isPersonalLink' => $isPersonalLink,
+    'visibleMenuOptions' => $visibleMenuOptions ?? collect(),
 ])

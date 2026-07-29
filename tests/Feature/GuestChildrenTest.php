@@ -21,6 +21,7 @@ class GuestChildrenTest extends TestCase
             'wedding_date' => now()->addMonth(),
             'is_active' => true,
         ]);
+        $event->menuOptions()->update(['is_visible' => false]);
         $guest = Guest::factory()->for($event)->create([
             'plus_one_allowed' => false,
         ]);
@@ -48,6 +49,7 @@ class GuestChildrenTest extends TestCase
             'wedding_date' => now()->addMonth(),
             'is_active' => true,
         ]);
+        $event->menuOptions()->update(['is_visible' => false]);
         $guest = Guest::factory()->for($event)->create([
             'rsvp_status' => RsvpStatus::Yes,
         ]);

@@ -26,9 +26,9 @@
         <p class="text-xl sm:text-2xl text-[var(--color-accent)] invitation-body">
             {{ $event->wedding_date->translatedFormat('l, j. F Y.') }}
         </p>
-        @if ($event->location_name)
+        @if ($event->primaryLocationName())
             <p class="mt-3 text-[var(--color-text-muted)] invitation-body">
-                {{ $event->location_name }}
+                {{ $event->primaryLocationName() }}
             </p>
         @endif
 

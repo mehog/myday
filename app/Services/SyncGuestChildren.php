@@ -14,8 +14,9 @@ class SyncGuestChildren
      * Sync children from guest-submitted names, preserving order-matched IDs.
      *
      * @param  list<string|null>  $names
+     * @param  list<int|string|null>|null  $menuOptionIds
      */
-    public function syncFromNames(Guest $guest, array $names): void
+    public function syncFromNames(Guest $guest, array $names, ?array $menuOptionIds = null): void
     {
         $normalized = collect($names)
             ->map(fn ($name): string => trim((string) $name))
@@ -24,6 +25,9 @@ class SyncGuestChildren
             ->values()
             ->map(fn (string $name, int $index): array => [
                 'name' => $name,
+                'menu_option_id' => filled($menuOptionIds[$index] ?? null)
+                    ? (int) $menuOptionIds[$index]
+                    : null,
                 'sort_order' => $index,
             ])
             ->all();
@@ -34,7 +38,7 @@ class SyncGuestChildren
     /**
      * Sync children from couple-managed rows.
      *
-     * @param  list<array{id?: int|string|null, name: string, seating_name?: string|null, sort_order?: int}>  $children
+     * @param  list<array{id?: int|string|null, name: string, seating_name?: string|null, menu_option_id?: int|string|null, sort_order?: int}>  $children
      */
     public function syncFromAdmin(Guest $guest, array $children): void
     {
@@ -54,6 +58,9 @@ class SyncGuestChildren
                     'id' => filled($child['id'] ?? null) ? (int) $child['id'] : null,
                     'name' => $name,
                     'seating_name' => $seatingName,
+                    'menu_option_id' => filled($child['menu_option_id'] ?? null)
+                        ? (int) $child['menu_option_id']
+                        : null,
                     'sort_order' => $child['sort_order'] ?? $index,
                 ];
             })
@@ -66,7 +73,7 @@ class SyncGuestChildren
     }
 
     /**
-     * @param  list<array{id?: int|null, name: string, seating_name?: string|null, sort_order?: int}>  $children
+     * @param  list<array{id?: int|null, name: string, seating_name?: string|null, menu_option_id?: int|null, sort_order?: int}>  $children
      */
     protected function sync(Guest $guest, array $children, bool $preserveSeatingNames): void
     {
@@ -90,6 +97,7 @@ class SyncGuestChildren
                     $payload = [
                         'name' => $childData['name'],
                         'sort_order' => $sortOrder,
+                        'menu_option_id' => $childData['menu_option_id'] ?? null,
                     ];
 
                     if (! $preserveSeatingNames) {
@@ -105,6 +113,7 @@ class SyncGuestChildren
                 $created = $guest->children()->create([
                     'name' => $childData['name'],
                     'seating_name' => $preserveSeatingNames ? null : ($childData['seating_name'] ?? null),
+                    'menu_option_id' => $childData['menu_option_id'] ?? null,
                     'sort_order' => $sortOrder,
                 ]);
 

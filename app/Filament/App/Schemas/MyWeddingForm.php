@@ -7,12 +7,14 @@ use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\LinkMode;
 use App\Models\WeddingEvent;
+use App\Support\Locale;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -120,44 +122,6 @@ class MyWeddingForm
                             ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
                             ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
                     ]),
-                Section::make(__('app.section_location'))
-                    ->columns(2)
-                    ->collapsible()
-                    ->collapsed()
-                    ->schema([
-                        TextInput::make('location_name')
-                            ->label(__('app.location_name'))
-                            ->maxLength(255)
-                            ->columnSpanFull()
-                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
-                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
-                        TextInput::make('location_address')
-                            ->label(__('app.location_address'))
-                            ->maxLength(255)
-                            ->columnSpanFull()
-                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
-                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
-                        Section::make(__('app.section_coordinates'))
-                            ->description(__('app.coordinates_description'))
-                            ->collapsed()
-                            ->collapsible()
-                            ->columns(2)
-                            ->columnSpanFull()
-                            ->schema([
-                                TextInput::make('location_lat')
-                                    ->label(__('app.latitude'))
-                                    ->numeric()
-                                    ->step(0.0000001)
-                                    ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
-                                    ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
-                                TextInput::make('location_lng')
-                                    ->label(__('app.longitude'))
-                                    ->numeric()
-                                    ->step(0.0000001)
-                                    ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
-                                    ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
-                            ]),
-                    ]),
                 Section::make(__('app.section_rsvp'))
                     ->collapsible()
                     ->collapsed()
@@ -170,6 +134,20 @@ class MyWeddingForm
                             ->helperText(fn (?WeddingEvent $record): ?string => $record?->isArchived()
                                 ? __('app.rsvp_deadline_locked')
                                 : null),
+                        Toggle::make('accommodation_enabled')
+                            ->label(__('app.accommodation_enabled'))
+                            ->helperText(__('app.accommodation_enabled_helper'))
+                            ->default(false)
+                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
+                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
+                        Select::make('invitation_locale')
+                            ->label(__('app.invitation_locale'))
+                            ->helperText(__('app.invitation_locale_helper'))
+                            ->options(Locale::options())
+                            ->required()
+                            ->native(false)
+                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
+                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
                         Textarea::make('send_message')
                             ->label(__('app.guest_message'))
                             ->helperText(__('app.guest_message_helper'))

@@ -10,6 +10,8 @@ use App\Filament\Resources\WeddingEvents\RelationManagers\EventPhotosRelationMan
 use App\Filament\Resources\WeddingEvents\RelationManagers\GuestMessagesRelationManager;
 use App\Filament\Resources\WeddingEvents\RelationManagers\GuestsRelationManager;
 use App\Filament\Resources\WeddingEvents\RelationManagers\LinkVisitsRelationManager;
+use App\Filament\Resources\WeddingEvents\RelationManagers\LocationsRelationManager;
+use App\Filament\Resources\WeddingEvents\RelationManagers\MenuOptionsRelationManager;
 use App\Filament\Resources\WeddingEvents\RelationManagers\ScheduleItemsRelationManager;
 use App\Filament\Resources\WeddingEvents\Schemas\WeddingEventForm;
 use App\Filament\Resources\WeddingEvents\Schemas\WeddingEventInfolist;
@@ -53,6 +55,8 @@ class WeddingEventResource extends Resource
     public static function getRelations(): array
     {
         return [
+            LocationsRelationManager::class,
+            MenuOptionsRelationManager::class,
             ScheduleItemsRelationManager::class,
             EventPhotosRelationManager::class,
             GuestsRelationManager::class,

@@ -8,6 +8,7 @@ use App\InvitationTheme;
 use App\LinkMode;
 use App\Models\User;
 use App\PlanTier;
+use App\Support\Locale;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
@@ -87,25 +88,14 @@ class WeddingEventForm
                             ->rows(3)
                             ->columnSpanFull(),
                     ]),
-                Section::make('Location')
-                    ->columns(2)
-                    ->schema([
-                        TextInput::make('location_name')
-                            ->maxLength(255),
-                        TextInput::make('location_address')
-                            ->maxLength(255)
-                            ->columnSpanFull(),
-                        TextInput::make('location_lat')
-                            ->numeric()
-                            ->step(0.0000001),
-                        TextInput::make('location_lng')
-                            ->numeric()
-                            ->step(0.0000001),
-                    ]),
                 Section::make('RSVP')
                     ->schema([
                         DatePicker::make('rsvp_deadline')
                             ->native(false),
+                        Toggle::make('accommodation_enabled')
+                            ->label('Ask about accommodation')
+                            ->helperText('When enabled, guests can indicate how many people need accommodation.')
+                            ->default(false),
                         Toggle::make('is_active')
                             ->default(true)
                             ->required(),
@@ -132,6 +122,12 @@ class WeddingEventForm
                     ]),
                 Section::make('Invite message')
                     ->schema([
+                        Select::make('invitation_locale')
+                            ->label('Invitation language')
+                            ->helperText('Default language appended to public and personal invite links as ?locale=.')
+                            ->options(Locale::options())
+                            ->required()
+                            ->native(false),
                         Textarea::make('send_message')
                             ->label('Message template')
                             ->helperText('Use {name} for guest name and {link} for personal invite link.')

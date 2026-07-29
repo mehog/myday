@@ -81,6 +81,8 @@ class PostWeddingInviteLockTest extends TestCase
             'is_active' => true,
         ]);
 
+        $event->menuOptions()->update(['is_visible' => false]);
+
         Livewire::test(InvitationPage::class, ['slug' => $event->slug])
             ->set('anonymousName', 'New Guest')
             ->call('respond', 'yes')
@@ -273,7 +275,7 @@ class PostWeddingInviteLockTest extends TestCase
         $event = WeddingEvent::factory()->for($owner)->create([
             'groom_name' => 'Original Groom',
             'bride_name' => 'Original Bride',
-            'location_name' => 'Original Venue',
+            'accommodation_enabled' => false,
             'motto' => 'Original motto',
             'wedding_date' => now()->subDays(2)->setTime(16, 0),
             'is_active' => true,
@@ -286,11 +288,11 @@ class PostWeddingInviteLockTest extends TestCase
             ->assertFormFieldIsDisabled('groom_name')
             ->assertFormFieldIsDisabled('bride_name')
             ->assertFormFieldIsDisabled('theme')
-            ->assertFormFieldIsDisabled('location_name')
+            ->assertFormFieldIsDisabled('accommodation_enabled')
             ->fillForm([
                 'groom_name' => 'New Groom',
                 'bride_name' => 'New Bride',
-                'location_name' => 'New Venue',
+                'accommodation_enabled' => true,
                 'motto' => 'New motto',
                 'theme' => $event->theme->value,
                 'template' => $event->template->value,
@@ -304,7 +306,7 @@ class PostWeddingInviteLockTest extends TestCase
 
         $this->assertSame('Original Groom', $fresh->groom_name);
         $this->assertSame('Original Bride', $fresh->bride_name);
-        $this->assertSame('Original Venue', $fresh->location_name);
+        $this->assertFalse($fresh->accommodation_enabled);
         $this->assertSame('Original motto', $fresh->motto);
     }
 

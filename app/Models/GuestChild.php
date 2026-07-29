@@ -13,6 +13,7 @@ class GuestChild extends Model
         'guest_id',
         'name',
         'seating_name',
+        'menu_option_id',
         'sort_order',
     ];
 
@@ -26,6 +27,11 @@ class GuestChild extends Model
     public function guest(): BelongsTo
     {
         return $this->belongsTo(Guest::class);
+    }
+
+    public function menuOption(): BelongsTo
+    {
+        return $this->belongsTo(WeddingMenuOption::class, 'menu_option_id');
     }
 
     public function displayName(): string

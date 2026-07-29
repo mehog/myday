@@ -1,7 +1,11 @@
 @php
     $heroUrl = $event->hero_image_url;
     $hasSchedule = $event->scheduleItems->isNotEmpty();
-    $hasLocation = (bool) ($event->location_name || $event->location_address);
+    $storyLocations = $event->relationLoaded('locations')
+        ? $event->locations->filter(fn ($location) => $location->hasMapContent())->values()
+        : collect();
+    $hasLocation = $storyLocations->isNotEmpty();
+    $primaryStoryLocation = $storyLocations->firstWhere('is_primary', true) ?? $storyLocations->first();
     $hasGallery = $event->eventPhotos->isNotEmpty();
     $hasMusic = (bool) $event->youtube_embed_url;
 
@@ -30,16 +34,6 @@
     }
 
     $durations[] = -1;
-
-    if ($hasLocation) {
-        $mapQuery = urlencode($event->location_address ?: $event->location_name);
-        $mapSrc = $event->location_lat && $event->location_lng
-            ? "https://maps.google.com/maps?q={$event->location_lat},{$event->location_lng}&z=15&output=embed"
-            : "https://maps.google.com/maps?q={$mapQuery}&z=15&output=embed";
-        $directionsUrl = $event->location_lat && $event->location_lng
-            ? "https://www.google.com/maps/dir/?api=1&destination={$event->location_lat},{$event->location_lng}"
-            : 'https://www.google.com/maps/search/?api=1&query='.$mapQuery;
-    }
 @endphp
 
 <div
@@ -303,8 +297,8 @@
                     <p class="story-subtitle invitation-body">
                         {{ $event->wedding_date->translatedFormat('l, j. F Y.') }}
                     </p>
-                    @if ($event->location_name)
-                        <p class="story-meta invitation-body">{{ $event->location_name }}</p>
+                    @if ($event->primaryLocationName())
+                        <p class="story-meta invitation-body">{{ $event->primaryLocationName() }}</p>
                     @endif
 
                     @if ($showRsvpNudge ?? false)
@@ -381,36 +375,47 @@
                 </section>
             @endif
 
-            @if ($hasLocation)
+            @if ($hasLocation && $primaryStoryLocation)
                 <section class="story-slide story-slide-location">
                     <iframe
-                        src="{{ $mapSrc }}"
+                        src="{{ $primaryStoryLocation->mapEmbedUrl() }}"
                         class="story-slide-bg story-location-map"
                         loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade"
-                        title="{{ __('invitation.map_title') }}"
+                        title="{{ $primaryStoryLocation->displayName() ?: __('invitation.map_title') }}"
                     ></iframe>
 
                     <div class="story-slide-overlay story-slide-overlay-strong"></div>
 
                     <div class="story-location-card">
                         <p class="story-eyebrow">{{ __('invitation.find_us') }}</p>
-                        @if ($event->location_name)
-                            <h2 class="story-location-name invitation-heading">{{ $event->location_name }}</h2>
-                        @endif
-                        @if ($event->location_address)
-                            <p class="story-location-address invitation-body">{{ $event->location_address }}</p>
-                        @endif
-                        <a
-                            href="{{ $directionsUrl }}"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="story-directions-btn"
-                            @pointerdown.stop
-                            @pointerup.stop
-                        >
-                            {{ __('invitation.get_directions') }}
-                        </a>
+                        <div class="space-y-5 max-h-[50vh] overflow-y-auto">
+                            @foreach ($storyLocations as $location)
+                                <div>
+                                    @if (filled($location->label))
+                                        <p class="text-xs uppercase tracking-[0.25em] text-[var(--color-text-muted)] mb-1">{{ $location->label }}</p>
+                                    @endif
+                                    @if ($location->name)
+                                        <h2 class="story-location-name invitation-heading">{{ $location->name }}</h2>
+                                    @endif
+                                    @if ($location->address)
+                                        <p class="story-location-address invitation-body">{{ $location->address }}</p>
+                                    @endif
+                                    @if ($location->directionsUrl())
+                                        <a
+                                            href="{{ $location->directionsUrl() }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="story-directions-btn"
+                                            @pointerdown.stop
+                                            @pointerup.stop
+                                        >
+                                            {{ __('invitation.get_directions') }}
+                                        </a>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </section>
             @endif
@@ -493,6 +498,7 @@
                     'event' => $event,
                     'guest' => $guest,
                     'isPersonalLink' => $isPersonalLink,
+                    'visibleMenuOptions' => $visibleMenuOptions ?? collect(),
                 ])
             </section>
         </div>

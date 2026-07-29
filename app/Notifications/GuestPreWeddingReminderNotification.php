@@ -65,7 +65,11 @@ class GuestPreWeddingReminderNotification extends Notification implements Should
             ->line(__("notifications.pre_wedding_body_{$this->variant}", [
                 'couple' => $event->couple_names,
                 'date' => $event->wedding_date->format('d.m.Y.'),
-                'location' => $event->location_name ?? $event->location_address ?? '',
+                'location' => $event->primaryLocationName()
+                    ?? $event->primaryLocation()?->address
+                    ?? $event->location_name
+                    ?? $event->location_address
+                    ?? '',
             ]))
             ->action(__('notifications.pre_wedding_action'), $notifiable->personal_url);
     }

@@ -9,12 +9,16 @@ class WeddingEventCalendarController extends Controller
 {
     public function __invoke(string $slug): Response
     {
-        $event = WeddingEvent::query()->where('slug', $slug)->firstOrFail();
+        $event = WeddingEvent::query()
+            ->with('locations')
+            ->where('slug', $slug)
+            ->firstOrFail();
 
         $dtstart = $event->wedding_date->format('Ymd');
         $dtend = $event->wedding_date->copy()->addDay()->format('Ymd');
         $summary = __('invitation.save_the_date').' — '.$event->couple_names;
-        $location = trim("{$event->location_name} {$event->location_address}");
+        $location = $event->primaryLocation()?->calendarLocation()
+            ?: trim("{$event->location_name} {$event->location_address}");
 
         $ics = implode("\r\n", [
             'BEGIN:VCALENDAR',

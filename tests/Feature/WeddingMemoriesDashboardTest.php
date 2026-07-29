@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Filament\App\Pages\AppDashboard;
 use App\Filament\App\Resources\GuestMessagesResource;
+use App\Filament\App\Widgets\MenuAccommodationSummaryWidget;
 use App\Filament\App\Widgets\RecentGuestMessagesWidget;
 use App\Filament\App\Widgets\VisitChartWidget;
 use App\Filament\App\Widgets\VisitStatsWidget;
@@ -41,11 +42,15 @@ class WeddingMemoriesDashboardTest extends TestCase
 
         $dashboard = Livewire::test(AppDashboard::class)
             ->assertSuccessful()
-            ->assertSee(__('app.dashboard_title'));
+            ->assertSee(__('app.dashboard_title'))
+            ->assertSee(__('app.dashboard_tab_overview'))
+            ->assertSee(__('app.dashboard_tab_menu_accommodation'))
+            ->assertSee(__('app.dashboard_tab_statistics'));
 
         $this->assertSame([
             RecentGuestMessagesWidget::class,
             WeddingOverviewWidget::class,
+            MenuAccommodationSummaryWidget::class,
             VisitStatsWidget::class,
             VisitChartWidget::class,
         ], $dashboard->instance()->getWidgets());

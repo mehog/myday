@@ -37,8 +37,12 @@ class Guest extends Model implements HasLocalePreference
         'rsvp_responded_at',
         'rsvp_manual_override',
         'rsvp_note',
+        'menu_option_id',
+        'plus_one_menu_option_id',
+        'accommodation_count',
         'invite_sent_at',
         'invite_platform',
+        'invitation_locale',
     ];
 
     protected function casts(): array
@@ -47,6 +51,7 @@ class Guest extends Model implements HasLocalePreference
             'rsvp_status' => RsvpStatus::class,
             'rsvp_responded_at' => 'datetime',
             'rsvp_manual_override' => 'boolean',
+            'accommodation_count' => 'integer',
             'invite_sent_at' => 'datetime',
             'invite_platform' => InvitePlatform::class,
         ];
@@ -88,6 +93,21 @@ class Guest extends Model implements HasLocalePreference
         return $this->hasMany(GuestChild::class)->orderBy('sort_order')->orderBy('id');
     }
 
+    public function menuOption(): BelongsTo
+    {
+        return $this->belongsTo(WeddingMenuOption::class, 'menu_option_id');
+    }
+
+    public function plusOneMenuOption(): BelongsTo
+    {
+        return $this->belongsTo(WeddingMenuOption::class, 'plus_one_menu_option_id');
+    }
+
+    public function needsAccommodation(): bool
+    {
+        return ($this->accommodation_count ?? 0) > 0;
+    }
+
     public function hasResponded(): bool
     {
         return $this->rsvp_status !== null;
@@ -104,6 +124,16 @@ class Guest extends Model implements HasLocalePreference
             : $this->plus_one_name;
     }
 
+    public function invitationLocale(): string
+    {
+        if (is_string($this->invitation_locale) && Locale::isSupported($this->invitation_locale)) {
+            return $this->invitation_locale;
+        }
+
+        return $this->weddingEvent?->invitationLocale()
+            ?? Locale::resolve($this->weddingEvent?->user?->locale);
+    }
+
     public function getPersonalUrlAttribute(): string
     {
         return $this->weddingEvent->guestUrl($this);
@@ -116,6 +146,6 @@ class Guest extends Model implements HasLocalePreference
 
     public function preferredLocale(): string
     {
-        return Locale::resolve($this->weddingEvent?->user?->locale);
+        return $this->invitationLocale();
     }
 }

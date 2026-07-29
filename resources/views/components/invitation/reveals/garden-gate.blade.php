@@ -1,7 +1,7 @@
 @if (! $isPreview)
     @php
         $gateDate = $event->wedding_date->format('d · m · Y');
-        $gateMeta = collect([$gateDate, $event->location_name])->filter()->implode(' — ');
+        $gateMeta = collect([$gateDate, $event->primaryLocationName()])->filter()->implode(' — ');
 
         $gateAccents = [
             'amber-gold' => ['ink' => '#332516', 'gold' => '#b88b42', 'moon' => '#c8d4e8'],
