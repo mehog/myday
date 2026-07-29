@@ -62,6 +62,7 @@ class DownloadPlaceCardsController extends Controller
             'cards' => $cards,
             'colors' => $colors,
             'weddingEvent' => $weddingEvent,
+            'siteUrl' => parse_url(config('app.url'), PHP_URL_HOST) ?: config('app.url'),
         ])
             ->driver('dompdf')
             ->format('a4')
@@ -102,10 +103,10 @@ class DownloadPlaceCardsController extends Controller
     {
         $options = new QROptions([
             'outputType' => QROutputInterface::GDIMAGE_PNG,
-            'eccLevel' => EccLevel::H,
-            'scale' => 6,
+            'eccLevel' => EccLevel::M,
+            'scale' => 16,
             'outputBase64' => true,
-            'quietzoneSize' => 1,
+            'quietzoneSize' => 4,
             'drawLightModules' => true,
             'imageTransparent' => false,
             'bgColor' => [255, 255, 255],

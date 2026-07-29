@@ -22,26 +22,38 @@
         }
 
         .page {
+            position: relative;
             width: 297mm;
-            padding: 54.2mm 0;
+            height: 210mm;
+            overflow: hidden;
+            padding: 0;
         }
 
         .page + .page {
             page-break-before: always;
         }
 
+        .card-grid-wrap {
+            position: absolute;
+            top: 3.4mm;
+            left: 15.15mm;
+            width: 266.7mm;
+            height: 203.2mm;
+            overflow: hidden;
+        }
+
         .grid {
-            width: 100%;
+            width: 266.7mm;
             border-collapse: collapse;
             table-layout: fixed;
         }
 
         .grid td {
-            width: 33.33%;
+            width: 88.9mm;
             height: 101.6mm;
             padding: 0;
             vertical-align: top;
-            text-align: center;
+            text-align: left;
         }
 
         .card {
@@ -49,7 +61,6 @@
             display: block;
             width: 88.9mm;
             height: 101.6mm;
-            margin: 0 auto;
             background-color: {{ $colors['bg'] }};
             color: {{ $colors['text'] }};
             overflow: hidden;
@@ -110,18 +121,19 @@
         }
 
         .front-qr-cell {
-            width: 42%;
-            padding: 0 2mm;
+            width: 48%;
+            padding: 0 1mm 0 2mm;
         }
 
         .front-cta-cell {
-            width: 58%;
-            padding: 0 3mm;
+            width: 52%;
+            padding: 1mm 2.5mm 1mm 0.5mm;
+            text-align: center;
         }
 
         .card-qr {
-            width: 30mm;
-            height: 30mm;
+            width: 36mm;
+            height: 36mm;
             display: block;
             margin: 0 auto;
         }
@@ -146,7 +158,7 @@
             position: absolute;
             right: 3mm;
             bottom: 2mm;
-            font-size: 6pt;
+            font-size: 5.5pt;
             line-height: 1;
             text-align: right;
             opacity: 0.65;
@@ -188,9 +200,37 @@
             vertical-align: -0.15em;
         }
 
+        .cut-guide {
+            position: absolute;
+            background: {{ $colors['accent'] }};
+            z-index: 2;
+        }
+
+        .cut-guide-v1 {
+            top: 0;
+            left: 88.9mm;
+            width: 0.3mm;
+            height: 203.2mm;
+        }
+
+        .cut-guide-v2 {
+            top: 0;
+            left: 177.8mm;
+            width: 0.3mm;
+            height: 203.2mm;
+        }
+
+        .cut-guide-h {
+            top: 101.6mm;
+            left: 0;
+            width: 266.7mm;
+            height: 0.3mm;
+        }
+
         .cut-mark {
             position: absolute;
             background: {{ $colors['accent'] }};
+            z-index: 2;
         }
 
         .cut-mark-top-left-h {
@@ -251,72 +291,77 @@
     </style>
 </head>
 <body>
-    @php
-        $siteUrl = parse_url(config('app.url'), PHP_URL_HOST) ?: config('app.url');
-    @endphp
-    @foreach (collect($cards)->chunk(3) as $pageCards)
+    @foreach (collect($cards)->chunk(6) as $pageCards)
         <div class="page">
-            <table class="grid">
-                <tr>
-                    @foreach ($pageCards as $card)
-                        <td>
-                            <div class="card">
-                                <span class="cut-mark cut-mark-top-left-h"></span>
-                                <span class="cut-mark cut-mark-top-left-v"></span>
-                                <span class="cut-mark cut-mark-top-right-h"></span>
-                                <span class="cut-mark cut-mark-top-right-v"></span>
-                                <span class="cut-mark cut-mark-bottom-left-h"></span>
-                                <span class="cut-mark cut-mark-bottom-left-v"></span>
-                                <span class="cut-mark cut-mark-bottom-right-h"></span>
-                                <span class="cut-mark cut-mark-bottom-right-v"></span>
+            <div class="card-grid-wrap">
+                <span class="cut-guide cut-guide-v1"></span>
+                <span class="cut-guide cut-guide-v2"></span>
+                <span class="cut-guide cut-guide-h"></span>
 
-                                <div class="card-back">
-                                    <table class="back-content">
-                                        <tr>
-                                            <td>
-                                                <div class="guest-name">{!! \App\Support\PdfEmoji::toHtml($card['name'], '14pt') !!}</div>
-                                                @if (! empty($card['plus_one']))
-                                                    <div class="plus-one-name">&amp; {!! \App\Support\PdfEmoji::toHtml($card['plus_one'], '9pt') !!}</div>
-                                                @endif
-                                                @if (! empty($card['children']))
-                                                    <div class="children-names">
-                                                        @foreach ($card['children'] as $childName)
-                                                            <div class="child-name">{!! \App\Support\PdfEmoji::toHtml($childName, '7.5pt') !!}</div>
-                                                        @endforeach
-                                                    </div>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
+                <span class="cut-mark cut-mark-top-left-h"></span>
+                <span class="cut-mark cut-mark-top-left-v"></span>
+                <span class="cut-mark cut-mark-top-right-h"></span>
+                <span class="cut-mark cut-mark-top-right-v"></span>
+                <span class="cut-mark cut-mark-bottom-left-h"></span>
+                <span class="cut-mark cut-mark-bottom-left-v"></span>
+                <span class="cut-mark cut-mark-bottom-right-h"></span>
+                <span class="cut-mark cut-mark-bottom-right-v"></span>
 
-                                <div class="card-fold"></div>
+                <table class="grid">
+                    @foreach ($pageCards->chunk(3) as $rowCards)
+                        <tr>
+                            @foreach ($rowCards as $card)
+                                <td>
+                                    <div class="card">
+                                        <div class="card-back">
+                                            <table class="back-content">
+                                                <tr>
+                                                    <td>
+                                                        <div class="guest-name">{!! \App\Support\PdfEmoji::toHtml($card['name'], '14pt') !!}</div>
+                                                        @if (! empty($card['plus_one']))
+                                                            <div class="plus-one-name">&amp; {!! \App\Support\PdfEmoji::toHtml($card['plus_one'], '9pt') !!}</div>
+                                                        @endif
+                                                        @if (! empty($card['children']))
+                                                            <div class="children-names">
+                                                                @foreach ($card['children'] as $childName)
+                                                                    <div class="child-name">{!! \App\Support\PdfEmoji::toHtml($childName, '7.5pt') !!}</div>
+                                                                @endforeach
+                                                            </div>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
 
-                                <div class="card-front">
-                                    <table class="front-content">
-                                        <tr>
-                                            <td class="front-qr-cell">
-                                                <img class="card-qr" src="{{ $card['qr'] }}" alt="">
-                                            </td>
-                                            <td class="front-cta-cell">
-                                                <div class="cta-rule"></div>
-                                                <div class="scan-cta">{{ __('guests.place_cards_scan_cta') }}</div>
-                                                <div class="cta-rule"></div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
+                                        <div class="card-fold"></div>
 
-                                <div class="card-site-url">{{ $siteUrl }}</div>
-                            </div>
-                        </td>
+                                        <div class="card-front">
+                                            <table class="front-content">
+                                                <tr>
+                                                    <td class="front-qr-cell">
+                                                        <img class="card-qr" src="{{ $card['qr'] }}" alt="">
+                                                    </td>
+                                                    <td class="front-cta-cell">
+                                                        <div class="cta-rule"></div>
+                                                        <div class="scan-cta">{{ __('guests.place_cards_scan_cta') }}</div>
+                                                        <div class="cta-rule"></div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                        <div class="card-site-url">{{ $siteUrl }}</div>
+                                    </div>
+                                </td>
+                            @endforeach
+
+                            @for ($i = $rowCards->count(); $i < 3; $i++)
+                                <td></td>
+                            @endfor
+                        </tr>
                     @endforeach
-
-                    @for ($i = $pageCards->count(); $i < 3; $i++)
-                        <td></td>
-                    @endfor
-                </tr>
-            </table>
+                </table>
+            </div>
         </div>
     @endforeach
 </body>
