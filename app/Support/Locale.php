@@ -98,6 +98,7 @@ class Locale
         return match (self::current()) {
             'bs' => 'bs_BA',
             'de' => 'de_DE',
+            'hr' => 'hr_HR',
             default => 'en_US',
         };
     }

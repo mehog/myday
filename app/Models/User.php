@@ -33,7 +33,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLocale
      *
      * @var list<string>
      */
-    public const FIRST_WORLD_COUNTRIES = ['US', 'CA', 'GB', 'DE', 'FR', 'AU', 'JP'];
+    public const FIRST_WORLD_COUNTRIES = ['US', 'CA', 'GB', 'DE', 'FR', 'AU', 'JP', 'HR'];
 
     /**
      * @return array<string, string>

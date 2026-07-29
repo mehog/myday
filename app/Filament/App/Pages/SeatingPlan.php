@@ -215,6 +215,8 @@ class SeatingPlan extends Page
             'remove_guest' => __('seating.remove_guest'),
             'unsaved_save_before_leave' => __('seating.unsaved_save_before_leave'),
             'unsaved_leave_without_saving' => __('seating.unsaved_leave_without_saving'),
+            'default_table_head' => __('seating.default_table_head'),
+            'default_table_numbered' => __('seating.default_table_numbered'),
         ];
     }
 }

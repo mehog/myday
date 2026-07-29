@@ -57,4 +57,7 @@ return [
     'unsaved_save_before_leave' => 'You have unsaved changes. Save before leaving?',
     'unsaved_leave_without_saving' => 'Leave without saving?',
 
+    'default_table_head' => 'Head table',
+    'default_table_numbered' => 'Table :number',
+
 ];

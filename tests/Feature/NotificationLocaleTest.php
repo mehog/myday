@@ -96,6 +96,28 @@ class NotificationLocaleTest extends TestCase
         );
     }
 
+    public function test_couple_email_notification_uses_croatian_locale(): void
+    {
+        $user = User::factory()->create([
+            'locale' => 'hr',
+            'name' => 'Ana',
+        ]);
+        WeddingEvent::withoutEvents(fn () => WeddingEvent::factory()->for($user)->create([
+            'bride_name' => 'Ana',
+            'groom_name' => 'Marko',
+            'is_active' => false,
+        ]));
+
+        app()->setLocale('en');
+        $user->notifyNow(new CoupleOnboardingTipNotification('day1'));
+
+        $this->assertSame('en', app()->getLocale());
+        $this->assertSame(
+            __('notifications.couple_onboarding_subject_day1', [], 'hr'),
+            $this->lastSentEmail()->getSubject(),
+        );
+    }
+
     public function test_admin_notifier_anonymous_recipients_use_app_default_locale(): void
     {
         config(['notifications.admin_emails' => ['ops@example.com']]);

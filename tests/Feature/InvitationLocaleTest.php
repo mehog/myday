@@ -105,6 +105,23 @@ class InvitationLocaleTest extends TestCase
         $this->assertSame('de', session('locale'));
     }
 
+    public function test_invitation_query_locale_renders_croatian(): void
+    {
+        $owner = User::factory()->create(['locale' => 'en']);
+        $event = WeddingEvent::factory()->for($owner)->create([
+            'invitation_locale' => 'bs',
+            'is_active' => true,
+        ]);
+
+        $this->get(route('invitation.show', $event->slug).'?locale=hr')
+            ->assertOk()
+            ->assertSee(__('invitation.rsvp', [], 'hr'), false);
+
+        $this->assertSame('hr', session('locale'));
+        $this->assertContains('hr', Locale::supported());
+        $this->assertSame('Hrvatski', Locale::options()['hr'] ?? null);
+    }
+
     public function test_invitation_locale_switcher_does_not_persist_to_owner_profile(): void
     {
         $owner = User::factory()->create(['locale' => 'en']);

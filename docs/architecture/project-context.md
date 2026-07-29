@@ -1171,12 +1171,13 @@ Data captured:
 
 **`config/app.php` additions:**
 ```php
-'supported_locales' => ['en', 'bs', 'de'],
+'supported_locales' => ['en', 'bs', 'de', 'hr'],
 'default_locale' => 'bs',
 'locale_labels' => [
     'bs' => 'Bosanski',
     'en' => 'English',
     'de' => 'Deutsch',
+    'hr' => 'Hrvatski',
 ],
 ```
 

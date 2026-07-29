@@ -57,4 +57,7 @@ return [
     'unsaved_save_before_leave' => 'Sie haben ungespeicherte Änderungen. Vor dem Verlassen speichern?',
     'unsaved_leave_without_saving' => 'Ohne Speichern verlassen?',
 
+    'default_table_head' => 'Tisch der Brautleute',
+    'default_table_numbered' => 'Tisch :number',
+
 ];

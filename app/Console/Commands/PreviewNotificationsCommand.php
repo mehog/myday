@@ -12,7 +12,7 @@ class PreviewNotificationsCommand extends Command
                             {--to= : Inbox address for real email delivery}
                             {--list : List previewable notification scenarios}
                             {--only= : Comma-separated groups: onboarding, activation, rsvp, pre-wedding, photo, guest-push, couple-rsvp, admin, scheduled-push, all}
-                            {--locale= : Locale override (bs, en, de)}
+                            {--locale= : Locale override (bs, en, de, hr)}
                             {--wedding-id= : Wedding event ID for fixture data}
                             {--guest-id= : Guest ID for fixture data}
                             {--user-id= : User ID for fixture data}

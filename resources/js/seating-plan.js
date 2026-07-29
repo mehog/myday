@@ -56,8 +56,12 @@ function truncateName(name, max) {
     return `${name.slice(0, max - 1)}…`;
 }
 
-function defaultTable(type, index, centerX, centerY) {
-    const labelBase = type === 'head' ? 'Glavni sto' : `Sto ${index}`;
+function defaultTable(type, index, centerX, centerY, labels = {}) {
+    const headLabel = labels.default_table_head || 'Head table';
+    const numberedTemplate = labels.default_table_numbered || 'Table :number';
+    const labelBase = type === 'head'
+        ? headLabel
+        : numberedTemplate.replace(':number', String(index));
 
     if (type === 'round') {
         return {
@@ -754,7 +758,7 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
     const api = {
         addTable(type) {
             const { x: centerX, y: centerY } = getStageCenterCoords();
-            const table = defaultTable(type, tableCounter++, centerX, centerY);
+            const table = defaultTable(type, tableCounter++, centerX, centerY, labels);
             plan.tables.push(table);
             selectTable(table.id);
         },

@@ -45,6 +45,11 @@ class LegalPagesTest extends TestCase
             ->assertOk()
             ->assertSee('wird der Tarif automatisch aktiviert', false)
             ->assertDontSee('typischerweise automatisch', false);
+
+        $this->get('/faq?locale=hr')
+            ->assertOk()
+            ->assertSee('plan se aktivira automatski', false)
+            ->assertDontSee('obično aktivira', false);
     }
 
     public function test_footer_and_homepage_expose_compliance_links_and_pricing(): void
@@ -75,6 +80,13 @@ class LegalPagesTest extends TestCase
         $this->get('/terms?locale=bs')
             ->assertOk()
             ->assertSee('Uslovi korištenja', false);
+    }
+
+    public function test_legal_pages_render_in_croatian_locale(): void
+    {
+        $this->get('/terms?locale=hr')
+            ->assertOk()
+            ->assertSee(__('legal.terms.heading', [], 'hr'), false);
     }
 
     public function test_pricing_page_shows_merchant_of_record_and_policy_links(): void

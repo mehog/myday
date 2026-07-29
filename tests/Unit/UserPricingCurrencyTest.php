@@ -38,6 +38,19 @@ class UserPricingCurrencyTest extends TestCase
         }
     }
 
+    public function test_croatia_uses_eur_pricing(): void
+    {
+        $user = new User([
+            'signup_ipstack' => (object) [
+                'country_code' => 'HR',
+            ],
+        ]);
+
+        $this->assertTrue($user->isFromFirstWorldCountry());
+        $this->assertSame(PricingRegion::FirstWorld, $user->pricingRegion());
+        $this->assertSame('EUR', $user->pricingCurrency());
+    }
+
     public function test_missing_geo_defaults_to_third_world_bam(): void
     {
         $user = new User;
