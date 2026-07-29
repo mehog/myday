@@ -29,11 +29,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLocale
     use HasFactory, HasPushSubscriptions, Notifiable, Referrable, SnoozeNotifiable;
 
     /**
-     * Countries that receive first-world (EUR) pricing.
+     * Countries that receive third-world (BAM) pricing. Everyone else pays in EUR.
      *
      * @var list<string>
      */
-    public const FIRST_WORLD_COUNTRIES = ['US', 'CA', 'GB', 'DE', 'FR', 'AU', 'JP', 'HR'];
+    public const THIRD_WORLD_COUNTRIES = ['BA'];
 
     /**
      * @return array<string, string>
@@ -76,11 +76,16 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLocale
         return is_string($code) && $code !== '' ? strtoupper($code) : null;
     }
 
-    public function isFromFirstWorldCountry(): bool
+    public function isFromThirdWorldCountry(): bool
     {
         $code = $this->signupCountryCode();
 
-        return $code !== null && in_array($code, self::FIRST_WORLD_COUNTRIES, true);
+        return $code !== null && in_array($code, self::THIRD_WORLD_COUNTRIES, true);
+    }
+
+    public function isFromFirstWorldCountry(): bool
+    {
+        return ! $this->isFromThirdWorldCountry();
     }
 
     public function pricingRegion(): PricingRegion

@@ -66,7 +66,7 @@ class TrackUserIpOnVerificationTest extends TestCase
 
         $this->assertNull($user->signup_ip);
         $this->assertNull($user->signup_ipstack);
-        $this->assertSame('BAM', $user->pricingCurrency());
+        $this->assertSame('EUR', $user->pricingCurrency());
 
         Http::assertNothingSent();
     }
@@ -93,7 +93,7 @@ class TrackUserIpOnVerificationTest extends TestCase
 
         $this->assertSame($ip, $user->signup_ip);
         $this->assertNull($user->signup_ipstack);
-        $this->assertSame('BAM', $user->pricingCurrency());
+        $this->assertSame('EUR', $user->pricingCurrency());
     }
 
     private function verificationUrl(User $user): string
