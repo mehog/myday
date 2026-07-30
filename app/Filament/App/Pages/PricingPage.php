@@ -23,6 +23,8 @@ class PricingPage extends Page
 
     protected static ?int $navigationSort = 5;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected string $view = 'filament.app.pages.pricing-page';
 
     public static function getNavigationLabel(): string

@@ -2,7 +2,7 @@
 
 return [
 
-    'nav_label' => 'Cijene',
+    'nav_label' => 'Paketi',
     'page_title' => 'Odaberite paket',
     'current_guests' => 'Trenutni gosti: :count',
     'current_plan' => 'Trenutni paket: :plan',

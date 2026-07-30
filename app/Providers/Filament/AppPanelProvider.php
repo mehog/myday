@@ -7,6 +7,7 @@ use App\Filament\App\Pages\Auth\ResetPassword;
 use App\Filament\App\Pages\PricingPage;
 use App\Filament\App\Pages\ReferralsPage;
 use App\Http\Middleware\SetAppLocale;
+use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -14,6 +15,7 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Icons\Heroicon;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
@@ -43,6 +45,18 @@ class AppPanelProvider extends PanelProvider
             ->databaseNotifications()
             ->profile(EditProfile::class, isSimple: false)
             ->topNavigation()
+            ->userMenuItems([
+                Action::make('pricing')
+                    ->label(fn (): string => __('pricing.nav_label'))
+                    ->icon(Heroicon::OutlinedCreditCard)
+                    ->url(fn (): string => PricingPage::getUrl())
+                    ->sort(0),
+                Action::make('referrals')
+                    ->label(fn (): string => __('referrals.nav_label'))
+                    ->icon(Heroicon::OutlinedUserPlus)
+                    ->url(fn (): string => ReferralsPage::getUrl())
+                    ->sort(1),
+            ])
             ->colors([
                 'primary' => Color::hex('#c9a227'),
             ])

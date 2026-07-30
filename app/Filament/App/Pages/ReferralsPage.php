@@ -28,6 +28,8 @@ class ReferralsPage extends Page
 
     protected static ?int $navigationSort = 50;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected string $view = 'filament.app.pages.referrals-page';
 
     /**

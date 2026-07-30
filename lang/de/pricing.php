@@ -2,7 +2,7 @@
 
 return [
 
-    'nav_label' => 'Preise',
+    'nav_label' => 'Tarife',
     'page_title' => 'Wählen Sie Ihren Plan',
     'current_guests' => 'Aktuelle Gäste: :count',
     'current_plan' => 'Aktueller Plan: :plan',
