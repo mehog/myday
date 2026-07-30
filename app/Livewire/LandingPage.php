@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\WeddingEvent;
+use App\Support\LandingAsset;
 use App\Support\Locale;
 use App\Support\LocaleUrl;
 use Livewire\Attributes\Layout;
@@ -32,11 +33,11 @@ class LandingPage extends Component
         $configs = [
             'islamic' => [
                 'slug' => 'demo-islamsko'.$suffix,
-                'thumb' => 'img/landing/demo-classic-mobile.webp',
+                'thumb' => LandingAsset::path('demo-classic-mobile.webp'),
             ],
             'christian' => [
                 'slug' => 'demo-krscansko'.$suffix,
-                'thumb' => 'img/landing/demo-editorial-mobile.webp',
+                'thumb' => LandingAsset::path('demo-editorial-mobile.webp'),
             ],
         ];
 

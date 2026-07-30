@@ -54,6 +54,14 @@ return [
     'feature_rsvp_point_4' => 'Opcioni upiti za smještaj kada ih uključite',
     'feature_rsvp_alt' => 'Screenshot NasDan liste gostiju sa statusima potvrde',
 
+    'feature_menu_eyebrow' => 'Meni i smještaj',
+    'feature_menu_title' => 'Zbirni pregled menija i smještaja',
+    'feature_menu_text' => 'Vidite koliko gostiju bira koji meni i koliko noćenja treba rezervirati. Brojevi nikad ne prelaze veličinu partije i odmah se ažuriraju s potvrdama.',
+    'feature_menu_point_1' => 'Platformski i prilagođeni meniji',
+    'feature_menu_point_2' => 'Izbori za goste, pratnju i djecu',
+    'feature_menu_point_3' => 'Realni zahtjevi za smještaj po partiji',
+    'feature_menu_alt' => 'Screenshot NasDan panela sa pregledom menija i smještaja',
+
     'feature_seating_eyebrow' => 'Plan sjedenja',
     'feature_seating_title' => 'Rasporedite stolove vizuelno, pa izvezite PDF',
     'feature_seating_text' => 'Napravite raspored na interaktivnom platnu. Dodijelite goste sjedištima, prilagodite raspored i preuzmite sve za lokaciju.',

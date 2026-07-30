@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Hash;
 
 class WeddingEventSeeder extends Seeder
 {
+    public const HERO_IMAGE = MarketingDemoSeeder::HERO_IMAGE;
+
     public function run(): void
     {
         User::query()->updateOrCreate(
@@ -59,6 +61,7 @@ class WeddingEventSeeder extends Seeder
             userId: $customer->id,
         );
 
+        // Bosnian public demos (Sarajevo)
         $this->seedEvent(
             slug: 'demo-islamsko',
             groom: 'Amer',
@@ -115,20 +118,21 @@ class WeddingEventSeeder extends Seeder
             isDemo: true,
         );
 
+        // English public demos (London)
         $this->seedEvent(
             slug: 'demo-islamsko-en',
-            groom: 'Amer',
-            bride: 'Amina',
-            locationName: 'Gazi Husrev-beg Mosque',
-            locationAddress: 'Sarajevo, Bosnia and Herzegovina',
-            lat: 43.8594,
-            lng: 18.4286,
+            groom: 'Omar',
+            bride: 'Layla',
+            locationName: 'London Central Mosque',
+            locationAddress: 'London, United Kingdom',
+            lat: 51.5286,
+            lng: -0.1650,
             theme: InvitationTheme::AmberGold,
             schedule: [
-                ['time' => '08:00', 'title' => 'Procession to the bride\'s home', 'description' => 'The groom and wedding party arrive to collect the bride.', 'sort_order' => 1],
-                ['time' => '09:00', 'title' => 'Civil marriage ceremony', 'description' => 'Signing at the registry office.', 'sort_order' => 2],
-                ['time' => '10:00', 'title' => 'Islamic marriage (nikah)', 'description' => 'Wedding ceremony at the mosque.', 'sort_order' => 3],
-                ['time' => '12:00', 'title' => 'Family luncheon', 'description' => 'Lunch for family and closest guests.', 'sort_order' => 4],
+                ['time' => '10:00', 'title' => 'Guest arrival', 'description' => 'Welcome and seating.', 'sort_order' => 1],
+                ['time' => '11:00', 'title' => 'Civil ceremony', 'description' => 'Signing at the registry office.', 'sort_order' => 2],
+                ['time' => '12:00', 'title' => 'Islamic marriage (nikah)', 'description' => 'Wedding ceremony at the mosque.', 'sort_order' => 3],
+                ['time' => '14:00', 'title' => 'Family luncheon', 'description' => 'Lunch for family and closest guests.', 'sort_order' => 4],
                 ['time' => '19:00', 'title' => 'Wedding dinner & celebration', 'description' => 'Dinner, dancing and celebration.', 'sort_order' => 5],
             ],
             guests: [
@@ -140,18 +144,18 @@ class WeddingEventSeeder extends Seeder
 
         $this->seedEvent(
             slug: 'demo-krscansko-en',
-            groom: 'Milan',
-            bride: 'Ana',
-            locationName: 'Sacred Heart Cathedral',
-            locationAddress: 'Sarajevo, Bosnia and Herzegovina',
-            lat: 43.8563,
-            lng: 18.4131,
+            groom: 'Oliver',
+            bride: 'Emily',
+            locationName: 'St Paul\'s Cathedral',
+            locationAddress: 'London, United Kingdom',
+            lat: 51.5138,
+            lng: -0.0984,
             theme: InvitationTheme::RoyalWedding,
             schedule: [
-                ['time' => '09:00', 'title' => 'Procession to the bride\'s home', 'description' => 'The groom and wedding party arrive to collect the bride.', 'sort_order' => 1],
-                ['time' => '10:00', 'title' => 'Church ceremony & blessing', 'description' => 'Church ceremony and blessing.', 'sort_order' => 2],
-                ['time' => '12:00', 'title' => 'Family luncheon', 'description' => 'Lunch for family and closest guests.', 'sort_order' => 3],
-                ['time' => '15:00', 'title' => 'Wedding photo session', 'description' => 'Group photos with the newlyweds.', 'sort_order' => 4],
+                ['time' => '11:00', 'title' => 'Guest arrival', 'description' => 'Welcome drinks and seating.', 'sort_order' => 1],
+                ['time' => '12:00', 'title' => 'Church ceremony & blessing', 'description' => 'Church ceremony and blessing.', 'sort_order' => 2],
+                ['time' => '14:00', 'title' => 'Reception lunch', 'description' => 'Lunch for family and closest guests.', 'sort_order' => 3],
+                ['time' => '16:00', 'title' => 'Wedding photo session', 'description' => 'Group photos with the newlyweds.', 'sort_order' => 4],
                 ['time' => '19:00', 'title' => 'Wedding dinner & celebration', 'description' => 'Dinner, dancing and celebration.', 'sort_order' => 5],
             ],
             guests: [
@@ -161,20 +165,21 @@ class WeddingEventSeeder extends Seeder
             invitationLocale: 'en',
         );
 
+        // German public demos (Munich)
         $this->seedEvent(
             slug: 'demo-islamsko-de',
-            groom: 'Amer',
-            bride: 'Amina',
-            locationName: 'Gazi Husrev-beg-Moschee',
-            locationAddress: 'Sarajevo, Bosnien und Herzegowina',
-            lat: 43.8594,
-            lng: 18.4286,
+            groom: 'Yusuf',
+            bride: 'Aylin',
+            locationName: 'Pasinger Moschee',
+            locationAddress: 'München, Deutschland',
+            lat: 48.1470,
+            lng: 11.4610,
             theme: InvitationTheme::AmberGold,
             schedule: [
-                ['time' => '08:00', 'title' => 'Abholung der Braut', 'description' => 'Der Bräutigam und die Hochzeitsgesellschaft holen die Braut ab.', 'sort_order' => 1],
-                ['time' => '09:00', 'title' => 'Standesamtliche Trauung', 'description' => 'Unterschrift beim Standesamt.', 'sort_order' => 2],
-                ['time' => '10:00', 'title' => 'Islamische Trauung (Nikah)', 'description' => 'Trauung in der Moschee.', 'sort_order' => 3],
-                ['time' => '12:00', 'title' => 'Familienessen', 'description' => 'Mittagessen für Familie und engste Gäste.', 'sort_order' => 4],
+                ['time' => '10:00', 'title' => 'Ankunft der Gäste', 'description' => 'Begrüßung und Platznehmen.', 'sort_order' => 1],
+                ['time' => '11:00', 'title' => 'Standesamtliche Trauung', 'description' => 'Unterschrift beim Standesamt.', 'sort_order' => 2],
+                ['time' => '12:00', 'title' => 'Islamische Trauung (Nikah)', 'description' => 'Trauung in der Moschee.', 'sort_order' => 3],
+                ['time' => '14:00', 'title' => 'Familienessen', 'description' => 'Mittagessen für Familie und engste Gäste.', 'sort_order' => 4],
                 ['time' => '19:00', 'title' => 'Festliches Abendessen & Feier', 'description' => 'Abendessen, Tanzen und Feier.', 'sort_order' => 5],
             ],
             guests: [
@@ -186,18 +191,18 @@ class WeddingEventSeeder extends Seeder
 
         $this->seedEvent(
             slug: 'demo-krscansko-de',
-            groom: 'Milan',
-            bride: 'Ana',
-            locationName: 'Kathedrale zum Heiligsten Herzen Jesu',
-            locationAddress: 'Sarajevo, Bosnien und Herzegowina',
-            lat: 43.8563,
-            lng: 18.4131,
+            groom: 'Lukas',
+            bride: 'Sophie',
+            locationName: 'Frauenkirche',
+            locationAddress: 'München, Deutschland',
+            lat: 48.1386,
+            lng: 11.5736,
             theme: InvitationTheme::RoyalWedding,
             schedule: [
-                ['time' => '09:00', 'title' => 'Abholung der Braut', 'description' => 'Der Bräutigam und die Hochzeitsgesellschaft holen die Braut ab.', 'sort_order' => 1],
-                ['time' => '10:00', 'title' => 'Kirchliche Trauung & Segen', 'description' => 'Kirchliche Zeremonie und Segen.', 'sort_order' => 2],
-                ['time' => '12:00', 'title' => 'Familienessen', 'description' => 'Mittagessen für Familie und engste Gäste.', 'sort_order' => 3],
-                ['time' => '15:00', 'title' => 'Hochzeitsfotoshooting', 'description' => 'Gemeinsame Fotos mit den Brautleuten.', 'sort_order' => 4],
+                ['time' => '11:00', 'title' => 'Ankunft der Gäste', 'description' => 'Begrüßung und Platznehmen.', 'sort_order' => 1],
+                ['time' => '12:00', 'title' => 'Kirchliche Trauung & Segen', 'description' => 'Kirchliche Zeremonie und Segen.', 'sort_order' => 2],
+                ['time' => '14:00', 'title' => 'Empfang', 'description' => 'Sektempfang für Familie und engste Gäste.', 'sort_order' => 3],
+                ['time' => '16:00', 'title' => 'Hochzeitsfotoshooting', 'description' => 'Gemeinsame Fotos mit den Brautleuten.', 'sort_order' => 4],
                 ['time' => '19:00', 'title' => 'Festliches Abendessen & Feier', 'description' => 'Abendessen, Tanzen und Feier.', 'sort_order' => 5],
             ],
             guests: [
@@ -207,20 +212,21 @@ class WeddingEventSeeder extends Seeder
             invitationLocale: 'de',
         );
 
+        // Croatian public demos (Zagreb)
         $this->seedEvent(
             slug: 'demo-islamsko-hr',
-            groom: 'Amer',
-            bride: 'Amina',
-            locationName: 'Gazi Husrev-begova džamija',
-            locationAddress: 'Sarajevo, Bosna i Hercegovina',
-            lat: 43.8594,
-            lng: 18.4286,
+            groom: 'Emir',
+            bride: 'Lejla',
+            locationName: 'Islamski centar Zagreb',
+            locationAddress: 'Zagreb, Hrvatska',
+            lat: 45.7910,
+            lng: 15.9500,
             theme: InvitationTheme::AmberGold,
             schedule: [
-                ['time' => '08:00', 'title' => 'Odlazak po mladu', 'description' => 'Mladoženja i svatovi dolaze po mladu.', 'sort_order' => 1],
-                ['time' => '09:00', 'title' => 'Općinsko/matičarsko vjenčanje', 'description' => 'Potpisivanje u matičnom uredu.', 'sort_order' => 2],
-                ['time' => '10:00', 'title' => 'Šerijatsko vjenčanje (nikah)', 'description' => 'Vjenčanje u džamiji.', 'sort_order' => 3],
-                ['time' => '12:00', 'title' => 'Svečani ručak za goste', 'description' => 'Ručak za obitelj i najbliže goste.', 'sort_order' => 4],
+                ['time' => '09:00', 'title' => 'Odlazak po mladu', 'description' => 'Mladoženja i svatovi dolaze po mladu.', 'sort_order' => 1],
+                ['time' => '10:00', 'title' => 'Općinsko/matičarsko vjenčanje', 'description' => 'Potpisivanje u matičnom uredu.', 'sort_order' => 2],
+                ['time' => '11:00', 'title' => 'Šerijatsko vjenčanje (nikah)', 'description' => 'Vjenčanje u džamiji.', 'sort_order' => 3],
+                ['time' => '13:00', 'title' => 'Svečani ručak za goste', 'description' => 'Ručak za obitelj i najbliže goste.', 'sort_order' => 4],
                 ['time' => '19:00', 'title' => 'Svečana večera i proslava', 'description' => 'Večera, ples i slavlje.', 'sort_order' => 5],
             ],
             guests: [
@@ -231,10 +237,10 @@ class WeddingEventSeeder extends Seeder
             extraLocations: [
                 [
                     'label' => 'Općina',
-                    'name' => 'Općina Stari Grad',
-                    'address' => 'Sarajevo, Bosna i Hercegovina',
-                    'lat' => 43.8599,
-                    'lng' => 18.4310,
+                    'name' => 'Gradski ured za opću upravu',
+                    'address' => 'Zagreb, Hrvatska',
+                    'lat' => 45.8120,
+                    'lng' => 15.9780,
                     'is_primary' => false,
                     'sort_order' => 1,
                 ],
@@ -244,18 +250,18 @@ class WeddingEventSeeder extends Seeder
 
         $this->seedEvent(
             slug: 'demo-krscansko-hr',
-            groom: 'Milan',
-            bride: 'Ana',
-            locationName: 'Katedrala Srca Isusova',
-            locationAddress: 'Sarajevo, Bosna i Hercegovina',
-            lat: 43.8563,
-            lng: 18.4131,
+            groom: 'Ivan',
+            bride: 'Lucija',
+            locationName: 'Katedrala Uznesenja Blažene Djevice Marije',
+            locationAddress: 'Zagreb, Hrvatska',
+            lat: 45.8144,
+            lng: 15.9780,
             theme: InvitationTheme::RoyalWedding,
             schedule: [
-                ['time' => '09:00', 'title' => 'Odlazak po mladu', 'description' => 'Mladoženja i svatovi dolaze po mladu.', 'sort_order' => 1],
-                ['time' => '10:00', 'title' => 'Vjenčanje u crkvi', 'description' => 'Crkvena ceremonija i blagoslov.', 'sort_order' => 2],
-                ['time' => '12:00', 'title' => 'Svečani ručak za goste', 'description' => 'Ručak za obitelj i najbliže goste.', 'sort_order' => 3],
-                ['time' => '15:00', 'title' => 'Fotografiranje', 'description' => 'Zajedničko fotografiranje mladenca.', 'sort_order' => 4],
+                ['time' => '10:00', 'title' => 'Odlazak po mladu', 'description' => 'Mladoženja i svatovi dolaze po mladu.', 'sort_order' => 1],
+                ['time' => '11:30', 'title' => 'Vjenčanje u crkvi', 'description' => 'Crkvena ceremonija i blagoslov.', 'sort_order' => 2],
+                ['time' => '13:30', 'title' => 'Svečani ručak za goste', 'description' => 'Ručak za obitelj i najbliže goste.', 'sort_order' => 3],
+                ['time' => '16:00', 'title' => 'Fotografiranje', 'description' => 'Zajedničko fotografiranje mladenca.', 'sort_order' => 4],
                 ['time' => '19:00', 'title' => 'Svečana večera i proslava', 'description' => 'Večera, ples i slavlje.', 'sort_order' => 5],
             ],
             guests: [
@@ -301,6 +307,7 @@ class WeddingEventSeeder extends Seeder
                 'theme' => $theme,
                 'link_mode' => LinkMode::Public,
                 'music_url' => 'https://www.youtube.com/watch?v=450p7goxZqg',
+                'hero_image' => self::HERO_IMAGE,
                 'rsvp_deadline' => now()->addMonths(3),
                 'accommodation_enabled' => true,
                 'is_active' => true,

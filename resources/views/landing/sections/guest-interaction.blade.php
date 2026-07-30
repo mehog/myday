@@ -51,7 +51,7 @@
                         <span></span><span></span><span></span>
                     </div>
                     <img
-                        src="{{ asset('img/landing/feature-messages-desktop.webp') }}"
+                        src="{{ asset(\App\Support\LandingAsset::path('feature-messages-desktop.webp')) }}"
                         alt="{{ __('landing.interaction_inbox_alt') }}"
                         width="1600"
                         height="1000"
@@ -62,7 +62,7 @@
                 </div>
                 <div class="landing-phone-frame absolute -bottom-6 -left-2 sm:left-4 w-[38%] max-w-[180px] shadow-2xl">
                     <img
-                        src="{{ asset('img/landing/feature-guest-upload-mobile.webp') }}"
+                        src="{{ asset(\App\Support\LandingAsset::path('feature-guest-upload-mobile.webp')) }}"
                         alt="{{ __('landing.interaction_upload_alt') }}"
                         width="390"
                         height="844"

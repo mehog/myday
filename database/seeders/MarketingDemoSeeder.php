@@ -8,15 +8,21 @@ use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\InvitePlatform;
 use App\LinkMode;
+use App\LinkType;
 use App\Models\Guest;
+use App\Models\GuestChild;
 use App\Models\GuestMessage;
+use App\Models\LinkVisit;
 use App\Models\User;
 use App\Models\WeddingEvent;
+use App\Models\WeddingMenuOption;
+use App\PlanTier;
 use App\RsvpStatus;
 use App\Services\EnsureWeddingMenuOptions;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class MarketingDemoSeeder extends Seeder
 {
@@ -24,101 +30,53 @@ class MarketingDemoSeeder extends Seeder
 
     public bool $skipped = false;
 
-    private const USER_EMAIL = 'jasmin-djordje@nasdan.ba';
-
-    private const EVENT_SLUG = 'jasmina-djordje';
-
-    private const GUEST_COUNT = 150;
-
-    private const CONFIRMED_COUNT = 90;
-
-    private const DECLINED_COUNT = 8;
-
-    private const MESSAGE_COUNT = 30;
-
     /** @var list<string> */
-    private const FIRST_NAMES = [
-        'Emir', 'Adnan', 'Haris', 'Kenan', 'Mirza', 'Tarik', 'Dino', 'Senad', 'Faruk', 'Nedim',
-        'Alen', 'Edin', 'Amer', 'Armin', 'Vedad', 'Nedžad', 'Elvir', 'Samir', 'Kemal', 'Dženan',
-        'Husein', 'Sead', 'Munib', 'Halid', 'Eldin', 'Meho', 'Fahrudin', 'Ibrahim', 'Ismet', 'Osman',
-        'Mehmed', 'Omer', 'Mustafa', 'Halil', 'Hasan', 'Rešid', 'Esad', 'Muamer', 'Sanel', 'Admir',
-        'Nermin', 'Nihad', 'Ermin', 'Ajdin', 'Benjamin', 'Eldar', 'Lejla', 'Amira', 'Amina', 'Selma',
-        'Emina', 'Ajla', 'Medina', 'Melisa', 'Lamija', 'Ajša', 'Fatima', 'Hana', 'Ena', 'Elma',
-        'Merima', 'Alma', 'Aldina', 'Belma', 'Ajna', 'Ema', 'Dina', 'Aida', 'Zehra', 'Nermina',
-        'Belkisa', 'Nejra', 'Hamida', 'Sabina', 'Sanela', 'Amela', 'Mirela', 'Senada', 'Azra', 'Lamia',
-        'Meliha', 'Esma', 'Lejla', 'Amna', 'Irma', 'Selmina', 'Edina', 'Maja', 'Ivana', 'Ana',
-        'Marko', 'Nikola', 'Stefan', 'Luka', 'Filip', 'Damir', 'Denis', 'Arnel', 'Benjamin', 'Edvin',
-    ];
+    public array $seededLocales = [];
 
-    /** @var list<string> */
-    private const LAST_NAMES = [
-        'Hadžić', 'Kovačević', 'Begović', 'Delić', 'Softić', 'Hodžić', 'Imamović', 'Mehić', 'Salihović', 'Duraković',
-        'Hasanović', 'Jusić', 'Karić', 'Mujić', 'Omeragić', 'Pirić', 'Salkić', 'Tihić', 'Zukić', 'Avdić',
-        'Bašić', 'Čaušević', 'Dervišević', 'Eminić', 'Fazlić', 'Gavrić', 'Halilović', 'Ibrahimović', 'Jahić', 'Kadrić',
-        'Latić', 'Memić', 'Nuhić', 'Osmanović', 'Pavlić', 'Redžić', 'Smajić', 'Tahirović', 'Usenić', 'Vuković',
-        'Zukorlić', 'Ahmetović', 'Bajramović', 'Cerimagić', 'Dizdarević', 'Fejzić', 'Glamočak', 'Hrustić', 'Ibišević', 'Janković',
-        'Kurtović', 'Musić', 'Pehlivanović', 'Ramić', 'Suljić', 'Terzić', 'Užičanin', 'Vranić', 'Zornić', 'Čelić',
-    ];
+    /** @var list<array{locale: string, email: string, slug: string, invitation_url: string, featured_guest_url: string}> */
+    public array $seededSummaries = [];
 
-    /** @var list<string> */
-    private const PLUS_ONE_FIRST_NAMES = [
-        'Amira', 'Selma', 'Emina', 'Lejla', 'Ajla', 'Medina', 'Hana', 'Ena', 'Alma', 'Belma',
-        'Emir', 'Adnan', 'Haris', 'Kenan', 'Mirza', 'Tarik', 'Dino', 'Senad', 'Faruk', 'Alen',
-        'Edin', 'Amer', 'Armin', 'Vedad', 'Elvir', 'Samir', 'Kemal', 'Sead', 'Halid', 'Eldin',
-    ];
+    public ?string $onlyLocale = null;
 
-    /** @var list<string> */
-    private const RSVP_NOTES = [
-        'Sa velikom radošću potvrđujemo dolazak. Vidimo se u džamiji!',
-        'Hvala na prekrasnoj pozivnici. Dolazimo cijela porodica.',
-        'Jedva čekamo vaš veliki dan. Čestitamo unaprijed!',
-        'Potvrđujemo dolazak za nas dvoje. Sretno vam!',
-        'Biće nam čast biti dio ovog posebnog dana.',
-        'Radujemo se nikahu i proslavi. Do tada!',
-        'Hvala vam što ste nas uključili. Vidimo se uskoro!',
-        'Neka vam Allah blagoslovi brak. Dolazimo sa radošću.',
-        'Nažalost ne možemo doći zbog obaveza van grada. Sretno vam!',
-        'Moramo otkazati dolazak zbog porodičnih obaveza. Čestitamo od srca!',
-    ];
+    public const HERO_IMAGE = 'hero-images/01KYJ42XFTRNRB41FJXV31HA9W.webp';
 
-    /** @var list<string> */
-    private const GUEST_MESSAGES = [
-        'Dragi mladenci, čestitamo vam od srca! Jedva čekamo vaš veliki dan.',
-        'Vaša ljubav nas inspiriše. Sretno vjenčanje, Jasmine i Đorđe!',
-        'Hvala vam na prekrasnoj pozivnici. Vidimo se u džamiji!',
-        'Neka vam brak bude ispunjen radosti, mira i blagoslova.',
-        'Sa radošću potvrđujemo dolazak. Čestitamo vam unaprijed!',
-        'Vaše vjenčanje će biti prekrasno — jedva čekamo proslavu.',
-        'Neka vam Allah blagoslovi zajednički put. Sretno!',
-        'Hvala na pozivu. Biće nam čast biti dio ovog posebnog dana.',
-        'Čestitamo! Neka svaki dan bude kao prvi — pun ljubavi.',
-        'Draga Jasmina i Đorđe, želimo vam sve najljepše u braku.',
-        'Vaša priča je predivna. Radujemo se slavlju!',
-        'Potvrđujemo dolazak za nas dvoje. Vidimo se uskoro!',
-        'Neka vam kuća bude puna smijeha i topline.',
-        'Hvala vam što ste nas uključili u ovaj poseban trenutak.',
-        'Čestitamo od cijele porodice! Neka vam bude blagoslovljeno.',
-        'Jedva čekamo da slavimo s vama u Sarajevu.',
-        'Vaša pozivnica nas je oduševila. Sretno vjenčanje!',
-        'Neka vam ljubav raste iz dana u dan. Sve najbolje!',
-        'Biće nam čast svjedočiti vašem “da”.',
-        'Hvala na lijepim riječima u pozivnici. Vidimo se!',
-        'Čestitamo mladencima! Neka vam brak donese samo sreću.',
-        'Radujemo se nikahu i proslavi. Sretno vam bilo!',
-        'Vaša sreća nam mnogo znači. Sve najbolje!',
-        'Potvrđujemo dolazak i šaljemo puno ljubavi.',
-        'Neka vam Allah da zdravlje, mir i obilje u braku.',
-        'Prekrasno vjenčanje nas čeka — hvala na pozivu!',
-        'Čestitamo! Neka svaki dan bude nova avantura u dvoje.',
-        'Draga Jasmina, drago Đorđe — sretno vam bilo zauvijek!',
-        'Vaša ljubav je lijep primjer za sve nas. Sretno!',
-        'Jedva čekamo da plesamo na vašoj proslavi. Čestitamo!',
-    ];
+    public const GUEST_COUNT = 150;
+
+    public const CONFIRMED_COUNT = 90;
+
+    public const DECLINED_COUNT = 8;
+
+    public const MESSAGE_COUNT = 30;
+
+    public const PASSWORD = '5E3L1Y84uFdd';
+
+    /**
+     * @return list<string>
+     */
+    public static function supportedLocales(): array
+    {
+        return ['bs', 'hr', 'de', 'en'];
+    }
 
     public function run(): void
     {
-        $userExists = User::query()->where('email', self::USER_EMAIL)->exists();
-        $eventExists = WeddingEvent::query()->where('slug', self::EVENT_SLUG)->exists();
+        $locales = $this->onlyLocale
+            ? [$this->onlyLocale]
+            : self::supportedLocales();
+
+        foreach ($locales as $locale) {
+            $this->seedLocale($locale);
+        }
+    }
+
+    private function seedLocale(string $locale): void
+    {
+        $profile = $this->loadProfile($locale);
+        $email = $profile['user']['email'];
+        $slug = $profile['event']['slug'];
+
+        $userExists = User::query()->where('email', $email)->exists();
+        $eventExists = WeddingEvent::query()->where('slug', $slug)->exists();
 
         if (! $this->overwrite && ($userExists || $eventExists)) {
             $this->skipped = true;
@@ -127,130 +85,176 @@ class MarketingDemoSeeder extends Seeder
         }
 
         $user = User::query()->updateOrCreate(
-            ['email' => self::USER_EMAIL],
+            ['email' => $email],
             [
-                'name' => 'Jasmina&Đorđe',
-                'password' => Hash::make('5E3L1Y84uFdd'),
+                'name' => $profile['user']['name'],
+                'password' => Hash::make($profile['user']['password'] ?? self::PASSWORD),
                 'is_admin' => false,
-                'locale' => 'bs',
-                'email_verified_at' => now(),
+                'locale' => $locale,
             ]
         );
 
-        $weddingDate = Carbon::create(2026, 9, 19, 16, 0, 0);
-        $rsvpDeadline = Carbon::create(2026, 9, 5);
+        // email_verified_at is not fillable on User; force it so Filament login skips verification.
+        $user->forceFill([
+            'email_verified_at' => now(),
+        ])->save();
+
+
+        $eventData = $profile['event'];
+        $weddingDate = Carbon::parse($eventData['wedding_date']);
+        $rsvpDeadline = Carbon::parse($eventData['rsvp_deadline']);
+        $primary = $eventData['locations'][0];
 
         $event = WeddingEvent::query()->updateOrCreate(
-            ['slug' => self::EVENT_SLUG],
+            ['slug' => $slug],
             [
                 'user_id' => $user->id,
                 'is_demo' => false,
-                'bride_name' => 'Jasmina',
-                'groom_name' => 'Đorđe',
+                'bride_name' => $eventData['bride_name'],
+                'groom_name' => $eventData['groom_name'],
                 'wedding_date' => $weddingDate,
-                'location_name' => 'Gazi Husrev-begova džamija',
-                'location_address' => 'Sarajevo, Bosna i Hercegovina',
-                'location_lat' => 43.8594,
-                'location_lng' => 18.4286,
-                'theme' => InvitationTheme::RoyalWedding,
-                'template' => InvitationTemplate::Classic,
-                'reveal_animation' => InvitationReveal::Envelope,
+                'location_name' => $primary['name'],
+                'location_address' => $primary['address'],
+                'location_lat' => $primary['lat'],
+                'location_lng' => $primary['lng'],
+                'theme' => InvitationTheme::from($eventData['theme']),
+                'template' => InvitationTemplate::from($eventData['template']),
+                'reveal_animation' => InvitationReveal::from($eventData['reveal_animation']),
                 'link_mode' => LinkMode::TokenOnly,
-                'music_url' => 'https://www.youtube.com/watch?v=2Vv-BfVoq4g',
+                'music_url' => $eventData['music_url'],
+                'hero_image' => self::HERO_IMAGE,
                 'rsvp_deadline' => $rsvpDeadline,
                 'accommodation_enabled' => true,
                 'is_active' => true,
-                'motto' => 'Dvije duše, jedno srce — zauvijek naše "da".',
-                'send_message' => <<<'TEXT'
-Dragi/a {name},
-
-sa velikom radošću pozivamo Vas da budete dio našeg najljepšeg dana — vjenčanja Jasmine i Đorđa.
-
-Vaš lični link za potvrdu dolaska:
-{link}
-
-S ljubavlju,
-Jasmina & Đorđe
-TEXT,
+                'plan_tier' => PlanTier::Premium,
+                'guest_limit' => PlanTier::Premium->guestLimit(),
+                'invitation_locale' => $locale,
+                'motto' => $eventData['motto'],
+                'send_message' => $eventData['send_message'],
             ]
         );
 
         app(EnsureWeddingMenuOptions::class)->handle($event);
 
-        $event->locations()->delete();
-        $event->locations()->createMany([
-            [
-                'label' => 'Džamija',
-                'name' => 'Gazi Husrev-begova džamija',
-                'address' => 'Sarajevo, Bosna i Hercegovina',
-                'lat' => 43.8594,
-                'lng' => 18.4286,
-                'is_primary' => true,
-                'sort_order' => 0,
-            ],
-            [
-                'label' => 'Opština',
-                'name' => 'Općina Stari Grad',
-                'address' => 'Sarajevo, Bosna i Hercegovina',
-                'lat' => 43.8599,
-                'lng' => 18.4310,
-                'is_primary' => false,
-                'sort_order' => 1,
-            ],
+        $event->menuOptions()->whereNull('platform_key')->delete();
+
+        $customMenu = WeddingMenuOption::query()->create([
+            'wedding_event_id' => $event->id,
+            'platform_key' => null,
+            'label' => $eventData['custom_menu_label'],
+            'is_visible' => true,
+            'sort_order' => 10,
         ]);
+
+        $menuOptions = $event->menuOptions()->orderBy('sort_order')->get();
+        $menuIds = $menuOptions->pluck('id')->all();
+        $menuIds[] = $customMenu->id;
+        $menuIds = array_values(array_unique($menuIds));
+
+        $event->locations()->delete();
+        $event->locations()->createMany($eventData['locations']);
+        $event->syncLegacyLocationFromPrimary();
 
         $event->scheduleItems()->delete();
-        $event->scheduleItems()->createMany([
-            ['time' => '08:00', 'title' => 'Odlazak po mladu', 'description' => 'Mladoženja i svatovi dolaze po mladu.', 'sort_order' => 1],
-            ['time' => '10:00', 'title' => 'Šerijatsko vjenčanje (nikah)', 'description' => 'Vjenčanje u džamiji.', 'sort_order' => 2],
-            ['time' => '12:00', 'title' => 'Svečani ručak', 'description' => 'Ručak za porodicu i najbliže goste.', 'sort_order' => 3],
-            ['time' => '16:00', 'title' => 'Fotografisanje', 'description' => 'Zajedničko fotografisanje mladenaca.', 'sort_order' => 4],
-            ['time' => '19:00', 'title' => 'Svečana večera i proslava', 'description' => 'Večera, ples i slavlje.', 'sort_order' => 5],
-        ]);
+        $event->scheduleItems()->createMany($eventData['schedule']);
 
+        $event->guestMessages()->delete();
         $event->guests()->forceDelete();
+        LinkVisit::query()->where('wedding_event_id', $event->id)->delete();
 
         $yesGuests = [];
+        $featuredGuest = null;
 
         for ($index = 0; $index < self::GUEST_COUNT; $index++) {
             $guestNumber = $index + 1;
-            $firstName = self::FIRST_NAMES[$index % count(self::FIRST_NAMES)];
-            $lastName = self::LAST_NAMES[$index % count(self::LAST_NAMES)];
+            $firstName = $profile['first_names'][$index % count($profile['first_names'])];
+            $lastName = $profile['last_names'][$index % count($profile['last_names'])];
+            $name = $index === 0
+                ? $profile['featured_guest_name']
+                : "{$firstName} {$lastName}";
+
             $plusOneAllowed = $index % 5 < 2;
             $rsvpStatus = $this->rsvpStatusForIndex($index);
             $respondedAt = $rsvpStatus !== null
                 ? $weddingDate->copy()->subDays(45 - ($index % 20))
                 : null;
 
-            $rsvpNote = $this->rsvpNoteForIndex($index);
-
             $plusOneName = null;
             if ($plusOneAllowed && $rsvpStatus === RsvpStatus::Yes && $index % 4 !== 3) {
-                $plusOneFirst = self::PLUS_ONE_FIRST_NAMES[$index % count(self::PLUS_ONE_FIRST_NAMES)];
-                $plusOneLast = self::LAST_NAMES[($index + 17) % count(self::LAST_NAMES)];
+                $plusOneFirst = $profile['plus_one_first_names'][$index % count($profile['plus_one_first_names'])];
+                $plusOneLast = $profile['last_names'][($index + 17) % count($profile['last_names'])];
                 $plusOneName = "{$plusOneFirst} {$plusOneLast}";
             }
 
+            $partySize = 1 + ($plusOneName ? 1 : 0);
+            $menuOptionId = null;
+            $plusOneMenuOptionId = null;
+            $accommodationCount = null;
+
+            if ($rsvpStatus === RsvpStatus::Yes) {
+                $menuOptionId = $menuIds[$index % count($menuIds)];
+                if ($plusOneName) {
+                    $plusOneMenuOptionId = $menuIds[($index + 1) % count($menuIds)];
+                }
+
+                if ($index % 3 !== 2) {
+                    $accommodationCount = min($partySize, 1 + ($index % max(1, $partySize)));
+                }
+            }
+
+            $token = $index === 0
+                ? $profile['featured_guest_token']
+                : Str::random(32);
+
             $guest = Guest::query()->create([
                 'wedding_event_id' => $event->id,
-                'name' => "{$firstName} {$lastName}",
-                'email' => sprintf('marketing-guest-%03d@nasdan.ba', $guestNumber),
-                'phone' => sprintf('+3876%07d', 1000000 + $guestNumber),
+                'name' => $name,
+                'email' => sprintf('marketing-%s-guest-%03d@%s', $locale, $guestNumber, $profile['email_domain']),
+                'phone' => sprintf('%s%07d', $profile['phone_prefix'], 1000000 + $guestNumber),
                 'plus_one_allowed' => $plusOneAllowed,
                 'plus_one_name' => $plusOneName,
+                'plus_one_seating_name' => $plusOneName,
+                'token' => $token,
                 'rsvp_status' => $rsvpStatus,
                 'rsvp_responded_at' => $respondedAt,
-                'rsvp_note' => $rsvpNote,
+                'rsvp_note' => $this->rsvpNoteForIndex($profile, $index),
+                'menu_option_id' => $menuOptionId,
+                'plus_one_menu_option_id' => $plusOneMenuOptionId,
+                'accommodation_count' => $accommodationCount,
                 'invite_sent_at' => $rsvpStatus === RsvpStatus::Yes || $index % 3 === 0
                     ? $weddingDate->copy()->subDays(60 - ($index % 15))
                     : null,
                 'invite_platform' => ($rsvpStatus === RsvpStatus::Yes || $index % 3 === 0)
                     ? $this->invitePlatformForIndex($index)
                     : null,
+                'invitation_locale' => $index === 0
+                    ? $locale
+                    : ($index % 11 === 0 && $locale !== 'en' ? 'en' : $locale),
             ]);
 
+            if ($rsvpStatus === RsvpStatus::Yes && $index % 7 === 0) {
+                $childName = $profile['child_names'][$index % count($profile['child_names'])];
+                GuestChild::query()->create([
+                    'guest_id' => $guest->id,
+                    'name' => $childName,
+                    'seating_name' => $childName,
+                    'menu_option_id' => $menuIds[($index + 2) % count($menuIds)],
+                    'sort_order' => 0,
+                ]);
+
+                if ($accommodationCount !== null) {
+                    $guest->forceFill([
+                        'accommodation_count' => min(($accommodationCount ?? 0) + 1, $partySize + 1),
+                    ])->save();
+                }
+            }
+
             if ($rsvpStatus === RsvpStatus::Yes) {
-                $yesGuests[] = $guest;
+                $yesGuests[] = $guest->fresh(['children']);
+            }
+
+            if ($index === 0) {
+                $featuredGuest = $guest;
             }
         }
 
@@ -260,22 +264,178 @@ TEXT,
                 'guest_id' => $guest->id,
                 'sender_name' => $guest->name,
                 'type' => GuestMessageType::Text,
-                'content' => self::GUEST_MESSAGES[$messageIndex],
+                'content' => $profile['guest_messages'][$messageIndex],
                 'seen_at' => $messageIndex % 3 === 0
                     ? null
                     : $weddingDate->copy()->subDays(10 + ($messageIndex % 5)),
             ]);
         }
+
+        $this->seedSeatingPlan($event, $yesGuests);
+        $this->seedLinkVisits($event, $yesGuests, $weddingDate);
+
+        $this->seededLocales[] = $locale;
+        $this->seededSummaries[] = [
+            'locale' => $locale,
+            'email' => $email,
+            'slug' => $slug,
+            'invitation_url' => $event->fresh()->public_url,
+            'featured_guest_url' => $featuredGuest
+                ? $event->guestUrl($featuredGuest->fresh())
+                : $event->fresh()->public_url,
+        ];
     }
 
-    private function rsvpNoteForIndex(int $index): ?string
+    /**
+     * @param  list<\App\Models\Guest>  $yesGuests
+     */
+    private function seedSeatingPlan(WeddingEvent $event, array $yesGuests): void
     {
+        $assignees = [];
+
+        foreach (array_slice($yesGuests, 0, 70) as $guest) {
+            $assignees[] = $guest->id;
+            if (filled($guest->plus_one_name)) {
+                $assignees[] = -$guest->id;
+            }
+            foreach ($guest->children as $child) {
+                $assignees[] = $child->seatingAssigneeKey();
+            }
+        }
+
+        $tables = [
+            $this->makeTable('t_head', 'head', 500, 120, 10, 'Glavni sto', $assignees, true),
+            $this->makeTable('t_1', 'round', 220, 320, 8, 'Sto 1', $assignees),
+            $this->makeTable('t_2', 'round', 500, 320, 8, 'Sto 2', $assignees),
+            $this->makeTable('t_3', 'round', 780, 320, 8, 'Sto 3', $assignees),
+            $this->makeTable('t_4', 'rect', 220, 520, 8, 'Sto 4', $assignees),
+            $this->makeTable('t_5', 'rect', 500, 520, 8, 'Sto 5', $assignees),
+            $this->makeTable('t_6', 'round', 780, 520, 8, 'Sto 6', $assignees),
+            $this->makeTable('t_7', 'round', 350, 700, 8, 'Sto 7', $assignees),
+            $this->makeTable('t_8', 'round', 650, 700, 8, 'Sto 8', $assignees),
+        ];
+
+        // Localized head-table labels where helpful
+        $locale = $event->invitation_locale;
+        if ($locale === 'de') {
+            $tables[0]['label'] = 'Brauttisch';
+            foreach ($tables as $i => $table) {
+                if ($i > 0) {
+                    $tables[$i]['label'] = 'Tisch '.$i;
+                }
+            }
+        } elseif ($locale === 'en') {
+            $tables[0]['label'] = 'Head table';
+            foreach ($tables as $i => $table) {
+                if ($i > 0) {
+                    $tables[$i]['label'] = 'Table '.$i;
+                }
+            }
+        } elseif ($locale === 'hr') {
+            $tables[0]['label'] = 'Glavni stol';
+            foreach ($tables as $i => $table) {
+                if ($i > 0) {
+                    $tables[$i]['label'] = 'Stol '.$i;
+                }
+            }
+        }
+
+        $event->forceFill(['seating_plan' => ['tables' => $tables]])->save();
+    }
+
+    /**
+     * @param  list<int|string>  $assignees
+     * @return array<string, mixed>
+     */
+    private function makeTable(
+        string $id,
+        string $type,
+        int $x,
+        int $y,
+        int $chairCount,
+        string $label,
+        array &$assignees,
+        bool $withCouple = false,
+    ): array {
+        $seats = array_fill(0, $chairCount, null);
+
+        if ($withCouple) {
+            $seats[0] = 'groom';
+            $seats[1] = 'bride';
+            for ($i = 2; $i < $chairCount; $i++) {
+                $seats[$i] = array_shift($assignees);
+            }
+        } else {
+            for ($i = 0; $i < $chairCount; $i++) {
+                $seats[$i] = array_shift($assignees);
+            }
+        }
+
+        $table = [
+            'id' => $id,
+            'type' => $type,
+            'x' => $x,
+            'y' => $y,
+            'rotation' => 0,
+            'chair_count' => $chairCount,
+            'label' => $label,
+            'seats' => $seats,
+        ];
+
+        if ($type === 'round') {
+            $table['radius'] = 70;
+        } elseif ($type === 'head') {
+            $table['width'] = 320;
+            $table['height'] = 70;
+        } else {
+            $table['width'] = 160;
+            $table['height'] = 100;
+        }
+
+        return $table;
+    }
+
+    /**
+     * @param  list<\App\Models\Guest>  $yesGuests
+     */
+    private function seedLinkVisits(WeddingEvent $event, array $yesGuests, Carbon $weddingDate): void
+    {
+        $devices = ['mobile', 'desktop', 'tablet'];
+        $browsers = ['Chrome', 'Safari', 'Firefox', 'Edge'];
+        $oses = ['iOS', 'Android', 'macOS', 'Windows'];
+
+        for ($i = 0; $i < 220; $i++) {
+            $guest = $yesGuests[$i % max(1, count($yesGuests))] ?? null;
+            $isPersonal = $guest !== null && $i % 3 !== 0;
+
+            LinkVisit::query()->create([
+                'wedding_event_id' => $event->id,
+                'guest_id' => $isPersonal ? $guest->id : null,
+                'link_type' => $isPersonal ? LinkType::Personal : LinkType::Public,
+                'ip_hash' => hash('sha256', 'marketing-demo-'.$event->slug.'-'.$i),
+                'user_agent' => 'MarketingDemoSeeder/1.0',
+                'referer' => null,
+                'device_type' => $devices[$i % count($devices)],
+                'browser' => $browsers[$i % count($browsers)],
+                'os' => $oses[$i % count($oses)],
+                'visited_at' => $weddingDate->copy()->subDays(40 - ($i % 35))->addMinutes($i * 7),
+            ]);
+        }
+    }
+
+    /**
+     * @param  array<string, mixed>  $profile
+     */
+    private function rsvpNoteForIndex(array $profile, int $index): ?string
+    {
+        $notes = $profile['rsvp_notes'];
+
         if ($index < 8) {
-            return self::RSVP_NOTES[$index];
+            return $notes[$index];
         }
 
         if ($index >= self::CONFIRMED_COUNT && $index < self::CONFIRMED_COUNT + 2) {
-            return self::RSVP_NOTES[$index - self::CONFIRMED_COUNT + 8];
+            return $notes[$index - self::CONFIRMED_COUNT + 8] ?? null;
         }
 
         return null;
@@ -303,5 +463,22 @@ TEXT,
             3 => InvitePlatform::FacebookMessenger,
             default => InvitePlatform::Manual,
         };
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function loadProfile(string $locale): array
+    {
+        $path = database_path('seeders/data/marketing-demo/'.$locale.'.php');
+
+        if (! is_file($path)) {
+            throw new \InvalidArgumentException("Missing marketing demo profile for locale [{$locale}].");
+        }
+
+        /** @var array<string, mixed> $profile */
+        $profile = require $path;
+
+        return $profile;
     }
 }

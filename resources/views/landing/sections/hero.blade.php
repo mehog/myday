@@ -66,8 +66,8 @@
                 <div class="landing-browser-chrome">
                     <span></span><span></span><span></span>
                 </div>
-                <img
-                    src="{{ asset('img/landing/hero-dashboard-desktop.webp') }}"
+                    <img
+                    src="{{ asset(\App\Support\LandingAsset::path('hero-dashboard-desktop.webp')) }}"
                     alt=""
                     width="1600"
                     height="1000"
@@ -77,7 +77,7 @@
             </div>
             <div class="landing-phone-frame landing-hero-phone">
                 <img
-                    src="{{ asset('img/landing/hero-invitation-mobile.webp') }}"
+                    src="{{ asset(\App\Support\LandingAsset::path('hero-invitation-mobile.webp')) }}"
                     alt="{{ __('landing.hero_image_alt') }}"
                     width="390"
                     height="844"

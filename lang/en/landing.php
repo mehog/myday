@@ -54,6 +54,14 @@ return [
     'feature_rsvp_point_4' => 'Optional accommodation requests when you enable them',
     'feature_rsvp_alt' => 'Screenshot of the NasDan guest list with RSVP statuses',
 
+    'feature_menu_eyebrow' => 'Menus and stays',
+    'feature_menu_title' => 'Meal choices and accommodation at a glance',
+    'feature_menu_text' => 'See how many guests pick each menu and how many overnight stays you need to book. Counts stay within party size and update as RSVPs come in.',
+    'feature_menu_point_1' => 'Platform menus plus your custom options',
+    'feature_menu_point_2' => 'Choices for guests, plus-ones and children',
+    'feature_menu_point_3' => 'Realistic accommodation requests per party',
+    'feature_menu_alt' => 'Screenshot of the NasDan dashboard menu and accommodation summary',
+
     'feature_seating_eyebrow' => 'Seating plan',
     'feature_seating_title' => 'Arrange tables visually, then export a PDF',
     'feature_seating_text' => 'Build your floor plan on an interactive canvas. Assign guests to seats, adjust layouts, and download everything for the venue.',
@@ -81,7 +89,7 @@ return [
     'interaction_3_text' => 'Guests upload photos from the big day and the days after. Everything lands in one place for you, for 30 days after the celebration.',
     'interaction_inbox_alt' => 'Screenshot of the guest messages inbox in the NasDan panel',
     'interaction_upload_alt' => 'Screenshot of the guest message upload screen on a phone',
-    'interaction_demo_name' => 'Amina',
+    'interaction_demo_name' => 'Layla',
     'interaction_demo_message' => 'Wishing you both a lifetime of love, can\'t wait to celebrate with you!',
     'interaction_demo_voice_label' => 'Voice message',
 

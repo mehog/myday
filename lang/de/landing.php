@@ -54,6 +54,14 @@ return [
     'feature_rsvp_point_4' => 'Optionale Unterkunftsanfragen, wenn Sie sie aktivieren',
     'feature_rsvp_alt' => 'Screenshot der NasDan-Gästeliste mit RSVP-Status',
 
+    'feature_menu_eyebrow' => 'Menü und Unterkunft',
+    'feature_menu_title' => 'Menüwahl und Übernachtungen auf einen Blick',
+    'feature_menu_text' => 'Sehen Sie, wie viele Gäste welches Menü wählen und wie viele Übernachtungen Sie brauchen. Die Zahlen bleiben innerhalb der Partiegröße und aktualisieren sich mit den Zusagen.',
+    'feature_menu_point_1' => 'Plattformmenüs und eigene Optionen',
+    'feature_menu_point_2' => 'Auswahl für Gäste, Begleitung und Kinder',
+    'feature_menu_point_3' => 'Realistische Unterkunftsanfragen pro Partie',
+    'feature_menu_alt' => 'Screenshot der NasDan-Übersicht zu Menü und Unterkunft',
+
     'feature_seating_eyebrow' => 'Sitzplan',
     'feature_seating_title' => 'Tische visuell anordnen und als PDF exportieren',
     'feature_seating_text' => 'Erstellen Sie Ihren Saalplan auf einer interaktiven Fläche. Weisen Sie Gäste Plätzen zu, passen Sie Layouts an und laden Sie alles für die Location herunter.',
@@ -81,7 +89,7 @@ return [
     'interaction_3_text' => 'Gäste laden Fotos vom Hochzeitstag und den Tagen danach hoch. Alles landet an einem Ort, 30 Tage lang für Sie verfügbar.',
     'interaction_inbox_alt' => 'Screenshot des Gästenachrichten-Posteingangs im NasDan-Panel',
     'interaction_upload_alt' => 'Screenshot der Gäste-Upload-Seite auf dem Handy',
-    'interaction_demo_name' => 'Amina',
+    'interaction_demo_name' => 'Aylin',
     'interaction_demo_message' => 'Ich wünsche euch eine Liebe fürs Leben, ich kann es kaum erwarten, mit euch zu feiern!',
     'interaction_demo_voice_label' => 'Sprachnachricht',
 

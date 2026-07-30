@@ -1,4 +1,6 @@
 @php
+    use App\Support\LandingAsset;
+
     $featureRows = [
         [
             'eyebrow' => __('landing.feature_invite_eyebrow'),
@@ -10,7 +12,7 @@
                 __('landing.feature_invite_point_3'),
                 __('landing.feature_invite_point_4'),
             ],
-            'image' => 'img/landing/hero-invitation-mobile.webp',
+            'image' => LandingAsset::path('hero-invitation-mobile.webp'),
             'alt' => __('landing.feature_invite_alt'),
             'frame' => 'phone',
             'width' => 390,
@@ -28,13 +30,30 @@
                 __('landing.feature_rsvp_point_3'),
                 __('landing.feature_rsvp_point_4'),
             ],
-            'image' => 'img/landing/feature-rsvp-guests-desktop.webp',
+            'image' => LandingAsset::path('feature-rsvp-guests-desktop.webp'),
             'alt' => __('landing.feature_rsvp_alt'),
             'frame' => 'browser',
             'width' => 1600,
             'height' => 1000,
             'reverse' => true,
             'tint' => true,
+        ],
+        [
+            'eyebrow' => __('landing.feature_menu_eyebrow'),
+            'title' => __('landing.feature_menu_title'),
+            'text' => __('landing.feature_menu_text'),
+            'points' => [
+                __('landing.feature_menu_point_1'),
+                __('landing.feature_menu_point_2'),
+                __('landing.feature_menu_point_3'),
+            ],
+            'image' => LandingAsset::path('feature-menu-accommodation-desktop.webp'),
+            'alt' => __('landing.feature_menu_alt'),
+            'frame' => 'browser',
+            'width' => 1600,
+            'height' => 1000,
+            'reverse' => false,
+            'tint' => false,
         ],
         [
             'eyebrow' => __('landing.feature_seating_eyebrow'),
@@ -45,13 +64,13 @@
                 __('landing.feature_seating_point_2'),
                 __('landing.feature_seating_point_3'),
             ],
-            'image' => 'img/landing/feature-seating-plan-desktop.webp',
+            'image' => LandingAsset::path('feature-seating-plan-desktop.webp'),
             'alt' => __('landing.feature_seating_alt'),
             'frame' => 'browser',
             'width' => 1600,
             'height' => 1000,
-            'reverse' => false,
-            'tint' => false,
+            'reverse' => true,
+            'tint' => true,
         ],
         [
             'eyebrow' => __('landing.feature_updates_eyebrow'),
@@ -62,13 +81,13 @@
                 __('landing.feature_updates_point_2'),
                 __('landing.feature_updates_point_3'),
             ],
-            'image' => 'img/landing/feature-updates-insights-desktop.webp',
+            'image' => LandingAsset::path('feature-updates-insights-desktop.webp'),
             'alt' => __('landing.feature_updates_alt'),
             'frame' => 'browser',
             'width' => 1600,
             'height' => 1000,
-            'reverse' => true,
-            'tint' => true,
+            'reverse' => false,
+            'tint' => false,
         ],
     ];
 @endphp
