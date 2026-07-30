@@ -119,6 +119,7 @@ class DodoCheckoutService
             billingCurrency: $billingCurrency,
             cancelURL: $cancelUrl,
             metadata: $metadata,
+            minimalAddress: true,
             returnURL: $returnUrl,
         );
     }
