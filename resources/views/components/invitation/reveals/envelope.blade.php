@@ -534,10 +534,6 @@
             }
 
             const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            const css = getComputedStyle(document.documentElement);
-            const CROSSFADE = parseInt(css.getPropertyValue('--env-crossfade'), 10) || 1350;
-            const HOLD = parseInt(css.getPropertyValue('--env-hold'), 10) || 900;
-            const ZOOM = parseInt(css.getPropertyValue('--env-zoom'), 10) || 900;
             const previousBodyOverflow = document.body.style.overflow;
 
             let started = false;
@@ -545,6 +541,16 @@
             let revealedToLivewire = false;
 
             document.body.style.overflow = 'hidden';
+
+            function revealTiming() {
+                const css = getComputedStyle(document.documentElement);
+
+                return {
+                    crossfade: parseInt(css.getPropertyValue('--env-crossfade'), 10) || 1350,
+                    hold: parseInt(css.getPropertyValue('--env-hold'), 10) || 900,
+                    zoom: parseInt(css.getPropertyValue('--env-zoom'), 10) || 900,
+                };
+            }
 
             function showInviteContent() {
                 const content = document.getElementById('invitation-content');
@@ -634,6 +640,8 @@
                 }
 
                 window.setTimeout(releaseDust, 120);
+
+                const { crossfade: CROSSFADE, hold: HOLD, zoom: ZOOM } = revealTiming();
 
                 window.setTimeout(() => {
                     stage.classList.add('env-is-zooming');

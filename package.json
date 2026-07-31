@@ -4,7 +4,9 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "capture:gifs": "node scripts/capture-invitation-gifs.mjs",
+        "capture:videos": "node scripts/capture-invitation-gifs.mjs --from-gifs"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
