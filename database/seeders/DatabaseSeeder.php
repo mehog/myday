@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             WeddingEventSeeder::class,
+            DiscountEmailTemplateSeeder::class,
         ]);
     }
 }

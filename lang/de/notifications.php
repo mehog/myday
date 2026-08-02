@@ -43,4 +43,8 @@ return [
     'admin_inactive_wedding_subject' => ':couple Hochzeit in :days Tagen — noch inaktiv',
     'admin_inactive_wedding_body' => 'Die Hochzeit von :couple ist am :date (in :days Tagen), die Einladung ist noch inaktiv. Kontakt: :email.',
     'admin_inactive_wedding_action' => 'Hochzeit im Admin öffnen',
+
+    'discount_email_greeting' => 'Hallo :name,',
+    'discount_email_code_line' => 'Ihr Rabattcode: :code',
+    'discount_email_action' => 'Preise ansehen',
 ];

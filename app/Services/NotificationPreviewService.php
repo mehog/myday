@@ -2,12 +2,17 @@
 
 namespace App\Services;
 
+use App\DiscountType;
+use App\Models\DiscountCode;
+use App\Models\DiscountEmailCampaign;
+use App\Models\DiscountEmailTemplate;
 use App\Models\PushNotificationLog;
 use App\Notifications\AdminInactiveWeddingReminderNotification;
 use App\Notifications\AdminNewSignupNotification;
 use App\Notifications\CoupleActivationReminderNotification;
 use App\Notifications\CoupleOnboardingTipNotification;
 use App\Notifications\CoupleRsvpPushNotification;
+use App\Notifications\DiscountCodeEmailNotification;
 use App\Notifications\GuestPhotoUploadReminderNotification;
 use App\Notifications\GuestPreWeddingReminderNotification;
 use App\Notifications\GuestPushNotification;
@@ -115,6 +120,7 @@ final class NotificationPreviewService
             ...$this->coupleRsvpScenarios(),
             ...$this->adminScenarios(),
             ...$this->scheduledPushScenarios(),
+            ...$this->discountScenarios(),
             [
                 'id' => 'new-guest-message',
                 'label' => 'New guest message (Filament inbox)',
@@ -405,6 +411,56 @@ final class NotificationPreviewService
                 body: 'Scheduled preview body.',
                 url: route('invitation.push.guest', [$fixtures->wedding->slug, $fixtures->guest->token]),
             ),
+        ]];
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    private function discountScenarios(): array
+    {
+        return [[
+            'id' => 'discount-code-email',
+            'label' => 'Discount code email',
+            'group' => 'discount',
+            'channel' => 'mail',
+            'target' => 'user',
+            'factory' => function (NotificationPreviewFixtures $fixtures): Notification {
+                $code = new DiscountCode([
+                    'code' => 'PREVIEW15',
+                    'name' => 'Preview discount',
+                    'type' => DiscountType::Percentage,
+                    'amount' => 15,
+                    'is_active' => true,
+                    'expires_at' => now()->addMonth(),
+                ]);
+
+                $template = DiscountEmailTemplate::query()->active()->first()
+                    ?? new DiscountEmailTemplate([
+                        'name' => 'Preview',
+                        'subjects' => [
+                            'en' => '{{discount_label}} off with code {{code}}',
+                            'bs' => '{{discount_label}} popusta — kod {{code}}',
+                            'de' => '{{discount_label}} Rabatt — Code {{code}}',
+                            'hr' => '{{discount_label}} popusta — kod {{code}}',
+                        ],
+                        'bodies' => [
+                            'en' => 'Use code {{code}} for {{discount_label}} off{{expires_clause}}.',
+                            'bs' => 'Iskoristite kod {{code}} za {{discount_label}} popusta{{expires_clause}}.',
+                            'de' => 'Nutzen Sie {{code}} für {{discount_label}} Rabatt{{expires_clause}}.',
+                            'hr' => 'Iskoristite kod {{code}} za {{discount_label}} popusta{{expires_clause}}.',
+                        ],
+                    ]);
+
+                $campaign = new DiscountEmailCampaign;
+                $campaign->setRelation('template', $template);
+
+                return new DiscountCodeEmailNotification(
+                    $campaign,
+                    $code,
+                    $fixtures->user->preferredLocale(),
+                );
+            },
         ]];
     }
 

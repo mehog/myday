@@ -6,7 +6,8 @@
         "build": "vite build",
         "dev": "vite",
         "capture:gifs": "node scripts/capture-invitation-gifs.mjs",
-        "capture:videos": "node scripts/capture-invitation-gifs.mjs --from-gifs"
+        "capture:videos": "node scripts/capture-invitation-gifs.mjs --from-gifs",
+        "generate:royal-video": "node scripts/generate-royal-invitation-video.mjs"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

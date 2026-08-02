@@ -64,6 +64,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLocale
         return $this->hasMany(ReferralPayout::class, 'referrer_id');
     }
 
+    public function discountEmailRecipients(): HasMany
+    {
+        return $this->hasMany(DiscountEmailRecipient::class);
+    }
+
     public function referralFeePercentage(): float
     {
         return (float) ($this->referral_fee_percentage ?? config('referral.default_fee', 10));

@@ -43,4 +43,8 @@ return [
     'admin_inactive_wedding_subject' => 'Vjenčanje :couple za :days dana — još neaktivno',
     'admin_inactive_wedding_body' => 'Vjenčanje :couple je :date (za :days dana), ali pozivnica je još neaktivna. Kontakt: :email.',
     'admin_inactive_wedding_action' => 'Otvori vjenčanje u adminu',
+
+    'discount_email_greeting' => 'Bok :name,',
+    'discount_email_code_line' => 'Vaš kod za popust: :code',
+    'discount_email_action' => 'Pogledaj cijene',
 ];
