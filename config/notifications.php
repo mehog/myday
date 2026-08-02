@@ -19,19 +19,27 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Couple onboarding drip (days after signup)
+    | Couple onboarding drip (hours after signup)
     |--------------------------------------------------------------------------
+    |
+    | Keys are content variants (day1/day3/day7) kept for translation keys.
+    | Values are hours after the user's exact registration timestamp.
+    |
     */
 
-    'couple_onboarding_days' => [1, 3, 7],
+    'couple_onboarding_hours' => [
+        'day1' => 6,
+        'day3' => 18,
+        'day7' => 30,
+    ],
 
     /*
     |--------------------------------------------------------------------------
-    | Days after signup to remind couple their invitation is still inactive
+    | Hours after signup to remind couple their invitation is still inactive
     |--------------------------------------------------------------------------
     */
 
-    'couple_activation_reminder_day' => (int) env('COUPLE_ACTIVATION_REMINDER_DAY', 7),
+    'couple_activation_reminder_hours' => (int) env('COUPLE_ACTIVATION_REMINDER_HOURS', 42),
 
     /*
     |--------------------------------------------------------------------------

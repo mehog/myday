@@ -156,13 +156,17 @@ class WeddingScheduledNotificationService
             return;
         }
 
-        $anchor = $user->created_at->copy()->startOfDay();
+        $anchor = $user->created_at->copy();
 
-        foreach (config('notifications.couple_onboarding_days', [1, 3, 7]) as $day) {
-            $type = match ($day) {
-                1 => ScheduledNotificationType::CoupleOnboardingDay1,
-                3 => ScheduledNotificationType::CoupleOnboardingDay3,
-                7 => ScheduledNotificationType::CoupleOnboardingDay7,
+        foreach (config('notifications.couple_onboarding_hours', [
+            'day1' => 6,
+            'day3' => 18,
+            'day7' => 30,
+        ]) as $variant => $hours) {
+            $type = match ($variant) {
+                'day1' => ScheduledNotificationType::CoupleOnboardingDay1,
+                'day3' => ScheduledNotificationType::CoupleOnboardingDay3,
+                'day7' => ScheduledNotificationType::CoupleOnboardingDay7,
                 default => null,
             };
 
@@ -172,18 +176,18 @@ class WeddingScheduledNotificationService
 
             $this->scheduleIfFuture(
                 notifiable: $user,
-                notification: new CoupleOnboardingTipNotification("day{$day}"),
-                sendAt: $this->daysAfter($anchor, $day),
+                notification: new CoupleOnboardingTipNotification($variant),
+                sendAt: $this->hoursAfter($anchor, (int) $hours),
                 meta: $type->meta(weddingEventId: $event->id, userId: $user->id),
             );
         }
 
-        $activationDay = (int) config('notifications.couple_activation_reminder_day', 10);
+        $activationHours = (int) config('notifications.couple_activation_reminder_hours', 42);
 
         $this->scheduleIfFuture(
             notifiable: $user,
             notification: new CoupleActivationReminderNotification,
-            sendAt: $this->daysAfter($anchor, $activationDay),
+            sendAt: $this->hoursAfter($anchor, $activationHours),
             meta: ScheduledNotificationType::CoupleActivationReminder->meta(
                 weddingEventId: $event->id,
                 userId: $user->id,
@@ -253,9 +257,9 @@ class WeddingScheduledNotificationService
         }
     }
 
-    private function daysAfter(CarbonInterface $anchor, int $days): Carbon
+    private function hoursAfter(CarbonInterface $anchor, int $hours): Carbon
     {
-        return $anchor->copy()->addDays($days)->setTime(10, 0);
+        return $anchor->copy()->addHours($hours);
     }
 
     private function scheduleRsvpReminders(Guest $guest, WeddingEvent $event): void

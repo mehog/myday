@@ -11,6 +11,7 @@ use App\Notifications\CoupleOnboardingTipNotification;
 use App\ScheduledNotificationType;
 use App\Services\WeddingScheduledNotificationService;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
 use Tests\Concerns\RefreshInMemoryDatabase;
 use Tests\TestCase;
@@ -44,7 +45,8 @@ class CoupleAndAdminScheduledNotificationTest extends TestCase
 
     public function test_it_schedules_couple_onboarding_drip_for_inactive_wedding(): void
     {
-        $user = User::factory()->create(['created_at' => now()]);
+        $registeredAt = Carbon::parse('2026-07-01 09:00:00');
+        $user = User::factory()->create(['created_at' => $registeredAt]);
         $event = WeddingEvent::withoutEvents(fn () => WeddingEvent::factory()->for($user)->create([
             'is_active' => false,
             'wedding_date' => now()->addMonths(4),
@@ -64,6 +66,27 @@ class CoupleAndAdminScheduledNotificationTest extends TestCase
         $this->assertTrue($scheduled->contains(
             fn (ScheduledNotificationModel $row): bool => $row->notification_type === CoupleActivationReminderNotification::class
         ));
+
+        $this->assertScheduledAt(
+            $scheduled,
+            ScheduledNotificationType::CoupleOnboardingDay1,
+            $registeredAt->copy()->addHours(6),
+        );
+        $this->assertScheduledAt(
+            $scheduled,
+            ScheduledNotificationType::CoupleOnboardingDay3,
+            $registeredAt->copy()->addHours(18),
+        );
+        $this->assertScheduledAt(
+            $scheduled,
+            ScheduledNotificationType::CoupleOnboardingDay7,
+            $registeredAt->copy()->addHours(30),
+        );
+        $this->assertScheduledAt(
+            $scheduled,
+            ScheduledNotificationType::CoupleActivationReminder,
+            $registeredAt->copy()->addHours(42),
+        );
     }
 
     public function test_it_cancels_couple_onboarding_when_wedding_is_activated(): void
@@ -121,5 +144,21 @@ class CoupleAndAdminScheduledNotificationTest extends TestCase
             ->where('target_type', User::class)
             ->where('target_id', $user->id)
             ->count();
+    }
+
+    private function assertScheduledAt(
+        Collection $scheduled,
+        ScheduledNotificationType $type,
+        Carbon $expectedSendAt,
+    ): void {
+        $row = $scheduled->first(
+            fn (ScheduledNotificationModel $model): bool => data_get($model->meta, 'type') === $type->value
+        );
+
+        $this->assertNotNull($row, "Expected scheduled notification of type [{$type->value}]");
+        $this->assertTrue(
+            $expectedSendAt->equalTo(Carbon::parse($row->send_at)),
+            "Expected [{$type->value}] at {$expectedSendAt}, got {$row->send_at}",
+        );
     }
 }

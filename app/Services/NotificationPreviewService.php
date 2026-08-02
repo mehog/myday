@@ -202,15 +202,19 @@ final class NotificationPreviewService
     private function onboardingScenarios(): array
     {
         return array_map(
-            fn (int $day): array => [
-                'id' => "couple-onboarding-day{$day}",
-                'label' => "Couple onboarding — day {$day}",
+            fn (string $variant): array => [
+                'id' => "couple-onboarding-{$variant}",
+                'label' => "Couple onboarding — {$variant}",
                 'group' => 'onboarding',
                 'channel' => 'mail',
                 'target' => 'user',
-                'factory' => fn (NotificationPreviewFixtures $fixtures): Notification => new CoupleOnboardingTipNotification("day{$day}"),
+                'factory' => fn (NotificationPreviewFixtures $fixtures): Notification => new CoupleOnboardingTipNotification($variant),
             ],
-            config('notifications.couple_onboarding_days', [1, 3, 7]),
+            array_keys(config('notifications.couple_onboarding_hours', [
+                'day1' => 6,
+                'day3' => 18,
+                'day7' => 30,
+            ])),
         );
     }
 
