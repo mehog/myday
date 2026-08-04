@@ -15,6 +15,7 @@ use App\Http\Controllers\LegalPageController;
 use App\Http\Controllers\ReferralLinkController;
 use App\Http\Controllers\ReferralProgramController;
 use App\Http\Controllers\WeddingEventCalendarController;
+use App\Livewire\DemoExamplesPage;
 use App\Livewire\GuestContactPage;
 use App\Livewire\GuestPushNotificationsPage;
 use App\Livewire\InvitationPage;
@@ -26,6 +27,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', LandingPage::class)->name('home');
+Route::get('/demo-examples', DemoExamplesPage::class)->name('demo.examples');
 
 Route::supportBubble();
 

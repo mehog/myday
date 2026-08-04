@@ -106,7 +106,7 @@ return [
     'step_3_text' => 'Send one link to everyone, or a personalized link to each guest through WhatsApp, Viber, or Telegram.',
 
     'demo_title' => 'See what it looks like',
-    'demo_subtitle' => 'Open a demo invitation and experience what your guests will see.',
+    'demo_subtitle' => 'Browse demo invitations and open one to experience what your guests will see.',
     'demo_cta' => 'Open demo invitation',
     'demo_thumb_alt' => 'Preview of the :couple demo invitation',
     'demo_modal_title' => 'Choose link type',
@@ -114,6 +114,12 @@ return [
     'demo_modal_public' => 'Public link',
     'demo_modal_personalized' => 'Personalized link',
     'demo_modal_cancel' => 'Cancel',
+    'demo_show_all' => 'Show all',
+    'demo_slider_prev' => 'Previous examples',
+    'demo_slider_next' => 'Next examples',
+    'demo_gallery_title' => 'All demo invitation styles',
+    'demo_gallery_subtitle' => 'Explore themes, templates and opening animations. Click any preview to open it in a new tab.',
+    'demo_gallery_back' => 'Back to home',
 
     'contact_title' => 'Order an invitation',
     'contact_subtitle' => 'Fill in the form and we will get back to you as soon as possible.',

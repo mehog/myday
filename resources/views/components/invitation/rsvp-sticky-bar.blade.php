@@ -1,4 +1,21 @@
-@if ($showRsvpNudge ?? false)
+@if ($showDemoCreateNudge ?? false)
+    <div
+        data-demo-create-sticky
+        class="fixed inset-x-0 bottom-0 z-40 border-t border-[color-mix(in_srgb,var(--color-text)_10%,transparent)] bg-[color-mix(in_srgb,var(--color-bg)_75%,transparent)] backdrop-blur-sm px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]"
+    >
+        <div class="mx-auto flex max-w-xl items-center justify-between gap-3">
+            <p class="invitation-body text-sm text-[var(--color-text-muted)]">
+                {{ __('invitation.demo_create_sticky_text') }}
+            </p>
+            <a
+                href="{{ $demoCreateUrl }}"
+                class="rsvp-btn rsvp-btn-yes shrink-0 px-5 py-2.5 rounded-xl invitation-heading text-sm transition"
+            >
+                {{ __('invitation.demo_create_sticky_cta') }}
+            </a>
+        </div>
+    </div>
+@elseif ($showRsvpNudge ?? false)
     <div
         x-data="{
             rsvpVisible: false,

@@ -106,7 +106,7 @@ return [
     'step_3_text' => 'Senden Sie einen Link an alle, oder personalisierte Links für jeden Gast per WhatsApp, Viber oder Telegram.',
 
     'demo_title' => 'Sehen Sie, wie es aussieht',
-    'demo_subtitle' => 'Öffnen Sie eine Demo-Einladung und erleben Sie, was Ihre Gäste sehen werden.',
+    'demo_subtitle' => 'Entdecken Sie Demo-Einladungen und öffnen Sie eine, um zu erleben, was Ihre Gäste sehen.',
     'demo_cta' => 'Demo-Einladung öffnen',
     'demo_thumb_alt' => 'Vorschau der Demo-Einladung für :couple',
     'demo_modal_title' => 'Linktyp wählen',
@@ -114,6 +114,12 @@ return [
     'demo_modal_public' => 'Öffentlicher Link',
     'demo_modal_personalized' => 'Personalisierter Link',
     'demo_modal_cancel' => 'Abbrechen',
+    'demo_show_all' => 'Alle anzeigen',
+    'demo_slider_prev' => 'Vorherige Beispiele',
+    'demo_slider_next' => 'Nächste Beispiele',
+    'demo_gallery_title' => 'Alle Demo-Einladungsstile',
+    'demo_gallery_subtitle' => 'Entdecken Sie Themen, Vorlagen und Öffnungsanimationen. Klicken Sie auf eine Vorschau, um sie in einem neuen Tab zu öffnen.',
+    'demo_gallery_back' => 'Zurück zur Startseite',
 
     'contact_title' => 'Einladung bestellen',
     'contact_subtitle' => 'Füllen Sie das Formular aus und wir melden uns so schnell wie möglich bei Ihnen.',

@@ -14,6 +14,7 @@ use App\Models\WeddingEvent;
 use App\Models\WeddingMenuOption;
 use App\RsvpStatus;
 use App\Services\SyncGuestChildren;
+use App\Support\DemoInvitationUrl;
 use App\Support\Locale;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -63,8 +64,6 @@ class InvitationPage extends Component
 
     public string $previewReveal = '';
 
-    public bool $showDemoSwitcher = true;
-
     public bool $invitationRevealed = false;
 
     public function mount(string $slug, ?string $token = null): void
@@ -91,6 +90,9 @@ class InvitationPage extends Component
                 $this->previewTemplate = $stored['template'] ?? $this->previewTemplate;
                 $this->previewReveal = $this->normalizeRevealValue($stored['reveal'] ?? $this->previewReveal);
             }
+
+            $this->applyDemoQueryParams();
+            $this->savePreviewSession();
         }
 
         if ($this->event->requiresToken() && $token === null) {
@@ -236,24 +238,33 @@ class InvitationPage extends Component
         Locale::set($locale, persistToUser: false);
     }
 
-    public function updatedPreviewTheme(): void
+    protected function applyDemoQueryParams(): void
     {
-        $this->savePreviewSession();
-    }
+        $request = request();
 
-    public function updatedPreviewTemplate(string $value): void
-    {
-        $this->savePreviewSession();
-
-        if ($value === InvitationTemplate::Story->value) {
-            $this->js('window.location.reload()');
+        $theme = $request->query('theme');
+        if (is_string($theme) && InvitationTheme::tryFrom($theme) !== null) {
+            $this->previewTheme = $theme;
         }
-    }
 
-    public function updatedPreviewReveal(): void
-    {
-        $this->savePreviewSession();
-        $this->js('window.location.reload()');
+        $template = $request->query('template');
+        if (is_string($template) && InvitationTemplate::tryFrom($template) !== null) {
+            $this->previewTemplate = $template;
+        }
+
+        if ($request->has('reveal')) {
+            $reveal = $request->query('reveal');
+
+            if ($reveal === null || $reveal === '' || $reveal === 'none') {
+                $this->previewReveal = '';
+            } elseif (is_string($reveal)) {
+                $normalized = $this->normalizeRevealValue($reveal);
+
+                if (InvitationReveal::tryFrom($normalized) !== null) {
+                    $this->previewReveal = $normalized;
+                }
+            }
+        }
     }
 
     protected function savePreviewSession(): void
@@ -451,17 +462,27 @@ class InvitationPage extends Component
             ? ($this->previewReveal !== '' ? InvitationReveal::from($this->normalizeRevealValue($this->previewReveal)) : null)
             : $this->event->reveal_animation;
 
+        $demoCreateUrl = $this->event->is_demo
+            ? DemoInvitationUrl::onboarding(
+                $activeTheme->value,
+                $activeTemplate->value,
+                $activeReveal?->value ?? '',
+            )
+            : null;
+
+        $showDemoCreateNudge = $this->event->is_demo && filled($demoCreateUrl);
+
         return view('livewire.invitation-page', [
             'activeTheme' => $activeTheme,
             'activeTemplate' => $activeTemplate,
             'activeReveal' => $activeReveal,
-            'themes' => InvitationTheme::cases(),
-            'templates' => InvitationTemplate::cases(),
-            'reveals' => InvitationReveal::cases(),
+            'demoCreateUrl' => $demoCreateUrl,
+            'showDemoCreateNudge' => $showDemoCreateNudge,
             'visibleMenuOptions' => $this->event->menuOptions
                 ->filter(fn (WeddingMenuOption $option): bool => $option->is_visible)
                 ->values(),
-            'showRsvpNudge' => $this->isPersonalLink
+            'showRsvpNudge' => ! $this->event->is_demo
+                && $this->isPersonalLink
                 && $this->guest
                 && ! $this->guest->hasResponded()
                 && ! $this->rsvpSubmitted,

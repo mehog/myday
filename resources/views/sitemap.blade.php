@@ -8,6 +8,11 @@
         <priority>1.0</priority>
     </url>
     <url>
+        <loc>{{ route('demo.examples') }}</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
         <loc>{{ route('referral-program') }}</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>

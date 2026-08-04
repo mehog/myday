@@ -18,6 +18,45 @@ class WeddingOnboardingTest extends TestCase
 {
     use RefreshInMemoryDatabase;
 
+    public function test_mount_prefills_theme_template_and_reveal_from_query(): void
+    {
+        Livewire::withQueryParams([
+            'theme' => InvitationTheme::RoyalWedding->value,
+            'template' => InvitationTemplate::Editorial->value,
+            'reveal' => InvitationReveal::Envelope->value,
+        ])
+            ->test(WeddingOnboarding::class)
+            ->assertSet('theme', InvitationTheme::RoyalWedding->value)
+            ->assertSet('template', InvitationTemplate::Editorial->value)
+            ->assertSet('reveal_animation', InvitationReveal::Envelope->value);
+    }
+
+    public function test_mount_maps_reveal_none_to_empty_animation(): void
+    {
+        Livewire::withQueryParams([
+            'theme' => InvitationTheme::AmberGold->value,
+            'template' => InvitationTemplate::Classic->value,
+            'reveal' => 'none',
+        ])
+            ->test(WeddingOnboarding::class)
+            ->assertSet('theme', InvitationTheme::AmberGold->value)
+            ->assertSet('template', InvitationTemplate::Classic->value)
+            ->assertSet('reveal_animation', '');
+    }
+
+    public function test_mount_ignores_invalid_style_query_params(): void
+    {
+        Livewire::withQueryParams([
+            'theme' => 'not-a-theme',
+            'template' => 'not-a-template',
+            'reveal' => 'not-a-reveal',
+        ])
+            ->test(WeddingOnboarding::class)
+            ->assertSet('theme', '')
+            ->assertSet('template', '')
+            ->assertSet('reveal_animation', '');
+    }
+
     public function test_step_one_accepts_optional_entry_animation_and_shows_it_on_review(): void
     {
         Livewire::test(WeddingOnboarding::class)

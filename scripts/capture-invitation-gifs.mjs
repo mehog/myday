@@ -263,27 +263,10 @@ async function hideCaptureChrome(page) {
             [data-support-bubble],
             .fi-no-notification,
             .fi-notifications,
-            .fixed.bottom-6.left-1\\/2,
-            select[wire\\:model\\.live="previewTheme"],
-            select[wire\\:model\\.live="previewTemplate"],
-            select[wire\\:model\\.live="previewReveal"] {
+            .fixed.bottom-6.left-1\\/2 {
                 display: none !important;
             }
         `,
-    }).catch(() => {});
-
-    await page.evaluate(() => {
-        document.querySelectorAll('select').forEach((el) => {
-            let node = el.parentElement;
-            for (let i = 0; i < 10 && node; i++) {
-                const pos = getComputedStyle(node).position;
-                if (pos === 'fixed' || pos === 'sticky') {
-                    node.style.display = 'none';
-                    break;
-                }
-                node = node.parentElement;
-            }
-        });
     }).catch(() => {});
 }
 

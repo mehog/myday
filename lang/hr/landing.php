@@ -106,7 +106,7 @@ return [
     'step_3_text' => 'Pošaljite jedan link svima, ili personalizirani link svakom gostu putem WhatsAppa, Vibera ili Telegrama.',
 
     'demo_title' => 'Pogledajte kako izgleda',
-    'demo_subtitle' => 'Otvorite demo pozivnicu i doživite iskustvo vaših gostiju.',
+    'demo_subtitle' => 'Pregledajte demo pozivnice i otvorite jednu da doživite iskustvo vaših gostiju.',
     'demo_cta' => 'Otvori demo pozivnicu',
     'demo_thumb_alt' => 'Pregled demo pozivnice za :couple',
     'demo_modal_title' => 'Odaberite vrstu linka',
@@ -114,6 +114,12 @@ return [
     'demo_modal_public' => 'Javni link',
     'demo_modal_personalized' => 'Personalizirani link',
     'demo_modal_cancel' => 'Odustani',
+    'demo_show_all' => 'Prikaži sve',
+    'demo_slider_prev' => 'Prethodni primjeri',
+    'demo_slider_next' => 'Sljedeći primjeri',
+    'demo_gallery_title' => 'Svi stilovi demo pozivnica',
+    'demo_gallery_subtitle' => 'Istražite teme, predloške i animacije otvaranja. Kliknite na pregled da otvorite u novoj kartici.',
+    'demo_gallery_back' => 'Natrag na početnu',
 
     'contact_title' => 'Naručite pozivnicu',
     'contact_subtitle' => 'Ispunite obrazac i javit ćemo vam se u najkraćem roku.',

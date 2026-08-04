@@ -116,4 +116,6 @@ return [
     'preview_banner' => 'Dies ist eine Vorschau. Der Link wird freigeschaltet, sobald die Zahlung bestätigt und von einem Admin freigegeben wurde.',
     'demo_try' => 'Stil ausprobieren',
     'demo_switcher_close' => 'Schließen',
+    'demo_create_sticky_text' => 'Erstellen Sie Ihre eigene Einladungsseite',
+    'demo_create_sticky_cta' => 'Jetzt Einladung erstellen',
 ];

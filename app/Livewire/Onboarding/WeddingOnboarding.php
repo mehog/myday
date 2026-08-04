@@ -48,17 +48,44 @@ class WeddingOnboarding extends Component
     {
         $user = Auth::user();
 
-        if ($user === null) {
+        if ($user !== null) {
+            if (! $user->hasVerifiedEmail()) {
+                $this->redirectRoute('verification.notice');
+
+                return;
+            }
+
+            $this->redirect('/app');
+
             return;
         }
 
-        if (! $user->hasVerifiedEmail()) {
-            $this->redirectRoute('verification.notice');
+        $this->applyStyleQueryParams();
+    }
 
-            return;
+    protected function applyStyleQueryParams(): void
+    {
+        $request = request();
+
+        $theme = $request->query('theme');
+        if (is_string($theme) && InvitationTheme::tryFrom($theme) !== null) {
+            $this->theme = $theme;
         }
 
-        $this->redirect('/app');
+        $template = $request->query('template');
+        if (is_string($template) && InvitationTemplate::tryFrom($template) !== null) {
+            $this->template = $template;
+        }
+
+        if ($request->has('reveal')) {
+            $reveal = $request->query('reveal');
+
+            if ($reveal === null || $reveal === '' || $reveal === 'none') {
+                $this->reveal_animation = '';
+            } elseif (is_string($reveal) && InvitationReveal::tryFrom($reveal) !== null) {
+                $this->reveal_animation = $reveal;
+            }
+        }
     }
 
     public function switchLocale(string $locale): void

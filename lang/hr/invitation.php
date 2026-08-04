@@ -152,4 +152,6 @@ return [
     'preview_banner' => 'Ovo je pregled. Link će biti aktivan nakon potvrde uplate i odobrenja administratora.',
     'demo_try' => 'Isprobajte stil',
     'demo_switcher_close' => 'Zatvori',
+    'demo_create_sticky_text' => 'Napravite svoju stranicu pozivnice',
+    'demo_create_sticky_cta' => 'Kreiraj pozivnicu sada',
 ];

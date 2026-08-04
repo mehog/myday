@@ -9,7 +9,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[Layout('layouts.landing')]
-class LandingPage extends Component
+class DemoExamplesPage extends Component
 {
     public function switchLocale(string $locale): void
     {
@@ -18,28 +18,27 @@ class LandingPage extends Component
 
     public function render()
     {
-        $demos = $this->loadDemos();
-
-        return view('livewire.landing-page', compact('demos'))
-            ->title(__('landing.meta_title'));
-    }
-
-    /**
-     * @return list<array{title: string, previewUrl: string, openUrl: string}>
-     */
-    private function loadDemos(): array
-    {
         $locale = app()->getLocale();
         $host = DemoInvitationUrl::resolveDemoHost($locale);
 
-        return array_map(
+        $examples = array_map(
             fn (array $example): array => DemoInvitationUrl::fromExample(
                 $example,
                 $host['slug'],
                 $locale,
                 $host['guestToken'],
             ),
-            DemoInvitationExamples::featured(),
+            DemoInvitationExamples::gallery(),
         );
+
+        return view('livewire.demo-examples-page', [
+            'examples' => $examples,
+        ])
+            ->title(__('landing.demo_gallery_title'))
+            ->layoutData([
+                'pageTitle' => __('landing.demo_gallery_title'),
+                'pageDescription' => __('landing.demo_gallery_subtitle'),
+                'canonicalUrl' => url('/demo-examples'),
+            ]);
     }
 }
