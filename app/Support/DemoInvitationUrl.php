@@ -40,9 +40,10 @@ class DemoInvitationUrl
         ?string $locale = null,
         ?string $guestToken = null,
     ): array {
+        $reveal = $example['reveal'] !== 'envelope' && $example['reveal'] !== 'curtain' ? 'none' : $example['reveal'];
         return [
             'title' => DemoInvitationExamples::title($example),
-            'previewUrl' => self::make($slug, $example['theme'], $example['template'], '', $locale, $guestToken),
+            'previewUrl' => self::make($slug, $example['theme'], $example['template'], $reveal, $locale, $guestToken),
             'openUrl' => self::make($slug, $example['theme'], $example['template'], $example['reveal'], $locale, $guestToken),
         ];
     }
