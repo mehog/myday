@@ -5,10 +5,8 @@ namespace App\Filament\App\Widgets;
 use App\Filament\App\Resources\GuestMessagesResource;
 use App\Filament\App\Resources\MyWeddingResource;
 use App\GuestMessageType;
-use App\Models\GuestChild;
 use App\Models\GuestMessage;
 use App\Models\WeddingEvent;
-use App\RsvpStatus;
 use App\Support\MediaDisk;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Collection;
@@ -40,17 +38,10 @@ class WeddingMemoriesWidget extends Widget
         }
 
         $guestCount = $wedding->guests()->count();
-        $confirmedGuests = $wedding->guests()->where('rsvp_status', RsvpStatus::Yes)->count();
-        $plusOnes = $wedding->guests()
-            ->where('rsvp_status', RsvpStatus::Yes)
-            ->whereNotNull('plus_one_name')
-            ->count();
-        $children = GuestChild::query()
-            ->whereIn(
-                'guest_id',
-                $wedding->guests()->where('rsvp_status', RsvpStatus::Yes)->select('id'),
-            )
-            ->count();
+        $breakdown = $wedding->confirmedHeadcountBreakdown();
+        $confirmedGuests = $breakdown['guests'];
+        $plusOnes = $breakdown['plus_ones'];
+        $children = $breakdown['children'];
         $responded = $wedding->guests()->whereNotNull('rsvp_status')->count();
         $daysSince = (int) $wedding->wedding_date->copy()->startOfDay()->diffInDays(now()->startOfDay());
 
@@ -86,7 +77,7 @@ class WeddingMemoriesWidget extends Widget
             'confirmedGuests' => $confirmedGuests,
             'plusOnes' => $plusOnes,
             'children' => $children,
-            'confirmedTotal' => $confirmedGuests + $plusOnes + $children,
+            'confirmedTotal' => $breakdown['total'],
             'scheduleItems' => $wedding->scheduleItems()->orderBy('sort_order')->get(),
             'textMessages' => $textMessages,
             'audioMessages' => $audioMessages,

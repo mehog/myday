@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\BudgetCalculationType;
+use App\BudgetCategory;
+use App\BudgetGuestMode;
 use App\GuestMessageType;
 use App\InvitationReveal;
 use App\InvitationTemplate;
@@ -14,6 +17,7 @@ use App\Models\GuestChild;
 use App\Models\GuestMessage;
 use App\Models\LinkVisit;
 use App\Models\User;
+use App\Models\WeddingBudgetItem;
 use App\Models\WeddingEvent;
 use App\Models\WeddingMenuOption;
 use App\PlanTier;
@@ -98,7 +102,6 @@ class MarketingDemoSeeder extends Seeder
         $user->forceFill([
             'email_verified_at' => now(),
         ])->save();
-
 
         $eventData = $profile['event'];
         $weddingDate = Carbon::parse($eventData['wedding_date']);
@@ -273,6 +276,7 @@ class MarketingDemoSeeder extends Seeder
 
         $this->seedSeatingPlan($event, $yesGuests);
         $this->seedLinkVisits($event, $yesGuests, $weddingDate);
+        $this->seedBudget($event, $locale);
 
         $this->seededLocales[] = $locale;
         $this->seededSummaries[] = [
@@ -286,8 +290,77 @@ class MarketingDemoSeeder extends Seeder
         ];
     }
 
+    private function seedBudget(WeddingEvent $event, string $locale): void
+    {
+        $labels = match ($locale) {
+            'de' => [
+                'dinner' => 'Festessen',
+                'band' => 'Band',
+                'attire' => 'Kleid & Anzug',
+                'invites' => 'Einladungen',
+            ],
+            'en' => [
+                'dinner' => 'Reception dinner',
+                'band' => 'Live band',
+                'attire' => 'Dress & suit',
+                'invites' => 'Invitations',
+            ],
+            default => [
+                'dinner' => 'Svečana večera',
+                'band' => 'Bend',
+                'attire' => 'Vjenčanica i odijelo',
+                'invites' => 'Pozivnice',
+            ],
+        };
+
+        $currency = $locale === 'en' || $locale === 'de' ? 'EUR' : 'BAM';
+
+        $event->update([
+            'budget_currency' => $currency,
+            'budget_guest_mode' => BudgetGuestMode::Confirmed,
+            'budget_target' => 10000,
+        ]);
+
+        WeddingBudgetItem::query()->where('wedding_event_id', $event->id)->delete();
+
+        $event->budgetItems()->createMany([
+            [
+                'name' => $labels['dinner'],
+                'category' => BudgetCategory::SalaIVecera,
+                'calculation_type' => BudgetCalculationType::PerPerson,
+                'amount' => 45,
+                'is_paid' => false,
+                'sort_order' => 1,
+            ],
+            [
+                'name' => $labels['band'],
+                'category' => BudgetCategory::BendIGlazba,
+                'calculation_type' => BudgetCalculationType::Fixed,
+                'amount' => 2500,
+                'is_paid' => true,
+                'sort_order' => 2,
+            ],
+            [
+                'name' => $labels['attire'],
+                'category' => BudgetCategory::VjencanicaIOdijelo,
+                'calculation_type' => BudgetCalculationType::Fixed,
+                'amount' => 1100,
+                'is_paid' => true,
+                'sort_order' => 3,
+            ],
+            [
+                'name' => $labels['invites'],
+                'category' => BudgetCategory::PozivniceITisak,
+                'calculation_type' => BudgetCalculationType::Fixed,
+                'amount' => 80,
+                'is_paid' => false,
+                'sort_order' => 4,
+            ],
+        ]);
+    }
+
     /**
-     * @param  list<\App\Models\Guest>  $yesGuests
+     * @param  list<Guest>  $yesGuests
      */
     private function seedSeatingPlan(WeddingEvent $event, array $yesGuests): void
     {
@@ -396,7 +469,7 @@ class MarketingDemoSeeder extends Seeder
     }
 
     /**
-     * @param  list<\App\Models\Guest>  $yesGuests
+     * @param  list<Guest>  $yesGuests
      */
     private function seedLinkVisits(WeddingEvent $event, array $yesGuests, Carbon $weddingDate): void
     {

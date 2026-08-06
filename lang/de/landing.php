@@ -157,7 +157,7 @@ return [
     'pricing_feature_8' => 'Einblicke zu Besuchen, Menüs und Unterkunft',
     'pricing_feature_9' => 'Unterstützung für mehrere Sprachen',
     'pricing_feature_10' => 'Push-Benachrichtigungen für wichtige Updates an Gäste',
-    'pricing_feature_11' => 'Textnachrichten von Gästen an das Brautpaar',
+    'pricing_feature_11' => 'Hochzeits-Budgetrechner',
     'pricing_feature_12' => 'Audio-Nachrichten von Gästen',
     'pricing_feature_13' => 'Foto-Sharing der Gäste am Hochzeitstag und 30 Tage danach',
     'pricing_feature_14' => 'Interaktiver Sitzplan mit PDF-Export',

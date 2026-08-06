@@ -3,8 +3,6 @@
 namespace App\Filament\App\Widgets;
 
 use App\Filament\App\Resources\GuestMessagesResource;
-use App\Models\GuestChild;
-use App\RsvpStatus;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
@@ -20,18 +18,10 @@ class WeddingOverviewWidget extends StatsOverviewWidget
 
         $guestCount = $wedding->guests()->count();
         $plusOneInvitees = $wedding->guests()->where('plus_one_allowed', true)->count();
-        $confirmedGuests = $wedding->guests()->where('rsvp_status', RsvpStatus::Yes)->count();
-        $plusOnes = $wedding->guests()
-            ->where('rsvp_status', RsvpStatus::Yes)
-            ->whereNotNull('plus_one_name')
-            ->count();
-        $children = GuestChild::query()
-            ->whereIn(
-                'guest_id',
-                $wedding->guests()->where('rsvp_status', RsvpStatus::Yes)->select('id'),
-            )
-            ->count();
-        $confirmed = $confirmedGuests + $plusOnes + $children;
+        $breakdown = $wedding->confirmedHeadcountBreakdown();
+        $confirmed = $breakdown['total'];
+        $plusOnes = $breakdown['plus_ones'];
+        $children = $breakdown['children'];
         $responded = $wedding->guests()->whereNotNull('rsvp_status')->count();
         $responseRate = $guestCount > 0 ? round(($responded / $guestCount) * 100) : 0;
         $daysUntil = (int) now()->startOfDay()->diffInDays($wedding->wedding_date->copy()->startOfDay(), false);

@@ -157,7 +157,7 @@ return [
     'pricing_feature_8' => 'Uvidi u posjete, menije i smještaj',
     'pricing_feature_9' => 'Podrška za više jezika',
     'pricing_feature_10' => 'Push obavijesti za važne poruke gostima',
-    'pricing_feature_11' => 'Tekstualne poruke od gostiju mladencima',
+    'pricing_feature_11' => 'Budžet kalkulator za vjenčanje',
     'pricing_feature_12' => 'Audio poruke od gostiju',
     'pricing_feature_13' => 'Dijeljenje fotografija gostiju na dan vjenčanja i 30 dana nakon',
     'pricing_feature_14' => 'Interaktivni plan sjedenja s PDF izvozom',

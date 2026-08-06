@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\BudgetGuestMode;
 use App\InvitationReveal;
 use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\LinkMode;
 use App\PlanTier;
+use App\RsvpStatus;
 use App\Support\Locale;
 use App\Support\LocaleUrl;
 use App\Support\MediaDisk;
@@ -48,6 +50,10 @@ class WeddingEvent extends Model
         'invitation_locale',
         'motto',
         'seating_plan',
+        'budget_currency',
+        'budget_guest_mode',
+        'budget_guest_count',
+        'budget_target',
     ];
 
     protected function casts(): array
@@ -67,6 +73,9 @@ class WeddingEvent extends Model
             'location_lat' => 'decimal:7',
             'location_lng' => 'decimal:7',
             'seating_plan' => 'array',
+            'budget_guest_mode' => BudgetGuestMode::class,
+            'budget_guest_count' => 'integer',
+            'budget_target' => 'decimal:2',
         ];
     }
 
@@ -179,6 +188,11 @@ class WeddingEvent extends Model
         return $this->hasMany(DodoPayment::class);
     }
 
+    public function budgetItems(): HasMany
+    {
+        return $this->hasMany(WeddingBudgetItem::class)->orderBy('sort_order')->orderBy('id');
+    }
+
     public function getCoupleNamesAttribute(): string
     {
         return "{$this->groom_name} & {$this->bride_name}";
@@ -192,6 +206,94 @@ class WeddingEvent extends Model
     public function activeGuestCount(): int
     {
         return $this->guests()->count();
+    }
+
+    /**
+     * Confirmed attendance headcount: RSVP-yes guests + named plus-ones + children.
+     *
+     * @return array{guests: int, plus_ones: int, children: int, total: int}
+     */
+    public function confirmedHeadcountBreakdown(): array
+    {
+        $guests = $this->guests()->where('rsvp_status', RsvpStatus::Yes)->count();
+        $plusOnes = $this->guests()
+            ->where('rsvp_status', RsvpStatus::Yes)
+            ->whereNotNull('plus_one_name')
+            ->count();
+        $children = GuestChild::query()
+            ->whereIn(
+                'guest_id',
+                $this->guests()->where('rsvp_status', RsvpStatus::Yes)->select('id'),
+            )
+            ->count();
+
+        return [
+            'guests' => $guests,
+            'plus_ones' => $plusOnes,
+            'children' => $children,
+            'total' => $guests + $plusOnes + $children,
+        ];
+    }
+
+    public function confirmedHeadcount(): int
+    {
+        return $this->confirmedHeadcountBreakdown()['total'];
+    }
+
+    public function invitedHeadcount(): int
+    {
+        return $this->activeGuestCount();
+    }
+
+    public function budgetCurrency(): string
+    {
+        if (filled($this->budget_currency)) {
+            return strtoupper((string) $this->budget_currency);
+        }
+
+        return 'EUR';
+    }
+
+    public function budgetGuestCount(): int
+    {
+        $mode = $this->budget_guest_mode ?? BudgetGuestMode::Confirmed;
+
+        return match ($mode) {
+            BudgetGuestMode::Manual => max(0, (int) ($this->budget_guest_count ?? 0)),
+            BudgetGuestMode::Confirmed => $this->confirmedHeadcount(),
+            BudgetGuestMode::Invited => $this->invitedHeadcount(),
+        };
+    }
+
+    /**
+     * @return array{total: string, paid: string, unpaid: string, per_person: string}
+     */
+    public function budgetTotals(): array
+    {
+        $guestCount = $this->budgetGuestCount();
+        $total = '0.00';
+        $paid = '0.00';
+
+        foreach ($this->budgetItems as $item) {
+            $lineTotal = $item->lineTotal($guestCount);
+            $total = bcadd($total, $lineTotal, 2);
+
+            if ($item->is_paid) {
+                $paid = bcadd($paid, $lineTotal, 2);
+            }
+        }
+
+        $unpaid = bcsub($total, $paid, 2);
+        $perPerson = $guestCount > 0
+            ? bcdiv($total, (string) $guestCount, 2)
+            : '0.00';
+
+        return [
+            'total' => $total,
+            'paid' => $paid,
+            'unpaid' => $unpaid,
+            'per_person' => $perPerson,
+        ];
     }
 
     public function remainingGuestSlots(): ?int

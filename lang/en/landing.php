@@ -157,7 +157,7 @@ return [
     'pricing_feature_8' => 'Visit, menu and accommodation insights',
     'pricing_feature_9' => 'Support for multiple languages',
     'pricing_feature_10' => 'Push notifications for important updates to guests',
-    'pricing_feature_11' => 'Text messages from guests to the couple',
+    'pricing_feature_11' => 'Wedding budget calculator',
     'pricing_feature_12' => 'Audio messages from guests',
     'pricing_feature_13' => 'Guest photo sharing on the wedding day and 30 days after',
     'pricing_feature_14' => 'Interactive seating plan with PDF export',
