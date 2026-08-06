@@ -140,10 +140,10 @@
         </div>
     </div>
 
-    <div class="grid gap-6 xl:grid-cols-3">
+    <div class="grid w-full min-w-0 gap-6 xl:grid-cols-3">
         {{-- Items --}}
-        <div class="xl:col-span-2">
-            <div class="rounded-xl border border-gray-200 bg-white shadow-sm dark:border-white/10 dark:bg-gray-900">
+        <div class="min-w-0 max-w-full xl:col-span-2">
+            <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-white/10 dark:bg-gray-900">
                 <div class="border-b border-gray-100 px-5 py-4 dark:border-white/10">
                     <h2 class="text-base font-semibold text-gray-950 dark:text-white">{{ __('budget.items_heading') }}</h2>
                 </div>
@@ -237,15 +237,15 @@
                         @endif
                     </div>
                 @else
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-100 text-sm dark:divide-white/10">
+                    <div class="overflow-x-auto overscroll-x-contain">
+                        <table class="min-w-[36rem] w-full divide-y divide-gray-100 text-sm dark:divide-white/10">
                             <thead class="bg-gray-50 text-left text-xs font-medium uppercase tracking-wide text-gray-500 dark:bg-white/5 dark:text-gray-400">
                                 <tr>
-                                    <th class="px-5 py-3">{{ __('budget.item_name') }}</th>
-                                    <th class="px-5 py-3">{{ __('budget.amount') }}</th>
-                                    <th class="px-5 py-3">{{ __('budget.total') }}</th>
-                                    <th class="px-5 py-3">{{ __('budget.paid') }}</th>
-                                    <th class="px-5 py-3"></th>
+                                    <th class="px-3 py-3 sm:px-5">{{ __('budget.item_name') }}</th>
+                                    <th class="px-3 py-3 sm:px-5">{{ __('budget.amount') }}</th>
+                                    <th class="px-3 py-3 sm:px-5">{{ __('budget.total') }}</th>
+                                    <th class="px-3 py-3 sm:px-5">{{ __('budget.paid') }}</th>
+                                    <th class="px-3 py-3 sm:px-5"></th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 dark:divide-white/10">
@@ -257,7 +257,7 @@
                                     @endphp
                                     <tr wire:key="budget-item-{{ $item->id }}">
                                         @if ($editingId === $item->id)
-                                            <td colspan="5" class="px-5 py-4">
+                                            <td colspan="5" class="px-3 py-4 sm:px-5">
                                                 <form wire:submit="saveEdit" class="space-y-3">
                                                     <div class="grid gap-3 sm:grid-cols-2">
                                                         <div>
@@ -294,7 +294,7 @@
                                                 </form>
                                             </td>
                                         @else
-                                            <td class="px-5 py-3 align-top">
+                                            <td class="px-3 py-3 align-top sm:px-5">
                                                 @if ($hasCustomName)
                                                     <p class="font-medium text-gray-950 dark:text-white">{{ $item->name }}</p>
                                                     <p class="text-xs text-gray-500 dark:text-gray-400">{{ $categoryLabel }}</p>
@@ -302,7 +302,7 @@
                                                     <p class="font-medium text-gray-950 dark:text-white">{{ $categoryLabel }}</p>
                                                 @endif
                                             </td>
-                                            <td class="px-5 py-3 align-top text-gray-700 dark:text-gray-200">
+                                            <td class="whitespace-nowrap px-3 py-3 align-top text-gray-700 dark:text-gray-200 sm:px-5">
                                                 @if ($item->calculation_type === BudgetCalculationType::PerPerson)
                                                     {{ __('budget.amount_x_guests', [
                                                         'amount' => $this->formatMoney($item->amount),
@@ -312,10 +312,10 @@
                                                     {{ $this->formatMoney($item->amount) }}
                                                 @endif
                                             </td>
-                                            <td class="px-5 py-3 align-top font-medium text-gray-950 dark:text-white">
+                                            <td class="whitespace-nowrap px-3 py-3 align-top font-medium text-gray-950 dark:text-white sm:px-5">
                                                 {{ $this->formatMoney($lineTotal) }}
                                             </td>
-                                            <td class="px-5 py-3 align-top">
+                                            <td class="px-3 py-3 align-top sm:px-5">
                                                 @unless ($locked)
                                                     <button
                                                         type="button"
@@ -334,7 +334,7 @@
                                                     </span>
                                                 @endunless
                                             </td>
-                                            <td class="px-5 py-3 align-top text-right">
+                                            <td class="whitespace-nowrap px-3 py-3 align-top text-right sm:px-5">
                                                 @unless ($locked)
                                                     <div class="flex justify-end gap-3">
                                                         <button type="button" wire:click="startEdit({{ $item->id }})" class="text-sm font-medium text-primary-600 dark:text-primary-400">
@@ -357,8 +357,8 @@
                             </tbody>
                             <tfoot>
                                 <tr class="border-t border-gray-200 dark:border-white/10">
-                                    <td colspan="2" class="px-5 py-3 text-sm font-semibold text-gray-950 dark:text-white">{{ __('budget.footer_total') }}</td>
-                                    <td colspan="3" class="px-5 py-3 text-sm font-semibold text-primary-600 dark:text-primary-400">
+                                    <td colspan="2" class="px-3 py-3 text-sm font-semibold text-gray-950 dark:text-white sm:px-5">{{ __('budget.footer_total') }}</td>
+                                    <td colspan="3" class="px-3 py-3 text-sm font-semibold text-primary-600 dark:text-primary-400 sm:px-5">
                                         {{ $this->formatMoney($totals['total']) }}
                                     </td>
                                 </tr>
@@ -370,16 +370,16 @@
         </div>
 
         {{-- Category breakdown --}}
-        <div class="xl:col-span-1">
-            <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-gray-900">
+        <div class="min-w-0 max-w-full xl:col-span-1">
+            <div class="overflow-hidden rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-gray-900">
                 <h2 class="text-base font-semibold text-gray-950 dark:text-white">{{ __('budget.categories_heading') }}</h2>
 
                 @if ($breakdown === [])
                     <p class="mt-6 text-sm text-gray-500 dark:text-gray-400">{{ __('budget.categories_empty') }}</p>
                 @else
-                    <div class="mt-6 flex justify-center">
+                    <div class="mx-auto mt-6 flex max-w-full justify-center">
                         <div
-                            class="relative h-40 w-40 rounded-full"
+                            class="relative h-40 w-40 max-w-full shrink-0 rounded-full"
                             style="background: {{ $this->getDonutGradient() }}"
                         >
                             <div class="absolute inset-[22%] rounded-full bg-white dark:bg-gray-900"></div>
