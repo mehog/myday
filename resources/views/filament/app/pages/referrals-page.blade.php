@@ -1,5 +1,8 @@
 <x-filament-panels::page>
-    @php($referralCookieDays = \App\Support\Referral::cookieExpiryDays())
+    @php
+        $referralCookieDays = \App\Support\Referral::cookieExpiryDays();
+        $buyerDiscountPercent = \App\Support\Referral::buyerDiscountPercent();
+    @endphp
 
     <div class="space-y-8">
         <section class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-gray-900">
@@ -44,12 +47,12 @@
                         {{ __('referrals.fee_badge', ['fee' => number_format($this->getReferralFeePercentage(), 0)]) }}
                     </x-filament::badge>
                     <x-filament::badge color="warning">
-                        {{ __('referrals.buyer_discount_badge') }}
+                        {{ __('referrals.buyer_discount_badge', ['percent' => $buyerDiscountPercent]) }}
                     </x-filament::badge>
                 </div>
             </div>
             <p class="mt-4 text-sm text-gray-600 dark:text-gray-300">
-                {{ __('referrals.link_help', ['days' => $referralCookieDays]) }}
+                {{ __('referrals.link_help', ['days' => $referralCookieDays, 'percent' => $buyerDiscountPercent]) }}
             </p>
         </section>
 

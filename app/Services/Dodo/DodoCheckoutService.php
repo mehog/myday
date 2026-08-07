@@ -39,6 +39,7 @@ class DodoCheckoutService
         $productId = DodoCatalog::productId($region, $tier);
         $amount = $region->priceFor($tier);
         $currency = $region->currency();
+        $discountCode = $user->referralBuyerDiscountCode();
 
         $returnUrl = config('dodo.return_url') ?: url('/app/pricing?checkout=return');
         $cancelUrl = config('dodo.cancel_url') ?: url('/app/pricing?checkout=cancel');
@@ -49,6 +50,10 @@ class DodoCheckoutService
             'plan_tier' => $tier->value,
             'pricing_region' => $region->value,
         ];
+
+        if ($discountCode !== null) {
+            $metadata['referral_discount_code'] = $discountCode;
+        }
 
         $payment = DodoPayment::query()->create([
             'user_id' => $user->id,
@@ -71,6 +76,7 @@ class DodoCheckoutService
                 'local_payment_id' => (string) $payment->id,
             ]),
             billingCurrency: $currency,
+            discountCode: $discountCode,
         );
 
         $checkoutUrl = $session->checkoutURL;
@@ -102,6 +108,7 @@ class DodoCheckoutService
         string $cancelUrl,
         array $metadata,
         string $billingCurrency,
+        ?string $discountCode = null,
     ): CheckoutSessionResponse {
         $client = $this->clientFactory->make();
 
@@ -118,6 +125,7 @@ class DodoCheckoutService
             ],
             billingCurrency: $billingCurrency,
             cancelURL: $cancelUrl,
+            discountCodes: $discountCode !== null ? [$discountCode] : null,
             metadata: $metadata,
             minimalAddress: true,
             returnURL: $returnUrl,

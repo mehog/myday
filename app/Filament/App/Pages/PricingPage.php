@@ -66,11 +66,22 @@ class PricingPage extends Page
         }
     }
 
+    public function getReferralDiscountPercent(): ?int
+    {
+        return auth()->user()?->referralBuyerDiscountPercent();
+    }
+
+    public function hasReferralDiscount(): bool
+    {
+        return $this->getReferralDiscountPercent() !== null;
+    }
+
     /**
      * @return list<array{
      *     tier: PlanTier,
      *     product_id: string,
      *     price: int,
+     *     discounted_price: ?int,
      *     currency: string,
      *     guest_limit: ?int,
      *     highlighted: bool,
@@ -85,12 +96,17 @@ class PricingPage extends Page
         $wedding = $user?->weddingEvent;
         $region = $user->pricingRegion();
         $plans = DodoCatalog::plansForRegion($region);
+        $discountPercent = $this->getReferralDiscountPercent();
 
-        return array_map(function (array $plan) use ($wedding): array {
+        return array_map(function (array $plan) use ($wedding, $discountPercent): array {
             $tier = $plan['tier'];
             $purchasable = $wedding?->canPurchaseTier($tier) ?? false;
             $reason = null;
             $cta = __('pricing.cta_buy');
+            $price = (int) $plan['price'];
+            $discountedPrice = $discountPercent !== null
+                ? (int) round($price * (100 - $discountPercent) / 100)
+                : null;
 
             if ($wedding === null) {
                 $purchasable = false;
@@ -113,6 +129,7 @@ class PricingPage extends Page
 
             return [
                 ...$plan,
+                'discounted_price' => $discountedPrice,
                 'purchasable' => $purchasable,
                 'reason' => $reason,
                 'cta' => $cta,

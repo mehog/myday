@@ -271,7 +271,7 @@
                 <td>
                     <h2 class="panel-title">{{ __('landing.contact_title') }}</h2>
                     <p class="panel-subtitle">{{ __('landing.contact_subtitle') }}</p>
-                    <p class="body-text">{{ __('referrals.qr_pdf_instructions') }}</p>
+                    <p class="body-text">{{ __('referrals.qr_pdf_instructions', ['percent' => \App\Support\Referral::buyerDiscountPercent()]) }}</p>
                     <p class="site-url" style="margin-bottom: 4mm;">{{ $siteUrl }}</p>
 
                     <div class="qr-section">
@@ -284,7 +284,7 @@
                 </td>
                 <td>
                     <h2 class="panel-title">{{ __('referrals.qr_pdf_heading') }}</h2>
-                    <p class="panel-subtitle">{{ __('referrals.qr_pdf_instructions') }}</p>
+                    <p class="panel-subtitle">{{ __('referrals.qr_pdf_instructions', ['percent' => \App\Support\Referral::buyerDiscountPercent()]) }}</p>
                     <p class="site-url" style="margin-bottom: 4mm;">{{ $siteUrl }}</p>
 
                     <div class="qr-section">

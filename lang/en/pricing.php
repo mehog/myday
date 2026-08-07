@@ -51,5 +51,6 @@ return [
     'checkout_policies_prefix' => 'By continuing to checkout you agree to our',
     'checkout_policies_and' => 'and',
     'checkout_faq_prefix' => 'See also the',
+    'referral_discount_applied' => 'Referral discount: :percent% applied at checkout.',
 
 ];

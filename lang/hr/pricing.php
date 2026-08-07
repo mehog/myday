@@ -51,5 +51,6 @@ return [
     'checkout_policies_prefix' => 'Nastavkom na checkout prihvaćate naše',
     'checkout_policies_and' => 'i',
     'checkout_faq_prefix' => 'Pogledajte i',
+    'referral_discount_applied' => 'Referral popust: :percent% primijenjen na naplati.',
 
 ];

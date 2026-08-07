@@ -28,7 +28,10 @@
     </header>
 
     <main class="pt-24 pb-16">
-        @php($referralCookieDays = \App\Support\Referral::cookieExpiryDays())
+        @php
+            $referralCookieDays = \App\Support\Referral::cookieExpiryDays();
+            $buyerDiscountPercent = \App\Support\Referral::buyerDiscountPercent();
+        @endphp
 
         <section class="landing-section px-6 py-12">
             <div class="max-w-4xl mx-auto text-center landing-fade-in">
@@ -79,11 +82,11 @@
                         {{ __('referrals.fee_badge', ['fee' => number_format($fee, 0)]) }}
                     </span>
                     <span class="inline-flex items-center rounded-full border border-amber-600/30 bg-amber-50 px-4 py-1.5 text-sm font-medium text-amber-800">
-                        {{ __('referrals.buyer_discount_badge') }}
+                        {{ __('referrals.buyer_discount_badge', ['percent' => $buyerDiscountPercent]) }}
                     </span>
                 </div>
                 <p class="landing-body text-[#5c5246] leading-relaxed">
-                    {{ __('referrals.public_link_help', ['days' => $referralCookieDays]) }}
+                    {{ __('referrals.public_link_help', ['days' => $referralCookieDays, 'percent' => $buyerDiscountPercent]) }}
                 </p>
             </div>
         </section>

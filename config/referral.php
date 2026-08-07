@@ -20,4 +20,8 @@ return [
 
     'referral_length' => 8,
 
+    'buyer_discount_percent' => (int) env('REFERRAL_BUYER_DISCOUNT_PERCENT', 15),
+
+    'buyer_discount_code' => env('REFERRAL_BUYER_DISCOUNT_CODE', 'NASDAN15'),
+
 ];

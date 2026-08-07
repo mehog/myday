@@ -11,6 +11,14 @@
             </div>
         </section>
 
+        @if ($this->hasReferralDiscount())
+            <section class="rounded-xl border border-success-200 bg-success-50 p-4 dark:border-success-500/30 dark:bg-success-500/10">
+                <p class="text-sm font-medium text-success-800 dark:text-success-200">
+                    {{ __('pricing.referral_discount_applied', ['percent' => $this->getReferralDiscountPercent()]) }}
+                </p>
+            </section>
+        @endif
+
         <section class="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
             @foreach ($this->getPlans() as $plan)
                 @php($tier = $plan['tier'])
@@ -31,9 +39,18 @@
                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
                         {{ $tier->guestsLabel() }}
                     </p>
-                    <p class="mt-4 text-3xl font-bold text-primary-600 dark:text-primary-400">
-                        {{ $plan['price'] }} {{ $plan['currency'] }}
-                    </p>
+                    @if ($plan['discounted_price'] !== null)
+                        <p class="mt-4 text-sm text-gray-500 line-through dark:text-gray-400">
+                            {{ $plan['price'] }} {{ $plan['currency'] }}
+                        </p>
+                        <p class="text-3xl font-bold text-primary-600 dark:text-primary-400">
+                            {{ $plan['discounted_price'] }} {{ $plan['currency'] }}
+                        </p>
+                    @else
+                        <p class="mt-4 text-3xl font-bold text-primary-600 dark:text-primary-400">
+                            {{ $plan['price'] }} {{ $plan['currency'] }}
+                        </p>
+                    @endif
 
                     <div class="mt-6">
                         @if ($plan['purchasable'])

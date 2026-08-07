@@ -74,7 +74,9 @@ class DownloadReferralQrCodeController extends Controller
     {
         $pdf = Pdf::view('pdf.referral-qr-code', [
             'heading' => __('referrals.qr_pdf_heading'),
-            'instructions' => __('referrals.qr_pdf_instructions'),
+            'instructions' => __('referrals.qr_pdf_instructions', [
+                'percent' => \App\Support\Referral::buyerDiscountPercent(),
+            ]),
             'linkLabel' => __('referrals.qr_pdf_link_label'),
             'referralLink' => $referralLink,
             'footer' => __('referrals.qr_pdf_footer'),

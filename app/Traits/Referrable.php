@@ -24,6 +24,39 @@ trait Referrable
         return $this->referralAccount !== null;
     }
 
+    public function isReferred(): bool
+    {
+        return $this->referralAccount?->referrer_id !== null;
+    }
+
+    public function referralBuyerDiscountCode(): ?string
+    {
+        if (! $this->isReferred()) {
+            return null;
+        }
+
+        $code = config('referral.buyer_discount_code');
+
+        if (! is_string($code)) {
+            return null;
+        }
+
+        $code = trim($code);
+
+        return $code !== '' ? $code : null;
+    }
+
+    public function referralBuyerDiscountPercent(): ?int
+    {
+        if (! $this->isReferred()) {
+            return null;
+        }
+
+        $percent = (int) config('referral.buyer_discount_percent', 0);
+
+        return $percent > 0 ? $percent : null;
+    }
+
     public function getReferralLink(): string
     {
         if (! $this->hasReferralAccount()) {

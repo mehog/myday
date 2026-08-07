@@ -51,5 +51,6 @@ return [
     'checkout_policies_prefix' => 'Mit dem Fortfahren zum Checkout stimmen Sie unseren',
     'checkout_policies_and' => 'und',
     'checkout_faq_prefix' => 'Siehe auch die',
+    'referral_discount_applied' => 'Empfehlungsrabatt: :percent% wird im Checkout angewendet.',
 
 ];

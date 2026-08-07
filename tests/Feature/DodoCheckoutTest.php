@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\DodoPayment;
 use App\Models\Guest;
+use App\Models\Referral;
 use App\Models\User;
 use App\Models\WeddingEvent;
 use App\PlanTier;
@@ -90,6 +91,7 @@ class DodoCheckoutTest extends TestCase
                 string $cancelUrl,
                 array $metadata,
                 string $billingCurrency,
+                ?string $discountCode = null,
             ) use ($session, $user, $wedding) {
                 $this->assertSame('pdt_fw_basic', $productId);
                 $this->assertSame($user->id, $checkoutUser->id);
@@ -98,6 +100,8 @@ class DodoCheckoutTest extends TestCase
                 $this->assertSame('basic', $metadata['plan_tier']);
                 $this->assertSame('first_world', $metadata['pricing_region']);
                 $this->assertSame('EUR', $billingCurrency);
+                $this->assertNull($discountCode);
+                $this->assertArrayNotHasKey('referral_discount_code', $metadata);
 
                 return $session;
             });
@@ -118,6 +122,143 @@ class DodoCheckoutTest extends TestCase
         $this->assertSame('pdt_fw_basic', $payment->dodo_product_id);
         $this->assertSame('cks_test_123', $payment->dodo_checkout_session_id);
         $this->assertSame((string) $user->id, $payment->metadata['user_id'] ?? null);
+    }
+
+    public function test_checkout_applies_referral_discount_code_for_referred_user(): void
+    {
+        config([
+            'referral.buyer_discount_code' => 'REFERRAL15',
+            'referral.buyer_discount_percent' => 15,
+        ]);
+
+        $referrer = User::factory()->create();
+        $referrer->createReferralAccount();
+
+        $user = User::factory()->create([
+            'signup_ipstack' => (object) ['country_code' => 'DE'],
+        ]);
+        WeddingEvent::factory()->inactive()->create(['user_id' => $user->id]);
+        Referral::query()->create([
+            'user_id' => $user->id,
+            'referrer_id' => $referrer->id,
+            'referral_code' => '_referred1',
+        ]);
+
+        $session = CheckoutSessionResponse::with(
+            sessionID: 'cks_ref_123',
+            checkoutURL: 'https://test.dodopayments.com/checkout/cks_ref_123',
+        );
+
+        $service = Mockery::mock(DodoCheckoutService::class, [app(DodoClientFactory::class)])
+            ->makePartial()
+            ->shouldAllowMockingProtectedMethods();
+
+        $service->shouldReceive('createSession')
+            ->once()
+            ->andReturnUsing(function (
+                string $productId,
+                User $checkoutUser,
+                string $returnUrl,
+                string $cancelUrl,
+                array $metadata,
+                string $billingCurrency,
+                ?string $discountCode = null,
+            ) use ($session) {
+                $this->assertSame('REFERRAL15', $discountCode);
+                $this->assertSame('REFERRAL15', $metadata['referral_discount_code'] ?? null);
+
+                return $session;
+            });
+
+        $this->app->instance(DodoCheckoutService::class, $service);
+
+        $this->actingAs($user)
+            ->post(route('dodo.checkout'), ['tier' => 'basic'])
+            ->assertRedirect('https://test.dodopayments.com/checkout/cks_ref_123');
+
+        $payment = DodoPayment::query()->first();
+        $this->assertSame('REFERRAL15', $payment?->metadata['referral_discount_code'] ?? null);
+    }
+
+    public function test_checkout_skips_referral_discount_when_code_not_configured(): void
+    {
+        config([
+            'referral.buyer_discount_code' => null,
+            'referral.buyer_discount_percent' => 15,
+        ]);
+
+        $referrer = User::factory()->create();
+        $referrer->createReferralAccount();
+
+        $user = User::factory()->create([
+            'signup_ipstack' => (object) ['country_code' => 'DE'],
+        ]);
+        WeddingEvent::factory()->inactive()->create(['user_id' => $user->id]);
+        Referral::query()->create([
+            'user_id' => $user->id,
+            'referrer_id' => $referrer->id,
+            'referral_code' => '_referred2',
+        ]);
+
+        $session = CheckoutSessionResponse::with(
+            sessionID: 'cks_ref_nocode',
+            checkoutURL: 'https://test.dodopayments.com/checkout/cks_ref_nocode',
+        );
+
+        $service = Mockery::mock(DodoCheckoutService::class, [app(DodoClientFactory::class)])
+            ->makePartial()
+            ->shouldAllowMockingProtectedMethods();
+
+        $service->shouldReceive('createSession')
+            ->once()
+            ->andReturnUsing(function (
+                string $productId,
+                User $checkoutUser,
+                string $returnUrl,
+                string $cancelUrl,
+                array $metadata,
+                string $billingCurrency,
+                ?string $discountCode = null,
+            ) use ($session) {
+                $this->assertNull($discountCode);
+                $this->assertArrayNotHasKey('referral_discount_code', $metadata);
+
+                return $session;
+            });
+
+        $this->app->instance(DodoCheckoutService::class, $service);
+
+        $this->actingAs($user)
+            ->post(route('dodo.checkout'), ['tier' => 'basic'])
+            ->assertRedirect('https://test.dodopayments.com/checkout/cks_ref_nocode');
+    }
+
+    public function test_pricing_page_shows_referral_discount_for_referred_user(): void
+    {
+        config([
+            'referral.buyer_discount_percent' => 15,
+            'referral.buyer_discount_code' => 'REFERRAL15',
+        ]);
+
+        $referrer = User::factory()->create();
+        $referrer->createReferralAccount();
+
+        $user = User::factory()->create([
+            'signup_ipstack' => (object) ['country_code' => 'DE'],
+        ]);
+        WeddingEvent::factory()->inactive()->create(['user_id' => $user->id]);
+        Referral::query()->create([
+            'user_id' => $user->id,
+            'referrer_id' => $referrer->id,
+            'referral_code' => '_referred3',
+        ]);
+
+        $this->actingAs($user)
+            ->get('/app/pricing')
+            ->assertOk()
+            ->assertSee(__('pricing.referral_discount_applied', ['percent' => 15]), false)
+            ->assertSee('68 EUR', false)
+            ->assertSee('80 EUR', false);
     }
 
     public function test_checkout_route_rejects_invalid_tier(): void
