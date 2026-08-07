@@ -52,6 +52,8 @@ trait Referrable
             'referrer_id' => $referrerId,
             'referral_code' => $this->generateUniqueReferralCode($prefix, $length),
         ]);
+
+        $this->unsetRelation('referralAccount');
     }
 
     public function resetReferralCode(): string

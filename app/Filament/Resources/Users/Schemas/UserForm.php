@@ -38,7 +38,15 @@ class UserForm
                 Toggle::make('is_admin')
                     ->label('Administrator')
                     ->helperText('Admins access /admin. Customers access /app.')
-                    ->default(false),
+                    ->default(false)
+                    ->live(),
+                Toggle::make('is_partner')
+                    ->label(__('referrals.admin_partner_toggle'))
+                    ->helperText(__('referrals.admin_partner_toggle_helper'))
+                    ->default(false)
+                    ->live()
+                    ->visible(fn (string $operation): bool => $operation === 'create')
+                    ->disabled(fn (Get $get): bool => (bool) $get('is_admin')),
                 Select::make('locale')
                     ->label(__('locale.label'))
                     ->options(Locale::options())
@@ -54,7 +62,13 @@ class UserForm
                         return 'Verified at '.$record->email_verified_at->format('Y-m-d H:i');
                     }),
                 Section::make(__('referrals.admin_section_referral_link'))
-                    ->visible(fn (string $operation, ?User $record): bool => $operation === 'edit' && ! ($record?->is_admin ?? false))
+                    ->hidden(function (string $operation, Get $get, ?User $record): bool {
+                        if ($operation === 'create') {
+                            return ! (bool) $get('is_partner') || (bool) $get('is_admin');
+                        }
+
+                        return (bool) ($record?->is_admin ?? false);
+                    })
                     ->schema([
                         TextInput::make('referral_code')
                             ->label(__('referrals.admin_field_referral_code'))

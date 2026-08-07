@@ -86,6 +86,11 @@ return [
     'admin_fee_default' => 'Standard (:fee%)',
     'admin_col_created_at' => 'Erstellt',
 
+    'admin_partner_toggle' => 'Partner-Onboarding',
+    'admin_partner_toggle_helper' => 'Erstellt ein Empfehlungskonto, bestätigt die E-Mail und legt eine minimale Demo-Hochzeit an, damit der Partner die App erkunden kann.',
+    'admin_partner_created_title' => 'Partnerkonto erstellt',
+    'admin_partner_created_body' => 'Demo-Hochzeit angelegt. Empfehlungslink: :link',
+
     'admin_section_referral_link' => 'Empfehlungslink',
     'admin_field_referral_code' => 'Empfehlungscode',
     'admin_field_referral_code_helper' => 'Nur Buchstaben, Zahlen, Bindestriche und Unterstriche (3–50 Zeichen). Wird mit dem Benutzer gespeichert. Linkvorschau unten.',

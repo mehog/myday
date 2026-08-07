@@ -86,6 +86,11 @@ return [
     'admin_fee_default' => 'Default (:fee%)',
     'admin_col_created_at' => 'Created',
 
+    'admin_partner_toggle' => 'Partner onboarding',
+    'admin_partner_toggle_helper' => 'Creates a referral account, verifies email, and seeds a minimal demo wedding so the partner can explore the app.',
+    'admin_partner_created_title' => 'Partner account created',
+    'admin_partner_created_body' => 'Demo wedding seeded. Referral link: :link',
+
     'admin_section_referral_link' => 'Referral link',
     'admin_field_referral_code' => 'Referral code',
     'admin_field_referral_code_helper' => 'Letters, numbers, hyphens and underscores only (3–50 characters). Saved with the user. Link preview updates below.',

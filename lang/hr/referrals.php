@@ -86,6 +86,11 @@ return [
     'admin_fee_default' => 'Zadano (:fee%)',
     'admin_col_created_at' => 'Kreirano',
 
+    'admin_partner_toggle' => 'Partner onboarding',
+    'admin_partner_toggle_helper' => 'Kreira referral račun, potvrđuje email i dodaje minimalno demo vjenčanje kako bi partner mogao istražiti aplikaciju.',
+    'admin_partner_created_title' => 'Partner račun kreiran',
+    'admin_partner_created_body' => 'Demo vjenčanje dodano. Referral link: :link',
+
     'admin_section_referral_link' => 'Referral link',
     'admin_field_referral_code' => 'Referral kod',
     'admin_field_referral_code_helper' => 'Samo slova, brojevi, crtice i donje crte (3–50 znakova). Sprema se s korisnikom. Pregled linka ispod.',
