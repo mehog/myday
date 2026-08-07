@@ -60,7 +60,7 @@ Three surfaces, three tones. Do not mix dashboard chrome into guest invitations,
 ┌─────────────────┐     ┌──────────────────┐     ┌─────────────────────┐
 │  Marketing (/)  │     │  Couple (/app)   │     │  Guest (/e/…)       │
 │  Brand & offer  │────▶│  Manage wedding  │────▶│  Live invitation    │
-│  Dark / gold    │     │  Filament UI     │     │  Theme + template   │
+│  Light / gold   │     │  Filament UI     │     │  Theme + template   │
 └─────────────────┘     └──────────────────┘     └─────────────────────┘
 ```
 
@@ -118,14 +118,15 @@ See also: [Landing page redesign plan](../plans/landing-page-redesign.md).
 
 ### Marketing palette
 
-Established landing identity (keep; do not replace with generic purple/cream AI defaults):
+Light wedding marketing surface (white page, black structure text, gold emphasis). Do not replace with generic purple/cream AI defaults. Night palette remains for Filament and invitation `amber-gold` only.
 
 | Token | Value | Use |
 |-------|-------|-----|
-| Night | `#1a1208` | Page background, deep surfaces |
-| Ivory | `#faf6ee` | Headings, primary text on dark |
-| Gold | `#c9a227` | Accents, CTAs, focus |
-| Sand | `#d4c4a8` | Body / secondary text |
+| White | `#ffffff` | Page background |
+| Soft | `#fafaf8` | Section tint / soft surfaces |
+| Ink | `#1a1208` | Headings, nav brand, pricing amounts |
+| Gold | `#c9a227` | Labels, CTAs, links, short accent text |
+| Warm gray | `#5c5246` | Body / secondary text |
 
 Typography (marketing direction): **Poppins** via Bunny Fonts (`400/500/600/700`). Build a deliberate type scale (weight + size + tracking), not three repeated sizes.
 

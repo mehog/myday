@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="theme-color" content="#1a1208">
+    <meta name="theme-color" content="#ffffff">
 
     @php
         $ogImage = file_exists(public_path('img/og-image.jpg'))
@@ -61,7 +61,7 @@
         <a
             x-show="url"
             :href="url"
-            class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[#c9a227] text-[#c9a227] bg-[#1a1208]/80 backdrop-blur-sm landing-heading text-sm whitespace-nowrap hover:bg-[#c9a227] hover:text-[#1a1208] transition"
+            class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[#c9a227] text-[#c9a227] bg-white/90 backdrop-blur-sm shadow-md landing-heading text-sm whitespace-nowrap hover:bg-[#c9a227] hover:text-[#1a1208] transition"
         >
             &larr; {{ __('landing.back_to_invitation') }}
         </a>

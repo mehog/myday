@@ -94,16 +94,16 @@
 
 <section id="features" class="landing-section scroll-mt-20">
     @foreach ($featureRows as $feature)
-        <div class="px-6 py-20 {{ $feature['tint'] ? 'bg-[#2a1f0f]/50' : '' }}">
+        <div class="px-6 py-20 {{ $feature['tint'] ? 'bg-[#fafaf8]' : '' }}">
             <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
                 <div class="landing-fade-in {{ $feature['reverse'] ? 'lg:order-2' : '' }}">
                     <p class="landing-label text-xs uppercase text-[#c9a227] mb-3">
                         {{ $feature['eyebrow'] }}
                     </p>
-                    <h2 class="landing-heading text-3xl sm:text-4xl text-[#faf6ee] mb-4">
+                    <h2 class="landing-heading text-3xl sm:text-4xl text-[#1a1208] mb-4">
                         {{ $feature['title'] }}
                     </h2>
-                    <p class="landing-body text-[#d4c4a8] mb-8 leading-relaxed">
+                    <p class="landing-body text-[#5c5246] mb-8 leading-relaxed">
                         {{ $feature['text'] }}
                     </p>
                     <ul class="space-y-3">
@@ -114,7 +114,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
                                     </svg>
                                 </span>
-                                <span class="landing-body text-sm text-[#d4c4a8] leading-relaxed">{{ $point }}</span>
+                                <span class="landing-body text-sm text-[#5c5246] leading-relaxed">{{ $point }}</span>
                             </li>
                         @endforeach
                     </ul>

@@ -1,10 +1,10 @@
-<section class="landing-section px-6 py-16 sm:py-20 bg-[#2a1f0f]/50">
+<section class="landing-section px-6 py-16 sm:py-20 bg-[#fafaf8]">
     <div class="max-w-6xl mx-auto">
         <div class="text-center mb-12 landing-fade-in">
-            <h2 class="landing-heading text-3xl sm:text-4xl text-[#faf6ee] mb-4">
+            <h2 class="landing-heading text-3xl sm:text-4xl text-[#1a1208] mb-4">
                 {{ __('landing.benefits_title') }}
             </h2>
-            <p class="landing-body text-[#d4c4a8] max-w-2xl mx-auto">
+            <p class="landing-body text-[#5c5246] max-w-2xl mx-auto">
                 {{ __('landing.benefits_subtitle') }}
             </p>
         </div>
@@ -38,8 +38,8 @@
                             {!! $benefit['icon'] !!}
                         </svg>
                     </div>
-                    <h3 class="landing-heading text-lg text-[#faf6ee] mb-2">{{ $benefit['title'] }}</h3>
-                    <p class="landing-body text-sm text-[#d4c4a8] leading-relaxed">{{ $benefit['text'] }}</p>
+                    <h3 class="landing-heading text-lg text-[#1a1208] mb-2">{{ $benefit['title'] }}</h3>
+                    <p class="landing-body text-sm text-[#5c5246] leading-relaxed">{{ $benefit['text'] }}</p>
                 </div>
             @endforeach
         </div>

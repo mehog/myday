@@ -1,10 +1,37 @@
 # NasDan Brand Colors (CSS Variables)
 
-Main brand palette: **Amber Gold** — dark brown background with gold accents.
+Gold (`#c9a227`) is the shared brand accent across surfaces. Marketing is a **light wedding** palette; Filament and the default invitation theme (`amber-gold`) keep the Night background.
 
-Used on the landing page, Filament admin panel, and as the default invitation theme.
+## Marketing palette (landing, referral, legal, onboarding)
 
-## Main brand palette
+Scoped on `.landing-page` in `resources/css/app.css`:
+
+```css
+.landing-page {
+  --landing-bg: #ffffff;              /* page background */
+  --landing-bg-soft: #fafaf8;         /* section tint / soft surfaces */
+  --landing-text: #1a1208;            /* headings, structure text */
+  --landing-text-muted: #5c5246;      /* body / secondary */
+  --landing-accent: #c9a227;          /* labels, CTAs, links */
+  --landing-accent-hover: #a8841a;    /* hover gold */
+  --landing-border: color-mix(in srgb, #1a1208 12%, transparent);
+}
+```
+
+| Role | Hex | Use |
+|---|---|---|
+| Page background | `#ffffff` | Marketing page bg |
+| Soft surfaces | `#fafaf8` | Alternating section tint |
+| Headings / structure | `#1a1208` | H1, H2, nav brand, pricing amounts |
+| Body / secondary | `#5c5246` | Paragraphs, captions, form labels |
+| Accent | `#c9a227` | Eyebrows, step numbers, links, primary CTAs |
+| Accent hover | `#a8841a` | Button / link hover |
+
+Typography rules: black for structure; gold for short high-signal text only (not long body copy).
+
+## App / invitation night palette (Amber Gold)
+
+Used by Filament and invitation theme `amber-gold` — **not** the marketing surface identity.
 
 ```css
 :root {
@@ -26,16 +53,16 @@ Used on the landing page, Filament admin panel, and as the default invitation th
 }
 ```
 
-## Quick reference
+## Quick reference (invitation / Filament tokens)
 
 | Variable | Hex | Role |
 |---|---|---|
 | `--color-primary` | `#c9a227` | Primary brand gold (CTAs, focus rings, links) |
 | `--color-primary-dark` | `#a8841a` | Hover/active gold |
 | `--color-accent` | `#f5e6c8` | Light accent |
-| `--color-bg` | `#1a1208` | Page background |
+| `--color-bg` | `#1a1208` | Page background (invites / Filament night) |
 | `--color-bg-soft` | `#2a1f0f` | Cards, inputs, panels |
-| `--color-text` | `#faf6ee` | Body text |
+| `--color-text` | `#faf6ee` | Body text on dark |
 | `--color-text-muted` | `#d4c4a8` | Labels, placeholders, secondary copy |
 
 ## Invitation theme variants
@@ -122,7 +149,7 @@ These use the same CSS variable names and are defined in `resources/views/compon
 
 ## Source files
 
-- `resources/views/components/theme.blade.php` — CSS variable definitions for all themes
-- `resources/css/app.css` — landing page styles (hardcoded hex values)
+- `resources/css/app.css` — marketing `.landing-page` CSS variables and landing component styles
+- `resources/views/components/theme.blade.php` — invitation theme CSS variable definitions
 - `resources/css/filament/app/theme.css` — Filament admin auth UI
 - `app/Providers/Filament/AppPanelProvider.php` — Filament primary color (`#c9a227`)

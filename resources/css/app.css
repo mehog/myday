@@ -642,10 +642,20 @@
     }
 }
 
-/* Landing page */
+/* Landing page — light wedding marketing surface */
 .landing-page {
-    background-color: #1a1208;
-    color: #faf6ee;
+    --landing-bg: #ffffff;
+    --landing-bg-soft: #fafaf8;
+    --landing-text: #1a1208;
+    --landing-text-muted: #5c5246;
+    --landing-accent: #c9a227;
+    --landing-accent-hover: #a8841a;
+    --landing-border: color-mix(in srgb, #1a1208 12%, transparent);
+    --landing-frame-bg: #f4f2ee;
+    --landing-frame-chrome: #ebe8e2;
+
+    background-color: var(--landing-bg);
+    color: var(--landing-text);
 }
 
 .landing-heading {
@@ -680,7 +690,12 @@
     content: '';
     position: absolute;
     inset: 0;
-    background-color: color-mix(in srgb, #1a1208 70%, transparent);
+    background: linear-gradient(
+        180deg,
+        color-mix(in srgb, #ffffff 78%, transparent) 0%,
+        color-mix(in srgb, #ffffff 88%, transparent) 55%,
+        color-mix(in srgb, #ffffff 94%, transparent) 100%
+    );
 }
 
 .landing-hero > * {
@@ -693,42 +708,42 @@
 }
 
 .landing-btn-primary {
-    background-color: #c9a227;
-    color: #1a1208;
-    border: 1px solid #c9a227;
+    background-color: var(--landing-accent);
+    color: var(--landing-text);
+    border: 1px solid var(--landing-accent);
 }
 
 .landing-btn-primary:hover {
-    background-color: #a8841a;
-    border-color: #a8841a;
+    background-color: var(--landing-accent-hover);
+    border-color: var(--landing-accent-hover);
 }
 
 .landing-btn-secondary {
     background-color: transparent;
-    color: #faf6ee;
-    border: 1px solid color-mix(in srgb, #faf6ee 30%, transparent);
+    color: var(--landing-text);
+    border: 1px solid var(--landing-border);
 }
 
 .landing-btn-secondary:hover {
-    border-color: #c9a227;
-    color: #c9a227;
+    border-color: var(--landing-accent);
+    color: var(--landing-accent);
 }
 
 .landing-input {
     border-radius: 0.75rem;
-    border: 1px solid color-mix(in srgb, #faf6ee 10%, transparent);
-    background-color: #2a1f0f;
+    border: 1px solid var(--landing-border);
+    background-color: var(--landing-bg);
     padding: 0.75rem 1rem;
-    color: #faf6ee;
+    color: var(--landing-text);
 }
 
 .landing-input::placeholder {
-    color: #d4c4a8;
+    color: var(--landing-text-muted);
 }
 
 .landing-input:focus {
     outline: none;
-    border-color: #c9a227;
+    border-color: var(--landing-accent);
 }
 
 .landing-card {
@@ -736,17 +751,17 @@
 }
 
 .landing-card:hover {
-    border-color: color-mix(in srgb, #c9a227 30%, transparent);
+    border-color: color-mix(in srgb, var(--landing-accent) 40%, transparent);
 }
 
 .landing-browser-frame {
     border-radius: 1rem;
-    border: 1px solid color-mix(in srgb, #c9a227 28%, transparent);
-    background: #0f0b06;
+    border: 1px solid color-mix(in srgb, var(--landing-accent) 28%, transparent);
+    background: var(--landing-frame-bg);
     overflow: hidden;
     box-shadow:
-        0 24px 60px color-mix(in srgb, #000 45%, transparent),
-        0 0 0 1px color-mix(in srgb, #faf6ee 4%, transparent);
+        0 20px 48px color-mix(in srgb, #1a1208 12%, transparent),
+        0 0 0 1px color-mix(in srgb, #1a1208 4%, transparent);
 }
 
 .landing-browser-chrome {
@@ -754,15 +769,15 @@
     align-items: center;
     gap: 0.4rem;
     padding: 0.65rem 0.85rem;
-    border-bottom: 1px solid color-mix(in srgb, #faf6ee 8%, transparent);
-    background: color-mix(in srgb, #2a1f0f 85%, #000);
+    border-bottom: 1px solid var(--landing-border);
+    background: var(--landing-frame-chrome);
 }
 
 .landing-browser-chrome span {
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 999px;
-    background: color-mix(in srgb, #d4c4a8 35%, transparent);
+    background: color-mix(in srgb, var(--landing-text-muted) 45%, transparent);
 }
 
 .landing-browser-chrome span:nth-child(1) {
@@ -770,7 +785,7 @@
 }
 
 .landing-browser-chrome span:nth-child(2) {
-    background: #c9a227;
+    background: var(--landing-accent);
 }
 
 .landing-browser-chrome span:nth-child(3) {
@@ -785,12 +800,12 @@
 
 .landing-phone-frame {
     border-radius: 1.65rem;
-    border: 3px solid color-mix(in srgb, #faf6ee 18%, #2a1f0f);
-    background: #0f0b06;
+    border: 3px solid color-mix(in srgb, #1a1208 14%, #ebe8e2);
+    background: var(--landing-frame-bg);
     overflow: hidden;
     box-shadow:
-        0 28px 50px color-mix(in srgb, #000 55%, transparent),
-        inset 0 0 0 1px color-mix(in srgb, #c9a227 20%, transparent);
+        0 22px 44px color-mix(in srgb, #1a1208 14%, transparent),
+        inset 0 0 0 1px color-mix(in srgb, var(--landing-accent) 20%, transparent);
 }
 
 .landing-phone-frame img {
@@ -864,7 +879,7 @@
     width: 100%;
     aspect-ratio: 9 / 19.5;
     border: 0;
-    background: #0f0b06;
+    background: var(--landing-frame-bg);
 }
 
 .landing-demo-slide-hit {
@@ -882,7 +897,7 @@
 }
 
 .landing-demo-slide-title-link {
-    color: #c9a227;
+    color: var(--landing-accent);
     text-decoration: none;
     transition: color 0.2s ease;
 }
@@ -891,7 +906,7 @@
 .landing-demo-slide-title-link:focus-visible,
 .landing-demo-phone-wrap:has(.landing-demo-slide-hit:hover) + .landing-demo-slide-title .landing-demo-slide-title-link,
 .landing-demo-phone-wrap:has(.landing-demo-slide-hit:focus-visible) + .landing-demo-slide-title .landing-demo-slide-title-link {
-    color: #faf6ee;
+    color: var(--landing-accent-hover);
 }
 
 .landing-demo-slider-nav {
@@ -903,17 +918,19 @@
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 9999px;
-    border: 1px solid color-mix(in srgb, #c9a227 35%, transparent);
-    background: color-mix(in srgb, #1a1208 85%, transparent);
-    color: #faf6ee;
+    border: 1px solid color-mix(in srgb, var(--landing-accent) 40%, transparent);
+    background: color-mix(in srgb, #ffffff 90%, transparent);
+    color: var(--landing-text);
     align-items: center;
     justify-content: center;
+    box-shadow: 0 4px 16px color-mix(in srgb, #1a1208 10%, transparent);
     transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .landing-demo-slider-nav:hover {
-    background: color-mix(in srgb, #2a1f0f 90%, transparent);
-    border-color: color-mix(in srgb, #c9a227 60%, transparent);
+    background: var(--landing-bg-soft);
+    border-color: color-mix(in srgb, var(--landing-accent) 60%, transparent);
+    color: var(--landing-accent);
 }
 
 .landing-demo-slider-nav--prev {

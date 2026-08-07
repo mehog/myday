@@ -1,8 +1,8 @@
-<header class="landing-nav fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-[#1a1208]/80 backdrop-blur-md">
+<header class="landing-nav fixed top-0 inset-x-0 z-50 border-b border-[#1a1208]/10 bg-white/80 backdrop-blur-md">
     <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href="{{ route('home') }}" class="inline-flex items-center">
             <img
-                src="{{ asset('icons/nd-logo-transparent.webp') }}"
+                src="{{ asset('icons/nd-logo.webp') }}"
                 alt="{{ config('app.name', 'NasDan') }}"
                 class="h-9 w-auto"
                 width="120"
@@ -11,21 +11,21 @@
             >
         </a>
         <nav class="flex items-center gap-4 sm:gap-6">
-            <a href="#features" class="text-sm text-[#d4c4a8] hover:text-[#c9a227] transition hidden sm:inline">
+            <a href="#features" class="text-sm text-[#5c5246] hover:text-[#c9a227] transition hidden sm:inline">
                 {{ __('landing.nav_features') }}
             </a>
-            <a href="#cijene" class="text-sm text-[#d4c4a8] hover:text-[#c9a227] transition hidden sm:inline">
+            <a href="#cijene" class="text-sm text-[#5c5246] hover:text-[#c9a227] transition hidden sm:inline">
                 {{ __('landing.nav_pricing') }}
             </a>
-            <a href="#demo" class="text-sm text-[#d4c4a8] hover:text-[#c9a227] transition hidden sm:inline">
+            <a href="#demo" class="text-sm text-[#5c5246] hover:text-[#c9a227] transition hidden sm:inline">
                 {{ __('landing.nav_demo') }}
             </a>
             @guest
-                <a href="/app/login" class="text-sm text-[#d4c4a8] hover:text-[#c9a227] transition inline">
+                <a href="/app/login" class="text-sm text-[#5c5246] hover:text-[#c9a227] transition inline">
                     {{ __('landing.nav_login') }}
                 </a>
             @else
-                <a href="/app" class="text-sm text-[#d4c4a8] hover:text-[#c9a227] transition sm:inline">
+                <a href="/app" class="text-sm text-[#5c5246] hover:text-[#c9a227] transition sm:inline">
                     {{ __('landing.nav_panel') }}
                 </a>
             @endguest
@@ -39,10 +39,10 @@
 <section class="landing-hero min-h-[100svh] flex items-center px-6 pt-28 pb-16 overflow-hidden">
     <div class="max-w-6xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         <div class="landing-fade-in text-center lg:text-left">
-            <h1 class="landing-heading text-4xl sm:text-5xl md:text-[3.25rem] font-semibold text-[#faf6ee] leading-tight mb-6">
+            <h1 class="landing-heading text-4xl sm:text-5xl md:text-[3.25rem] font-semibold text-[#1a1208] leading-tight mb-6">
                 {{ __('landing.hero_title') }}
             </h1>
-            <p class="landing-body text-lg sm:text-xl text-[#d4c4a8] max-w-xl mx-auto lg:mx-0 mb-10">
+            <p class="landing-body text-lg sm:text-xl text-[#5c5246] max-w-xl mx-auto lg:mx-0 mb-10">
                 {{ __('landing.hero_subtitle') }}
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">

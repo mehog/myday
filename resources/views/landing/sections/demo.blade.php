@@ -5,10 +5,10 @@
     <div class="max-w-6xl mx-auto">
         <div class="px-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10 landing-fade-in">
             <div class="text-center sm:text-left max-w-2xl">
-                <h2 class="landing-heading text-3xl sm:text-4xl text-[#faf6ee] mb-4">
+                <h2 class="landing-heading text-3xl sm:text-4xl text-[#1a1208] mb-4">
                     {{ __('landing.demo_title') }}
                 </h2>
-                <p class="landing-body text-[#d4c4a8]">
+                <p class="landing-body text-[#5c5246]">
                     {{ __('landing.demo_subtitle') }}
                 </p>
             </div>

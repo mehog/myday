@@ -1,7 +1,7 @@
 <div class="min-h-screen flex flex-col">
-    <header class="border-b border-white/5 bg-[#1a1208]/80 backdrop-blur-md">
+    <header class="border-b border-[#1a1208]/10 bg-white/80 backdrop-blur-md">
         <div class="max-w-2xl mx-auto px-6 py-4">
-            <a href="{{ route('home') }}" class="landing-heading text-xl font-semibold text-[#faf6ee]">
+            <a href="{{ route('home') }}" class="landing-heading text-xl font-semibold text-[#1a1208]">
                 {{ config('app.name', 'NasDan') }}
             </a>
         </div>
@@ -15,11 +15,11 @@
                 </svg>
             </div>
 
-            <h1 class="landing-heading text-3xl font-semibold text-[#faf6ee] mb-4">
+            <h1 class="landing-heading text-3xl font-semibold text-[#1a1208] mb-4">
                 {{ __('onboarding.verify_title') }}
             </h1>
 
-            <p class="landing-body text-[#d4c4a8] mb-8">
+            <p class="landing-body text-[#5c5246] mb-8">
                 {{ __('onboarding.verify_subtitle', ['email' => auth()->user()->email]) }}
             </p>
 

@@ -1,6 +1,6 @@
 @props([
     'selectClass' => 'landing-input text-sm py-1.5 px-3 min-w-[9rem] cursor-pointer',
-    'labelClass' => 'text-sm text-[#d4c4a8]',
+    'labelClass' => 'text-sm text-[#5c5246]',
 ])
 
 <div {{ $attributes->merge(['class' => 'flex items-center gap-2 justify-center']) }}>

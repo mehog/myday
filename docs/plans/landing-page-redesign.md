@@ -57,9 +57,9 @@ Update `.landing-heading` and `.landing-body` in `resources/css/app.css` to `fon
 - How it works: keep the numbered steps, but present them as a horizontal connected line/timeline rather than three interchangeable bordered boxes, so it doesn't read as the same card component as benefits.
 - Pricing: keep the plan cards (they're doing a different job, comparison, so repetition here is fine), but move the "all plans include" list out of a bordered box that echoes the benefit cards, a plain two-column list under a divider reads less templated.
 
-**Section rhythm.** Currently alternating background is just `bg-transparent` / `bg-[#2a1f0f]/50` on every other section, mechanical. Consider varying which sections get a background tint based on content weight (e.g., give the demo section more visual presence since it's the actual product proof) rather than strict alternation.
+**Section rhythm.** Alternating background is `bg-transparent` / `bg-[#fafaf8]` on every other section. Consider varying which sections get a background tint based on content weight (e.g., give the demo section more visual presence since it's the actual product proof) rather than strict alternation.
 
-Keep the dark/gold palette (`#1a1208`, `#faf6ee`, `#c9a227`, `#d4c4a8`), it's a real brand identity, not an AI tell. The tell is the repeated component, not the color choice.
+Marketing palette is light/wedding: white page (`#ffffff`), ink headings (`#1a1208`), gold accents (`#c9a227`), warm gray body (`#5c5246`). Gold stays the brand accent; Night is no longer the marketing identity. The AI tell is the repeated component, not the color choice.
 
 ## 4. Files to touch
 

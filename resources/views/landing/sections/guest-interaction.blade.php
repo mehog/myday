@@ -1,13 +1,13 @@
-<section class="landing-section px-6 pt-20 pb-28 sm:pb-32 bg-[#2a1f0f]/50">
+<section class="landing-section px-6 pt-20 pb-28 sm:pb-32 bg-[#fafaf8]">
     <div class="max-w-6xl mx-auto">
         <div class="text-center mb-14 landing-fade-in">
             <p class="landing-label text-xs uppercase text-[#c9a227] mb-3">
                 {{ __('landing.interaction_eyebrow') }}
             </p>
-            <h2 class="landing-heading text-3xl sm:text-4xl text-[#faf6ee] mb-4">
+            <h2 class="landing-heading text-3xl sm:text-4xl text-[#1a1208] mb-4">
                 {{ __('landing.interaction_title') }}
             </h2>
-            <p class="landing-body text-[#d4c4a8] max-w-2xl mx-auto">
+            <p class="landing-body text-[#5c5246] max-w-2xl mx-auto">
                 {{ __('landing.interaction_subtitle') }}
             </p>
         </div>
@@ -38,8 +38,8 @@
                             </svg>
                         </div>
                         <div>
-                            <h3 class="landing-heading text-lg text-[#faf6ee] mb-1">{{ $feature['title'] }}</h3>
-                            <p class="landing-body text-sm text-[#d4c4a8] leading-relaxed">{{ $feature['text'] }}</p>
+                            <h3 class="landing-heading text-lg text-[#1a1208] mb-1">{{ $feature['title'] }}</h3>
+                            <p class="landing-body text-sm text-[#5c5246] leading-relaxed">{{ $feature['text'] }}</p>
                         </div>
                     </div>
                 @endforeach
