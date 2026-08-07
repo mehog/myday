@@ -2,7 +2,7 @@
     <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href="{{ route('home') }}" class="inline-flex items-center">
             <img
-                src="{{ asset('icons/nd-logo.webp') }}"
+                src="{{ asset('icons/nd-logo-transparent.webp') }}"
                 alt="{{ config('app.name', 'NasDan') }}"
                 class="h-9 w-auto"
                 width="120"
