@@ -35,10 +35,14 @@ Route::supportBubble();
 
 Route::get('/referral-program', ReferralProgramController::class)->name('referral-program');
 
-Route::get('/paketi', [PackagePageController::class, 'index'])->name('packages.index');
-Route::get('/paketi/{tier}', [PackagePageController::class, 'show'])
+Route::get('/plans', [PackagePageController::class, 'index'])->name('packages.index');
+Route::get('/plans/{tier}', [PackagePageController::class, 'show'])
     ->whereIn('tier', ['basic', 'plus', 'premium', 'deluxe'])
     ->name('packages.show');
+
+Route::redirect('/paketi', '/plans', 301);
+Route::redirect('/paketi/{tier}', '/plans/{tier}', 301)
+    ->whereIn('tier', ['basic', 'plus', 'premium', 'deluxe']);
 
 Route::get('/terms', LegalPageController::class)->defaults('page', 'terms')->name('legal.terms');
 Route::get('/privacy', LegalPageController::class)->defaults('page', 'privacy')->name('legal.privacy');

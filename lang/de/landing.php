@@ -126,10 +126,10 @@ return [
 
     'footer_rights' => 'Alle Rechte vorbehalten.',
     'footer_contact' => 'Kontakt',
-    'footer_packages' => 'Pakete',
+    'footer_packages' => 'Pläne',
     'footer_referral_program' => 'Empfehlungsprogramm',
 
-    'pricing_title' => 'Wählen Sie Ihr Paket',
+    'pricing_title' => 'Wählen Sie Ihren Plan',
     'pricing_subtitle' => 'Ein Preis deckt alles ab. Keine versteckten Kosten, kein monatliches Abo.',
     'pricing_one_time' => 'Einmalzahlung',
     'pricing_activation_note' => 'Nach Zahlungsbestätigung wird Ihr Tarif im Konto aktiviert, damit Sie die Einladung anpassen und teilen können.',
@@ -147,7 +147,7 @@ return [
     'pricing_plan_deluxe_guests' => '300+ Gäste',
     'pricing_plan_deluxe_price' => '320 EUR',
     'pricing_plan_popular' => 'Am beliebtesten',
-    'pricing_features_title' => 'Alle Pakete beinhalten',
+    'pricing_features_title' => 'Alle Pläne beinhalten',
     'pricing_feature_1' => 'Öffentlicher oder personalisierter Einladungslink',
     'pricing_feature_2' => 'Senden über WhatsApp, Viber, Telegram oder Messenger',
     'pricing_feature_3' => 'RSVP in Echtzeit mit Menüwahl pro Person',
