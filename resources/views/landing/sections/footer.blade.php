@@ -1,6 +1,10 @@
 <footer class="landing-section px-6 py-10 border-t border-[#1a1208]/10">
     <div class="max-w-6xl mx-auto">
         <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 mb-4 text-sm">
+            <a href="{{ route('packages.index') }}" class="text-[#c9a227] hover:underline">
+                {{ __('landing.footer_packages') }}
+            </a>
+            <span class="text-[#1a1208]/20 hidden sm:inline" aria-hidden="true">·</span>
             <a href="{{ route('referral-program') }}" class="text-[#c9a227] hover:underline">
                 {{ __('landing.footer_referral_program') }}
             </a>

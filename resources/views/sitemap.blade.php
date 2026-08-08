@@ -18,6 +18,18 @@
         <priority>0.8</priority>
     </url>
     <url>
+        <loc>{{ route('packages.index') }}</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    @foreach (['basic', 'plus', 'premium', 'deluxe'] as $tier)
+    <url>
+        <loc>{{ route('packages.show', ['tier' => $tier]) }}</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    @endforeach
+    <url>
         <loc>{{ route('legal.faq') }}</loc>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>

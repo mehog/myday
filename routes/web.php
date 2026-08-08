@@ -12,6 +12,7 @@ use App\Http\Controllers\DownloadReferralQrCodeController;
 use App\Http\Controllers\DownloadSeatingPlanPdfController;
 use App\Http\Controllers\InvitationManifestController;
 use App\Http\Controllers\LegalPageController;
+use App\Http\Controllers\PackagePageController;
 use App\Http\Controllers\ReferralLinkController;
 use App\Http\Controllers\ReferralProgramController;
 use App\Http\Controllers\WeddingEventCalendarController;
@@ -32,6 +33,11 @@ Route::get('/demo-examples', DemoExamplesPage::class)->name('demo.examples');
 Route::supportBubble();
 
 Route::get('/referral-program', ReferralProgramController::class)->name('referral-program');
+
+Route::get('/paketi', [PackagePageController::class, 'index'])->name('packages.index');
+Route::get('/paketi/{tier}', [PackagePageController::class, 'show'])
+    ->whereIn('tier', ['basic', 'plus', 'premium', 'deluxe'])
+    ->name('packages.show');
 
 Route::get('/terms', LegalPageController::class)->defaults('page', 'terms')->name('legal.terms');
 Route::get('/privacy', LegalPageController::class)->defaults('page', 'privacy')->name('legal.privacy');
@@ -81,6 +87,12 @@ Route::get('/robots.txt', function () {
         'Disallow: /app/',
         'Disallow: /admin/',
         'Disallow: /e/*/',
+        '',
+        'User-agent: OAI-SearchBot',
+        'Allow: /',
+        '',
+        'User-agent: GPTBot',
+        'Disallow: /',
         '',
         'Sitemap: '.url('/sitemap.xml'),
     ]);

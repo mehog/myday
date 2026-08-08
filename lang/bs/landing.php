@@ -126,6 +126,7 @@ return [
 
     'footer_rights' => 'Sva prava zadržana.',
     'footer_contact' => 'Kontakt',
+    'footer_packages' => 'Paketi',
     'footer_referral_program' => 'Program preporuka',
 
     'pricing_title' => 'Odaberite paket',
