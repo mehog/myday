@@ -18,9 +18,9 @@ class PackagePagesTest extends TestCase
 
     public function test_packages_index_is_publicly_accessible(): void
     {
-        $this->get('/paketi?locale=en')
+        $this->get('/plans?locale=en')
             ->assertOk()
-            ->assertSee('NašDan digital invitation packages', false)
+            ->assertSee('NašDan digital invitation plans', false)
             ->assertSee(route('packages.show', ['tier' => 'premium']), false)
             ->assertSee('application/ld+json', false)
             ->assertSee('hreflang="bs"', false)
@@ -30,7 +30,7 @@ class PackagePagesTest extends TestCase
     public function test_each_package_page_is_publicly_accessible(): void
     {
         foreach (['basic', 'plus', 'premium', 'deluxe'] as $tier) {
-            $this->get('/paketi/'.$tier.'?locale=en')
+            $this->get('/plans/'.$tier.'?locale=en')
                 ->assertOk()
                 ->assertSee(route('packages.index'), false)
                 ->assertSee('Create for free', false)
@@ -42,12 +42,12 @@ class PackagePagesTest extends TestCase
 
     public function test_unknown_package_tier_returns_not_found(): void
     {
-        $this->get('/paketi/enterprise')->assertNotFound();
+        $this->get('/plans/enterprise')->assertNotFound();
     }
 
     public function test_package_pages_render_in_bosnian_with_bam_prices(): void
     {
-        $this->get('/paketi/premium?locale=bs')
+        $this->get('/plans/premium?locale=bs')
             ->assertOk()
             ->assertSee('Premium paket digitalne pozivnice za vjenčanje', false)
             ->assertSee('240 BAM', false)
@@ -56,14 +56,15 @@ class PackagePagesTest extends TestCase
 
     public function test_package_pages_render_in_croatian_and_german(): void
     {
-        $this->get('/paketi?locale=hr')
+        $this->get('/plans?locale=hr')
             ->assertOk()
             ->assertSee(__('packages.index.heading', [], 'hr'), false);
 
-        $this->get('/paketi/plus?locale=de')
+        $this->get('/plans/plus?locale=de')
             ->assertOk()
             ->assertSee(__('packages.tiers.plus.heading', [], 'de'), false)
-            ->assertSee('160 EUR', false);
+            ->assertSee('160 EUR', false)
+            ->assertSee('Plus-Plan', false);
     }
 
     public function test_sitemap_and_robots_include_package_discovery_rules(): void
@@ -86,6 +87,6 @@ class PackagePagesTest extends TestCase
             ->assertOk()
             ->assertSee(route('packages.index'), false)
             ->assertSee(route('packages.show', ['tier' => 'plus']), false)
-            ->assertSee('View package details', false);
+            ->assertSee('View plan details', false);
     }
 }

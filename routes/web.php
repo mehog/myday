@@ -35,8 +35,8 @@ Route::supportBubble();
 
 Route::get('/referral-program', ReferralProgramController::class)->name('referral-program');
 
-Route::get('/paketi', [PackagePageController::class, 'index'])->name('packages.index');
-Route::get('/paketi/{tier}', [PackagePageController::class, 'show'])
+Route::get('/plans', [PackagePageController::class, 'index'])->name('packages.index');
+Route::get('/plans/{tier}', [PackagePageController::class, 'show'])
     ->whereIn('tier', ['basic', 'plus', 'premium', 'deluxe'])
     ->name('packages.show');
 

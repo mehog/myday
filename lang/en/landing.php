@@ -126,7 +126,7 @@ return [
 
     'footer_rights' => 'All rights reserved.',
     'footer_contact' => 'Contact',
-    'footer_packages' => 'Packages',
+    'footer_packages' => 'Plans',
     'footer_referral_program' => 'Referral program',
 
     'pricing_title' => 'Choose your plan',

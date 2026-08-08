@@ -20,7 +20,7 @@ class LocaleSwitcherTest extends TestCase
 
     public function test_locale_picker_updates_locale_query_param_via_navigation(): void
     {
-        $this->get('/paketi?locale=en')
+        $this->get('/plans?locale=en')
             ->assertOk()
             ->assertSee('id="locale-picker"', false)
             ->assertSee('window.nasdanSwitchLocale(this.value)', false)
@@ -29,7 +29,7 @@ class LocaleSwitcherTest extends TestCase
 
     public function test_package_page_applies_locale_query_and_keeps_selected_option(): void
     {
-        $this->get('/paketi?locale=de')
+        $this->get('/plans?locale=de')
             ->assertOk()
             ->assertSee(__('packages.index.heading', [], 'de'), false)
             ->assertSee('value="de" selected', false)
@@ -39,11 +39,11 @@ class LocaleSwitcherTest extends TestCase
     public function test_lang_switch_redirects_back_with_locale_query_param(): void
     {
         $response = $this
-            ->from('/paketi?foo=1')
+            ->from('/plans?foo=1')
             ->post(route('lang.switch', ['locale' => 'hr']));
 
         $response->assertRedirect();
-        $this->assertStringContainsString('/paketi', $response->headers->get('Location'));
+        $this->assertStringContainsString('/plans', $response->headers->get('Location'));
         $this->assertStringContainsString('locale=hr', $response->headers->get('Location'));
         $this->assertStringContainsString('foo=1', $response->headers->get('Location'));
         $this->assertSame('hr', session('locale'));
@@ -72,7 +72,7 @@ class LocaleSwitcherTest extends TestCase
         $user = User::factory()->create(['locale' => 'en']);
 
         $this->actingAs($user)
-            ->from('/paketi')
+            ->from('/plans')
             ->post(route('lang.switch', ['locale' => 'bs']))
             ->assertRedirect();
 
