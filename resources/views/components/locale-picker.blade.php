@@ -7,8 +7,9 @@
     <label for="locale-picker" class="{{ $labelClass }}">{{ __('locale.label') }}</label>
     <select
         id="locale-picker"
-        wire:change="switchLocale($event.target.value)"
+        name="locale"
         class="{{ $selectClass }}"
+        onchange="const url = new URL(window.location.href); url.searchParams.set('locale', this.value); window.location.assign(url.toString());"
     >
         @foreach (\App\Support\Locale::options() as $code => $label)
             <option value="{{ $code }}" @selected(app()->getLocale() === $code)>{{ $label }}</option>

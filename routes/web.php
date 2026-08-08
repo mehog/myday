@@ -24,6 +24,7 @@ use App\Livewire\LandingPage;
 use App\Livewire\Onboarding\VerifyEmailNotice;
 use App\Livewire\Onboarding\WeddingOnboarding;
 use App\Support\Locale;
+use App\Support\LocaleUrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,9 +46,17 @@ Route::get('/refund-policy', LegalPageController::class)->defaults('page', 'refu
 Route::get('/faq', LegalPageController::class)->defaults('page', 'faq')->name('legal.faq');
 
 Route::post('/lang/{locale}', function (string $locale) {
-    Locale::set($locale);
+    if (! Locale::isSupported($locale)) {
+        return redirect()->back();
+    }
 
-    return redirect()->back();
+    $previous = url()->previous();
+    $previousPath = parse_url($previous, PHP_URL_PATH) ?? '';
+    $isInvitationContext = str_starts_with($previousPath, '/e/');
+
+    Locale::set($locale, persistToUser: ! $isInvitationContext);
+
+    return redirect()->to(LocaleUrl::withLocale($previous, $locale));
 })->name('lang.switch');
 
 Route::get('/'.(config('referral.route_prefix') ?: 'ref').'/{code}', ReferralLinkController::class)
