@@ -20,6 +20,25 @@
     <meta name="description" content="{{ $resolvedPageDescription }}">
     <link rel="canonical" href="{{ $resolvedCanonicalUrl }}">
 
+    @foreach (\App\Support\Locale::supported() as $hreflangLocale)
+        <link
+            rel="alternate"
+            hreflang="{{ $hreflangLocale }}"
+            href="{{ \App\Support\LocaleUrl::withLocale($resolvedCanonicalUrl, $hreflangLocale) }}"
+        >
+    @endforeach
+    <link
+        rel="alternate"
+        hreflang="x-default"
+        href="{{ \App\Support\LocaleUrl::withLocale($resolvedCanonicalUrl, \App\Support\Locale::default()) }}"
+    >
+
+    @isset($jsonLd)
+        @foreach ((array) $jsonLd as $schema)
+            <script type="application/ld+json">{!! json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+        @endforeach
+    @endisset
+
     <meta property="og:title" content="{{ $resolvedPageTitle }}">
     <meta property="og:description" content="{{ $resolvedPageDescription }}">
     <meta property="og:type" content="website">

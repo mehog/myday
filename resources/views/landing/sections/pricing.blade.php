@@ -12,24 +12,28 @@
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-14">
             @foreach ([
                 [
+                    'tier' => 'basic',
                     'name' => __('landing.pricing_plan_basic_name'),
                     'guests' => __('landing.pricing_plan_basic_guests'),
                     'price' => __('landing.pricing_plan_basic_price'),
                     'highlighted' => false,
                 ],
                 [
+                    'tier' => 'plus',
                     'name' => __('landing.pricing_plan_plus_name'),
                     'guests' => __('landing.pricing_plan_plus_guests'),
                     'price' => __('landing.pricing_plan_plus_price'),
                     'highlighted' => true,
                 ],
                 [
+                    'tier' => 'premium',
                     'name' => __('landing.pricing_plan_premium_name'),
                     'guests' => __('landing.pricing_plan_premium_guests'),
                     'price' => __('landing.pricing_plan_premium_price'),
                     'highlighted' => false,
                 ],
                 [
+                    'tier' => 'deluxe',
                     'name' => __('landing.pricing_plan_deluxe_name'),
                     'guests' => __('landing.pricing_plan_deluxe_guests'),
                     'price' => __('landing.pricing_plan_deluxe_price'),
@@ -48,11 +52,22 @@
                     @endif
 
                     <div class="text-center mb-6">
-                        <h3 class="landing-heading text-2xl text-[#1a1208] mb-2">{{ $plan['name'] }}</h3>
+                        <h3 class="landing-heading text-2xl text-[#1a1208] mb-2">
+                            <a href="{{ route('packages.show', ['tier' => $plan['tier']]) }}" class="hover:text-[#c9a227] transition">
+                                {{ $plan['name'] }}
+                            </a>
+                        </h3>
                         <p class="landing-body text-sm text-[#5c5246] mb-4">{{ $plan['guests'] }}</p>
                         <p class="landing-heading text-4xl sm:text-5xl text-[#1a1208]">{{ $plan['price'] }}</p>
                         <p class="landing-body text-xs text-[#5c5246]/80 mt-2">{{ __('landing.pricing_one_time') }}</p>
                     </div>
+
+                    <a
+                        href="{{ route('packages.show', ['tier' => $plan['tier']]) }}"
+                        class="mb-3 text-center text-sm text-[#c9a227] hover:underline"
+                    >
+                        {{ __('packages.index.view_details') }}
+                    </a>
 
                     <a
                         href="{{ route('onboarding', ['locale' => app()->getLocale()]) }}"

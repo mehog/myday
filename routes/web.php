@@ -12,6 +12,7 @@ use App\Http\Controllers\DownloadReferralQrCodeController;
 use App\Http\Controllers\DownloadSeatingPlanPdfController;
 use App\Http\Controllers\InvitationManifestController;
 use App\Http\Controllers\LegalPageController;
+use App\Http\Controllers\PackagePageController;
 use App\Http\Controllers\ReferralLinkController;
 use App\Http\Controllers\ReferralProgramController;
 use App\Http\Controllers\WeddingEventCalendarController;
@@ -23,6 +24,7 @@ use App\Livewire\LandingPage;
 use App\Livewire\Onboarding\VerifyEmailNotice;
 use App\Livewire\Onboarding\WeddingOnboarding;
 use App\Support\Locale;
+use App\Support\LocaleUrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,15 +35,28 @@ Route::supportBubble();
 
 Route::get('/referral-program', ReferralProgramController::class)->name('referral-program');
 
+Route::get('/paketi', [PackagePageController::class, 'index'])->name('packages.index');
+Route::get('/paketi/{tier}', [PackagePageController::class, 'show'])
+    ->whereIn('tier', ['basic', 'plus', 'premium', 'deluxe'])
+    ->name('packages.show');
+
 Route::get('/terms', LegalPageController::class)->defaults('page', 'terms')->name('legal.terms');
 Route::get('/privacy', LegalPageController::class)->defaults('page', 'privacy')->name('legal.privacy');
 Route::get('/refund-policy', LegalPageController::class)->defaults('page', 'refund-policy')->name('legal.refund');
 Route::get('/faq', LegalPageController::class)->defaults('page', 'faq')->name('legal.faq');
 
 Route::post('/lang/{locale}', function (string $locale) {
-    Locale::set($locale);
+    if (! Locale::isSupported($locale)) {
+        return redirect()->back();
+    }
 
-    return redirect()->back();
+    $previous = url()->previous();
+    $previousPath = parse_url($previous, PHP_URL_PATH) ?? '';
+    $isInvitationContext = str_starts_with($previousPath, '/e/');
+
+    Locale::set($locale, persistToUser: ! $isInvitationContext);
+
+    return redirect()->to(LocaleUrl::withLocale($previous, $locale));
 })->name('lang.switch');
 
 Route::get('/'.(config('referral.route_prefix') ?: 'ref').'/{code}', ReferralLinkController::class)
@@ -81,6 +96,12 @@ Route::get('/robots.txt', function () {
         'Disallow: /app/',
         'Disallow: /admin/',
         'Disallow: /e/*/',
+        '',
+        'User-agent: OAI-SearchBot',
+        'Allow: /',
+        '',
+        'User-agent: GPTBot',
+        'Disallow: /',
         '',
         'Sitemap: '.url('/sitemap.xml'),
     ]);

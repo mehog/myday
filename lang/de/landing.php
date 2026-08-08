@@ -126,6 +126,7 @@ return [
 
     'footer_rights' => 'Alle Rechte vorbehalten.',
     'footer_contact' => 'Kontakt',
+    'footer_packages' => 'Pakete',
     'footer_referral_program' => 'Empfehlungsprogramm',
 
     'pricing_title' => 'Wählen Sie Ihr Paket',
