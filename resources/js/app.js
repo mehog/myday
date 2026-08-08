@@ -1,3 +1,9 @@
+window.nasdanSwitchLocale = (locale) => {
+    const nextUrl = new window.URL(window.location.href);
+    nextUrl.searchParams.set('locale', locale);
+    window.location.assign(nextUrl.toString());
+};
+
 document.addEventListener('alpine:init', () => {
     Alpine.data('countdown', (targetDate, labels = {}) => ({
         units: [

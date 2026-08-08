@@ -23,7 +23,7 @@ class LocaleSwitcherTest extends TestCase
         $this->get('/paketi?locale=en')
             ->assertOk()
             ->assertSee('id="locale-picker"', false)
-            ->assertSee('url.searchParams.set(\'locale\'', false)
+            ->assertSee('window.nasdanSwitchLocale(this.value)', false)
             ->assertDontSee('wire:change="switchLocale', false);
     }
 
