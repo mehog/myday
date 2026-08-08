@@ -45,12 +45,6 @@ class PackagePagesTest extends TestCase
         $this->get('/plans/enterprise')->assertNotFound();
     }
 
-    public function test_legacy_paketi_urls_redirect_to_plans(): void
-    {
-        $this->get('/paketi')->assertRedirect('/plans');
-        $this->get('/paketi/premium')->assertRedirect('/plans/premium');
-    }
-
     public function test_package_pages_render_in_bosnian_with_bam_prices(): void
     {
         $this->get('/plans/premium?locale=bs')

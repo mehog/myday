@@ -40,10 +40,6 @@ Route::get('/plans/{tier}', [PackagePageController::class, 'show'])
     ->whereIn('tier', ['basic', 'plus', 'premium', 'deluxe'])
     ->name('packages.show');
 
-Route::redirect('/paketi', '/plans', 301);
-Route::redirect('/paketi/{tier}', '/plans/{tier}', 301)
-    ->whereIn('tier', ['basic', 'plus', 'premium', 'deluxe']);
-
 Route::get('/terms', LegalPageController::class)->defaults('page', 'terms')->name('legal.terms');
 Route::get('/privacy', LegalPageController::class)->defaults('page', 'privacy')->name('legal.privacy');
 Route::get('/refund-policy', LegalPageController::class)->defaults('page', 'refund-policy')->name('legal.refund');
