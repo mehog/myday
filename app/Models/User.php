@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use NotificationChannels\WebPush\HasPushSubscriptions;
+use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 use Thomasjohnkane\Snooze\Traits\SnoozeNotifiable;
 
 #[Fillable(['name', 'email', 'password', 'is_admin', 'locale', 'signup_ipstack', 'signup_ip', 'referral_fee_percentage', 'paypal_email', 'bank_account_info'])]
@@ -26,7 +27,7 @@ use Thomasjohnkane\Snooze\Traits\SnoozeNotifiable;
 class User extends Authenticatable implements FilamentUser, HasAvatar, HasLocalePreference, MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, HasPushSubscriptions, Notifiable, Referrable, SnoozeNotifiable;
+    use AuthenticationLoggable, HasFactory, HasPushSubscriptions, Notifiable, Referrable, SnoozeNotifiable;
 
     /**
      * Countries that receive third-world (BAM) pricing. Everyone else pays in EUR.
@@ -127,5 +128,15 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLocale
     public function preferredLocale(): string
     {
         return Locale::resolve($this->locale);
+    }
+
+    /**
+     * Admin-only login audit — never notify users via this package.
+     *
+     * @return list<string>
+     */
+    public function notifyAuthenticationLogVia(): array
+    {
+        return [];
     }
 }

@@ -6,6 +6,7 @@ use App\Models\ReferralPayout;
 use App\Models\User;
 use App\Models\WeddingEvent;
 use Illuminate\Database\Eloquent\Builder;
+use Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog;
 
 class AdminDashboardMetrics
 {
@@ -64,5 +65,33 @@ class AdminDashboardMetrics
             ->with('referrer')
             ->pending()
             ->orderByDesc('created_at');
+    }
+
+    public static function successfulLoginsTodayCount(): int
+    {
+        return AuthenticationLog::query()
+            ->successful()
+            ->where('login_at', '>=', now()->startOfDay())
+            ->count();
+    }
+
+    public static function failedLoginsTodayCount(): int
+    {
+        return AuthenticationLog::query()
+            ->failed()
+            ->where('login_at', '>=', now()->startOfDay())
+            ->count();
+    }
+
+    /**
+     * @return Builder<AuthenticationLog>
+     */
+    public static function recentSuccessfulLoginsQuery(int $limit = 5): Builder
+    {
+        return AuthenticationLog::query()
+            ->with('authenticatable')
+            ->successful()
+            ->orderByDesc('login_at')
+            ->limit($limit);
     }
 }

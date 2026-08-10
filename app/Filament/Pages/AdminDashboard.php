@@ -5,11 +5,13 @@ namespace App\Filament\Pages;
 use App\Filament\Resources\ReferralPayouts\ReferralPayoutResource;
 use App\Filament\Resources\Users\UserResource;
 use App\Filament\Resources\WeddingEvents\WeddingEventResource;
+use App\Filament\Widgets\LoginActivityStatsWidget;
 use App\Filament\Widgets\PendingActivationsWidget;
 use App\Filament\Widgets\PendingPayoutsWidget;
 use App\Filament\Widgets\PlatformOpsStatsWidget;
 use App\Filament\Widgets\PlatformStatsWidget;
 use App\Filament\Widgets\PlatformVisitChartWidget;
+use App\Filament\Widgets\RecentLoginsWidget;
 use App\Filament\Widgets\UnverifiedUsersWidget;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -31,6 +33,8 @@ class AdminDashboard extends BaseDashboard
             PendingActivationsWidget::class,
             UnverifiedUsersWidget::class,
             PendingPayoutsWidget::class,
+            LoginActivityStatsWidget::class,
+            RecentLoginsWidget::class,
             PlatformStatsWidget::class,
             PlatformVisitChartWidget::class,
         ];

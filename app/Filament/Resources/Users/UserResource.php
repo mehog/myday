@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Users;
 use App\Filament\Resources\Users\Pages\CreateUser;
 use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ListUsers;
+use App\Filament\Resources\Users\RelationManagers\AuthenticationsRelationManager;
 use App\Filament\Resources\Users\RelationManagers\DiscountEmailsRelationManager;
 use App\Filament\Resources\Users\RelationManagers\DodoPaymentsRelationManager;
 use App\Filament\Resources\Users\RelationManagers\ReferralsRelationManager;
@@ -47,6 +48,7 @@ class UserResource extends Resource
             ReferralsRelationManager::class,
             DodoPaymentsRelationManager::class,
             DiscountEmailsRelationManager::class,
+            AuthenticationsRelationManager::class,
         ];
     }
 

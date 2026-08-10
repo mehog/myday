@@ -75,4 +75,30 @@ class AdminDashboardMetricsTest extends TestCase
         $this->assertSame(1, AdminDashboardMetrics::pendingPayoutsCount());
         $this->assertCount(1, AdminDashboardMetrics::pendingPayoutsQuery()->get());
     }
+
+    public function test_login_activity_metrics_count_today_and_recent_successful(): void
+    {
+        $user = User::factory()->create();
+
+        $user->authentications()->create([
+            'ip_address' => '127.0.0.1',
+            'login_at' => now(),
+            'login_successful' => true,
+        ]);
+        $user->authentications()->create([
+            'ip_address' => '127.0.0.1',
+            'login_at' => now(),
+            'login_successful' => false,
+        ]);
+        $user->authentications()->create([
+            'ip_address' => '127.0.0.1',
+            'login_at' => now()->subDay(),
+            'login_successful' => true,
+        ]);
+
+        $this->assertSame(1, AdminDashboardMetrics::successfulLoginsTodayCount());
+        $this->assertSame(1, AdminDashboardMetrics::failedLoginsTodayCount());
+        $this->assertCount(2, AdminDashboardMetrics::recentSuccessfulLoginsQuery()->get());
+        $this->assertCount(1, AdminDashboardMetrics::recentSuccessfulLoginsQuery(1)->get());
+    }
 }

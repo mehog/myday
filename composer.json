@@ -17,6 +17,7 @@
         "laravel/tinker": "^3.0",
         "league/flysystem-aws-s3-v3": "^3.0",
         "livewire/livewire": "^3.5",
+        "rappasoft/laravel-authentication-log": "^6.1",
         "resend/resend-laravel": "^1.4",
         "spatie/laravel-pdf": "^2.12",
         "spatie/laravel-support-bubble": "^1.9",
