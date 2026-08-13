@@ -20,7 +20,7 @@ return [
     'return_pending_body' => 'We are confirming your payment. Your invitation will activate automatically in a moment.',
     'cancel_title' => 'Checkout cancelled',
     'cancel_body' => 'No charge was made. You can choose a plan whenever you are ready.',
-    'error_no_wedding' => 'Create your wedding invitation before purchasing a plan.',
+    'error_no_wedding' => 'Create your wedding before purchasing a plan.',
     'error_tier_unavailable' => 'That plan is not available for your current guest count or purchase history.',
     'error_checkout_failed' => 'We could not start checkout. Please try again or contact support.',
     'guest_limit_reached' => 'Guest limit reached (:count/:limit). Upgrade your plan to add more guests.',

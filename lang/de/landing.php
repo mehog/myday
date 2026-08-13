@@ -1,25 +1,25 @@
 <?php
 
 return [
-    'meta_title' => 'NasDan - Digitale Web-Hochzeitseinladungen',
-    'meta_description' => 'Personalisierte Hochzeits-Web-Einladungen mit Countdown, RSVP, Menüwahl, mehreren Locations, Tagesablauf und mehr — alles auf einem Link.',
+    'meta_title' => 'NasDan - Alles für Ihre Hochzeit, an einem Ort',
+    'meta_description' => 'Einladung, RSVP, Sitzplan, Gästeerinnerungen und Tagesablauf — alles auf einem Link für Ihre Hochzeit.',
 
     'nav_demo' => 'Demo',
     'nav_features' => 'Funktionen',
     'nav_pricing' => 'Preise',
-    'nav_create' => 'Einladung erstellen',
+    'nav_create' => 'Loslegen',
     'nav_login' => 'Anmelden',
     'nav_panel' => 'Mein Panel',
     'back_to_invitation' => 'Zurück zur Einladung',
 
     'hero_title' => 'Ihre Hochzeitsgeschichte verdient mehr als ein Foto im Chat',
-    'hero_subtitle' => 'Eine Web-Einladung mit Countdown, RSVP, Menüwahl, mehreren Locations und Ihrem Tagesablauf. In drei Schritten einrichten und teilen.',
+    'hero_subtitle' => 'Ein Ort für Ihre Gäste: Einladung, RSVP, Sitzplan, Locations und Erinnerungen. In drei Schritten einrichten und teilen.',
     'hero_cta_demo' => 'Demo ansehen',
-    'hero_cta_create' => 'Einladung erstellen',
-    'hero_image_alt' => 'Mobile Vorschau einer personalisierten NasDan-Hochzeitseinladung',
+    'hero_cta_create' => 'Loslegen',
+    'hero_image_alt' => 'Mobile Vorschau einer personalisierten NasDan-Hochzeitsseite',
 
     'benefits_title' => 'Alles, was Ihre Gäste brauchen, in einem Link',
-    'benefits_subtitle' => 'Persönliche Einladungen, Live-RSVPs, Gästeerinnerungen und ein Sitzplan. Alles aus einem Panel.',
+    'benefits_subtitle' => 'Einladung, Live-RSVPs, Gästeerinnerungen und ein Sitzplan. Alles aus einem Panel.',
 
     'benefit_1_title' => 'Jeder Gast bekommt seinen Namen',
     'benefit_1_text' => 'Jeder Gast bekommt seinen eigenen Link, und sein Name steht schon dort, sobald er die Einladung öffnet. So gibt es keine Verwechslungen.',
@@ -94,7 +94,7 @@ return [
     'interaction_demo_voice_label' => 'Sprachnachricht',
 
     'steps_title' => 'Wie funktioniert es?',
-    'steps_subtitle' => 'Erstellen Sie Ihre Einladung selbst online in drei einfachen Schritten.',
+    'steps_subtitle' => 'Richten Sie Ihre Hochzeitsseite selbst online in drei einfachen Schritten ein.',
 
     'step_1_title' => 'Konto erstellen',
     'step_1_text' => 'Registrieren Sie sich und geben Sie Paardaten, Hochzeitsdatum und Thema ein.',
@@ -121,7 +121,7 @@ return [
     'demo_gallery_subtitle' => 'Entdecken Sie Themen, Vorlagen und Öffnungsanimationen. Klicken Sie auf eine Vorschau, um sie in einem neuen Tab zu öffnen.',
     'demo_gallery_back' => 'Zurück zur Startseite',
 
-    'contact_title' => 'Einladung bestellen',
+    'contact_title' => 'Kontakt aufnehmen',
     'contact_subtitle' => 'Füllen Sie das Formular aus und wir melden uns so schnell wie möglich bei Ihnen.',
 
     'footer_rights' => 'Alle Rechte vorbehalten.',
@@ -132,7 +132,7 @@ return [
     'pricing_title' => 'Wählen Sie Ihren Plan',
     'pricing_subtitle' => 'Ein Preis deckt alles ab. Keine versteckten Kosten, kein monatliches Abo.',
     'pricing_one_time' => 'Einmalzahlung',
-    'pricing_activation_note' => 'Nach Zahlungsbestätigung wird Ihr Tarif im Konto aktiviert, damit Sie die Einladung anpassen und teilen können.',
+    'pricing_activation_note' => 'Nach Zahlungsbestätigung wird Ihr Plan im Konto aktiviert, damit Sie anpassen und mit Gästen teilen können.',
     'pricing_currency_note' => 'Angezeigte Beträge sind Beispiele. Im Checkout zahlen Sie in EUR oder BAM, abhängig von Ihrer Preisregion.',
     'pricing_plan_basic_name' => 'Basic',
     'pricing_plan_basic_guests' => 'Bis zu 100 Gäste',

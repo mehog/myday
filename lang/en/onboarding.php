@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'meta_title' => 'Create your invitation',
+    'meta_title' => 'Create your wedding',
 
     'step_couple' => 'Couple',
     'step_account' => 'Account',
@@ -40,7 +40,7 @@ return [
 
     'next' => 'Continue',
     'back' => 'Back',
-    'submit' => 'Create invitation',
+    'submit' => 'Create your wedding',
     'submitting' => 'Creating...',
 
     'groom_name_required' => 'Please enter the groom\'s name.',

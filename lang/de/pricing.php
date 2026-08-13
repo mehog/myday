@@ -20,7 +20,7 @@ return [
     'return_pending_body' => 'Wir bestätigen Ihre Zahlung. Ihre Einladung wird in Kürze automatisch freigeschaltet.',
     'cancel_title' => 'Checkout abgebrochen',
     'cancel_body' => 'Es wurde nichts berechnet. Sie können jederzeit einen Plan wählen.',
-    'error_no_wedding' => 'Erstellen Sie zuerst Ihre Hochzeitseinladung.',
+    'error_no_wedding' => 'Erstellen Sie zuerst Ihre Hochzeit.',
     'error_tier_unavailable' => 'Dieser Plan ist für Ihre aktuelle Gästezahl oder Kaufhistorie nicht verfügbar.',
     'error_checkout_failed' => 'Checkout konnte nicht gestartet werden. Bitte versuchen Sie es erneut.',
     'guest_limit_reached' => 'Gästelimit erreicht (:count/:limit). Upgraden Sie Ihren Plan.',

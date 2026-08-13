@@ -20,7 +20,7 @@ class PackagePagesTest extends TestCase
     {
         $this->get('/plans?locale=en')
             ->assertOk()
-            ->assertSee('NašDan digital invitation plans', false)
+            ->assertSee('NasDan plans', false)
             ->assertSee(route('packages.show', ['tier' => 'premium']), false)
             ->assertSee('application/ld+json', false)
             ->assertSee('hreflang="bs"', false)
@@ -49,7 +49,7 @@ class PackagePagesTest extends TestCase
     {
         $this->get('/plans/premium?locale=bs')
             ->assertOk()
-            ->assertSee('Premium paket digitalne pozivnice za vjenčanje', false)
+            ->assertSee('Premium paket za vjenčanje', false)
             ->assertSee('240 BAM', false)
             ->assertSee('Kreiraj besplatno', false);
     }
@@ -64,7 +64,7 @@ class PackagePagesTest extends TestCase
             ->assertOk()
             ->assertSee(__('packages.tiers.plus.heading', [], 'de'), false)
             ->assertSee('160 EUR', false)
-            ->assertSee('Plus-Plan', false);
+            ->assertSee('Plus-Hochzeitsplan', false);
     }
 
     public function test_sitemap_and_robots_include_package_discovery_rules(): void

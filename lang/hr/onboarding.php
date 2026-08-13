@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'meta_title' => 'Kreirajte pozivnicu',
+    'meta_title' => 'Kreirajte vjenčanje',
 
     'step_couple' => 'Par',
     'step_account' => 'Račun',
@@ -40,7 +40,7 @@ return [
 
     'next' => 'Nastavi',
     'back' => 'Nazad',
-    'submit' => 'Kreiraj pozivnicu',
+    'submit' => 'Kreirajte vjenčanje',
     'submitting' => 'Kreiranje...',
 
     'groom_name_required' => 'Molimo unesite ime mladoženje.',

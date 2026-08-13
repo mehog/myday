@@ -4,7 +4,7 @@ return [
 
     'nav_label' => 'Freund empfehlen',
     'page_title' => 'Empfehlungen',
-    'page_subheading' => 'Verdienen Sie :fee% Provision, wenn jemand, den Sie empfehlen, seine Hochzeitseinladung aktiviert.',
+    'page_subheading' => 'Verdienen Sie :fee% Provision, wenn jemand, den Sie empfehlen, seinen Hochzeitsplan aktiviert.',
     'your_link_label' => 'Ihr Empfehlungslink',
     'fee_badge' => ':fee% Provision',
     'buyer_discount_badge' => ':percent% Rabatt für Ihre Empfehlungen',
@@ -21,7 +21,7 @@ return [
     'qr_format_a5' => 'A5 Flyer',
     'qr_format_letter' => 'US Letter',
     'qr_pdf_heading' => 'Planen Sie Ihre Hochzeit mit NasDan',
-    'qr_pdf_instructions' => 'Scannen Sie diesen Code, um digitale Hochzeitseinladungen zu entdecken und sich über unser Empfehlungsprogramm anzumelden — Paare erhalten :percent% Rabatt auf jedes Paket.',
+    'qr_pdf_instructions' => 'Scannen Sie diesen Code, um NasDan zu entdecken und sich über unser Empfehlungsprogramm anzumelden — Paare erhalten :percent% Rabatt auf jedes Paket.',
     'qr_pdf_link_label' => 'Oder besuchen Sie diesen Link',
     'qr_pdf_footer' => 'Powered by NasDan',
 

@@ -1,25 +1,25 @@
 <?php
 
 return [
-    'meta_title' => 'NasDan - Digitalne web pozivnice za vjenčanje',
-    'meta_description' => 'Personalizovane web pozivnice za vjenčanje sa odbrojavanjem, potvrdom dolaska, izborom menija, više lokacija, planom dana i još mnogo toga — sve na jednom linku.',
+    'meta_title' => 'NasDan - Sve za vaše vjenčanje, na jednom mjestu',
+    'meta_description' => 'Pozivnica, potvrde dolaska, sjedenje, uspomene gostiju i plan dana — sve na jednom linku za vaše vjenčanje.',
 
     'nav_demo' => 'Demo',
     'nav_features' => 'Funkcije',
     'nav_pricing' => 'Cijene',
-    'nav_create' => 'Kreiraj pozivnicu',
+    'nav_create' => 'Započnite',
     'nav_login' => 'Prijavi se',
     'nav_panel' => 'Moj panel',
     'back_to_invitation' => 'Nazad na pozivnicu',
 
     'hero_title' => 'Vaša vjenčana priča zaslužuje više od slike u chatu',
-    'hero_subtitle' => 'Web pozivnica sa odbrojavanjem, potvrdom dolaska, izborom menija, više lokacija i planom dana. Postavite je i podijelite u tri koraka.',
+    'hero_subtitle' => 'Jedno mjesto za goste: pozivnica, potvrde, sjedenje, lokacije i uspomene. Postavite i podijelite u tri koraka.',
     'hero_cta_demo' => 'Pogledaj demo',
-    'hero_cta_create' => 'Kreiraj pozivnicu',
-    'hero_image_alt' => 'Prikaz personalizovane NasDan pozivnice na telefonu',
+    'hero_cta_create' => 'Započnite',
+    'hero_image_alt' => 'Prikaz personalizovane NasDan stranice za vjenčanje na telefonu',
 
     'benefits_title' => 'Sve što gostima treba, na jednom linku',
-    'benefits_subtitle' => 'Personalizovane pozivnice, potvrde uživo, uspomene gostiju i plan sjedenja. Sve iz jednog panela.',
+    'benefits_subtitle' => 'Pozivnica, potvrde uživo, uspomene gostiju i plan sjedenja. Sve iz jednog panela.',
 
     'benefit_1_title' => 'Svaki gost dobija svoje ime',
     'benefit_1_text' => 'Svaki gost dobija svoj link, a njegovo ime je već tu čim ga otvori. Tako nema zabune oko toga ko je pozvan.',
@@ -94,7 +94,7 @@ return [
     'interaction_demo_voice_label' => 'Glasovna poruka',
 
     'steps_title' => 'Kako funkcionira?',
-    'steps_subtitle' => 'Napravite pozivnicu sami online u tri jednostavna koraka.',
+    'steps_subtitle' => 'Postavite svoju stranicu za vjenčanje sami online u tri jednostavna koraka.',
 
     'step_1_title' => 'Kreirajte račun',
     'step_1_text' => 'Registrujte se i unesite podatke o paru, datum vjenčanja i odaberite temu pozivnice.',
@@ -121,7 +121,7 @@ return [
     'demo_gallery_subtitle' => 'Istražite teme, predloške i animacije otvaranja. Kliknite na pregled da otvorite u novom tabu.',
     'demo_gallery_back' => 'Nazad na početnu',
 
-    'contact_title' => 'Naručite pozivnicu',
+    'contact_title' => 'Javite nam se',
     'contact_subtitle' => 'Popunite formular i javićemo vam se u najkraćem roku.',
 
     'footer_rights' => 'Sva prava zadržana.',
@@ -132,7 +132,7 @@ return [
     'pricing_title' => 'Odaberite paket',
     'pricing_subtitle' => 'Jedna cijena pokriva sve. Bez skrivenih troškova, bez mjesečne pretplate.',
     'pricing_one_time' => 'Jednokratna uplata',
-    'pricing_activation_note' => 'Nakon potvrde uplate, plan se aktivira na vašem računu kako biste mogli prilagoditi i dijeliti pozivnicu.',
+    'pricing_activation_note' => 'Nakon potvrde uplate, plan se aktivira na vašem računu kako biste mogli prilagoditi i dijeliti s gostima.',
     'pricing_currency_note' => 'Prikazani iznosi su primjeri. Na checkoutu plaćate u EUR ili BAM, zavisno od vaše cjenovne regije.',
     'pricing_plan_basic_name' => 'Osnovni',
     'pricing_plan_basic_guests' => 'Do 100 gostiju',

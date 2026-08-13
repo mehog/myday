@@ -1,6 +1,6 @@
 # NasDan (MyDay)
 
-Digital wedding invitation platform for couples in Bosnia and Herzegovina and the wider Balkans. Multilingual: Bosnian, English, German.
+Wedding guest platform for couples in Bosnia and Herzegovina and the wider Balkans. Multilingual: Bosnian, English, German, Croatian.
 
 ## Documentation
 

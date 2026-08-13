@@ -4,7 +4,7 @@ return [
 
     'nav_label' => 'Refer a friend',
     'page_title' => 'Referrals',
-    'page_subheading' => 'Earn :fee% commission when someone you refer activates their wedding invitation.',
+    'page_subheading' => 'Earn :fee% commission when someone you refer activates their wedding plan.',
     'your_link_label' => 'Your referral link',
     'fee_badge' => ':fee% commission',
     'buyer_discount_badge' => ':percent% off for your referrals',
@@ -21,7 +21,7 @@ return [
     'qr_format_a5' => 'A5 flyer',
     'qr_format_letter' => 'US Letter',
     'qr_pdf_heading' => 'Plan your wedding with NasDan',
-    'qr_pdf_instructions' => 'Scan this code to explore digital wedding invitations and sign up through our referral program — couples get :percent% off any plan.',
+    'qr_pdf_instructions' => 'Scan this code to explore NasDan and sign up through our referral program — couples get :percent% off any plan.',
     'qr_pdf_link_label' => 'Or visit this link',
     'qr_pdf_footer' => 'Powered by NasDan',
 

@@ -4,7 +4,7 @@ return [
 
     'nav_label' => 'Preporuči prijatelju',
     'page_title' => 'Preporuke',
-    'page_subheading' => 'Zaradite :fee% provizije kada netko koga preporučite aktivira svoju vjenčanu pozivnicu.',
+    'page_subheading' => 'Zaradite :fee% provizije kada netko koga preporučite aktivira svoj paket za vjenčanje.',
     'your_link_label' => 'Vaš referral link',
     'fee_badge' => ':fee% provizije',
     'buyer_discount_badge' => ':percent% popusta za vaše preporuke',
@@ -21,7 +21,7 @@ return [
     'qr_format_a5' => 'A5 letak',
     'qr_format_letter' => 'US Letter',
     'qr_pdf_heading' => 'Planirajte vjenčanje s NasDan',
-    'qr_pdf_instructions' => 'Skenirajte ovaj kod da istražite digitalne vjenčane pozivnice i registrirajte se preko našeg referral programa — parovi dobivaju :percent% popusta na bilo koji paket.',
+    'qr_pdf_instructions' => 'Skenirajte ovaj kod da istražite NasDan i registrirajte se preko našeg referral programa — parovi dobivaju :percent% popusta na bilo koji paket.',
     'qr_pdf_link_label' => 'Ili posjetite ovaj link',
     'qr_pdf_footer' => 'Pokreće NasDan',
 

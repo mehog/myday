@@ -20,7 +20,7 @@ return [
     'return_pending_body' => 'Potvrđujemo uplatu. Pozivnica će se automatski aktivirati za trenutak.',
     'cancel_title' => 'Plaćanje otkazano',
     'cancel_body' => 'Niste naplaćeni. Paket možete odabrati kad budete spremni.',
-    'error_no_wedding' => 'Kreirajte pozivnicu prije kupnje paketa.',
+    'error_no_wedding' => 'Kreirajte vjenčanje prije kupnje paketa.',
     'error_tier_unavailable' => 'Taj paket nije dostupan za vaš broj gostiju ili povijest kupnji.',
     'error_checkout_failed' => 'Nismo mogli pokrenuti plaćanje. Pokušajte ponovo ili kontaktirajte podršku.',
     'guest_limit_reached' => 'Dosegnut je limit gostiju (:count/:limit). Nadogradite paket za više gostiju.',

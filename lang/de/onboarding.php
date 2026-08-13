@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'meta_title' => 'Einladung erstellen',
+    'meta_title' => 'Hochzeit erstellen',
 
     'step_couple' => 'Paar',
     'step_account' => 'Konto',
@@ -40,7 +40,7 @@ return [
 
     'next' => 'Weiter',
     'back' => 'Zurück',
-    'submit' => 'Einladung erstellen',
+    'submit' => 'Hochzeit erstellen',
     'submitting' => 'Wird erstellt...',
 
     'groom_name_required' => 'Bitte geben Sie den Namen des Bräutigams ein.',

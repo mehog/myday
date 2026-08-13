@@ -1,25 +1,25 @@
 <?php
 
 return [
-    'meta_title' => 'NasDan - Digital wedding web invitations',
-    'meta_description' => 'Personalized wedding web invitations with countdown, RSVP, meal choices, multiple venues, day schedule and more — all on one link.',
+    'meta_title' => 'NasDan - Everything for your wedding, in one place',
+    'meta_description' => 'Invitation, RSVP, seating, guest memories and your day schedule — all on one link for your wedding.',
 
     'nav_demo' => 'Demo',
     'nav_features' => 'Features',
     'nav_pricing' => 'Pricing',
-    'nav_create' => 'Create invitation',
+    'nav_create' => 'Get started',
     'nav_login' => 'Log in',
     'nav_panel' => 'My panel',
     'back_to_invitation' => 'Back to invitation',
 
     'hero_title' => 'Your wedding story deserves more than a photo in a chat',
-    'hero_subtitle' => 'A web invitation with a countdown, RSVP, meal choices, multiple venues and your day schedule. Set it up and share it in three steps.',
+    'hero_subtitle' => 'One place for your guests: invitation, RSVP, seating, venues and memories. Set it up and share it in three steps.',
     'hero_cta_demo' => 'View demo',
-    'hero_cta_create' => 'Create invitation',
-    'hero_image_alt' => 'Mobile preview of a personalized NasDan wedding invitation',
+    'hero_cta_create' => 'Get started',
+    'hero_image_alt' => 'Mobile preview of a personalized NasDan wedding page',
 
     'benefits_title' => 'Everything your guests need, in one link',
-    'benefits_subtitle' => 'Personal invitations, live RSVPs, guest memories and a seating plan. All managed from one panel.',
+    'benefits_subtitle' => 'Invitation, live RSVPs, guest memories and a seating plan. All managed from one panel.',
 
     'benefit_1_title' => 'Every guest gets their own name',
     'benefit_1_text' => 'Every guest gets their own link. Their name is already on the page when they open it, so there is no mix-up about who is invited.',
@@ -94,7 +94,7 @@ return [
     'interaction_demo_voice_label' => 'Voice message',
 
     'steps_title' => 'How does it work?',
-    'steps_subtitle' => 'Create your invitation yourself online in three simple steps.',
+    'steps_subtitle' => 'Set up your wedding page yourself online in three simple steps.',
 
     'step_1_title' => 'Create your account',
     'step_1_text' => 'Sign up and enter the couple\'s details, wedding date, and choose a theme.',
@@ -121,7 +121,7 @@ return [
     'demo_gallery_subtitle' => 'Explore themes, templates and opening animations. Click any preview to open it in a new tab.',
     'demo_gallery_back' => 'Back to home',
 
-    'contact_title' => 'Order an invitation',
+    'contact_title' => 'Get in touch',
     'contact_subtitle' => 'Fill in the form and we will get back to you as soon as possible.',
 
     'footer_rights' => 'All rights reserved.',
@@ -132,7 +132,7 @@ return [
     'pricing_title' => 'Choose your plan',
     'pricing_subtitle' => 'One price includes everything. No hidden fees, no monthly subscription.',
     'pricing_one_time' => 'One-time payment',
-    'pricing_activation_note' => 'After payment is confirmed, your invitation plan activates in your account so you can customize and share it.',
+    'pricing_activation_note' => 'After payment is confirmed, your plan activates in your account so you can customize and share with guests.',
     'pricing_currency_note' => 'Shown amounts are examples. At checkout you pay in EUR or BAM based on your pricing region.',
     'pricing_plan_basic_name' => 'Basic',
     'pricing_plan_basic_guests' => 'Up to 100 guests',
