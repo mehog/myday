@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\GuestLabel;
 use App\InvitePlatform;
 use App\LinkType;
 use App\RsvpStatus;
 use App\Support\Locale;
 use Database\Factories\GuestFactory;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -43,6 +45,7 @@ class Guest extends Model implements HasLocalePreference
         'invite_sent_at',
         'invite_platform',
         'invitation_locale',
+        'labels',
     ];
 
     protected function casts(): array
@@ -54,6 +57,7 @@ class Guest extends Model implements HasLocalePreference
             'accommodation_count' => 'integer',
             'invite_sent_at' => 'datetime',
             'invite_platform' => InvitePlatform::class,
+            'labels' => AsEnumCollection::of(GuestLabel::class),
         ];
     }
 

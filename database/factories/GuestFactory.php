@@ -26,6 +26,17 @@ class GuestFactory extends Factory
             'phone' => fake()->phoneNumber(),
             'plus_one_allowed' => false,
             'token' => Str::random(32),
+            'labels' => null,
         ];
+    }
+
+    /**
+     * @param  list<\App\GuestLabel|string>  $labels
+     */
+    public function withLabels(array $labels): static
+    {
+        return $this->state(fn (): array => [
+            'labels' => $labels,
+        ]);
     }
 }

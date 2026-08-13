@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\WeddingEvents\RelationManagers;
 
 use App\Filament\Imports\GuestImporter;
+use App\GuestLabel;
 use App\InvitePlatform;
 use App\Models\Guest;
 use App\Models\GuestChild;
@@ -23,6 +24,7 @@ use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Placeholder;
@@ -39,10 +41,12 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 
@@ -85,6 +89,22 @@ class GuestsRelationManager extends RelationManager
                     ->label($this->trans('field_plus_one_allowed'))
                     ->helperText($this->trans('field_plus_one_allowed_helper'))
                     ->default(false),
+                CheckboxList::make('labels')
+                    ->label($this->trans('field_labels'))
+                    ->helperText($this->trans('field_labels_helper'))
+                    ->options(GuestLabel::options())
+                    ->columns(2)
+                    ->bulkToggleable()
+                    ->afterStateHydrated(function (CheckboxList $component, mixed $state): void {
+                        $component->state(
+                            Collection::wrap($state)
+                                ->map(fn (mixed $label): ?string => $label instanceof GuestLabel ? $label->value : (is_string($label) ? $label : null))
+                                ->filter()
+                                ->values()
+                                ->all()
+                        );
+                    })
+                    ->dehydrateStateUsing(fn (?array $state): ?array => filled($state) ? array_values($state) : null),
                 Placeholder::make('rsvp_note')
                     ->label($this->trans('field_rsvp_note'))
                     ->prose()
@@ -117,6 +137,14 @@ class GuestsRelationManager extends RelationManager
                     ->searchable()
                     ->placeholder('—')
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('labels')
+                    ->label($this->trans('field_labels'))
+                    ->badge()
+                    ->getStateUsing(fn (Guest $record): array => $record->labels
+                        ? $record->labels->map(fn (GuestLabel $label): string => $label->label())->all()
+                        : [])
+                    ->placeholder($this->trans('labels_none'))
+                    ->toggleable(),
                 TextColumn::make('rsvp_status')
                     ->label($this->trans('field_rsvp_status'))
                     ->badge()
@@ -199,6 +227,37 @@ class GuestsRelationManager extends RelationManager
                     ->placeholder('—'),
             ])
             ->filters([
+                SelectFilter::make('labels')
+                    ->label($this->trans('filter_labels'))
+                    ->multiple()
+                    ->options([
+                        ...GuestLabel::options(),
+                        'none' => $this->trans('labels_none'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        $values = array_values(array_filter($data['values'] ?? []));
+
+                        if ($values === []) {
+                            return $query;
+                        }
+
+                        return $query->where(function (Builder $labelsQuery) use ($values): void {
+                            foreach ($values as $value) {
+                                if ($value === 'none') {
+                                    $labelsQuery->orWhere(function (Builder $unlabeled): void {
+                                        $unlabeled
+                                            ->whereNull('labels')
+                                            ->orWhere('labels', '[]')
+                                            ->orWhere('labels', 'null');
+                                    });
+
+                                    continue;
+                                }
+
+                                $labelsQuery->orWhereJsonContains('labels', $value);
+                            }
+                        });
+                    }),
                 TrashedFilter::make(),
             ])
             ->emptyStateIcon(Heroicon::OutlinedUserGroup)
@@ -547,11 +606,11 @@ class GuestsRelationManager extends RelationManager
                     EditAction::make()
                         ->visible(fn (): bool => ! $this->coupleSetupLocked()),
                     DeleteAction::make()
-                        ->visible(fn (): bool => ! $this->coupleSetupLocked()),
+                        ->visible(fn (Guest $record): bool => ! $this->coupleSetupLocked() && ! $record->trashed()),
                     RestoreAction::make()
-                        ->visible(fn (): bool => ! $this->coupleSetupLocked()),
+                        ->visible(fn (Guest $record): bool => ! $this->coupleSetupLocked() && $record->trashed()),
                     ForceDeleteAction::make()
-                        ->visible(fn (): bool => ! $this->coupleSetupLocked()),
+                        ->visible(fn (Guest $record): bool => ! $this->coupleSetupLocked() && $record->trashed()),
                 ])
                     ->label($this->trans('more_actions'))
                     ->icon(Heroicon::OutlinedEllipsisVertical)

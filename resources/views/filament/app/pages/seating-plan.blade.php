@@ -344,14 +344,24 @@
                         <template x-for="guest in filteredGuests" :key="guest.id">
                             <li
                                 class="cursor-pointer px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-white/5"
-                                :class="{
-                                    'text-rose-600 dark:text-rose-400 font-medium': guest.is_couple,
-                                    'text-gray-500 dark:text-gray-400': (guest.is_plus_one || guest.is_child) && !guest.is_couple,
-                                    'text-gray-900 dark:text-white': !guest.is_plus_one && !guest.is_child && !guest.is_couple,
-                                }"
                                 x-on:click="assignGuest(guest.id)"
-                                x-text="guest.name"
-                            ></li>
+                            >
+                                <div
+                                    class="font-medium"
+                                    :class="{
+                                        'text-rose-600 dark:text-rose-400': guest.is_couple,
+                                        'text-gray-500 dark:text-gray-400': (guest.is_plus_one || guest.is_child) && !guest.is_couple,
+                                        'text-gray-900 dark:text-white': !guest.is_plus_one && !guest.is_child && !guest.is_couple,
+                                    }"
+                                    x-text="guest.name"
+                                ></div>
+                                <template x-if="guest.labels?.length">
+                                    <div
+                                        class="mt-0.5 text-xs text-gray-500 dark:text-gray-400"
+                                        x-text="guest.labels.join(' · ')"
+                                    ></div>
+                                </template>
+                            </li>
                         </template>
                         <template x-if="filteredGuests.length === 0">
                             <li class="px-4 py-2 text-sm text-gray-400 dark:text-gray-500">

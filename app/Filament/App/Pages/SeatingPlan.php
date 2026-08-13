@@ -2,6 +2,7 @@
 
 namespace App\Filament\App\Pages;
 
+use App\GuestLabel;
 use App\Models\Guest;
 use App\Models\WeddingEvent;
 use App\RsvpStatus;
@@ -73,6 +74,7 @@ class SeatingPlan extends Page
             [
                 'id' => 'bride',
                 'name' => $wedding->bride_name,
+                'labels' => [],
                 'is_plus_one' => false,
                 'is_child' => false,
                 'is_couple' => true,
@@ -80,6 +82,7 @@ class SeatingPlan extends Page
             [
                 'id' => 'groom',
                 'name' => $wedding->groom_name,
+                'labels' => [],
                 'is_plus_one' => false,
                 'is_child' => false,
                 'is_couple' => true,
@@ -91,12 +94,17 @@ class SeatingPlan extends Page
                 ->where('rsvp_status', RsvpStatus::Yes)
                 ->with('children')
                 ->orderBy('name')
-                ->get(['id', 'name', 'plus_one_name', 'plus_one_seating_name'])
+                ->get(['id', 'name', 'plus_one_name', 'plus_one_seating_name', 'labels'])
                 ->flatMap(function (Guest $guest): array {
+                    $labelNames = $guest->labels
+                        ? $guest->labels->map(fn (GuestLabel $label): string => $label->label())->values()->all()
+                        : [];
+
                     $entries = [
                         [
                             'id' => $guest->id,
                             'name' => $guest->name,
+                            'labels' => $labelNames,
                             'is_plus_one' => false,
                             'is_child' => false,
                             'is_couple' => false,
@@ -109,6 +117,7 @@ class SeatingPlan extends Page
                         $entries[] = [
                             'id' => -$guest->id,
                             'name' => $plusOneName.' ('.$guest->name.')',
+                            'labels' => $labelNames,
                             'is_plus_one' => true,
                             'is_child' => false,
                             'is_couple' => false,
@@ -119,6 +128,7 @@ class SeatingPlan extends Page
                         $entries[] = [
                             'id' => $child->seatingAssigneeKey(),
                             'name' => $child->displayName().' ('.$guest->name.')',
+                            'labels' => $labelNames,
                             'is_plus_one' => false,
                             'is_child' => true,
                             'is_couple' => false,

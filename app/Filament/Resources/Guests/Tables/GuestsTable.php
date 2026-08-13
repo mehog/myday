@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\Guests\Tables;
 
 use App\Filament\Imports\GuestImporter;
+use App\GuestLabel;
+use App\Models\Guest;
 use App\Models\WeddingEvent;
 use App\RsvpStatus;
 use Filament\Actions\Action;
@@ -46,6 +48,14 @@ class GuestsTable
                 TextColumn::make('rsvp_status')
                     ->badge()
                     ->formatStateUsing(fn (?RsvpStatus $state) => $state?->label() ?? 'Pending'),
+                TextColumn::make('labels')
+                    ->label(__('guests.field_labels'))
+                    ->badge()
+                    ->getStateUsing(fn (Guest $record): array => $record->labels
+                        ? $record->labels->map(fn (GuestLabel $label): string => $label->label())->all()
+                        : [])
+                    ->placeholder(__('guests.labels_none'))
+                    ->toggleable(),
                 TextColumn::make('rsvp_responded_at')
                     ->dateTime()
                     ->placeholder('—'),
@@ -103,6 +113,37 @@ class GuestsTable
                     ->trueLabel('Sent')
                     ->falseLabel('Not sent')
                     ->nullable(),
+                SelectFilter::make('labels')
+                    ->label(__('guests.filter_labels'))
+                    ->multiple()
+                    ->options([
+                        ...GuestLabel::options(),
+                        'none' => __('guests.labels_none'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        $values = array_values(array_filter($data['values'] ?? []));
+
+                        if ($values === []) {
+                            return $query;
+                        }
+
+                        return $query->where(function (Builder $labelsQuery) use ($values): void {
+                            foreach ($values as $value) {
+                                if ($value === 'none') {
+                                    $labelsQuery->orWhere(function (Builder $unlabeled): void {
+                                        $unlabeled
+                                            ->whereNull('labels')
+                                            ->orWhere('labels', '[]')
+                                            ->orWhere('labels', 'null');
+                                    });
+
+                                    continue;
+                                }
+
+                                $labelsQuery->orWhereJsonContains('labels', $value);
+                            }
+                        });
+                    }),
                 TrashedFilter::make(),
             ])
             ->recordActions([
