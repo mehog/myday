@@ -45,6 +45,7 @@ return [
     'field_subject_locale' => 'Naslov (:locale)',
     'field_body_locale' => 'Tekst (:locale)',
 
+    'helper_optional_code' => 'Ostavi prazno za opću poruku bez koda za popust.',
     'helper_template' => 'Sadržaj dolazi iz odabranog predloška na jeziku primatelja (ili forsiranom jeziku kampanje).',
     'helper_template_manage' => 'Kreirajte i uredite predloške pod Popust → Email predlošci.',
     'helper_email_preview' => 'Pregled emaila u stvarnom vremenu. Ažurira se kad promijenite predložak, kod ili jezik.',
@@ -56,7 +57,7 @@ return [
     'type_percentage' => 'Postotak',
     'type_flat' => 'Fiksni iznos',
 
-    'audience_unpaid_verified' => 'Neplaćeni verificirani parovi',
+    'audience_unpaid_verified' => 'Besplatni / neplaćeni verificirani parovi',
     'audience_unverified' => 'Neverificirani korisnici',
     'audience_paid' => 'Plaćeni korisnici',
     'audience_manual' => 'Odaberi korisnike',

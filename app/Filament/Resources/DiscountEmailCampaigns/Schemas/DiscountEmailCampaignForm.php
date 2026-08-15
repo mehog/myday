@@ -29,8 +29,9 @@ class DiscountEmailCampaignForm
                             ->relationship('discountCode', 'code')
                             ->searchable()
                             ->preload()
-                            ->required()
+                            ->nullable()
                             ->live()
+                            ->helperText(__('discounts.helper_optional_code'))
                             ->default(fn (): ?int => request()->integer('discount_code_id') ?: null),
                         Select::make('discount_email_template_id')
                             ->label(__('discounts.field_template'))
@@ -165,9 +166,11 @@ class DiscountEmailCampaignForm
             $subject = DiscountEmailPlaceholders::apply($template->subjectFor($locale), $replacements);
             $body = DiscountEmailPlaceholders::apply($template->bodyFor($locale), $replacements);
             $greeting = __('notifications.discount_email_greeting', ['name' => $sampleName]);
-            $codeLine = __('notifications.discount_email_code_line', [
-                'code' => $replacements['{{code}}'],
-            ]);
+            $codeLine = $code !== null
+                ? __('notifications.discount_email_code_line', [
+                    'code' => $code->code,
+                ])
+                : null;
             $action = __('notifications.discount_email_action');
         } finally {
             Locale::apply($previousLocale);
@@ -193,7 +196,9 @@ class DiscountEmailCampaignForm
             .'<div class="space-y-2 border-t border-gray-100 pt-4 dark:border-gray-800">'
             .'<p class="m-0 text-sm font-medium text-gray-900 dark:text-white">'.e($greeting).'</p>'
             .$bodyLines
-            .'<p class="m-0 text-sm text-gray-700 dark:text-gray-200">'.e($codeLine).'</p>'
+            .($codeLine !== null
+                ? '<p class="m-0 text-sm text-gray-700 dark:text-gray-200">'.e($codeLine).'</p>'
+                : '')
             .'<div class="pt-2">'
             .'<span class="inline-flex rounded-lg bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white">'
             .e($action)

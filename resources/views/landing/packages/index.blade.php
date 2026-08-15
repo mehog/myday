@@ -142,6 +142,9 @@
                 <p class="landing-body text-sm text-[#5c5246] mt-8 text-center landing-fade-in">
                     {{ __('packages.shared.all_features_note') }}
                 </p>
+                <p class="landing-body text-sm text-[#5c5246] mt-3 text-center landing-fade-in">
+                    {{ __('landing.pricing_free_limitations_note') }}
+                </p>
             </div>
         </section>
 
@@ -150,13 +153,16 @@
                 <h2 class="landing-heading text-2xl sm:text-3xl text-[#1a1208] mb-4">
                     {{ __('packages.index.features_heading') }}
                 </h2>
-                <ul class="grid sm:grid-cols-2 gap-x-10 gap-y-4 text-left mt-8 mb-10">
+                <ul class="grid sm:grid-cols-2 gap-x-10 gap-y-4 text-left mt-8 mb-6">
                     @foreach (range(1, 14) as $i)
                         <li class="landing-body text-sm text-[#5c5246] leading-relaxed pl-4 border-l border-[#c9a227]/40">
                             {{ __('landing.pricing_feature_'.$i) }}
                         </li>
                     @endforeach
                 </ul>
+                <p class="landing-body text-sm text-[#5c5246] mb-10 text-left">
+                    {{ __('landing.pricing_free_limitations_note') }}
+                </p>
                 <a
                     href="{{ route('onboarding', ['locale' => app()->getLocale()]) }}"
                     class="landing-btn-primary inline-block px-8 py-4 rounded-xl landing-heading text-lg transition"

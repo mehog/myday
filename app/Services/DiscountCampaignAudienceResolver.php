@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DiscountEmailAudience;
 use App\Models\DiscountEmailCampaign;
 use App\Models\User;
+use App\PlanTier;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
@@ -30,12 +31,20 @@ class DiscountCampaignAudienceResolver
             DiscountEmailAudience::UnpaidVerified => $query
                 ->whereNotNull('email_verified_at')
                 ->whereHas('weddingEvent', fn (Builder $q) => $q
-                    ->whereNull('plan_tier')
-                    ->where('is_demo', false)),
+                    ->where('is_demo', false)
+                    ->where(fn (Builder $tier) => $tier
+                        ->whereNull('plan_tier')
+                        ->orWhere('plan_tier', PlanTier::Free))),
             DiscountEmailAudience::Unverified => $query->whereNull('email_verified_at'),
             DiscountEmailAudience::Paid => $query
                 ->whereNotNull('email_verified_at')
-                ->whereHas('weddingEvent', fn (Builder $q) => $q->whereNotNull('plan_tier')),
+                ->whereHas('weddingEvent', fn (Builder $q) => $q->whereIn(
+                    'plan_tier',
+                    array_map(
+                        fn (PlanTier $tier) => $tier->value,
+                        array_filter(PlanTier::cases(), fn (PlanTier $tier) => $tier->isPaid()),
+                    ),
+                )),
             DiscountEmailAudience::Manual => $this->manualQuery($query, $campaign->user_ids ?? []),
             DiscountEmailAudience::All => $query,
         };

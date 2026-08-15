@@ -258,7 +258,6 @@ class PostWeddingInviteLockTest extends TestCase
                 'wedding_date' => $newDate,
                 'theme' => $event->theme->value,
                 'template' => $event->template->value,
-                'link_mode' => $event->link_mode->value,
             ])
             ->call('save')
             ->assertHasNoFormErrors();
@@ -296,7 +295,6 @@ class PostWeddingInviteLockTest extends TestCase
                 'motto' => 'New motto',
                 'theme' => $event->theme->value,
                 'template' => $event->template->value,
-                'link_mode' => $event->link_mode->value,
                 'wedding_date' => $event->wedding_date->format('Y-m-d H:i:s'),
             ])
             ->call('save')
@@ -331,7 +329,6 @@ class PostWeddingInviteLockTest extends TestCase
                 'bride_name' => $event->bride_name,
                 'theme' => $event->theme->value,
                 'template' => $event->template->value,
-                'link_mode' => $event->link_mode->value,
                 'wedding_date' => $event->wedding_date->format('Y-m-d H:i:s'),
             ])
             ->call('save')

@@ -7,6 +7,7 @@ use App\InvitationTheme;
 use App\LinkMode;
 use App\Models\User;
 use App\Models\WeddingEvent;
+use App\PlanTier;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -37,6 +38,8 @@ class WeddingEventFactory extends Factory
             'template' => InvitationTemplate::Classic,
             'link_mode' => LinkMode::Public,
             'rsvp_deadline' => now()->addMonths(2)->toDateString(),
+            'plan_tier' => PlanTier::Free,
+            'guest_limit' => 50,
             'is_active' => true,
             'is_demo' => false,
         ];
@@ -46,6 +49,24 @@ class WeddingEventFactory extends Factory
     {
         return $this->state(fn (): array => [
             'is_active' => false,
+        ]);
+    }
+
+    public function free(): static
+    {
+        return $this->state(fn (): array => [
+            'plan_tier' => PlanTier::Free,
+            'guest_limit' => 50,
+            'is_active' => true,
+        ]);
+    }
+
+    public function paid(PlanTier $tier = PlanTier::Basic): static
+    {
+        return $this->state(fn (): array => [
+            'plan_tier' => $tier,
+            'guest_limit' => $tier->guestLimit(),
+            'is_active' => true,
         ]);
     }
 

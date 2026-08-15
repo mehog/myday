@@ -46,5 +46,24 @@ class DiscountEmailTemplateSeeder extends Seeder
                 ],
             ],
         );
+
+        DiscountEmailTemplate::query()->updateOrCreate(
+            ['name' => 'Free plan is live'],
+            [
+                'is_active' => true,
+                'subjects' => [
+                    'en' => 'Your NasDan invitation is live on Free',
+                    'bs' => 'Vaša NasDan pozivnica je aktivna na Besplatnom planu',
+                    'de' => 'Ihre NasDan-Einladung ist im Free-Plan live',
+                    'hr' => 'Vaša NasDan pozivnica je aktivna na Besplatnom planu',
+                ],
+                'bodies' => [
+                    'en' => "Hi {{name}}, your NasDan invitation is now live on the Free plan — up to 50 guests, with no payment required to share it.\nOn Free, QR place card generation, sending push notifications, and seating PDF export stay locked.\nNeed more guests or those tools? Basic is 100 guests / 80, Plus 250 / 160, Premium unlimited / 240 (one-time).",
+                    'bs' => "Zdravo {{name}}, vaša NasDan pozivnica sada je aktivna na Besplatnom planu — do 50 gostiju, bez plaćanja da je podijelite.\nNa Besplatnom su zaključani: generisanje QR stolnih kartica, slanje push obavještenja i PDF rasporeda sjedenja.\nTreba vam više gostiju ili ti alati? Basic je 100 gostiju / 80, Plus 250 / 160, Premium neograničeno / 240 (jednokratno).",
+                    'de' => "Hallo {{name}}, Ihre NasDan-Einladung ist jetzt im Free-Plan live — bis zu 50 Gäste, ohne Zahlung zum Teilen.\nIm Free-Plan bleiben QR-Tischkarten-Generierung, Push-Versand und Sitzplan-PDF gesperrt.\nMehr Gäste oder diese Tools? Basic 100 Gäste / 80, Plus 250 / 160, Premium unbegrenzt / 240 (einmalig).",
+                    'hr' => "Bok {{name}}, vaša NasDan pozivnica sada je aktivna na Besplatnom planu — do 50 gostiju, bez plaćanja da je podijelite.\nNa Besplatnom su zaključani: generiranje QR stolnih kartica, slanje push obavijesti i PDF rasporeda sjedenja.\nTreba vam više gostiju ili ti alati? Basic je 100 gostiju / 80, Plus 250 / 160, Premium neograničeno / 240 (jednokratno).",
+                ],
+            ],
+        );
     }
 }

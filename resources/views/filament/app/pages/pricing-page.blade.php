@@ -19,7 +19,7 @@
             </section>
         @endif
 
-        <section class="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        <section class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
             @foreach ($this->getPlans() as $plan)
                 @php($tier = $plan['tier'])
                 <div @class([
@@ -98,6 +98,9 @@
             <h2 class="text-base font-semibold text-gray-950 dark:text-white">
                 {{ __('pricing.features_title') }}
             </h2>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                {{ __('pricing.features_paid_note') }}
+            </p>
             <ul class="mt-4 grid gap-2 sm:grid-cols-2">
                 @foreach (range(1, 5) as $i)
                     <li class="text-sm text-gray-600 dark:text-gray-300">
@@ -105,6 +108,9 @@
                     </li>
                 @endforeach
             </ul>
+            <p class="mt-4 text-sm text-gray-500 dark:text-gray-400">
+                {{ __('pricing.features_free_note') }}
+            </p>
         </section>
 
         <section class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-gray-900">

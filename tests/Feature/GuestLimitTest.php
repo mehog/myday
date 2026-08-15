@@ -78,18 +78,22 @@ class GuestLimitTest extends TestCase
         $deleted->restore();
     }
 
-    public function test_unpaid_wedding_can_still_add_guests(): void
+    public function test_free_wedding_cannot_add_beyond_limit(): void
     {
         $user = User::factory()->create();
-        $wedding = WeddingEvent::factory()->inactive()->create([
+        $wedding = WeddingEvent::factory()->create([
             'user_id' => $user->id,
-            'plan_tier' => null,
-            'guest_limit' => null,
+            'plan_tier' => PlanTier::Free,
+            'guest_limit' => 2,
+            'is_active' => true,
         ]);
 
-        Guest::factory()->count(5)->create(['wedding_event_id' => $wedding->id]);
+        Guest::factory()->count(2)->create(['wedding_event_id' => $wedding->id]);
 
-        $this->assertSame(5, $wedding->fresh()->activeGuestCount());
-        $this->assertTrue($wedding->fresh()->canAddGuests());
+        $this->assertFalse($wedding->fresh()->canAddGuests());
+
+        $this->expectException(GuestLimitExceededException::class);
+
+        Guest::factory()->create(['wedding_event_id' => $wedding->id]);
     }
 }

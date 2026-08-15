@@ -19,7 +19,7 @@ class DiscountCodeEmailNotification extends Notification implements ShouldQueue
 
     public function __construct(
         public DiscountEmailCampaign $campaign,
-        public DiscountCode $discountCode,
+        public ?DiscountCode $discountCode,
         ?string $locale = null,
     ) {
         if ($locale !== null) {
@@ -68,10 +68,13 @@ class DiscountCodeEmailNotification extends Notification implements ShouldQueue
             }
         }
 
-        return $message
-            ->line(__('notifications.discount_email_code_line', [
+        if ($this->discountCode !== null) {
+            $message->line(__('notifications.discount_email_code_line', [
                 'code' => $this->discountCode->code,
-            ]))
+            ]));
+        }
+
+        return $message
             ->action(
                 __('notifications.discount_email_action'),
                 PricingPage::getUrl(panel: 'app'),

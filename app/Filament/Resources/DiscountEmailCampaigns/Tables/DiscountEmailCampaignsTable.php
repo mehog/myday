@@ -20,6 +20,7 @@ class DiscountEmailCampaignsTable
             ->columns([
                 TextColumn::make('discountCode.code')
                     ->label(__('discounts.field_code'))
+                    ->placeholder('—')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('template.name')

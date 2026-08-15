@@ -37,7 +37,7 @@ Route::get('/referral-program', ReferralProgramController::class)->name('referra
 
 Route::get('/plans', [PackagePageController::class, 'index'])->name('packages.index');
 Route::get('/plans/{tier}', [PackagePageController::class, 'show'])
-    ->whereIn('tier', ['basic', 'plus', 'premium', 'deluxe'])
+    ->whereIn('tier', ['free', 'basic', 'plus', 'premium'])
     ->name('packages.show');
 
 Route::get('/terms', LegalPageController::class)->defaults('page', 'terms')->name('legal.terms');

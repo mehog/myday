@@ -5,9 +5,11 @@ namespace Tests\Feature;
 use App\InvitationReveal;
 use App\InvitationTemplate;
 use App\InvitationTheme;
+use App\LinkMode;
 use App\Livewire\Onboarding\WeddingOnboarding;
 use App\Models\User;
 use App\Models\WeddingEvent;
+use App\PlanTier;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
@@ -106,6 +108,10 @@ class WeddingOnboardingTest extends TestCase
         $wedding = WeddingEvent::query()->where('user_id', $user->id)->first();
         $this->assertNotNull($wedding);
         $this->assertSame(InvitationReveal::WaxSeal, $wedding->reveal_animation);
+        $this->assertSame(LinkMode::TokenOnly, $wedding->link_mode);
+        $this->assertSame(PlanTier::Free, $wedding->plan_tier);
+        $this->assertSame(50, $wedding->guest_limit);
+        $this->assertTrue($wedding->is_active);
 
         Notification::assertSentTo($user, VerifyEmail::class);
     }

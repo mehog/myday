@@ -5,7 +5,6 @@ namespace App\Filament\App\Schemas;
 use App\InvitationReveal;
 use App\InvitationTemplate;
 use App\InvitationTheme;
-use App\LinkMode;
 use App\Models\WeddingEvent;
 use App\Support\Locale;
 use Filament\Forms\Components\DatePicker;
@@ -89,13 +88,6 @@ class MyWeddingForm
                             ->options(collect(InvitationReveal::cases())->mapWithKeys(fn (InvitationReveal $reveal) => [$reveal->value => $reveal->label()]))
                             ->nullable()
                             ->placeholder(__('app.reveal_none'))
-                            ->native(false)
-                            ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
-                            ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),
-                        Select::make('link_mode')
-                            ->label(__('app.share_mode'))
-                            ->options(collect(LinkMode::cases())->mapWithKeys(fn (LinkMode $mode) => [$mode->value => $mode->label()]))
-                            ->required()
                             ->native(false)
                             ->disabled(fn (?WeddingEvent $record): bool => $record?->isArchived() ?? false)
                             ->dehydrated(fn (?WeddingEvent $record): bool => ! ($record?->isArchived() ?? false)),

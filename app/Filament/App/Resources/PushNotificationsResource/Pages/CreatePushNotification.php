@@ -6,6 +6,7 @@ use App\Filament\App\Resources\PushNotificationsResource;
 use App\Jobs\SendGuestPushNotificationsJob;
 use App\Models\Guest;
 use App\Models\PushNotificationLog;
+use App\PlanFeature;
 use App\PushNotificationRecipientType;
 use App\PushNotificationStatus;
 use App\Services\WeddingScheduledNotificationService;
@@ -41,6 +42,11 @@ class CreatePushNotification extends CreateRecord
                 ->danger()
                 ->send();
 
+            $this->halt();
+        }
+
+        if (! $weddingEvent->hasFeature(PlanFeature::PushSend)) {
+            $this->dispatch('open-upgrade-modal');
             $this->halt();
         }
 

@@ -108,6 +108,11 @@
                     <p class="landing-body text-[#5c5246]">
                         {{ __('packages.shared.all_features_note') }}
                     </p>
+                    @if ($tier === \App\PlanTier::Free)
+                        <p class="landing-body text-sm text-[#5c5246] mt-3">
+                            {{ __('landing.pricing_free_limitations_note') }}
+                        </p>
+                    @endif
                 </div>
                 <ul class="grid sm:grid-cols-2 gap-x-10 gap-y-4 landing-fade-in">
                     @foreach (range(1, 14) as $i)

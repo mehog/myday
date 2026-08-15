@@ -123,7 +123,7 @@ class PricingPage extends Page
                 $purchasable = false;
                 $cta = __('pricing.cta_too_small');
                 $reason = __('pricing.cta_too_small');
-            } elseif ($wedding->plan_tier !== null) {
+            } elseif ($wedding->hasPaidPlan()) {
                 $cta = __('pricing.cta_upgrade');
             }
 
@@ -146,7 +146,7 @@ class PricingPage extends Page
     {
         $tier = auth()->user()?->weddingEvent?->plan_tier;
 
-        return $tier?->label() ?? __('pricing.no_plan');
+        return $tier?->label() ?? __('pricing.tier_free_name');
     }
 
     /**

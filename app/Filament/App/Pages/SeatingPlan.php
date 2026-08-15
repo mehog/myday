@@ -5,6 +5,7 @@ namespace App\Filament\App\Pages;
 use App\GuestLabel;
 use App\Models\Guest;
 use App\Models\WeddingEvent;
+use App\PlanFeature;
 use App\RsvpStatus;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -192,8 +193,20 @@ class SeatingPlan extends Page
                     'wire:loading.attr' => 'disabled',
                     'wire:target' => 'save',
                 ])
-                ->alpineClickHandler('window.seatingPlanEditor?.exportPdf()'),
+                ->alpineClickHandler(
+                    $this->canExportSeatingPdf()
+                        ? 'window.seatingPlanEditor?.exportPdf()'
+                        : "Livewire.dispatch('open-upgrade-modal')"
+                ),
         ];
+    }
+
+    protected function canExportSeatingPdf(): bool
+    {
+        $wedding = auth()->user()?->weddingEvent;
+
+        return $wedding instanceof WeddingEvent
+            && $wedding->hasFeature(PlanFeature::SeatingPdfExport);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Guest;
 use App\Models\User;
 use App\Models\WeddingEvent;
+use App\PlanFeature;
 use App\RsvpStatus;
 use chillerlan\QRCode\Common\EccLevel;
 use chillerlan\QRCode\Output\QROutputInterface;
@@ -27,6 +28,7 @@ class DownloadPlaceCardsController extends Controller
         $weddingEvent = $user->weddingEvent;
 
         abort_unless($weddingEvent instanceof WeddingEvent, 404);
+        abort_unless($weddingEvent->hasFeature(PlanFeature::QrPhotoAlbum), 403);
 
         $guests = $weddingEvent->guests()
             ->where('rsvp_status', RsvpStatus::Yes)

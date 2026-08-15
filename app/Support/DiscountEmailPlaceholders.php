@@ -21,9 +21,19 @@ final class DiscountEmailPlaceholders
                 ? $code->expires_at->timezone(config('app.timezone'))->format('Y-m-d')
                 : null;
 
+            if ($code === null) {
+                return [
+                    '{{code}}' => '',
+                    '{{discount_label}}' => '',
+                    '{{name}}' => $name,
+                    '{{expires}}' => '',
+                    '{{expires_clause}}' => '',
+                ];
+            }
+
             return [
-                '{{code}}' => $code?->code ?? 'SAMPLE15',
-                '{{discount_label}}' => $code?->discountLabel() ?? '15%',
+                '{{code}}' => $code->code,
+                '{{discount_label}}' => $code->discountLabel(),
                 '{{name}}' => $name,
                 '{{expires}}' => $hasExpiry
                     ? (string) $date

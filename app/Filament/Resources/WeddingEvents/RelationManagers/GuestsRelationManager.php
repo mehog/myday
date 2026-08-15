@@ -8,6 +8,7 @@ use App\InvitePlatform;
 use App\Models\Guest;
 use App\Models\GuestChild;
 use App\Models\WeddingMenuOption;
+use App\PlanFeature;
 use App\RsvpStatus;
 use App\Services\SyncGuestChildren;
 use App\Support\Clipboard;
@@ -316,6 +317,18 @@ class GuestsRelationManager extends RelationManager
                             ->content($this->trans('place_cards_print_hint')),
                     ])
                     ->action(function (array $data, Action $action): void {
+                        $wedding = $this->getOwnerRecord();
+
+                        if (
+                            filament()->getCurrentPanel()?->getId() === 'app'
+                            && ! $wedding->hasFeature(PlanFeature::QrPhotoAlbum)
+                        ) {
+                            $this->dispatch('open-upgrade-modal');
+                            $action->halt();
+
+                            return;
+                        }
+
                         $url = route('guests.place-cards.download', [
                             'bg' => $data['bg'],
                             'text' => $data['text'],
@@ -328,7 +341,7 @@ class GuestsRelationManager extends RelationManager
                 Action::make('importCsv')
                     ->label($this->trans('import_csv'))
                     ->icon('heroicon-o-arrow-up-tray')
-                    ->visible(fn (): bool => ! $this->coupleSetupLocked() && $this->canAddMoreGuests())
+                    ->visible(false)
                     ->form([
                         FileUpload::make('file')
                             ->label($this->trans('csv_file'))

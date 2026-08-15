@@ -136,7 +136,7 @@ class DodoWebhookTest extends TestCase
         $wedding->refresh();
 
         $this->assertSame(PlanTier::Plus, $wedding->plan_tier);
-        $this->assertSame(200, $wedding->guest_limit);
+        $this->assertSame(250, $wedding->guest_limit);
     }
 
     public function test_refund_deactivates_when_no_other_succeeded_payments(): void

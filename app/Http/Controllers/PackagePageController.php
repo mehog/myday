@@ -29,7 +29,7 @@ class PackagePageController extends Controller
     {
         $planTier = PlanTier::tryFrom($tier);
 
-        if ($planTier === null) {
+        if ($planTier === null || (! $planTier->isPurchasable() && $planTier !== PlanTier::Free)) {
             throw new NotFoundHttpException;
         }
 
@@ -84,10 +84,12 @@ class PackagePageController extends Controller
                 'guests_label' => $tier->guestLimit() === null
                     ? __('pricing.guests_unlimited')
                     : __('pricing.guests_up_to', ['count' => $tier->guestLimit()]),
-                'price_label' => $plan['price'].' '.$region->currency(),
+                'price_label' => $tier === PlanTier::Free
+                    ? __('landing.pricing_plan_free_price')
+                    : $plan['price'].' '.$region->currency(),
                 'url' => route('packages.show', ['tier' => $tier->value]),
             ];
-        }, DodoCatalog::plansForRegion($region));
+        }, DodoCatalog::displayPlansForRegion($region));
     }
 
     /**

@@ -38,7 +38,7 @@ class TrackUserIpOnVerificationTest extends TestCase
 
         $this->withServerVariables(['REMOTE_ADDR' => $ip])
             ->get($this->verificationUrl($user))
-            ->assertRedirect('/app/pricing');
+            ->assertRedirect('/app');
 
         $user->refresh();
 
@@ -60,7 +60,7 @@ class TrackUserIpOnVerificationTest extends TestCase
         $user = User::factory()->unverified()->create();
         WeddingEvent::factory()->inactive()->create(['user_id' => $user->id]);
 
-        $this->get($this->verificationUrl($user))->assertRedirect('/app/pricing');
+        $this->get($this->verificationUrl($user))->assertRedirect('/app');
 
         $user->refresh();
 
@@ -87,7 +87,7 @@ class TrackUserIpOnVerificationTest extends TestCase
 
         $this->withServerVariables(['REMOTE_ADDR' => $ip])
             ->get($this->verificationUrl($user))
-            ->assertRedirect('/app/pricing');
+            ->assertRedirect('/app');
 
         $user->refresh();
 

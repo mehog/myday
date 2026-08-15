@@ -59,11 +59,21 @@ class DodoCheckoutTest extends TestCase
     public function test_checkout_rejects_tier_too_small_for_guest_count(): void
     {
         $user = User::factory()->create();
-        $wedding = WeddingEvent::factory()->inactive()->create(['user_id' => $user->id]);
+        $wedding = WeddingEvent::factory()->create([
+            'user_id' => $user->id,
+            'plan_tier' => PlanTier::Premium,
+            'guest_limit' => null,
+            'is_active' => true,
+        ]);
         Guest::factory()->count(120)->create(['wedding_event_id' => $wedding->id]);
 
+        $wedding->forceFill([
+            'plan_tier' => PlanTier::Free,
+            'guest_limit' => 50,
+        ])->save();
+
         $this->expectException(ValidationException::class);
-        app(DodoCheckoutService::class)->createCheckout($user, PlanTier::Basic);
+        app(DodoCheckoutService::class)->createCheckout($user->fresh(), PlanTier::Basic);
     }
 
     public function test_checkout_creates_pending_payment_with_trusted_metadata(): void
@@ -277,6 +287,7 @@ class DodoCheckoutTest extends TestCase
             ->assertOk()
             ->assertSee('id="cijene"', false)
             ->assertSee('One-time payment', false)
-            ->assertSee('After payment is confirmed', false);
+            ->assertSee('Free forever', false)
+            ->assertSee('Up to 50 guests', false);
     }
 }

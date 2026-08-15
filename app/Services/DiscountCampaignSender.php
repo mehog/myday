@@ -92,7 +92,7 @@ class DiscountCampaignSender
 
         $campaign->loadMissing(['discountCode', 'template']);
 
-        if ($campaign->discountCode === null || ! $campaign->discountCode->is_active) {
+        if ($campaign->discountCode !== null && ! $campaign->discountCode->is_active) {
             throw new RuntimeException('Discount code must be active before sending.');
         }
 

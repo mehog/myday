@@ -45,6 +45,7 @@ return [
     'field_subject_locale' => 'Betreff (:locale)',
     'field_body_locale' => 'Text (:locale)',
 
+    'helper_optional_code' => 'Leer lassen, um eine allgemeine E-Mail ohne Rabattcode zu senden.',
     'helper_template' => 'Der Inhalt kommt aus der gewählten Vorlage in der Sprache des Empfängers (oder der erzwungenen Kampagnensprache).',
     'helper_template_manage' => 'Vorlagen unter Rabatt → E-Mail-Vorlagen erstellen und bearbeiten.',
     'helper_email_preview' => 'Live-Vorschau der E-Mail. Aktualisiert sich bei Änderung von Vorlage, Code oder Sprache.',
@@ -56,7 +57,7 @@ return [
     'type_percentage' => 'Prozent',
     'type_flat' => 'Fester Betrag',
 
-    'audience_unpaid_verified' => 'Unbezahlte verifizierte Paare',
+    'audience_unpaid_verified' => 'Kostenlose / unbezahlte verifizierte Paare',
     'audience_unverified' => 'Unverifizierte Benutzer',
     'audience_paid' => 'Zahlende Benutzer',
     'audience_manual' => 'Benutzer auswählen',

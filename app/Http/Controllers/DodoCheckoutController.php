@@ -20,6 +20,12 @@ class DodoCheckoutController extends Controller
 
         $tier = PlanTier::from($validated['tier']);
 
+        if (! $tier->isPurchasable()) {
+            return redirect()
+                ->to('/app/pricing')
+                ->with('error', __('pricing.error_tier_unavailable'));
+        }
+
         try {
             $result = $checkoutService->createCheckout($request->user(), $tier);
         } catch (ValidationException $e) {

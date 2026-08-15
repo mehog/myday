@@ -69,6 +69,7 @@ class WeddingEventForm
                         Select::make('link_mode')
                             ->options(collect(LinkMode::cases())->mapWithKeys(fn (LinkMode $mode) => [$mode->value => $mode->label()]))
                             ->required()
+                            ->default(LinkMode::TokenOnly)
                             ->native(false),
                         FileUpload::make('hero_image')
                             ->image()

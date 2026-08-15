@@ -29,7 +29,7 @@ class DodoCheckoutService
             ]);
         }
 
-        if (! $wedding->canPurchaseTier($tier)) {
+        if (! $tier->isPurchasable() || ! $wedding->canPurchaseTier($tier)) {
             throw ValidationException::withMessages([
                 'tier' => __('pricing.error_tier_unavailable'),
             ]);

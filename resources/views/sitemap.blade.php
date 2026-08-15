@@ -22,7 +22,7 @@
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
-    @foreach (['basic', 'plus', 'premium', 'deluxe'] as $tier)
+    @foreach (['free', 'basic', 'plus', 'premium'] as $tier)
     <url>
         <loc>{{ route('packages.show', ['tier' => $tier]) }}</loc>
         <changefreq>weekly</changefreq>

@@ -7,6 +7,7 @@ use App\InvitationReveal;
 use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\LinkMode;
+use App\PlanFeature;
 use App\PlanTier;
 use App\RsvpStatus;
 use App\Support\Locale;
@@ -200,7 +201,16 @@ class WeddingEvent extends Model
 
     public function hasPaidPlan(): bool
     {
-        return $this->plan_tier !== null;
+        return $this->plan_tier !== null && $this->plan_tier->isPaid();
+    }
+
+    public function hasFeature(PlanFeature $feature): bool
+    {
+        if ($this->plan_tier === null) {
+            return false;
+        }
+
+        return $this->plan_tier->hasFeature($feature);
     }
 
     public function activeGuestCount(): int
@@ -298,7 +308,7 @@ class WeddingEvent extends Model
 
     public function remainingGuestSlots(): ?int
     {
-        if (! $this->hasPaidPlan()) {
+        if ($this->plan_tier === null) {
             return null;
         }
 
@@ -315,8 +325,8 @@ class WeddingEvent extends Model
             return false;
         }
 
-        if (! $this->hasPaidPlan()) {
-            return true;
+        if ($this->plan_tier === null) {
+            return false;
         }
 
         if ($this->guest_limit === null) {
@@ -333,11 +343,15 @@ class WeddingEvent extends Model
 
     public function canPurchaseTier(PlanTier $tier): bool
     {
+        if (! $tier->isPurchasable()) {
+            return false;
+        }
+
         if (! $tier->coversGuestCount($this->activeGuestCount())) {
             return false;
         }
 
-        if ($this->plan_tier === null) {
+        if ($this->plan_tier === null || ! $this->plan_tier->isPaid()) {
             return true;
         }
 
@@ -501,6 +515,10 @@ class WeddingEvent extends Model
 
     public function acceptsGuestPhotos(): bool
     {
+        if (! $this->hasFeature(PlanFeature::QrPhotoAlbum)) {
+            return false;
+        }
+
         $start = $this->wedding_date->copy()->startOfDay();
         $end = $this->wedding_date->copy()->addDays(30)->endOfDay();
 

@@ -12,6 +12,13 @@
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-14">
             @foreach ([
                 [
+                    'tier' => 'free',
+                    'name' => __('landing.pricing_plan_free_name'),
+                    'guests' => __('landing.pricing_plan_free_guests'),
+                    'price' => __('landing.pricing_plan_free_price'),
+                    'highlighted' => false,
+                ],
+                [
                     'tier' => 'basic',
                     'name' => __('landing.pricing_plan_basic_name'),
                     'guests' => __('landing.pricing_plan_basic_guests'),
@@ -30,13 +37,6 @@
                     'name' => __('landing.pricing_plan_premium_name'),
                     'guests' => __('landing.pricing_plan_premium_guests'),
                     'price' => __('landing.pricing_plan_premium_price'),
-                    'highlighted' => false,
-                ],
-                [
-                    'tier' => 'deluxe',
-                    'name' => __('landing.pricing_plan_deluxe_name'),
-                    'guests' => __('landing.pricing_plan_deluxe_guests'),
-                    'price' => __('landing.pricing_plan_deluxe_price'),
                     'highlighted' => false,
                 ],
             ] as $plan)
@@ -59,7 +59,9 @@
                         </h3>
                         <p class="landing-body text-sm text-[#5c5246] mb-4">{{ $plan['guests'] }}</p>
                         <p class="landing-heading text-4xl sm:text-5xl text-[#1a1208]">{{ $plan['price'] }}</p>
-                        <p class="landing-body text-xs text-[#5c5246]/80 mt-2">{{ __('landing.pricing_one_time') }}</p>
+                        <p class="landing-body text-xs text-[#5c5246]/80 mt-2">
+                            {{ $plan['tier'] === 'free' ? __('landing.pricing_free_forever') : __('landing.pricing_one_time') }}
+                        </p>
                     </div>
 
                     <a
@@ -98,6 +100,10 @@
                     </li>
                 @endforeach
             </ul>
+
+            <p class="landing-body text-sm text-[#5c5246] mt-8 leading-relaxed">
+                {{ __('landing.pricing_free_limitations_note') }}
+            </p>
 
             <div class="mt-10 text-center space-y-3">
                 <p class="landing-body text-sm text-[#5c5246]">

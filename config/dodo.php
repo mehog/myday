@@ -33,26 +33,35 @@ return [
     |--------------------------------------------------------------------------
     | Plan tiers (guest capacity)
     |--------------------------------------------------------------------------
+    |
+    | Free is the default assigned plan (not sold via Dodo).
+    | Deluxe is kept for existing customers only — not sold or marketed.
+    |
     */
 
     'tiers' => [
+        'free' => [
+            'guest_limit' => 50,
+            'sort' => 0,
+            'highlighted' => false,
+        ],
         'basic' => [
             'guest_limit' => 100,
             'sort' => 1,
             'highlighted' => false,
         ],
         'plus' => [
-            'guest_limit' => 200,
+            'guest_limit' => 250,
             'sort' => 2,
             'highlighted' => true,
         ],
         'premium' => [
-            'guest_limit' => 300,
+            'guest_limit' => null, // unlimited
             'sort' => 3,
             'highlighted' => false,
         ],
         'deluxe' => [
-            'guest_limit' => null, // unlimited
+            'guest_limit' => null, // unlimited — legacy only
             'sort' => 4,
             'highlighted' => false,
         ],
@@ -72,6 +81,7 @@ return [
         'first_world' => [
             'currency' => 'EUR',
             'prices' => [
+                'free' => 0,
                 'basic' => 80,
                 'plus' => 160,
                 'premium' => 240,
@@ -81,6 +91,7 @@ return [
         'third_world' => [
             'currency' => 'BAM',
             'prices' => [
+                'free' => 0,
                 'basic' => 80,
                 'plus' => 160,
                 'premium' => 240,

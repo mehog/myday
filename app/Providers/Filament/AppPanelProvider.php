@@ -76,6 +76,10 @@ class AppPanelProvider extends PanelProvider
                 PanelsRenderHook::BODY_END,
                 fn () => view('components.app.support-bubble'),
             )
+            ->renderHook(
+                PanelsRenderHook::BODY_END,
+                fn () => view('components.app.upgrade-required-modal'),
+            )
             ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\Filament\App\Resources')
             ->discoverPages(in: app_path('Filament/App/Pages'), for: 'App\Filament\App\Pages')
             ->pages([

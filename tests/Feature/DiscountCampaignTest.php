@@ -61,6 +61,48 @@ class DiscountCampaignTest extends TestCase
         $this->assertFalse($users->contains('id', $demoUser->id));
     }
 
+    public function test_audience_resolver_unpaid_verified_includes_free_plan(): void
+    {
+        $free = User::factory()->create();
+        WeddingEvent::factory()->inactive()->for($free)->create(['plan_tier' => PlanTier::Free]);
+
+        $legacyNull = User::factory()->create();
+        WeddingEvent::factory()->inactive()->for($legacyNull)->create(['plan_tier' => null]);
+
+        $paid = User::factory()->create();
+        WeddingEvent::factory()->for($paid)->create(['plan_tier' => PlanTier::Basic]);
+
+        $campaign = $this->makeCampaign(['audience' => DiscountEmailAudience::UnpaidVerified]);
+        $users = app(DiscountCampaignAudienceResolver::class)->resolve($campaign);
+
+        $this->assertTrue($users->contains('id', $free->id));
+        $this->assertTrue($users->contains('id', $legacyNull->id));
+        $this->assertFalse($users->contains('id', $paid->id));
+    }
+
+    public function test_audience_resolver_paid_excludes_free_plan(): void
+    {
+        $free = User::factory()->create();
+        WeddingEvent::factory()->inactive()->for($free)->create(['plan_tier' => PlanTier::Free]);
+
+        $legacyNull = User::factory()->create();
+        WeddingEvent::factory()->inactive()->for($legacyNull)->create(['plan_tier' => null]);
+
+        $paid = User::factory()->create();
+        WeddingEvent::factory()->for($paid)->create(['plan_tier' => PlanTier::Basic]);
+
+        $deluxe = User::factory()->create();
+        WeddingEvent::factory()->for($deluxe)->create(['plan_tier' => PlanTier::Deluxe]);
+
+        $campaign = $this->makeCampaign(['audience' => DiscountEmailAudience::Paid]);
+        $users = app(DiscountCampaignAudienceResolver::class)->resolve($campaign);
+
+        $this->assertTrue($users->contains('id', $paid->id));
+        $this->assertTrue($users->contains('id', $deluxe->id));
+        $this->assertFalse($users->contains('id', $free->id));
+        $this->assertFalse($users->contains('id', $legacyNull->id));
+    }
+
     public function test_audience_resolver_manual_users(): void
     {
         $a = User::factory()->create();
@@ -322,6 +364,72 @@ class DiscountCampaignTest extends TestCase
         app(DiscountCampaignSender::class)->send($campaign, requirePreview: true);
     }
 
+    public function test_send_and_preview_succeed_without_discount_code(): void
+    {
+        $user = User::factory()->create(['locale' => 'en', 'name' => 'Ana']);
+        WeddingEvent::factory()->inactive()->for($user)->create(['plan_tier' => PlanTier::Free]);
+
+        $template = $this->makeTemplate([
+            'subjects' => [
+                'en' => 'Free plan for {{name}}',
+                'bs' => 'Free plan for {{name}}',
+                'de' => 'Free plan for {{name}}',
+                'hr' => 'Free plan for {{name}}',
+            ],
+            'bodies' => [
+                'en' => 'Your invitation is live, {{name}}.',
+                'bs' => 'Your invitation is live, {{name}}.',
+                'de' => 'Your invitation is live, {{name}}.',
+                'hr' => 'Your invitation is live, {{name}}.',
+            ],
+        ]);
+
+        $campaign = DiscountEmailCampaign::query()->create([
+            'discount_code_id' => null,
+            'discount_email_template_id' => $template->id,
+            'audience' => DiscountEmailAudience::Manual,
+            'user_ids' => [$user->id],
+            'status' => DiscountEmailCampaignStatus::Draft,
+            'send_locale' => 'en',
+        ]);
+
+        app(DiscountCampaignSender::class)->preview($campaign, $user->email, 'en');
+        app(DiscountCampaignSender::class)->send($campaign, requirePreview: true);
+        (new SendDiscountCampaignEmailsJob($campaign->id))->handle();
+
+        $email = $this->lastSentEmail();
+        $this->assertSame('Free plan for Ana', $email->getSubject());
+        $this->assertStringContainsString('Your invitation is live, Ana.', $email->getTextBody());
+        $this->assertStringNotContainsString('Your discount code:', $email->getTextBody());
+        $this->assertStringNotContainsString('SAMPLE15', $email->getTextBody());
+        $this->assertSame(DiscountEmailRecipientStatus::Sent, $campaign->recipients()->first()?->status);
+    }
+
+    public function test_send_fails_when_selected_code_is_inactive(): void
+    {
+        $user = User::factory()->create();
+        WeddingEvent::factory()->inactive()->for($user)->create(['plan_tier' => PlanTier::Free]);
+
+        $code = DiscountCode::query()->create([
+            'code' => 'DEAD15',
+            'name' => 'Inactive',
+            'type' => DiscountType::Percentage,
+            'amount' => 15,
+            'is_active' => false,
+        ]);
+
+        $campaign = $this->makeCampaign([
+            'discount_code_id' => $code->id,
+            'audience' => DiscountEmailAudience::Manual,
+            'user_ids' => [$user->id],
+            'previewed_at' => now(),
+        ]);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Discount code must be active before sending.');
+        app(DiscountCampaignSender::class)->send($campaign, requirePreview: false);
+    }
+
     public function test_send_dispatches_job_and_snapshots_subject(): void
     {
         Queue::fake();
@@ -398,12 +506,13 @@ class DiscountCampaignTest extends TestCase
         $template->delete();
     }
 
-    public function test_template_seeder_creates_two_multilingual_examples(): void
+    public function test_template_seeder_creates_three_multilingual_examples(): void
     {
         $this->seed(DiscountEmailTemplateSeeder::class);
 
         $templates = DiscountEmailTemplate::query()->orderBy('name')->get();
-        $this->assertCount(2, $templates);
+        $this->assertCount(3, $templates);
+        $this->assertTrue($templates->contains('name', 'Free plan is live'));
 
         foreach ($templates as $template) {
             foreach (['en', 'bs', 'de', 'hr'] as $locale) {
@@ -412,8 +521,11 @@ class DiscountCampaignTest extends TestCase
             }
         }
 
+        $freePlan = $templates->firstWhere('name', 'Free plan is live');
+        $this->assertStringNotContainsString('{{code}}', (string) $freePlan?->bodyFor('en'));
+
         $this->seed(DiscountEmailTemplateSeeder::class);
-        $this->assertSame(2, DiscountEmailTemplate::query()->count());
+        $this->assertSame(3, DiscountEmailTemplate::query()->count());
     }
 
     /**

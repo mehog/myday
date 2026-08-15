@@ -25,12 +25,6 @@ class VerifyEmailController extends Controller
 
         Auth::login($user);
 
-        $wedding = $user->weddingEvent;
-
-        if ($wedding !== null && ! $wedding->hasPaidPlan()) {
-            return redirect('/app/pricing');
-        }
-
         return redirect('/app');
     }
 }

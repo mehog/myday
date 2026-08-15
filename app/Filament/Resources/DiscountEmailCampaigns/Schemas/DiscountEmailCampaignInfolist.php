@@ -22,6 +22,7 @@ class DiscountEmailCampaignInfolist
                     ->schema([
                         TextEntry::make('discountCode.code')
                             ->label(__('discounts.field_code'))
+                            ->placeholder('—')
                             ->copyable(),
                         TextEntry::make('template.name')
                             ->label(__('discounts.field_template'))

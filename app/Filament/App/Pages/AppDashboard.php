@@ -9,7 +9,6 @@ use App\Filament\App\Widgets\VisitChartWidget;
 use App\Filament\App\Widgets\VisitStatsWidget;
 use App\Filament\App\Widgets\WeddingMemoriesWidget;
 use App\Filament\App\Widgets\WeddingOverviewWidget;
-use App\Support\Clipboard;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
@@ -170,14 +169,6 @@ class AppDashboard extends BaseDashboard
                 ->url($wedding->public_url)
                 ->openUrlInNewTab(),
         ];
-
-        if ($wedding->is_active) {
-            $actions[] = Action::make('copyLink')
-                ->label(__('guests.copy_link'))
-                ->icon('heroicon-o-clipboard')
-                ->color('gray')
-                ->alpineClickHandler(fn (): string => Clipboard::alpineCopy($wedding->public_url, __('guests.link_copied')));
-        }
 
         return $actions;
     }

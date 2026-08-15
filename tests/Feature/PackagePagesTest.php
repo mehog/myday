@@ -21,6 +21,7 @@ class PackagePagesTest extends TestCase
         $this->get('/plans?locale=en')
             ->assertOk()
             ->assertSee('NasDan plans', false)
+            ->assertSee(route('packages.show', ['tier' => 'free']), false)
             ->assertSee(route('packages.show', ['tier' => 'premium']), false)
             ->assertSee('application/ld+json', false)
             ->assertSee('hreflang="bs"', false)
@@ -29,7 +30,7 @@ class PackagePagesTest extends TestCase
 
     public function test_each_package_page_is_publicly_accessible(): void
     {
-        foreach (['basic', 'plus', 'premium', 'deluxe'] as $tier) {
+        foreach (['free', 'basic', 'plus', 'premium'] as $tier) {
             $this->get('/plans/'.$tier.'?locale=en')
                 ->assertOk()
                 ->assertSee(route('packages.index'), false)
@@ -38,6 +39,11 @@ class PackagePagesTest extends TestCase
                 ->assertSee('"@type":"FAQPage"', false)
                 ->assertSee('"@type":"BreadcrumbList"', false);
         }
+    }
+
+    public function test_deluxe_package_page_returns_not_found(): void
+    {
+        $this->get('/plans/deluxe')->assertNotFound();
     }
 
     public function test_unknown_package_tier_returns_not_found(): void
@@ -73,7 +79,8 @@ class PackagePagesTest extends TestCase
             ->assertOk()
             ->assertSee(route('packages.index'), false)
             ->assertSee(route('packages.show', ['tier' => 'basic']), false)
-            ->assertSee(route('packages.show', ['tier' => 'deluxe']), false);
+            ->assertSee(route('packages.show', ['tier' => 'free']), false)
+            ->assertDontSee(route('packages.show', ['tier' => 'deluxe']), false);
 
         $robots = $this->get('/robots.txt')->assertOk()->getContent();
 

@@ -9,6 +9,7 @@ use App\LinkMode;
 use App\Models\Referral;
 use App\Models\User;
 use App\Models\WeddingEvent;
+use App\PlanTier;
 use App\Support\Locale;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -138,8 +139,10 @@ class WeddingOnboarding extends Component
                 'reveal_animation' => $this->reveal_animation !== ''
                     ? InvitationReveal::from($this->reveal_animation)
                     : null,
-                'link_mode' => LinkMode::Public,
-                'is_active' => false,
+                'link_mode' => LinkMode::TokenOnly,
+                'plan_tier' => PlanTier::Free,
+                'guest_limit' => PlanTier::Free->guestLimit(),
+                'is_active' => true,
             ]);
 
             $referrerId = null;

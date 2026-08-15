@@ -170,12 +170,12 @@ class InvitationLocaleTest extends TestCase
         Filament::setCurrentPanel(Filament::getPanel('app'));
 
         Livewire::test(EditMyWedding::class, ['record' => $event->getKey()])
+            ->assertFormFieldDoesNotExist('link_mode')
             ->fillForm([
                 'groom_name' => $event->groom_name,
                 'bride_name' => $event->bride_name,
                 'theme' => $event->theme->value,
                 'template' => $event->template->value,
-                'link_mode' => $event->link_mode->value,
                 'wedding_date' => $event->wedding_date->format('Y-m-d H:i:s'),
                 'invitation_locale' => 'de',
             ])

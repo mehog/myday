@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\WeddingEvent;
+use App\PlanFeature;
 use App\RsvpStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -21,6 +22,7 @@ class DownloadSeatingPlanPdfController extends Controller
         $wedding = $user->weddingEvent;
 
         abort_unless($wedding instanceof WeddingEvent, 404);
+        abort_unless($wedding->hasFeature(PlanFeature::SeatingPdfExport), 403);
 
         $guests = $wedding->guests()
             ->where('rsvp_status', RsvpStatus::Yes)

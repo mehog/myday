@@ -45,6 +45,7 @@ return [
     'field_subject_locale' => 'Subject (:locale)',
     'field_body_locale' => 'Body (:locale)',
 
+    'helper_optional_code' => 'Leave empty to send a general email without a discount code.',
     'helper_template' => 'Content comes from the selected template in each recipient’s language (or the forced campaign language).',
     'helper_template_manage' => 'Create and edit templates under Discount → Email templates.',
     'helper_email_preview' => 'Live preview of the email that will be sent. Updates when you change template, code, or language.',
@@ -56,7 +57,7 @@ return [
     'type_percentage' => 'Percentage',
     'type_flat' => 'Flat amount',
 
-    'audience_unpaid_verified' => 'Unpaid verified couples',
+    'audience_unpaid_verified' => 'Free / unpaid verified couples',
     'audience_unverified' => 'Unverified users',
     'audience_paid' => 'Paid users',
     'audience_manual' => 'Choose users',

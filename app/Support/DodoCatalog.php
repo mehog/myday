@@ -17,6 +17,12 @@ class DodoCatalog
 
     public static function productId(PricingRegion $region, PlanTier $tier, ?string $mode = null): string
     {
+        if (! $tier->isPurchasable() && $tier !== PlanTier::Deluxe) {
+            throw new InvalidArgumentException(
+                "Plan tier {$tier->value} has no Dodo product ID."
+            );
+        }
+
         $mode ??= self::mode();
         $productId = config("dodo.products.{$mode}.{$region->value}.{$tier->value}");
 
@@ -39,6 +45,10 @@ class DodoCatalog
 
         foreach (PricingRegion::cases() as $region) {
             foreach (PlanTier::cases() as $tier) {
+                if ($tier === PlanTier::Free) {
+                    continue;
+                }
+
                 if (($catalog[$region->value][$tier->value] ?? null) === $productId) {
                     return [
                         'tier' => $tier,
@@ -52,6 +62,8 @@ class DodoCatalog
     }
 
     /**
+     * Purchasable paid plans for checkout / app pricing page.
+     *
      * @return list<array{
      *     tier: PlanTier,
      *     product_id: string,
@@ -65,10 +77,38 @@ class DodoCatalog
     {
         $plans = [];
 
-        foreach (PlanTier::ordered() as $tier) {
+        foreach (PlanTier::purchasable() as $tier) {
             $plans[] = [
                 'tier' => $tier,
                 'product_id' => self::productId($region, $tier),
+                'price' => $region->priceFor($tier),
+                'currency' => $region->currency(),
+                'guest_limit' => $tier->guestLimit(),
+                'highlighted' => $tier->isHighlighted(),
+            ];
+        }
+
+        return $plans;
+    }
+
+    /**
+     * Public marketing plans including Free (no product IDs).
+     *
+     * @return list<array{
+     *     tier: PlanTier,
+     *     price: int,
+     *     currency: string,
+     *     guest_limit: ?int,
+     *     highlighted: bool
+     * }>
+     */
+    public static function displayPlansForRegion(PricingRegion $region): array
+    {
+        $plans = [];
+
+        foreach (PlanTier::orderedForDisplay() as $tier) {
+            $plans[] = [
+                'tier' => $tier,
                 'price' => $region->priceFor($tier),
                 'currency' => $region->currency(),
                 'guest_limit' => $tier->guestLimit(),

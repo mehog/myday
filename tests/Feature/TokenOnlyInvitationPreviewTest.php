@@ -7,6 +7,7 @@ use App\Livewire\InvitationPage;
 use App\Models\Guest;
 use App\Models\User;
 use App\Models\WeddingEvent;
+use Database\Seeders\SetPersonalTokenLinkModeSeeder;
 use Livewire\Livewire;
 use Tests\Concerns\RefreshInMemoryDatabase;
 use Tests\TestCase;
@@ -104,5 +105,16 @@ class TokenOnlyInvitationPreviewTest extends TestCase
             ->assertSet('rsvpSubmitted', false);
 
         $this->assertDatabaseCount('guests', 0);
+    }
+
+    public function test_seeder_sets_all_invitations_to_personal_token_links(): void
+    {
+        $public = WeddingEvent::factory()->create(['link_mode' => LinkMode::Public]);
+        $tokenOnly = WeddingEvent::factory()->create(['link_mode' => LinkMode::TokenOnly]);
+
+        $this->seed(SetPersonalTokenLinkModeSeeder::class);
+
+        $this->assertSame(LinkMode::TokenOnly, $public->fresh()->link_mode);
+        $this->assertSame(LinkMode::TokenOnly, $tokenOnly->fresh()->link_mode);
     }
 }
