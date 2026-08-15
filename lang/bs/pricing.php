@@ -56,10 +56,13 @@ return [
     'checkout_policies_and' => 'i',
     'checkout_faq_prefix' => 'Pogledajte i',
     'referral_discount_applied' => 'Referral popust: :percent% primijenjen na naplati.',
-    'upgrade_modal_title' => 'Nadogradite paket za ovu mogućnost',
-    'upgrade_modal_body' => 'Ova je mogućnost dostupna u paketima Basic, Plus i Premium. Nadogradite paket da nastavite.',
+    'upgrade_modal_title' => 'Otključajte ovo plaćenim paketom',
+    'upgrade_modal_body' => 'Basic, Plus i Premium uključuju sve premium alate. Jednokratna uplata — bez pretplate.',
     'upgrade_modal_cta' => 'Pogledaj pakete',
     'upgrade_modal_cancel' => 'Ne sada',
     'upgrade_modal_close' => 'Zatvori',
+    'upgrade_modal_perk_qr' => 'QR stolne kartice za foto album',
+    'upgrade_modal_perk_push' => 'Slanje push obavijesti gostima',
+    'upgrade_modal_perk_pdf' => 'PDF izvoz rasporeda sjedenja',
 
 ];

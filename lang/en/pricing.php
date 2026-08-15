@@ -56,10 +56,13 @@ return [
     'checkout_policies_and' => 'and',
     'checkout_faq_prefix' => 'See also the',
     'referral_discount_applied' => 'Referral discount: :percent% applied at checkout.',
-    'upgrade_modal_title' => 'Upgrade to unlock this feature',
-    'upgrade_modal_body' => 'This feature is available on Basic, Plus and Premium. Upgrade your plan to continue.',
+    'upgrade_modal_title' => 'Unlock this with a paid plan',
+    'upgrade_modal_body' => 'Basic, Plus and Premium include every premium tool. One-time payment — no subscription.',
     'upgrade_modal_cta' => 'View plans',
     'upgrade_modal_cancel' => 'Not now',
     'upgrade_modal_close' => 'Close',
+    'upgrade_modal_perk_qr' => 'QR place cards for the photo album',
+    'upgrade_modal_perk_push' => 'Sending push notifications to guests',
+    'upgrade_modal_perk_pdf' => 'Seating plan PDF export',
 
 ];

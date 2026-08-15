@@ -56,10 +56,13 @@ return [
     'checkout_policies_and' => 'und',
     'checkout_faq_prefix' => 'Siehe auch die',
     'referral_discount_applied' => 'Empfehlungsrabatt: :percent% beim Checkout angewendet.',
-    'upgrade_modal_title' => 'Upgrade für diese Funktion',
-    'upgrade_modal_body' => 'Diese Funktion ist in Basic, Plus und Premium verfügbar. Upgraden Sie Ihren Plan, um fortzufahren.',
+    'upgrade_modal_title' => 'Mit einem bezahlten Plan freischalten',
+    'upgrade_modal_body' => 'Basic, Plus und Premium enthalten alle Premium-Tools. Einmalzahlung — kein Abo.',
     'upgrade_modal_cta' => 'Pläne ansehen',
     'upgrade_modal_cancel' => 'Nicht jetzt',
     'upgrade_modal_close' => 'Schließen',
+    'upgrade_modal_perk_qr' => 'QR-Tischkarten für das Fotoalbum',
+    'upgrade_modal_perk_push' => 'Push-Nachrichten an Gäste senden',
+    'upgrade_modal_perk_pdf' => 'Sitzplan als PDF exportieren',
 
 ];
