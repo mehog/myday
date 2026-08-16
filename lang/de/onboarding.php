@@ -42,6 +42,7 @@ return [
     'song_search_placeholder' => 'Künstler oder Titel…',
     'song_or_paste' => 'Oder YouTube-URL unten einfügen',
     'song_no_results' => 'Keine Treffer. Andere Suche oder Link einfügen.',
+    'song_search_more' => 'Weitere Songs suchen',
     'schedule_title' => 'Tagesablauf skizzieren',
     'schedule_subtitle' => 'Fügt ein paar Momente hinzu — Zeremonie, Dinner, Tanz. Später editierbar.',
     'schedule_item' => 'Moment',

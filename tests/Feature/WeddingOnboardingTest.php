@@ -14,6 +14,8 @@ use App\Models\User;
 use App\Models\WeddingEvent;
 use App\Models\WeddingLocation;
 use App\PlanTier;
+use App\Support\Locale;
+use App\Support\OnboardingSongs;
 use App\Support\OnboardingSteps;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Notification;
@@ -264,6 +266,35 @@ class WeddingOnboardingTest extends TestCase
             ->assertSee(__('onboarding.preview_draft_banner'));
     }
 
+    public function test_preview_rsvp_is_non_interactive_and_respond_is_safe(): void
+    {
+        session()->put(config('onboarding.draft_session_key'), [
+            'groom_name' => 'Amir',
+            'bride_name' => 'Amina',
+            'wedding_date' => now()->addMonths(3)->toDateString(),
+            'theme' => InvitationTheme::AmberGold->value,
+            'template' => InvitationTemplate::Classic->value,
+            'reveal_animation' => '',
+            'location_name' => 'Garden Hall',
+            'location_address' => 'Sarajevo',
+            'motto' => 'Forever',
+            'music_url' => '',
+            'hero_temp_url' => null,
+            'schedule_items' => [],
+            'invitation_locale' => 'en',
+        ]);
+
+        Livewire::test(OnboardingPreview::class)
+            ->assertSet('isTokenOnlyPreview', true)
+            ->assertSee(__('invitation.token_only_preview_rsvp'))
+            ->assertDontSee('$wire.respond', false)
+            ->assertDontSee(__('invitation.yes_attending'))
+            ->assertDontSee(__('invitation.your_name'))
+            ->call('respond', 'yes');
+
+        $this->assertDatabaseCount('guests', 0);
+    }
+
     public function test_open_preview_stores_draft_and_shows_modal(): void
     {
         Livewire::test(WeddingOnboarding::class)
@@ -358,5 +389,91 @@ class WeddingOnboardingTest extends TestCase
             ->call('selectMotto', $preset)
             ->assertSet('motto', $preset)
             ->assertSee($preset);
+    }
+
+    public function test_song_step_shows_scrollable_song_list(): void
+    {
+        $catalogCount = count(OnboardingSongs::forLocale());
+
+        $component = Livewire::test(WeddingOnboarding::class)
+            ->set('step', 'song');
+
+        $this->assertCount($catalogCount, $component->get('songSuggestions'));
+
+        $html = $component->html();
+        $this->assertSame($catalogCount, substr_count($html, 'data-song-pick'));
+        $this->assertStringContainsString('h-[250px]', $html);
+        $this->assertStringContainsString('overflow-y-auto', $html);
+        $component->assertDontSee('Volio bi\' da te ne volim');
+        $component->assertDontSee('Tugo nesrećo');
+    }
+
+    public function test_song_suggestions_reshuffle_on_full_page_remount(): void
+    {
+        $catalogCount = count(OnboardingSongs::forLocale());
+        $first = Livewire::test(WeddingOnboarding::class)->get('songSuggestions');
+        $this->assertCount($catalogCount, $first);
+
+        $seenDifferent = false;
+
+        for ($i = 0; $i < 12; $i++) {
+            $next = Livewire::test(WeddingOnboarding::class)->get('songSuggestions');
+
+            if ($next !== $first) {
+                $seenDifferent = true;
+                break;
+            }
+        }
+
+        $this->assertTrue($seenDifferent, 'Expected song suggestions to reshuffle across remounts.');
+    }
+
+    public function test_song_search_lists_matches_without_teaser(): void
+    {
+        Locale::set('bs', persistToUser: false);
+
+        Livewire::test(WeddingOnboarding::class)
+            ->set('step', 'song')
+            ->set('song_query', 'Dino')
+            ->assertSee('Zauvijek ovako')
+            ->assertSee('Dino Merlin');
+    }
+
+    public function test_selected_song_is_pinned_to_top_of_list(): void
+    {
+        $catalog = OnboardingSongs::forLocale();
+        $this->assertNotEmpty($catalog);
+
+        $selected = $catalog[count($catalog) - 1];
+
+        $html = Livewire::test(WeddingOnboarding::class)
+            ->set('step', 'song')
+            ->set('music_url', $selected['url'])
+            ->html();
+
+        if (! preg_match('/data-song-pick[\s\S]*?<\/button>/', $html, $match)) {
+            $this->fail('Expected at least one song pick button.');
+        }
+
+        $this->assertStringContainsString($selected['title'], $match[0]);
+    }
+
+    public function test_regional_songs_only_shown_for_bs_and_hr_locales(): void
+    {
+        Locale::set('bs', persistToUser: false);
+        $bsCatalog = OnboardingSongs::forLocale('bs');
+        $this->assertTrue(collect($bsCatalog)->contains(fn (array $song): bool => $song['id'] === 'DBql7oBK-fs'));
+
+        Locale::set('en', persistToUser: false);
+        $enCatalog = OnboardingSongs::forLocale('en');
+        $this->assertFalse(collect($enCatalog)->contains(fn (array $song): bool => $song['id'] === 'DBql7oBK-fs'));
+        $this->assertTrue(collect($enCatalog)->contains(fn (array $song): bool => $song['id'] === '2Vv-BfVoq4g'));
+        $this->assertTrue(collect($enCatalog)->contains(fn (array $song): bool => $song['id'] === 'LyYAQHDMqfA'));
+
+        Livewire::test(WeddingOnboarding::class)
+            ->call('switchLocale', 'en')
+            ->set('step', 'song')
+            ->assertDontSee('Zauvijek ovako')
+            ->assertSee('Perfect');
     }
 }

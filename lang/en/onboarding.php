@@ -42,6 +42,7 @@ return [
     'song_search_placeholder' => 'Artist or title…',
     'song_or_paste' => 'Or paste a YouTube URL below',
     'song_no_results' => 'No matching songs. Try another search or paste a link.',
+    'song_search_more' => 'Search for more songs',
     'schedule_title' => 'Sketch your day plan',
     'schedule_subtitle' => 'Add a few moments — ceremony, dinner, dance. You can edit later.',
     'schedule_item' => 'Moment',

@@ -42,6 +42,7 @@ return [
     'song_search_placeholder' => 'Izvođač ili naslov…',
     'song_or_paste' => 'Ili zalijepite YouTube URL ispod',
     'song_no_results' => 'Nema rezultata. Pokušajte drugu pretragu ili zalijepite link.',
+    'song_search_more' => 'Pretražite za više pjesama',
     'schedule_title' => 'Nacrtajte plan dana',
     'schedule_subtitle' => 'Dodajte nekoliko trenutaka — ceremonija, večera, ples. Možete urediti kasnije.',
     'schedule_item' => 'Trenutak',

@@ -20,7 +20,7 @@ class OnboardingPreview extends Component
 {
     public bool $isPreview = true;
 
-    public bool $isTokenOnlyPreview = false;
+    public bool $isTokenOnlyPreview = true;
 
     public bool $isPersonalLink = false;
 
@@ -48,6 +48,11 @@ class OnboardingPreview extends Component
         $this->invitationRevealed = $reveal === null;
     }
 
+    public function respond(string $status): void
+    {
+        // Draft preview has no guest/event to RSVP against.
+    }
+
     public function render()
     {
         if ($this->missingDraft) {
@@ -70,7 +75,7 @@ class OnboardingPreview extends Component
             'showRsvpNudge' => false,
             'guest' => null,
             'isPreview' => true,
-            'isTokenOnlyPreview' => false,
+            'isTokenOnlyPreview' => true,
             'isPersonalLink' => false,
         ])
             ->title($event->couple_names.' | '.__('invitation.title'))
@@ -79,7 +84,7 @@ class OnboardingPreview extends Component
                 'event' => $event,
                 'guest' => null,
                 'isPreview' => true,
-                'isTokenOnlyPreview' => false,
+                'isTokenOnlyPreview' => true,
                 'isPersonalLink' => false,
             ]);
     }

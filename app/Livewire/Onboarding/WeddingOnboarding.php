@@ -15,8 +15,10 @@ use App\Models\WeddingLocation;
 use App\PlanTier;
 use App\Support\Locale;
 use App\Support\MediaDisk;
+use App\Support\OnboardingSongs;
 use App\Support\OnboardingSteps;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
@@ -64,6 +66,9 @@ class WeddingOnboarding extends Component
     public string $music_url = '';
 
     public string $song_query = '';
+
+    /** @var list<string> */
+    public array $songSuggestions = [];
 
     /** @var array<int, array{time: string, title: string, description: string}> */
     public array $scheduleItems = [];
@@ -124,11 +129,15 @@ class WeddingOnboarding extends Component
                 ['name' => '', 'email' => '', 'plus_one_allowed' => false],
             ];
         }
+
+        $this->songSuggestions = [];
+        $this->ensureSongSuggestions();
+        $this->persistProgress();
     }
 
     public function updated(string $property): void
     {
-        if (in_array($property, ['password', 'password_confirmation', 'hero_image', 'previewError', 'submitError', 'songPreview'], true)) {
+        if (in_array($property, ['password', 'password_confirmation', 'hero_image', 'previewError', 'submitError', 'songPreview', 'songSuggestions'], true)) {
             return;
         }
 
@@ -167,6 +176,7 @@ class WeddingOnboarding extends Component
     public function switchLocale(string $locale): void
     {
         Locale::set($locale);
+        $this->songSuggestions = [];
     }
 
     public function nextStep(): void
@@ -523,16 +533,26 @@ class WeddingOnboarding extends Component
 
     public function render()
     {
-        $songs = collect(config('onboarding.songs', []));
+        $catalog = OnboardingSongs::catalog();
         $query = mb_strtolower(trim($this->song_query));
+        $songBrowseMode = $query === '' || $this->looksLikeYoutubeUrl($this->song_query);
 
-        if ($query !== '' && ! $this->looksLikeYoutubeUrl($this->song_query)) {
-            $songs = $songs->filter(function (array $song) use ($query): bool {
+        if ($songBrowseMode) {
+            $this->ensureSongSuggestions();
+
+            $songs = collect($this->songSuggestions)
+                ->map(fn (string $id) => $catalog->firstWhere('id', $id))
+                ->filter()
+                ->values();
+        } else {
+            $songs = $catalog->filter(function (array $song) use ($query): bool {
                 $haystack = mb_strtolower($song['title'].' '.$song['artist']);
 
                 return str_contains($haystack, $query);
             })->values();
         }
+
+        $songs = $this->pinSelectedSong($songs, $catalog);
 
         $mottoPresets = collect(range(1, 5))
             ->map(fn (int $n): string => (string) __('onboarding.motto_preset_'.$n))
@@ -558,6 +578,7 @@ class WeddingOnboarding extends Component
             'isTip' => OnboardingSteps::isTip($this->step),
             'canGoBack' => OnboardingSteps::previous($this->step) !== null,
             'songs' => $songs,
+            'songBrowseMode' => $songBrowseMode,
             'schedulePresets' => config('onboarding.schedule_presets', []),
             'mottoPresets' => $mottoPresets,
         ])->title(__('onboarding.meta_title'));
@@ -821,6 +842,48 @@ class WeddingOnboarding extends Component
         }
 
         return $guests;
+    }
+
+    private function pinSelectedSong(Collection $songs, Collection $catalog): Collection
+    {
+        if ($this->music_url === '') {
+            return $songs->values();
+        }
+
+        $selected = $catalog->firstWhere('url', $this->music_url);
+
+        if (! is_array($selected)) {
+            return $songs->values();
+        }
+
+        return $songs
+            ->reject(fn (array $song): bool => ($song['url'] ?? null) === $this->music_url)
+            ->prepend($selected)
+            ->values();
+    }
+
+    private function ensureSongSuggestions(): void
+    {
+        $catalogIds = OnboardingSongs::catalog()->pluck('id')->filter()->values();
+
+        if ($catalogIds->isEmpty()) {
+            $this->songSuggestions = [];
+
+            return;
+        }
+
+        $valid = collect($this->songSuggestions)
+            ->filter(fn ($id): bool => is_string($id) && $catalogIds->contains($id))
+            ->unique()
+            ->values();
+
+        if ($valid->count() === $catalogIds->count()) {
+            $this->songSuggestions = $valid->all();
+
+            return;
+        }
+
+        $this->songSuggestions = $catalogIds->shuffle()->values()->all();
     }
 
     private function looksLikeYoutubeUrl(string $value): bool
