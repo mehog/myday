@@ -25,7 +25,7 @@ class CoupleOnboardingTipNotification extends Notification implements ShouldQueu
 
         $event = $notifiable->weddingEvent;
 
-        return $event === null || $event->is_active;
+        return $event === null || $event->is_active || $event->suppressesOutboundMail();
     }
 
     /**

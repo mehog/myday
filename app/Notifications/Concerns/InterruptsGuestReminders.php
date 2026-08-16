@@ -11,7 +11,7 @@ trait InterruptsGuestReminders
     {
         $event = $guest->weddingEvent;
 
-        if ($event === null || ! $event->is_active || $event->is_demo) {
+        if ($event === null || ! $event->is_active || $event->suppressesOutboundMail()) {
             return true;
         }
 

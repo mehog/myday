@@ -54,6 +54,15 @@ class SendDiscountCampaignEmailsJob implements ShouldQueue
                 continue;
             }
 
+            if ($recipient->user->ownsDemoInvitation()) {
+                $recipient->update([
+                    'status' => DiscountEmailRecipientStatus::Skipped,
+                    'error' => 'Demo invitation',
+                ]);
+
+                continue;
+            }
+
             $locale = Locale::resolve(
                 $campaign->send_locale ?? $recipient->user->preferredLocale()
             );

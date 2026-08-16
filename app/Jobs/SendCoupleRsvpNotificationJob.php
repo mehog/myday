@@ -21,7 +21,7 @@ class SendCoupleRsvpNotificationJob implements ShouldQueue
 
         $user = $guest?->weddingEvent?->user;
 
-        if ($user === null || $guest->weddingEvent->is_demo) {
+        if ($user === null || $guest->weddingEvent->suppressesOutboundMail()) {
             return;
         }
 

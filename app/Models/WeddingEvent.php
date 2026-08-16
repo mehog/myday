@@ -204,6 +204,15 @@ class WeddingEvent extends Model
         return $this->plan_tier !== null && $this->plan_tier->isPaid();
     }
 
+    /**
+     * Demo invitations must never receive outbound product/marketing email
+     * (couple or guest). Landing demos and any wedding marked is_demo.
+     */
+    public function suppressesOutboundMail(): bool
+    {
+        return (bool) $this->is_demo;
+    }
+
     public function hasFeature(PlanFeature $feature): bool
     {
         if ($this->plan_tier === null) {

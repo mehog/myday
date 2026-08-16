@@ -30,7 +30,7 @@ class WeddingScheduledNotificationService
     {
         $event->loadMissing('user');
 
-        if (! $event->is_active || $event->is_demo) {
+        if (! $event->is_active || $event->suppressesOutboundMail()) {
             $this->cancelAllForEvent($event);
 
             return;
@@ -47,7 +47,7 @@ class WeddingScheduledNotificationService
 
         $event = $guest->weddingEvent;
 
-        if ($event === null || ! $event->is_active || $event->is_demo) {
+        if ($event === null || ! $event->is_active || $event->suppressesOutboundMail()) {
             $this->cancelPendingForGuest($guest);
 
             return;
@@ -152,7 +152,7 @@ class WeddingScheduledNotificationService
 
         $this->cancelCoupleOnboarding($user);
 
-        if ($event->is_active || $event->is_demo) {
+        if ($event->is_active || $event->suppressesOutboundMail()) {
             return;
         }
 
@@ -204,7 +204,7 @@ class WeddingScheduledNotificationService
 
     public function notifyAdminsOfNewSignup(WeddingEvent $event): void
     {
-        if (! AdminNotifier::hasRecipients() || $event->is_active || $event->is_demo) {
+        if (! AdminNotifier::hasRecipients() || $event->is_active || $event->suppressesOutboundMail()) {
             return;
         }
 
@@ -215,7 +215,7 @@ class WeddingScheduledNotificationService
     {
         $this->cancelAdminInactiveWeddingReminder($event);
 
-        if ($event->is_active || $event->is_demo || ! AdminNotifier::hasRecipients()) {
+        if ($event->is_active || $event->suppressesOutboundMail() || ! AdminNotifier::hasRecipients()) {
             return;
         }
 

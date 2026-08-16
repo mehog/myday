@@ -25,7 +25,7 @@ class AdminInactiveWeddingReminderNotification extends Notification implements S
             return true;
         }
 
-        return $event->is_active || $event->is_demo;
+        return $event->is_active || $event->suppressesOutboundMail();
     }
 
     /**

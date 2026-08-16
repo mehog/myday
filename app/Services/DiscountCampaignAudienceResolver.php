@@ -25,13 +25,14 @@ class DiscountCampaignAudienceResolver
      */
     public function query(DiscountEmailCampaign $campaign): Builder
     {
-        $query = User::query()->where('is_admin', false);
+        $query = User::query()
+            ->where('is_admin', false)
+            ->whereDoesntHave('weddingEvent', fn (Builder $q) => $q->where('is_demo', true));
 
         return match ($campaign->audience) {
             DiscountEmailAudience::UnpaidVerified => $query
                 ->whereNotNull('email_verified_at')
                 ->whereHas('weddingEvent', fn (Builder $q) => $q
-                    ->where('is_demo', false)
                     ->where(fn (Builder $tier) => $tier
                         ->whereNull('plan_tier')
                         ->orWhere('plan_tier', PlanTier::Free))),

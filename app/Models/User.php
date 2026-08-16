@@ -130,6 +130,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLocale
         return Locale::resolve($this->locale);
     }
 
+    public function ownsDemoInvitation(): bool
+    {
+        return $this->weddingEvent?->suppressesOutboundMail() === true;
+    }
+
     /**
      * Admin-only login audit — never notify users via this package.
      *

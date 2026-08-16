@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Listeners\PreventDemoInvitationMail;
 use App\Models\Guest;
 use App\Models\GuestMessage;
 use App\Models\WeddingEvent;
@@ -9,7 +10,9 @@ use App\Notifications\Channels\DispatchScheduledPushChannel;
 use App\Observers\GuestMessageObserver;
 use App\Observers\GuestObserver;
 use App\Observers\WeddingEventObserver;
+use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Notifications\ChannelManager;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,6 +34,8 @@ class AppServiceProvider extends ServiceProvider
         GuestMessage::observe(GuestMessageObserver::class);
         WeddingEvent::observe(WeddingEventObserver::class);
         Guest::observe(GuestObserver::class);
+
+        Event::listen(MessageSending::class, PreventDemoInvitationMail::class);
 
         Notification::resolved(function (ChannelManager $manager): void {
             $manager->extend('dispatch-scheduled-push', fn (): DispatchScheduledPushChannel => new DispatchScheduledPushChannel);
