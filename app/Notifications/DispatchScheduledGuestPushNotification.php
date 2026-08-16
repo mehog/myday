@@ -25,7 +25,7 @@ class DispatchScheduledGuestPushNotification extends Notification implements Sho
 
         $event = $log->weddingEvent;
 
-        return $event === null || ! $event->is_active || $event->is_demo;
+        return $event === null || ! $event->is_active || $event->suppressesOutboundMail();
     }
 
     /**
