@@ -49,6 +49,10 @@ class CoupleDashboardTest extends TestCase
         $routes = [
             'dashboard',
             'dashboard.wedding',
+            'dashboard.locations',
+            'dashboard.menus',
+            'dashboard.schedule',
+            'dashboard.photos',
             'dashboard.guests',
             'dashboard.messages',
             'dashboard.budget',

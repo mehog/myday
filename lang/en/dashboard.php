@@ -4,6 +4,10 @@ return [
     'nav' => [
         'overview' => 'Overview',
         'wedding' => 'My wedding',
+        'locations' => 'Locations',
+        'menus' => 'Menus',
+        'schedule' => 'Schedule',
+        'photos' => 'Photos',
         'guests' => 'Guests',
         'messages' => 'Messages',
         'budget' => 'Budget',

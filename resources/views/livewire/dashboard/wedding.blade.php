@@ -10,9 +10,15 @@
     <div class="flex flex-wrap items-center justify-between gap-3">
         <h2 class="text-xl font-semibold">{{ __('dashboard.wedding_title') }}</h2>
         @if ($wedding)
-            <x-dashboard.button variant="secondary" href="{{ $wedding->public_url }}" target="_blank" rel="noopener noreferrer">
-                {{ __('dashboard.wedding_preview') }}
-            </x-dashboard.button>
+            <div class="flex flex-wrap gap-2">
+                <x-dashboard.button variant="secondary" :href="route('dashboard.locations')">{{ __('locations.title') }}</x-dashboard.button>
+                <x-dashboard.button variant="secondary" :href="route('dashboard.menus')">{{ __('menu.title') }}</x-dashboard.button>
+                <x-dashboard.button variant="secondary" :href="route('dashboard.schedule')">{{ __('schedule.title') }}</x-dashboard.button>
+                <x-dashboard.button variant="secondary" :href="route('dashboard.photos')">{{ __('photos.title') }}</x-dashboard.button>
+                <x-dashboard.button variant="secondary" href="{{ $wedding->public_url }}" target="_blank" rel="noopener noreferrer">
+                    {{ __('dashboard.wedding_preview') }}
+                </x-dashboard.button>
+            </div>
         @endif
     </div>
 

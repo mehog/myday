@@ -25,6 +25,30 @@ class DashboardNav
                 'match' => ['dashboard.wedding'],
             ],
             [
+                'label' => __('dashboard.nav.locations'),
+                'route' => 'dashboard.locations',
+                'icon' => 'map',
+                'match' => ['dashboard.locations'],
+            ],
+            [
+                'label' => __('dashboard.nav.menus'),
+                'route' => 'dashboard.menus',
+                'icon' => 'cake',
+                'match' => ['dashboard.menus'],
+            ],
+            [
+                'label' => __('dashboard.nav.schedule'),
+                'route' => 'dashboard.schedule',
+                'icon' => 'clock',
+                'match' => ['dashboard.schedule'],
+            ],
+            [
+                'label' => __('dashboard.nav.photos'),
+                'route' => 'dashboard.photos',
+                'icon' => 'photo',
+                'match' => ['dashboard.photos'],
+            ],
+            [
                 'label' => __('dashboard.nav.guests'),
                 'route' => 'dashboard.guests',
                 'icon' => 'users',

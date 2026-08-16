@@ -21,11 +21,15 @@ use App\Livewire\Dashboard\Budget;
 use App\Livewire\Dashboard\CreatePush;
 use App\Livewire\Dashboard\Guests;
 use App\Livewire\Dashboard\Home;
+use App\Livewire\Dashboard\Locations;
+use App\Livewire\Dashboard\Menus;
 use App\Livewire\Dashboard\Messages;
+use App\Livewire\Dashboard\Photos;
 use App\Livewire\Dashboard\Pricing;
 use App\Livewire\Dashboard\Profile;
 use App\Livewire\Dashboard\Pushes;
 use App\Livewire\Dashboard\Referrals;
+use App\Livewire\Dashboard\Schedule;
 use App\Livewire\Dashboard\Seating;
 use App\Livewire\Dashboard\Wedding;
 use App\Livewire\DemoExamplesPage;
@@ -168,6 +172,10 @@ Route::middleware(['auth', 'verified', EnsureCoupleUser::class])
     ->group(function () {
         Route::get('/', Home::class)->name('dashboard');
         Route::get('/wedding', Wedding::class)->name('dashboard.wedding');
+        Route::get('/locations', Locations::class)->name('dashboard.locations');
+        Route::get('/menus', Menus::class)->name('dashboard.menus');
+        Route::get('/schedule', Schedule::class)->name('dashboard.schedule');
+        Route::get('/photos', Photos::class)->name('dashboard.photos');
         Route::get('/guests', Guests::class)->name('dashboard.guests');
         Route::get('/messages', Messages::class)->name('dashboard.messages');
         Route::get('/budget', Budget::class)->name('dashboard.budget');

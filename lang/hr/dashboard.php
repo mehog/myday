@@ -4,6 +4,10 @@ return [
     'nav' => [
         'overview' => 'Pregled',
         'wedding' => 'Moje vjenčanje',
+        'locations' => 'Lokacije',
+        'menus' => 'Jelovnici',
+        'schedule' => 'Raspored',
+        'photos' => 'Fotografije',
         'guests' => 'Gosti',
         'messages' => 'Poruke',
         'budget' => 'Proračun',
