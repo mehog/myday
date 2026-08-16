@@ -7,6 +7,7 @@ use App\LinkMode;
 use App\Models\Guest;
 use App\Models\User;
 use App\Models\WeddingEvent;
+use App\PlanTier;
 use App\Services\EnsureWeddingMenuOptions;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -311,6 +312,8 @@ class WeddingEventSeeder extends Seeder
                 'rsvp_deadline' => now()->addMonths(3),
                 'accommodation_enabled' => true,
                 'is_active' => true,
+                'plan_tier' => PlanTier::Free,
+                'guest_limit' => PlanTier::Free->guestLimit(),
                 'invitation_locale' => $invitationLocale ?? config('app.default_locale', 'bs'),
             ]
         );

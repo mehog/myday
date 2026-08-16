@@ -887,6 +887,10 @@
     inset: 0;
     z-index: 1;
     border-radius: 1.65rem;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
 }
 
 .landing-demo-slide-title {
@@ -900,6 +904,11 @@
     color: var(--landing-accent);
     text-decoration: none;
     transition: color 0.2s ease;
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
 }
 
 .landing-demo-slide-title-link:hover,
@@ -1005,4 +1014,40 @@
     .landing-hero-phone {
         transform: none;
     }
+
+    .onboarding-story-float,
+    .onboarding-story-pulse,
+    .onboarding-story-draw {
+        animation: none !important;
+    }
 }
+
+@keyframes onboardingStoryFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+@keyframes onboardingStoryPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.85; transform: scale(1.05); }
+}
+
+@keyframes onboardingStoryDraw {
+    0% { stroke-dashoffset: 80; opacity: 0.4; }
+    100% { stroke-dashoffset: 0; opacity: 1; }
+}
+
+.onboarding-story-float {
+    animation: onboardingStoryFloat 3.2s ease-in-out infinite;
+}
+
+.onboarding-story-pulse {
+    transform-origin: center;
+    animation: onboardingStoryPulse 2.4s ease-in-out infinite;
+}
+
+.onboarding-story-draw {
+    stroke-dasharray: 80;
+    animation: onboardingStoryDraw 1.4s ease-out both;
+}
+

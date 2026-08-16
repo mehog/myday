@@ -58,6 +58,8 @@ class LandingDemoTest extends TestCase
             ->assertSee('template=classic', false)
             ->assertSee('reveal=none', false)
             ->assertSee('landing-demo-slider', false)
+            ->assertSee('invitation-preview-open', false)
+            ->assertDontSee('rel="noopener noreferrer"', false)
             ->assertDontSee('demo-krscansko'.$suffix, false);
     }
 
@@ -82,6 +84,8 @@ class LandingDemoTest extends TestCase
             ->assertSee(DemoInvitationExamples::title($gallery[19]))
             ->assertSee('/e/demo-islamsko-en/'.$guestToken, false)
             ->assertSee('landing-demo-grid', false)
+            ->assertSee('invitation-preview-open', false)
+            ->assertDontSee('rel="noopener noreferrer"', false)
             ->assertDontSee('landing-demo-slider', false);
     }
 

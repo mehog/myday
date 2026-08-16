@@ -52,4 +52,29 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {}
         },
     }));
+
+    Alpine.data('invitationPreviewModal', (defaultTitle = '') => ({
+        open: false,
+        url: '',
+        title: defaultTitle,
+        defaultTitle,
+        show(detail = {}) {
+            const nextUrl = detail?.url ?? '';
+
+            if (! nextUrl) {
+                return;
+            }
+
+            this.url = nextUrl;
+            this.title = detail?.title || this.defaultTitle;
+            this.open = true;
+            document.documentElement.style.overflow = 'hidden';
+        },
+        hide() {
+            this.open = false;
+            this.url = '';
+            this.title = this.defaultTitle;
+            document.documentElement.style.overflow = '';
+        },
+    }));
 });

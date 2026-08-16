@@ -3,7 +3,7 @@
     'lazy' => false,
 ])
 
-<div class="landing-demo-card">
+<div class="landing-demo-card" x-data>
     <div class="landing-demo-phone-wrap">
         <div class="landing-phone-frame mx-auto max-w-[280px] sm:max-w-[320px] landing-demo-phone">
             <iframe
@@ -14,22 +14,20 @@
                 tabindex="-1"
             ></iframe>
         </div>
-        <a
-            href="{{ $example['openUrl'] }}"
-            target="_blank"
-            rel="noopener noreferrer"
+        <button
+            type="button"
             class="landing-demo-slide-hit"
             aria-label="{{ $example['title'] }}"
-        ></a>
+            x-on:click="$dispatch('invitation-preview-open', { url: @js($example['openUrl']), title: @js($example['title']) })"
+        ></button>
     </div>
     <p class="landing-heading landing-demo-slide-title">
-        <a
-            href="{{ $example['openUrl'] }}"
-            target="_blank"
-            rel="noopener noreferrer"
+        <button
+            type="button"
             class="landing-demo-slide-title-link"
+            x-on:click="$dispatch('invitation-preview-open', { url: @js($example['openUrl']), title: @js($example['title']) })"
         >
             {{ $example['title'] }}
-        </a>
+        </button>
     </p>
 </div>

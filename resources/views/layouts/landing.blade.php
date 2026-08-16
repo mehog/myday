@@ -88,6 +88,8 @@
 
     <x-support-bubble />
 
+    <x-invitation-preview-modal />
+
     @livewireScripts
 </body>
 </html>

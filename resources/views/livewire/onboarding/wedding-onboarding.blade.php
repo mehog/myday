@@ -1,243 +1,71 @@
 <div class="min-h-screen flex flex-col">
-    <header class="border-b border-[#1a1208]/10 bg-white/80 backdrop-blur-md">
-        <div class="max-w-3xl mx-auto px-6 py-4">
-            <a href="{{ route('home') }}" class="inline-flex items-center">
-                <img
-                    src="{{ asset('icons/nd-logo-transparent.webp') }}"
-                    alt="{{ config('app.name', 'NasDan') }}"
-                    class="h-9 w-auto"
-                    width="120"
-                    height="36"
-                    style="max-width: 50px;"
-                >
-            </a>
+    <header class="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur-md border-b border-[#1a1208]/10">
+        <div class="px-4 py-3">
+            <div class="flex items-center justify-between max-w-lg mx-auto">
+                @if ($canGoBack)
+                    <button
+                        type="button"
+                        wire:click="previousStep"
+                        class="text-[#5c5246] hover:text-[#1a1208] p-1"
+                        aria-label="{{ __('onboarding.back') }}"
+                    >
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                @else
+                    <div class="w-6"></div>
+                @endif
+
+                <a href="{{ route('home') }}" class="inline-flex items-center">
+                    <img
+                        src="{{ asset('icons/nd-logo-transparent.webp') }}"
+                        alt="{{ config('app.name', 'NasDan') }}"
+                        class="h-8 w-auto"
+                        width="100"
+                        height="32"
+                        style="max-width: 44px;"
+                    >
+                </a>
+
+                <div class="text-sm landing-body text-[#5c5246] tabular-nums min-w-[3rem] text-right">
+                    {{ $countedPosition }}/{{ $countedTotal }}
+                </div>
+            </div>
+        </div>
+        <div class="w-full bg-[#1a1208]/10 h-1 overflow-hidden">
+            <div
+                class="bg-[#c9a227] h-1 rounded-full transition-all duration-300 ease-out"
+                style="width: {{ $progressPercent }}%"
+            ></div>
         </div>
     </header>
 
-    <main class="flex-1 px-6 py-10">
-        <div class="max-w-3xl mx-auto landing-fade-in">
-            {{-- Progress --}}
-            <div class="mb-10">
-                <div class="flex items-center justify-between mb-3">
-                    @foreach ([1 => __('onboarding.step_couple'), 2 => __('onboarding.step_account'), 3 => __('onboarding.step_review')] as $stepNumber => $stepLabel)
-                        <div class="flex flex-col items-center flex-1 {{ $stepNumber < 3 ? 'relative' : '' }}">
-                            @if ($stepNumber < 3)
-                                <div class="absolute top-4 left-1/2 w-full h-px {{ $step > $stepNumber ? 'bg-[#c9a227]' : 'bg-[#1a1208]/10' }}"></div>
-                            @endif
-                            <div @class([
-                                'relative z-10 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium border-2 transition',
-                                'bg-[#c9a227] border-[#c9a227] text-[#1a1208]' => $step >= $stepNumber,
-                                'bg-white border-[#1a1208]/20 text-[#5c5246]' => $step < $stepNumber,
-                            ])>
-                                {{ $stepNumber }}
-                            </div>
-                            <span @class([
-                                'mt-2 text-xs text-center hidden sm:block',
-                                'text-[#c9a227]' => $step >= $stepNumber,
-                                'text-[#5c5246]' => $step < $stepNumber,
-                            ])>
-                                {{ $stepLabel }}
-                            </span>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-
-            {{-- Step 1: Couple info --}}
-            @if ($step === 1)
-                <div>
-                    <h1 class="landing-heading text-3xl sm:text-4xl font-semibold text-[#1a1208] mb-3">
-                        {{ __('onboarding.couple_title') }}
-                    </h1>
-                    <p class="landing-body text-[#5c5246] mb-8">
-                        {{ __('onboarding.couple_subtitle') }}
-                    </p>
-
-                    <form wire:submit="nextStep" class="space-y-5">
-                        <div class="grid sm:grid-cols-2 gap-5">
-                            <div>
-                                <label for="groom_name" class="block text-sm text-[#5c5246] mb-2">{{ __('onboarding.groom_name') }} *</label>
-                                <input id="groom_name" type="text" wire:model="groom_name" class="landing-input w-full">
-                                @error('groom_name') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
-                            </div>
-                            <div>
-                                <label for="bride_name" class="block text-sm text-[#5c5246] mb-2">{{ __('onboarding.bride_name') }} *</label>
-                                <input id="bride_name" type="text" wire:model="bride_name" class="landing-input w-full">
-                                @error('bride_name') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
-                            </div>
-                        </div>
-
-                        <div>
-                            <label for="wedding_date" class="block text-sm text-[#5c5246] mb-2">{{ __('onboarding.wedding_date') }} *</label>
-                            <input id="wedding_date" type="date" wire:model="wedding_date" class="landing-input w-full">
-                            @error('wedding_date') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
-                        </div>
-
-                        <div class="grid md:grid-cols-3 gap-5">
-                            <div>
-                                <label for="theme" class="block text-sm text-[#5c5246] mb-2">{{ __('onboarding.theme') }} *</label>
-                                <select id="theme" wire:model="theme" class="landing-input w-full">
-                                    <option value="">{{ __('onboarding.theme_placeholder') }}</option>
-                                    @foreach ($themes as $themeOption)
-                                        <option value="{{ $themeOption->value }}">{{ $themeOption->label() }}</option>
-                                    @endforeach
-                                </select>
-                                @error('theme') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
-                            </div>
-                            <div>
-                                <label for="template" class="block text-sm text-[#5c5246] mb-2">{{ __('onboarding.template') }} *</label>
-                                <select id="template" wire:model="template" class="landing-input w-full">
-                                    <option value="">{{ __('onboarding.template_placeholder') }}</option>
-                                    @foreach ($templates as $templateOption)
-                                        <option value="{{ $templateOption->value }}">{{ $templateOption->label() }}</option>
-                                    @endforeach
-                                </select>
-                                @error('template') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
-                            </div>
-                            <div>
-                                <label for="reveal_animation" class="block text-sm text-[#5c5246] mb-2">{{ __('onboarding.reveal_animation') }}</label>
-                                <select id="reveal_animation" wire:model="reveal_animation" class="landing-input w-full">
-                                    <option value="">{{ __('app.reveal_none') }}</option>
-                                    @foreach ($reveals as $revealOption)
-                                        <option value="{{ $revealOption->value }}">{{ $revealOption->label() }}</option>
-                                    @endforeach
-                                </select>
-                                @error('reveal_animation') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
-                            </div>
-                        </div>
-
-                        <p class="landing-body text-sm text-[#5c5246]/90">
-                            {{ __('onboarding.design_changeable_note') }}
-                        </p>
-
-                        <button type="submit" class="w-full landing-btn-primary py-4 rounded-xl landing-heading text-lg transition">
-                            {{ __('onboarding.next') }}
-                        </button>
-                    </form>
+    <main class="flex-1 px-4 pt-24 pb-10">
+        <div class="max-w-md mx-auto landing-fade-in" wire:key="step-{{ $step }}">
+            @if ($submitError)
+                <div class="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+                    {{ $submitError }}
                 </div>
             @endif
 
-            {{-- Step 2: Account --}}
-            @if ($step === 2)
-                <div>
-                    <h1 class="landing-heading text-3xl sm:text-4xl font-semibold text-[#1a1208] mb-3">
-                        {{ __('onboarding.account_title') }}
-                    </h1>
-                    <p class="landing-body text-[#5c5246] mb-8">
-                        {{ __('onboarding.account_subtitle') }}
-                    </p>
-
-                    <form wire:submit="nextStep" class="space-y-5">
-                        <div>
-                            <label for="your_name" class="block text-sm text-[#5c5246] mb-2">{{ __('onboarding.your_name') }} *</label>
-                            <input id="your_name" type="text" wire:model="your_name" class="landing-input w-full">
-                            @error('your_name') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
-                        </div>
-
-                        <div>
-                            <label for="email" class="block text-sm text-[#5c5246] mb-2">{{ __('onboarding.email') }} *</label>
-                            <input id="email" type="email" wire:model="email" class="landing-input w-full">
-                            @error('email') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
-                        </div>
-
-                        <div class="grid sm:grid-cols-2 gap-5">
-                            <div>
-                                <label for="password" class="block text-sm text-[#5c5246] mb-2">{{ __('onboarding.password') }} *</label>
-                                <input id="password" type="password" wire:model="password" class="landing-input w-full">
-                                @error('password') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
-                            </div>
-                            <div>
-                                <label for="password_confirmation" class="block text-sm text-[#5c5246] mb-2">{{ __('onboarding.password_confirmation') }} *</label>
-                                <input id="password_confirmation" type="password" wire:model="password_confirmation" class="landing-input w-full">
-                            </div>
-                        </div>
-
-                        <div class="flex gap-4">
-                            <button type="button" wire:click="previousStep" class="flex-1 landing-btn-secondary py-4 rounded-xl landing-heading text-lg transition">
-                                {{ __('onboarding.back') }}
-                            </button>
-                            <button type="submit" class="flex-1 landing-btn-primary py-4 rounded-xl landing-heading text-lg transition">
-                                {{ __('onboarding.next') }}
-                            </button>
-                        </div>
-                    </form>
+            @if ($previewError)
+                <div class="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900" role="alert">
+                    {{ $previewError }}
                 </div>
             @endif
 
-            {{-- Step 3: Review --}}
-            @if ($step === 3)
-                <div>
-                    <h1 class="landing-heading text-3xl sm:text-4xl font-semibold text-[#1a1208] mb-3">
-                        {{ __('onboarding.review_title') }}
-                    </h1>
-                    <p class="landing-body text-[#5c5246] mb-8">
-                        {{ __('onboarding.review_subtitle') }}
-                    </p>
+            @include('livewire.onboarding.steps.'.$step)
 
-                    <div class="space-y-4 mb-8">
-                        <div class="rounded-xl border border-[#1a1208]/10 bg-[#fafaf8] p-5">
-                            <h2 class="text-sm uppercase tracking-wider text-[#c9a227] mb-3">{{ __('onboarding.review_couple') }}</h2>
-                            <dl class="space-y-2 text-sm">
-                                <div class="flex justify-between gap-4">
-                                    <dt class="text-[#5c5246]">{{ __('onboarding.groom_name') }}</dt>
-                                    <dd class="text-[#1a1208] text-right">{{ $groom_name }}</dd>
-                                </div>
-                                <div class="flex justify-between gap-4">
-                                    <dt class="text-[#5c5246]">{{ __('onboarding.bride_name') }}</dt>
-                                    <dd class="text-[#1a1208] text-right">{{ $bride_name }}</dd>
-                                </div>
-                                <div class="flex justify-between gap-4">
-                                    <dt class="text-[#5c5246]">{{ __('onboarding.review_wedding_date') }}</dt>
-                                    <dd class="text-[#1a1208] text-right">{{ $wedding_date }}</dd>
-                                </div>
-                                <div class="flex justify-between gap-4">
-                                    <dt class="text-[#5c5246]">{{ __('onboarding.review_theme') }}</dt>
-                                    <dd class="text-[#1a1208] text-right">{{ $selectedTheme?->label() }}</dd>
-                                </div>
-                                <div class="flex justify-between gap-4">
-                                    <dt class="text-[#5c5246]">{{ __('onboarding.review_template') }}</dt>
-                                    <dd class="text-[#1a1208] text-right">{{ $selectedTemplate?->label() }}</dd>
-                                </div>
-                                <div class="flex justify-between gap-4">
-                                    <dt class="text-[#5c5246]">{{ __('onboarding.review_reveal_animation') }}</dt>
-                                    <dd class="text-[#1a1208] text-right">{{ $selectedReveal?->label() ?? __('app.reveal_none') }}</dd>
-                                </div>
-                            </dl>
-                        </div>
-
-                        <div class="rounded-xl border border-[#1a1208]/10 bg-[#fafaf8] p-5">
-                            <h2 class="text-sm uppercase tracking-wider text-[#c9a227] mb-3">{{ __('onboarding.review_account') }}</h2>
-                            <dl class="space-y-2 text-sm">
-                                <div class="flex justify-between gap-4">
-                                    <dt class="text-[#5c5246]">{{ __('onboarding.your_name') }}</dt>
-                                    <dd class="text-[#1a1208] text-right">{{ $your_name }}</dd>
-                                </div>
-                                <div class="flex justify-between gap-4">
-                                    <dt class="text-[#5c5246]">{{ __('onboarding.email') }}</dt>
-                                    <dd class="text-[#1a1208] text-right">{{ $email }}</dd>
-                                </div>
-                            </dl>
-                        </div>
-
-                        <p class="landing-body text-sm text-[#5c5246]/90">
-                            {{ __('onboarding.review_after_signup_note') }}
-                        </p>
-                    </div>
-
-                    <div class="flex gap-4">
-                        <button type="button" wire:click="previousStep" class="flex-1 landing-btn-secondary py-4 rounded-xl landing-heading text-lg transition">
-                            {{ __('onboarding.back') }}
-                        </button>
-                        <button
-                            type="button"
-                            wire:click="submit"
-                            wire:loading.attr="disabled"
-                            class="flex-1 landing-btn-primary py-4 rounded-xl landing-heading text-lg transition disabled:opacity-50"
-                        >
-                            <span wire:loading.remove wire:target="submit">{{ __('onboarding.submit') }}</span>
-                            <span wire:loading wire:target="submit">{{ __('onboarding.submitting') }}</span>
-                        </button>
-                    </div>
+            @if ($isOptional && ! $isTip)
+                <div class="mt-4 text-center">
+                    <button
+                        type="button"
+                        wire:click="skipStep"
+                        class="text-sm text-[#5c5246] hover:text-[#c9a227] underline-offset-2 hover:underline"
+                    >
+                        {{ __('onboarding.skip') }}
+                    </button>
                 </div>
             @endif
         </div>

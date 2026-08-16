@@ -118,7 +118,7 @@ return [
     'demo_slider_prev' => 'Vorherige Beispiele',
     'demo_slider_next' => 'Nächste Beispiele',
     'demo_gallery_title' => 'Alle Demo-Einladungsstile',
-    'demo_gallery_subtitle' => 'Entdecken Sie Themen, Vorlagen und Öffnungsanimationen. Klicken Sie auf eine Vorschau, um sie in einem neuen Tab zu öffnen.',
+    'demo_gallery_subtitle' => 'Entdecken Sie Themen, Vorlagen und Öffnungsanimationen. Klicken Sie auf eine Vorschau, um sie zu öffnen.',
     'demo_gallery_back' => 'Zurück zur Startseite',
 
     'contact_title' => 'Kontakt aufnehmen',

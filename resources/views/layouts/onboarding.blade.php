@@ -20,6 +20,8 @@
 <body class="landing-page antialiased min-h-screen">
     {{ $slot }}
 
+    <x-invitation-preview-modal />
+
     @livewireScripts
 </body>
 </html>

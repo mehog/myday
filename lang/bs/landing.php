@@ -118,7 +118,7 @@ return [
     'demo_slider_prev' => 'Prethodni primjeri',
     'demo_slider_next' => 'Sljedeći primjeri',
     'demo_gallery_title' => 'Svi stilovi demo pozivnica',
-    'demo_gallery_subtitle' => 'Istražite teme, predloške i animacije otvaranja. Kliknite na pregled da otvorite u novom tabu.',
+    'demo_gallery_subtitle' => 'Istražite teme, predloške i animacije otvaranja. Kliknite na pregled da otvorite.',
     'demo_gallery_back' => 'Nazad na početnu',
 
     'contact_title' => 'Javite nam se',

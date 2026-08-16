@@ -118,7 +118,7 @@ return [
     'demo_slider_prev' => 'Previous examples',
     'demo_slider_next' => 'Next examples',
     'demo_gallery_title' => 'All demo invitation styles',
-    'demo_gallery_subtitle' => 'Explore themes, templates and opening animations. Click any preview to open it in a new tab.',
+    'demo_gallery_subtitle' => 'Explore themes, templates and opening animations. Click any preview to open it.',
     'demo_gallery_back' => 'Back to home',
 
     'contact_title' => 'Get in touch',

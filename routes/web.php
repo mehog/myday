@@ -21,6 +21,7 @@ use App\Livewire\GuestContactPage;
 use App\Livewire\GuestPushNotificationsPage;
 use App\Livewire\InvitationPage;
 use App\Livewire\LandingPage;
+use App\Livewire\Onboarding\OnboardingPreview;
 use App\Livewire\Onboarding\VerifyEmailNotice;
 use App\Livewire\Onboarding\WeddingOnboarding;
 use App\Support\Locale;
@@ -63,6 +64,7 @@ Route::get('/'.(config('referral.route_prefix') ?: 'ref').'/{code}', ReferralLin
     ->name('referral.link');
 
 Route::get('/onboarding', WeddingOnboarding::class)->name('onboarding');
+Route::get('/onboarding/preview', OnboardingPreview::class)->name('onboarding.preview');
 
 Route::redirect('/login', '/app/login')->name('login');
 
@@ -95,6 +97,7 @@ Route::get('/robots.txt', function () {
         'User-agent: *',
         'Disallow: /app/',
         'Disallow: /admin/',
+        'Disallow: /onboarding/preview',
         'Disallow: /e/*/',
         '',
         'User-agent: OAI-SearchBot',
