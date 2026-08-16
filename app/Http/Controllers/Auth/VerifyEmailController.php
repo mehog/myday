@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Support\DashboardNav;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,6 +26,6 @@ class VerifyEmailController extends Controller
 
         Auth::login($user);
 
-        return redirect('/app');
+        return redirect(DashboardNav::homeUrl());
     }
 }

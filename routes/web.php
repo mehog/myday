@@ -16,6 +16,18 @@ use App\Http\Controllers\PackagePageController;
 use App\Http\Controllers\ReferralLinkController;
 use App\Http\Controllers\ReferralProgramController;
 use App\Http\Controllers\WeddingEventCalendarController;
+use App\Http\Middleware\EnsureCoupleUser;
+use App\Livewire\Dashboard\Budget;
+use App\Livewire\Dashboard\CreatePush;
+use App\Livewire\Dashboard\Guests;
+use App\Livewire\Dashboard\Home;
+use App\Livewire\Dashboard\Messages;
+use App\Livewire\Dashboard\Pricing;
+use App\Livewire\Dashboard\Profile;
+use App\Livewire\Dashboard\Pushes;
+use App\Livewire\Dashboard\Referrals;
+use App\Livewire\Dashboard\Seating;
+use App\Livewire\Dashboard\Wedding;
 use App\Livewire\DemoExamplesPage;
 use App\Livewire\GuestContactPage;
 use App\Livewire\GuestPushNotificationsPage;
@@ -24,6 +36,7 @@ use App\Livewire\LandingPage;
 use App\Livewire\Onboarding\OnboardingPreview;
 use App\Livewire\Onboarding\VerifyEmailNotice;
 use App\Livewire\Onboarding\WeddingOnboarding;
+use App\Support\DashboardNav;
 use App\Support\Locale;
 use App\Support\LocaleUrl;
 use Illuminate\Http\Request;
@@ -73,7 +86,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/email/verification-notification', function (Request $request) {
         if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended('/app');
+            return redirect()->intended(DashboardNav::homeUrl());
         }
 
         $request->user()->sendEmailVerificationNotification();
@@ -97,6 +110,7 @@ Route::get('/robots.txt', function () {
         'User-agent: *',
         'Disallow: /app/',
         'Disallow: /admin/',
+        'Disallow: /dashboard/',
         'Disallow: /onboarding/preview',
         'Disallow: /e/*/',
         '',
@@ -148,3 +162,26 @@ Route::post('/push/subscribe/{guest:token}', StorePushSubscriptionAction::class)
 Route::post('/push/user/subscribe', StoreUserPushSubscriptionAction::class)
     ->middleware(['auth', 'verified'])
     ->name('push.user.subscribe');
+
+Route::middleware(['auth', 'verified', EnsureCoupleUser::class])
+    ->prefix('dashboard')
+    ->group(function () {
+        Route::get('/', Home::class)->name('dashboard');
+        Route::get('/wedding', Wedding::class)->name('dashboard.wedding');
+        Route::get('/guests', Guests::class)->name('dashboard.guests');
+        Route::get('/messages', Messages::class)->name('dashboard.messages');
+        Route::get('/budget', Budget::class)->name('dashboard.budget');
+        Route::get('/seating', Seating::class)->name('dashboard.seating');
+        Route::get('/pushes', Pushes::class)->name('dashboard.pushes');
+        Route::get('/pushes/create', CreatePush::class)->name('dashboard.pushes.create');
+        Route::get('/pricing', Pricing::class)->name('dashboard.pricing');
+        Route::get('/referrals', Referrals::class)->name('dashboard.referrals');
+        Route::get('/profile', Profile::class)->name('dashboard.profile');
+        Route::post('/logout', function (Request $request) {
+            auth()->guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect('/');
+        })->name('dashboard.logout');
+    });

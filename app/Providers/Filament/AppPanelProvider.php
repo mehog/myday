@@ -7,6 +7,7 @@ use App\Filament\App\Pages\Auth\ResetPassword;
 use App\Filament\App\Pages\PricingPage;
 use App\Filament\App\Pages\ReferralsPage;
 use App\Http\Middleware\SetAppLocale;
+use App\Support\DashboardNav;
 use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -45,7 +46,13 @@ class AppPanelProvider extends PanelProvider
             ->databaseNotifications()
             ->profile(EditProfile::class, isSimple: false)
             ->topNavigation()
+            ->homeUrl(fn (): string => DashboardNav::homeUrl())
             ->userMenuItems([
+                Action::make('new_dashboard')
+                    ->label(fn (): string => __('dashboard.new_dashboard'))
+                    ->icon(Heroicon::OutlinedSquares2x2)
+                    ->url(fn (): string => route('dashboard'))
+                    ->sort(-1),
                 Action::make('pricing')
                     ->label(fn (): string => __('pricing.nav_label'))
                     ->icon(Heroicon::OutlinedCreditCard)

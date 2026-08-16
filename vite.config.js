@@ -11,6 +11,8 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/seating-plan.js',
                 'resources/css/filament/app/theme.css',
+                'resources/css/dashboard.css',
+                'resources/js/dashboard.js',
             ],
             refresh: true,
             fonts: [

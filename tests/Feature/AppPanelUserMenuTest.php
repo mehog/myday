@@ -35,13 +35,16 @@ class AppPanelUserMenuTest extends TestCase
         $menuItems = array_values(Filament::getUserMenuItems());
         $names = array_map(fn (Action $item): string => $item->getName(), $menuItems);
 
-        $this->assertSame(['profile', 'pricing', 'referrals', 'logout'], $names);
+        $this->assertSame(['new_dashboard', 'profile', 'pricing', 'referrals', 'logout'], $names);
 
-        $this->assertSame(__('pricing.nav_label'), $menuItems[1]->getLabel());
-        $this->assertSame(PricingPage::getUrl(), $menuItems[1]->getUrl());
+        $this->assertSame(__('dashboard.new_dashboard'), $menuItems[0]->getLabel());
+        $this->assertSame(route('dashboard'), $menuItems[0]->getUrl());
 
-        $this->assertSame(__('referrals.nav_label'), $menuItems[2]->getLabel());
-        $this->assertSame(ReferralsPage::getUrl(), $menuItems[2]->getUrl());
+        $this->assertSame(__('pricing.nav_label'), $menuItems[2]->getLabel());
+        $this->assertSame(PricingPage::getUrl(), $menuItems[2]->getUrl());
+
+        $this->assertSame(__('referrals.nav_label'), $menuItems[3]->getLabel());
+        $this->assertSame(ReferralsPage::getUrl(), $menuItems[3]->getUrl());
 
         $navigationUrls = collect(Filament::getNavigation())
             ->flatMap(fn (NavigationGroup $group) => $group->getItems())
