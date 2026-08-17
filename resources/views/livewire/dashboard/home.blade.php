@@ -93,7 +93,10 @@
                     </x-slot:header>
                     @forelse ($memories['textMessages'] as $message)
                         <div class="border-b border-border py-2 last:border-0">
-                            <p class="text-sm">{{ \Illuminate\Support\Str::limit($message->content, 120) }}</p>
+                            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                                <p class="text-sm font-medium">{{ $message->sender_name }}</p>
+                                <p class="text-sm text-muted-foreground">{{ \Illuminate\Support\Str::limit($message->content, 120) }}</p>
+                            </div>
                         </div>
                     @empty
                         <p class="text-sm text-muted-foreground">{{ __('app.memories_wishes_empty') }}</p>

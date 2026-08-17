@@ -3,6 +3,7 @@
 namespace Tests\Feature\Dashboard;
 
 use App\GuestMessageType;
+use App\Livewire\Dashboard\NotificationsBell;
 use App\Livewire\Dashboard\Profile as DashboardProfile;
 use App\Livewire\Dashboard\Wedding as DashboardWedding;
 use App\Livewire\Onboarding\VerifyEmailNotice;
@@ -53,7 +54,9 @@ class CoupleDashboardTest extends TestCase
         $this->actingAs($user)
             ->get(route('dashboard'))
             ->assertOk()
-            ->assertSee('NasDan');
+            ->assertSee('NasDan')
+            ->assertSee(__('dashboard.classic_app'))
+            ->assertDontSee('id="locale-picker"', false);
     }
 
     public function test_dashboard_pages_are_reachable(): void
@@ -168,6 +171,7 @@ class CoupleDashboardTest extends TestCase
 
         Livewire::actingAs($user)
             ->test(DashboardProfile::class)
+            ->assertSee(__('dashboard.profile_locale'))
             ->set('current_password', 'password')
             ->set('password', 'new-password-123')
             ->set('password_confirmation', 'new-password-123')
@@ -234,6 +238,47 @@ class CoupleDashboardTest extends TestCase
             ->assertOk()
             ->assertSee('Ceremony')
             ->assertSee('16:00')
+            ->assertSee($guest->name)
             ->assertSee('Congratulations forever!');
+    }
+
+    public function test_guest_message_creates_database_notification_shown_in_dashboard_bell(): void
+    {
+        $user = User::factory()->create(['is_admin' => false]);
+        $wedding = WeddingEvent::factory()->create(['user_id' => $user->id]);
+        $guest = Guest::factory()->create(['wedding_event_id' => $wedding->id]);
+
+        GuestMessage::query()->create([
+            'wedding_event_id' => $wedding->id,
+            'guest_id' => $guest->id,
+            'sender_name' => 'Ivana',
+            'type' => GuestMessageType::Text,
+            'content' => 'See you at the party',
+        ]);
+
+        $notification = $user->fresh()->notifications()->first();
+        $this->assertNotNull($notification);
+
+        $title = __('app.notification_new_message_title', locale: $user->preferredLocale());
+        $this->assertSame($title, $notification->data['title'] ?? null);
+        $this->assertSame(route('dashboard.messages'), $notification->data['actions'][0]['url'] ?? null);
+        $this->assertSame(1, $user->unreadNotifications()->count());
+
+        Livewire::actingAs($user)
+            ->test(NotificationsBell::class)
+            ->assertSee($title)
+            ->assertSee('Ivana')
+            ->call('markAllAsRead');
+
+        $this->assertSame(0, $user->fresh()->unreadNotifications()->count());
+
+        $user->notifications()->first()->forceFill(['read_at' => null])->save();
+
+        Livewire::actingAs($user)
+            ->test(NotificationsBell::class)
+            ->call('openNotification', $notification->getKey())
+            ->assertRedirect(route('dashboard.messages'));
+
+        $this->assertNotNull($notification->fresh()->read_at);
     }
 }

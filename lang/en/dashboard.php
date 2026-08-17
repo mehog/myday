@@ -78,4 +78,7 @@ return [
     'profile_email' => 'Email',
     'profile_locale' => 'Language',
     'profile_saved' => 'Profile updated.',
+    'notifications_title' => 'Notifications',
+    'notifications_empty' => 'No notifications yet.',
+    'notifications_mark_all' => 'Mark all as read',
 ];

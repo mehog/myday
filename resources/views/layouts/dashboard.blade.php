@@ -157,14 +157,11 @@
                 </div>
 
                 <div class="flex items-center gap-2">
+                    @livewire(\App\Livewire\Dashboard\NotificationsBell::class)
                     <x-dashboard.appearance-toggle />
-                    <x-locale-picker
-                        select-class="rounded-md border border-border bg-background px-2 py-1.5 text-xs"
-                        label-class="sr-only"
-                    />
                     <a
                         href="/app"
-                        class="hidden rounded-md border border-border px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground sm:inline-flex"
+                        class="inline-flex shrink-0 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                     >
                         {{ __('dashboard.classic_app') }}
                     </a>

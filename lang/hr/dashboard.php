@@ -78,4 +78,7 @@ return [
     'profile_email' => 'Email',
     'profile_locale' => 'Jezik',
     'profile_saved' => 'Profil je ažuriran.',
+    'notifications_title' => 'Obavijesti',
+    'notifications_empty' => 'Još nema obavijesti.',
+    'notifications_mark_all' => 'Označi sve kao pročitano',
 ];
