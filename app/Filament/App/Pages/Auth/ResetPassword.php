@@ -2,6 +2,7 @@
 
 namespace App\Filament\App\Pages\Auth;
 
+use App\Support\DashboardNav;
 use Filament\Auth\Pages\PasswordReset\ResetPassword as BaseResetPassword;
 use Filament\Facades\Filament;
 use Filament\Schemas\Components\Component;
@@ -13,7 +14,7 @@ class ResetPassword extends BaseResetPassword
     public function mount(?string $email = null, #[SensitiveParameter] ?string $token = null): void
     {
         if (Filament::auth()->check()) {
-            redirect()->intended(Filament::getUrl());
+            redirect()->intended(DashboardNav::homeUrl());
         }
 
         // Query-string values from the signed reset link — do not rely on the

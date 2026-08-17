@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\App\Pages\Auth\EditProfile;
+use App\Filament\App\Pages\Auth\Login;
 use App\Filament\App\Pages\Auth\ResetPassword;
 use App\Filament\App\Pages\PricingPage;
 use App\Filament\App\Pages\ReferralsPage;
@@ -35,7 +36,7 @@ class AppPanelProvider extends PanelProvider
             ->default()
             ->id('app')
             ->path('app')
-            ->login()
+            ->login(Login::class)
             ->passwordReset(resetAction: ResetPassword::class)
             ->brandName('NasDan')
             ->brandLogo(asset('icons/nd-logo-transparent.webp'))

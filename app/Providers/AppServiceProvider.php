@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Http\Responses\EmailVerificationResponse;
+use App\Http\Responses\LoginResponse;
 use App\Listeners\PreventDemoInvitationMail;
 use App\Models\Guest;
 use App\Models\GuestMessage;
@@ -10,6 +12,8 @@ use App\Notifications\Channels\DispatchScheduledPushChannel;
 use App\Observers\GuestMessageObserver;
 use App\Observers\GuestObserver;
 use App\Observers\WeddingEventObserver;
+use Filament\Auth\Http\Responses\Contracts\EmailVerificationResponse as EmailVerificationResponseContract;
+use Filament\Auth\Http\Responses\Contracts\LoginResponse as LoginResponseContract;
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\Facades\Event;
@@ -23,7 +27,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
+        $this->app->singleton(EmailVerificationResponseContract::class, EmailVerificationResponse::class);
     }
 
     /**
