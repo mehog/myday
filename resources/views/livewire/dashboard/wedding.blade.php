@@ -90,6 +90,23 @@
                         </select>
                         @error('reveal_animation') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
                     </div>
+                    <div class="sm:col-span-2">
+                        <label class="mb-1 block text-sm font-medium">{{ __('app.hero_image') }}</label>
+                        @if ($wedding->hero_image_url && ! $removeHero && ! $heroUpload)
+                            <img src="{{ $wedding->hero_image_url }}" alt="" class="mb-3 h-40 w-full max-w-md rounded-lg object-cover">
+                        @endif
+                        @if ($heroUpload)
+                            <img src="{{ $heroUpload->temporaryUrl() }}" alt="" class="mb-3 h-40 w-full max-w-md rounded-lg object-cover">
+                        @endif
+                        <input type="file" wire:model="heroUpload" accept="image/*" class="block w-full text-sm" @disabled($locked)>
+                        <div wire:loading wire:target="heroUpload" class="mt-1 text-xs text-muted-foreground">…</div>
+                        @error('heroUpload') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
+                        @if (! $locked && ($wedding->hero_image_url || $heroUpload))
+                            <button type="button" class="mt-2 text-sm text-red-600 hover:underline" wire:click="clearHero">
+                                {{ __('dashboard.remove_hero') }}
+                            </button>
+                        @endif
+                    </div>
                     <div>
                         <label class="mb-1 block text-sm font-medium">{{ __('app.youtube_song') }}</label>
                         <input type="url" wire:model="music_url" class="{{ $controlClass }} h-10" @disabled($locked)>

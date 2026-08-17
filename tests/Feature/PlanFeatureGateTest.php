@@ -8,6 +8,7 @@ use App\Models\WeddingEvent;
 use App\PlanFeature;
 use App\PlanTier;
 use App\RsvpStatus;
+use App\Support\DashboardNav;
 use Tests\Concerns\RefreshInMemoryDatabase;
 use Tests\TestCase;
 
@@ -104,11 +105,11 @@ class PlanFeatureGateTest extends TestCase
 
         $this->actingAs($user)
             ->post(route('dodo.checkout'), ['tier' => 'free'])
-            ->assertRedirect('/app/pricing');
+            ->assertRedirect(DashboardNav::pricingUrl());
 
         $this->actingAs($user)
-            ->from('/app/pricing')
+            ->from(DashboardNav::pricingUrl())
             ->post(route('dodo.checkout'), ['tier' => 'deluxe'])
-            ->assertRedirect('/app/pricing');
+            ->assertRedirect(DashboardNav::pricingUrl());
     }
 }

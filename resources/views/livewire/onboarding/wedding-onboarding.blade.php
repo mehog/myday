@@ -41,8 +41,8 @@
         </div>
     </header>
 
-    <main class="flex-1 px-4 pt-24 pb-10">
-        <div class="max-w-md mx-auto landing-fade-in" wire:key="step-{{ $step }}">
+    <main class="flex-1 min-w-0 px-4 pt-24 pb-10 overflow-x-hidden">
+        <div class="max-w-md mx-auto min-w-0 landing-fade-in" wire:key="step-{{ $step }}">
             @if ($submitError)
                 <div class="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
                     {{ $submitError }}

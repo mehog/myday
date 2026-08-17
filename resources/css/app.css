@@ -730,6 +730,8 @@
 }
 
 .landing-input {
+    box-sizing: border-box;
+    max-width: 100%;
     border-radius: 0.75rem;
     border: 1px solid var(--landing-border);
     background-color: var(--landing-bg);
@@ -744,6 +746,23 @@
 .landing-input:focus {
     outline: none;
     border-color: var(--landing-accent);
+}
+
+/* Native date/time controls have large intrinsic min-widths on mobile Safari. */
+input.landing-input[type="date"],
+input.landing-input[type="time"],
+input.landing-input[type="datetime-local"] {
+    display: block;
+    width: 100%;
+    min-width: 0;
+}
+
+input.landing-input[type="date"]::-webkit-datetime-edit,
+input.landing-input[type="time"]::-webkit-datetime-edit,
+input.landing-input[type="datetime-local"]::-webkit-datetime-edit {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .landing-card {

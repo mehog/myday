@@ -11,6 +11,8 @@ return [
     'field_labels' => 'Oznake',
     'field_labels_helper' => 'Opcionalne oznake za grupiranje i filtriranje gostiju. „Tinejdžer“ je za goste pozvane za sebe — ne za malu djecu koja dolaze s roditeljima.',
     'filter_labels' => 'Oznake',
+    'filter_labels_all' => 'Sve oznake',
+    'filter_labels_clear' => 'Poništi odabir',
     'labels_none' => 'Bez oznaka',
     'label_bride' => 'Gost mlade',
     'label_groom' => 'Gost mladoženje',

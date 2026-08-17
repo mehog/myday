@@ -36,9 +36,6 @@ class Guests extends Component
     #[Url]
     public string $filterRsvp = '';
 
-    #[Url]
-    public string $filterTrash = 'active';
-
     /** @var list<string> */
     public array $filterLabels = [];
 
@@ -158,12 +155,6 @@ class Guests extends Component
             ->with(['children.menuOption', 'menuOption', 'plusOneMenuOption'])
             ->withMax('linkVisits as last_visited_at', 'visited_at');
 
-        if ($this->filterTrash === 'trashed') {
-            $query->onlyTrashed();
-        } elseif ($this->filterTrash === 'with') {
-            $query->withTrashed();
-        }
-
         $search = trim($this->search);
 
         if ($search !== '') {
@@ -201,6 +192,11 @@ class Guests extends Component
         $direction = $this->direction === 'desc' ? 'desc' : 'asc';
 
         return $query->orderBy($sort, $direction)->orderBy('id')->get();
+    }
+
+    public function clearLabelFilter(): void
+    {
+        $this->filterLabels = [];
     }
 
     /**
@@ -365,7 +361,6 @@ class Guests extends Component
             InvitePlatform::Manual => $guest->personal_url,
         };
 
-        $this->openShareUrl = null;
         $this->js('window.open('.json_encode($url).', "_blank")');
         $this->flashMessage = __('guests.guest_marked_sent');
     }

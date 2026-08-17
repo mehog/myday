@@ -4,8 +4,11 @@ namespace App\Livewire\Dashboard;
 
 use App\Livewire\Dashboard\Concerns\RendersDashboard;
 use App\Support\Locale;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 use Livewire\Component;
+use NotificationChannels\WebPush\PushSubscription;
 
 class Profile extends Component
 {
@@ -16,6 +19,12 @@ class Profile extends Component
     public string $email = '';
 
     public string $locale = '';
+
+    public string $current_password = '';
+
+    public string $password = '';
+
+    public string $password_confirmation = '';
 
     public ?string $flashMessage = null;
 
@@ -33,9 +42,24 @@ class Profile extends Component
     {
         return $this->dashboardView('livewire.dashboard.profile', [
             'locales' => Locale::options(),
+            'devices' => $this->devices(),
         ], __('dashboard.profile_title'), [
             ['label' => __('dashboard.nav.profile'), 'url' => null],
         ]);
+    }
+
+    /**
+     * @return Collection<int, PushSubscription>
+     */
+    protected function devices(): Collection
+    {
+        $user = auth()->user();
+
+        if ($user === null) {
+            return collect();
+        }
+
+        return $user->pushSubscriptions()->orderByDesc('created_at')->get();
     }
 
     public function save(): void
@@ -43,19 +67,54 @@ class Profile extends Component
         $user = auth()->user();
         abort_unless($user !== null, 403);
 
-        $data = $this->validate([
+        $changingPassword = $this->password !== '' || $this->current_password !== '' || $this->password_confirmation !== '';
+
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
             'locale' => ['required', Rule::in(array_keys(Locale::options()))],
-        ]);
+        ];
 
-        $user->update([
+        if ($changingPassword) {
+            $rules['current_password'] = ['required', 'current_password'];
+            $rules['password'] = ['required', 'confirmed', Password::defaults()];
+        }
+
+        $data = $this->validate($rules);
+
+        $payload = [
             'name' => $data['name'],
             'locale' => $data['locale'],
-        ]);
+        ];
+
+        if ($changingPassword) {
+            $payload['password'] = $data['password'];
+        }
+
+        $user->update($payload);
 
         session(['locale' => $data['locale']]);
         Locale::apply($data['locale']);
 
+        $this->current_password = '';
+        $this->password = '';
+        $this->password_confirmation = '';
+
         $this->flashMessage = __('dashboard.profile_saved');
+    }
+
+    public function removeDevice(int $id): void
+    {
+        $user = auth()->user();
+        abort_unless($user !== null, 403);
+
+        $subscription = $user->pushSubscriptions()->whereKey($id)->first();
+
+        if ($subscription === null || ! $user->ownsPushSubscription($subscription)) {
+            return;
+        }
+
+        $subscription->delete();
+
+        $this->flashMessage = __('app.push_devices_removed');
     }
 }

@@ -7,9 +7,9 @@
     </p>
 
     <form wire:submit="nextStep" class="space-y-5">
-        <div>
+        <div class="min-w-0">
             <label for="wedding_date" class="block text-sm text-[#5c5246] mb-2">{{ __('onboarding.wedding_date') }} *</label>
-            <input id="wedding_date" type="date" wire:model="wedding_date" class="landing-input w-full">
+            <input id="wedding_date" type="date" wire:model="wedding_date" class="landing-input w-full min-w-0 max-w-full">
             @error('wedding_date') <p class="mt-1 text-sm text-red-500">{{ $message }}</p> @enderror
         </div>
         <button type="submit" class="w-full landing-btn-primary py-4 rounded-xl landing-heading text-lg transition">

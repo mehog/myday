@@ -40,7 +40,11 @@ class NewGuestMessageNotification extends Notification implements ShouldQueue
             ->actions([
                 Action::make('view')
                     ->label(__('app.notification_view_message'))
-                    ->url(GuestMessagesResource::getUrl('view', ['record' => $this->message->id], panel: 'app'))
+                    ->url(
+                        config('dashboard.default')
+                            ? route('dashboard.messages')
+                            : GuestMessagesResource::getUrl('view', ['record' => $this->message->id], panel: 'app')
+                    )
                     ->markAsRead(),
             ])
             ->getDatabaseMessage();

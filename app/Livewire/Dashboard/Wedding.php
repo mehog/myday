@@ -8,12 +8,16 @@ use App\InvitationTheme;
 use App\Livewire\Dashboard\Concerns\RendersDashboard;
 use App\Models\WeddingEvent;
 use App\Support\Locale;
+use App\Support\MediaDisk;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Livewire\WithFileUploads;
 
 class Wedding extends Component
 {
     use RendersDashboard;
+    use WithFileUploads;
 
     public string $groom_name = '';
 
@@ -38,6 +42,10 @@ class Wedding extends Component
     public string $invitation_locale = '';
 
     public ?string $send_message = null;
+
+    public $heroUpload = null;
+
+    public bool $removeHero = false;
 
     public ?string $flashMessage = null;
 
@@ -127,9 +135,10 @@ class Wedding extends Component
             'accommodation_enabled' => ['boolean'],
             'invitation_locale' => ['required', Rule::in(array_keys(Locale::options()))],
             'send_message' => ['nullable', 'string'],
+            'heroUpload' => ['nullable', 'image', 'max:5120'],
         ]);
 
-        $wedding->update([
+        $payload = [
             'groom_name' => $data['groom_name'],
             'bride_name' => $data['bride_name'],
             'wedding_date' => $data['wedding_date'],
@@ -142,8 +151,32 @@ class Wedding extends Component
             'accommodation_enabled' => $data['accommodation_enabled'],
             'invitation_locale' => $data['invitation_locale'],
             'send_message' => $data['send_message'] ?: null,
-        ]);
+        ];
+
+        if ($this->heroUpload instanceof TemporaryUploadedFile) {
+            $payload['hero_image'] = $this->heroUpload->store('hero-images', MediaDisk::name());
+            $this->heroUpload = null;
+            $this->removeHero = false;
+        } elseif ($this->removeHero) {
+            $payload['hero_image'] = null;
+            $this->removeHero = false;
+        }
+
+        $wedding->update($payload);
 
         $this->flashMessage = __('dashboard.saved');
+    }
+
+    public function updatedHeroUpload(): void
+    {
+        $this->removeHero = false;
+    }
+
+    public function clearHero(): void
+    {
+        abort_if($this->isLocked(), 403);
+
+        $this->heroUpload = null;
+        $this->removeHero = true;
     }
 }

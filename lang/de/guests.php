@@ -11,6 +11,8 @@ return [
     'field_labels' => 'Labels',
     'field_labels_helper' => 'Optionale Tags zum Gruppieren und Filtern von Gästen. „Teenager“ ist für selbst eingeladene Gäste — nicht für kleine Kinder, die mit den Eltern kommen.',
     'filter_labels' => 'Labels',
+    'filter_labels_all' => 'Alle Labels',
+    'filter_labels_clear' => 'Auswahl aufheben',
     'labels_none' => 'Keine Labels',
     'label_bride' => 'Gast der Braut',
     'label_groom' => 'Gast des Bräutigams',

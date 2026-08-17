@@ -127,4 +127,13 @@ class DashboardNav
 
         return url('/app');
     }
+
+    public static function pricingUrl(): string
+    {
+        if (config('dashboard.default') && Route::has('dashboard.pricing')) {
+            return route('dashboard.pricing');
+        }
+
+        return url('/app/pricing');
+    }
 }

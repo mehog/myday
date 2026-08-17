@@ -10,6 +10,7 @@ use App\Models\WeddingEvent;
 use App\PlanTier;
 use App\Services\Dodo\DodoCheckoutService;
 use App\Services\Dodo\DodoClientFactory;
+use App\Support\DashboardNav;
 use Dodopayments\CheckoutSessions\CheckoutSessionResponse;
 use Illuminate\Validation\ValidationException;
 use Mockery;
@@ -112,6 +113,8 @@ class DodoCheckoutTest extends TestCase
                 $this->assertSame('EUR', $billingCurrency);
                 $this->assertNull($discountCode);
                 $this->assertArrayNotHasKey('referral_discount_code', $metadata);
+                $this->assertSame(DashboardNav::pricingUrl().'?checkout=return', $returnUrl);
+                $this->assertSame(DashboardNav::pricingUrl().'?checkout=cancel', $cancelUrl);
 
                 return $session;
             });

@@ -11,6 +11,8 @@ return [
     'field_labels' => 'Labels',
     'field_labels_helper' => 'Optional tags to group and filter guests. “Teenager” is for guests invited in their own right — not young children attending with parents.',
     'filter_labels' => 'Labels',
+    'filter_labels_all' => 'All labels',
+    'filter_labels_clear' => 'Clear selection',
     'labels_none' => 'No labels',
     'label_bride' => 'Bride\'s guest',
     'label_groom' => 'Groom\'s guest',

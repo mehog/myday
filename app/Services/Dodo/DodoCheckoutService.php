@@ -5,6 +5,7 @@ namespace App\Services\Dodo;
 use App\Models\DodoPayment;
 use App\Models\User;
 use App\PlanTier;
+use App\Support\DashboardNav;
 use App\Support\DodoCatalog;
 use Dodopayments\CheckoutSessions\CheckoutSessionResponse;
 use Illuminate\Validation\ValidationException;
@@ -41,8 +42,8 @@ class DodoCheckoutService
         $currency = $region->currency();
         $discountCode = $user->referralBuyerDiscountCode();
 
-        $returnUrl = config('dodo.return_url') ?: url('/app/pricing?checkout=return');
-        $cancelUrl = config('dodo.cancel_url') ?: url('/app/pricing?checkout=cancel');
+        $returnUrl = config('dodo.return_url') ?: DashboardNav::pricingUrl().'?checkout=return';
+        $cancelUrl = config('dodo.cancel_url') ?: DashboardNav::pricingUrl().'?checkout=cancel';
 
         $metadata = [
             'user_id' => (string) $user->id,

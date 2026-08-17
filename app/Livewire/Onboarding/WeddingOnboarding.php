@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\WeddingEvent;
 use App\Models\WeddingLocation;
 use App\PlanTier;
+use App\Support\DashboardNav;
 use App\Support\Locale;
 use App\Support\MediaDisk;
 use App\Support\OnboardingSongs;
@@ -102,7 +103,7 @@ class WeddingOnboarding extends Component
                 return;
             }
 
-            $this->redirect('/app');
+            $this->redirect(DashboardNav::homeUrl());
 
             return;
         }
@@ -177,6 +178,19 @@ class WeddingOnboarding extends Component
     {
         Locale::set($locale);
         $this->songSuggestions = [];
+    }
+
+    public function updatedStep(): void
+    {
+        $this->js(<<<'JS'
+            document.activeElement?.blur?.();
+
+            const scrollToTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+
+            scrollToTop();
+            requestAnimationFrame(scrollToTop);
+            setTimeout(scrollToTop, 150);
+        JS);
     }
 
     public function nextStep(): void

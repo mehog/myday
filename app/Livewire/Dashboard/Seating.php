@@ -20,6 +20,8 @@ class Seating extends Component
      */
     public ?array $seatingPlan = null;
 
+    public ?string $flashMessage = null;
+
     public function mount(): void
     {
         $wedding = auth()->user()?->weddingEvent;
@@ -136,7 +138,7 @@ class Seating extends Component
         $this->seatingPlan = $data;
 
         if ($notify) {
-            $this->dispatch('dashboard-toast', message: __('seating.saved'));
+            $this->flashMessage = __('seating.saved');
         }
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Filament\App\Pages\PricingPage;
+use App\Support\DashboardNav;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -23,7 +23,7 @@ class UpgradeRequiredModal extends Component
 
     public function pricingUrl(): string
     {
-        return PricingPage::getUrl();
+        return DashboardNav::pricingUrl();
     }
 
     public function render()

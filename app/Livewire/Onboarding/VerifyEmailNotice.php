@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Onboarding;
 
+use App\Support\DashboardNav;
 use App\Support\Locale;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
@@ -23,7 +24,7 @@ class VerifyEmailNotice extends Component
         }
 
         if ($user->hasVerifiedEmail()) {
-            $this->redirect('/app');
+            $this->redirect(DashboardNav::homeUrl());
         }
     }
 

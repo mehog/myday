@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Models\WeddingEvent;
+use App\Support\DashboardNav;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
@@ -38,7 +39,7 @@ class TrackUserIpOnVerificationTest extends TestCase
 
         $this->withServerVariables(['REMOTE_ADDR' => $ip])
             ->get($this->verificationUrl($user))
-            ->assertRedirect('/app');
+            ->assertRedirect(DashboardNav::homeUrl());
 
         $user->refresh();
 
@@ -60,7 +61,7 @@ class TrackUserIpOnVerificationTest extends TestCase
         $user = User::factory()->unverified()->create();
         WeddingEvent::factory()->inactive()->create(['user_id' => $user->id]);
 
-        $this->get($this->verificationUrl($user))->assertRedirect('/app');
+        $this->get($this->verificationUrl($user))->assertRedirect(DashboardNav::homeUrl());
 
         $user->refresh();
 
@@ -87,7 +88,7 @@ class TrackUserIpOnVerificationTest extends TestCase
 
         $this->withServerVariables(['REMOTE_ADDR' => $ip])
             ->get($this->verificationUrl($user))
-            ->assertRedirect('/app');
+            ->assertRedirect(DashboardNav::homeUrl());
 
         $user->refresh();
 

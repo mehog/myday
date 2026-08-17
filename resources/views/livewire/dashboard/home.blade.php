@@ -75,8 +75,8 @@
                     @forelse ($memories['schedule'] as $item)
                         <div class="border-b border-border py-2 last:border-0">
                             <p class="text-sm font-medium">{{ $item->title }}</p>
-                            @if ($item->starts_at)
-                                <p class="text-xs text-muted-foreground">{{ $item->starts_at->format('H:i') }}</p>
+                            @if ($item->time)
+                                <p class="text-xs text-muted-foreground">{{ \Illuminate\Support\Carbon::parse($item->time)->format('H:i') }}</p>
                             @endif
                         </div>
                     @empty
@@ -93,7 +93,7 @@
                     </x-slot:header>
                     @forelse ($memories['textMessages'] as $message)
                         <div class="border-b border-border py-2 last:border-0">
-                            <p class="text-sm">{{ \Illuminate\Support\Str::limit($message->body, 120) }}</p>
+                            <p class="text-sm">{{ \Illuminate\Support\Str::limit($message->content, 120) }}</p>
                         </div>
                     @empty
                         <p class="text-sm text-muted-foreground">{{ __('app.memories_wishes_empty') }}</p>
@@ -101,22 +101,23 @@
                 </x-dashboard.card>
             </div>
         @else
-            <div class="flex flex-wrap gap-2 border-b border-border pb-3">
+            <div class="flex flex-wrap justify-center gap-2 border-b border-border pb-3">
                 @foreach ([
-                    'overview' => __('app.dashboard_tab_overview'),
-                    'menu' => __('app.dashboard_tab_menu_accommodation'),
-                    'stats' => __('app.dashboard_tab_statistics'),
-                ] as $key => $label)
+                    'overview' => ['label' => __('app.dashboard_tab_overview'), 'icon' => 'home'],
+                    'menu' => ['label' => __('app.dashboard_tab_menu_accommodation'), 'icon' => 'cake'],
+                    'stats' => ['label' => __('app.dashboard_tab_statistics'), 'icon' => 'chart'],
+                ] as $key => $item)
                     <button
                         type="button"
                         wire:click="$set('tab', '{{ $key }}')"
                         @class([
-                            'rounded-md px-3 py-1.5 text-sm font-medium transition',
+                            'inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium transition',
                             'bg-primary text-primary-foreground' => $tab === $key,
                             'text-muted-foreground hover:bg-accent hover:text-accent-foreground' => $tab !== $key,
                         ])
                     >
-                        {{ $label }}
+                        <x-dashboard.icon :name="$item['icon']" class="h-4 w-4" />
+                        {{ $item['label'] }}
                     </button>
                 @endforeach
             </div>
@@ -225,7 +226,7 @@
 
                 <x-dashboard.card>
                     <x-slot:header>
-                        <h3 class="font-medium">{{ __('app.stat_total_opens') }} — 30d</h3>
+                        <h3 class="font-medium">{{ __('app.stat_total_opens') }} — {{ __('dashboard.chart_last_30_days') }}</h3>
                     </x-slot:header>
                     @php
                         $max = max(1, collect($visitChart)->max('count') ?: 1);

@@ -108,9 +108,9 @@
                     <thead class="text-xs uppercase text-muted-foreground">
                         <tr>
                             <th class="py-2 pr-4">{{ __('pricing.nav_label') }}</th>
-                            <th class="py-2 pr-4">Status</th>
-                            <th class="py-2 pr-4">Amount</th>
-                            <th class="py-2">Date</th>
+                            <th class="py-2 pr-4">{{ __('dashboard.pricing_col_status') }}</th>
+                            <th class="py-2 pr-4">{{ __('dashboard.pricing_col_amount') }}</th>
+                            <th class="py-2">{{ __('dashboard.pricing_col_date') }}</th>
                         </tr>
                     </thead>
                     <tbody>

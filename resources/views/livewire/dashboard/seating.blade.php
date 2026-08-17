@@ -1,4 +1,8 @@
 <div class="space-y-4">
+    @if ($flashMessage)
+        <div class="rounded-lg border border-emerald-300/50 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-100">{{ $flashMessage }}</div>
+    @endif
+
     <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
             <h2 class="text-xl font-semibold">{{ __("seating.page_title") }}</h2>
@@ -140,15 +144,15 @@
                     {{ __('seating.select_table_type') }}
                 </span>
                 <div class="flex items-center gap-2">
-                    <x-filament::button size="xs sm:sm text-xs sm:text-sm" color="gray" x-on:click="window.seatingPlanEditor?.addTable('round')">
+                    <x-dashboard.button type="button" variant="secondary" class="!px-2 !py-1 text-xs sm:text-sm" x-on:click="window.seatingPlanEditor?.addTable('round')">
                         {{ __('seating.add_round') }}
-                    </x-filament::button>
-                    <x-filament::button size="xs sm:sm text-xs sm:text-sm" color="gray" x-on:click="window.seatingPlanEditor?.addTable('rect')">
+                    </x-dashboard.button>
+                    <x-dashboard.button type="button" variant="secondary" class="!px-2 !py-1 text-xs sm:text-sm" x-on:click="window.seatingPlanEditor?.addTable('rect')">
                         {{ __('seating.add_rect') }}
-                    </x-filament::button>
-                    <x-filament::button size="xs sm:sm text-xs sm:text-sm" color="gray" x-on:click="window.seatingPlanEditor?.addTable('head')">
+                    </x-dashboard.button>
+                    <x-dashboard.button type="button" variant="secondary" class="!px-2 !py-1 text-xs sm:text-sm" x-on:click="window.seatingPlanEditor?.addTable('head')">
                         {{ __('seating.add_head') }}
-                    </x-filament::button>
+                    </x-dashboard.button>
                 </div>
             </div>
 
@@ -157,24 +161,26 @@
                     {{ __('seating.zoom_controls') }}
                 </span>
                 <div class="flex items-center gap-1">
-                    <x-filament::icon-button
-                        icon="heroicon-o-minus"
-                        size="xs sm:sm"
-                        color="gray"
-                        :label="__('seating.zoom_out')"
+                    <button
+                        type="button"
+                        class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent"
                         x-on:click="window.seatingPlanEditor?.zoomOut()"
-                    />
+                        aria-label="{{ __('seating.zoom_out') }}"
+                    >
+                        <x-dashboard.icon name="minus" class="h-4 w-4" />
+                    </button>
                     <span class="min-w-[3rem] text-center text-sm text-gray-600 dark:text-gray-300" x-text="zoomLabel"></span>
-                    <x-filament::icon-button
-                        icon="heroicon-o-plus"
-                        size="xs sm:sm"
-                        color="gray"
-                        :label="__('seating.zoom_in')"
+                    <button
+                        type="button"
+                        class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent"
                         x-on:click="window.seatingPlanEditor?.zoomIn()"
-                    />
-                    <x-filament::button size="xs sm:sm text-xs sm:text-sm" color="gray" x-on:click="window.seatingPlanEditor?.resetZoom()">
+                        aria-label="{{ __('seating.zoom_in') }}"
+                    >
+                        <x-dashboard.icon name="plus" class="h-4 w-4" />
+                    </button>
+                    <x-dashboard.button type="button" variant="secondary" class="!px-2 !py-1 text-xs sm:text-sm" x-on:click="window.seatingPlanEditor?.resetZoom()">
                         {{ __('seating.reset_zoom') }}
-                    </x-filament::button>
+                    </x-dashboard.button>
                 </div>
             </div>
         </div>
@@ -236,21 +242,23 @@
                                         {{ __('seating.chairs') }}
                                     </label>
                                     <div class="flex items-center gap-3">
-                                        <x-filament::icon-button
-                                            icon="heroicon-o-minus"
-                                            size="sm"
-                                            color="gray"
-                                            :label="__('seating.remove_chair')"
+                                        <button
+                                            type="button"
+                                            class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent"
                                             x-on:click="removeChair()"
-                                        />
+                                            aria-label="{{ __('seating.remove_chair') }}"
+                                        >
+                                            <x-dashboard.icon name="minus" class="h-4 w-4" />
+                                        </button>
                                         <span class="min-w-[2rem] text-center text-lg font-semibold text-gray-900 dark:text-white" x-text="inspectorChairCount"></span>
-                                        <x-filament::icon-button
-                                            icon="heroicon-o-plus"
-                                            size="sm"
-                                            color="gray"
-                                            :label="__('seating.add_chair')"
+                                        <button
+                                            type="button"
+                                            class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent"
                                             x-on:click="addChair()"
-                                        />
+                                            aria-label="{{ __('seating.add_chair') }}"
+                                        >
+                                            <x-dashboard.icon name="plus" class="h-4 w-4" />
+                                        </button>
                                     </div>
                                 </div>
 
@@ -260,41 +268,44 @@
                                             {{ __('seating.rotation') }}
                                         </label>
                                         <div class="flex items-center gap-2">
-                                            <x-filament::icon-button
-                                                icon="heroicon-o-arrow-uturn-left"
-                                                size="sm"
-                                                color="gray"
-                                                :label="__('seating.rotate_left')"
+                                            <button
+                                                type="button"
+                                                class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent"
                                                 x-on:click="rotateTable(-15)"
-                                            />
+                                                aria-label="{{ __('seating.rotate_left') }}"
+                                            >
+                                                <x-dashboard.icon name="rotate-left" class="h-4 w-4" />
+                                            </button>
                                             <span class="min-w-[3rem] text-center text-sm font-semibold text-gray-900 dark:text-white" x-text="inspectorRotation + '°'"></span>
-                                            <x-filament::icon-button
-                                                icon="heroicon-o-arrow-uturn-right"
-                                                size="sm"
-                                                color="gray"
-                                                :label="__('seating.rotate_right')"
+                                            <button
+                                                type="button"
+                                                class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent"
                                                 x-on:click="rotateTable(15)"
-                                            />
-                                            <x-filament::button
-                                                size="xs"
-                                                color="gray"
+                                                aria-label="{{ __('seating.rotate_right') }}"
+                                            >
+                                                <x-dashboard.icon name="rotate-right" class="h-4 w-4" />
+                                            </button>
+                                            <x-dashboard.button
+                                                type="button"
+                                                variant="secondary"
+                                                class="!px-2 !py-1 text-xs"
                                                 x-on:click="rotateTable(-inspectorRotation)"
                                             >
                                                 {{ __('seating.reset_rotation') }}
-                                            </x-filament::button>
+                                            </x-dashboard.button>
                                         </div>
                                     </div>
                                 </template>
 
                                 <div>
-                                    <x-filament::button
-                                        size="sm"
-                                        color="danger"
+                                    <x-dashboard.button
+                                        type="button"
+                                        variant="destructive"
                                         class="w-full"
                                         x-on:click="deleteTable()"
                                     >
                                         {{ __('seating.delete_table') }}
-                                    </x-filament::button>
+                                    </x-dashboard.button>
                                 </div>
                             </div>
                         </template>
@@ -344,9 +355,9 @@
                     <template x-if="chairModal.currentGuestId">
                         <div class="flex items-center justify-between bg-primary-50 px-4 py-2 dark:bg-primary-500/10">
                             <span class="text-sm text-primary-800 dark:text-primary-200" x-text="currentGuestName"></span>
-                            <x-filament::button size="xs" color="danger" x-on:click="clearSeat()">
+                            <x-dashboard.button type="button" variant="destructive" class="!px-2 !py-1 text-xs" x-on:click="clearSeat()">
                                 {{ __('seating.remove_guest') }}
-                            </x-filament::button>
+                            </x-dashboard.button>
                         </div>
                     </template>
 

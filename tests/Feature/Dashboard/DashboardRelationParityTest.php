@@ -141,6 +141,8 @@ class DashboardRelationParityTest extends TestCase
 
         Livewire::actingAs($user)
             ->test(DashboardGuests::class)
+            ->assertDontSee(__('dashboard.guests_trash'), false)
+            ->assertSee(__('guests.filter_labels_all'), false)
             ->call('openSendInvite', $guest->id)
             ->call('sendVia', InvitePlatform::WhatsApp->value)
             ->assertSet('flashMessage', __('guests.guest_marked_sent'));
@@ -198,7 +200,6 @@ class DashboardRelationParityTest extends TestCase
 
         Livewire::actingAs($user)
             ->test(DashboardGuests::class)
-            ->set('filterTrash', 'trashed')
             ->call('restoreGuest', $guest->id);
 
         $this->assertDatabaseHas('guests', [

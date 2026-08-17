@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\PlanTier;
 use App\Services\Dodo\DodoCheckoutService;
+use App\Support\DashboardNav;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -22,7 +23,7 @@ class DodoCheckoutController extends Controller
 
         if (! $tier->isPurchasable()) {
             return redirect()
-                ->to('/app/pricing')
+                ->to(DashboardNav::pricingUrl())
                 ->with('error', __('pricing.error_tier_unavailable'));
         }
 
@@ -34,7 +35,7 @@ class DodoCheckoutController extends Controller
             report($e);
 
             return redirect()
-                ->to('/app/pricing')
+                ->to(DashboardNav::pricingUrl())
                 ->with('error', __('pricing.error_checkout_failed'));
         }
 

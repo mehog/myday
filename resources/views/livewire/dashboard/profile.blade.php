@@ -33,7 +33,66 @@
                 @error('locale') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
             </div>
 
+            <div>
+                <label class="mb-1 block text-sm font-medium">{{ __('dashboard.profile_current_password') }}</label>
+                <input type="password" wire:model="current_password" class="{{ $controlClass }} h-10" autocomplete="current-password">
+                @error('current_password') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
+                <label class="mb-1 block text-sm font-medium">{{ __('dashboard.profile_new_password') }}</label>
+                <input type="password" wire:model="password" class="{{ $controlClass }} h-10" autocomplete="new-password">
+                @error('password') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
+                <label class="mb-1 block text-sm font-medium">{{ __('dashboard.profile_password_confirmation') }}</label>
+                <input type="password" wire:model="password_confirmation" class="{{ $controlClass }} h-10" autocomplete="new-password">
+            </div>
+
             <x-dashboard.button type="submit">{{ __('dashboard.save') }}</x-dashboard.button>
         </form>
+    </x-dashboard.card>
+
+    <x-dashboard.card>
+        <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+                <h3 class="font-medium">{{ __('app.push_devices_heading') }}</h3>
+                <p class="mt-1 text-sm text-muted-foreground">{{ __('app.push_devices_description') }}</p>
+            </div>
+            <x-dashboard.button
+                type="button"
+                variant="secondary"
+                x-data
+                x-on:click="subscribeToPushAsUser().then((result) => { if (result.ok) { $wire.$refresh() } })"
+            >
+                {{ __('app.push_devices_add') }}
+            </x-dashboard.button>
+        </div>
+
+        @if ($devices->isEmpty())
+            <p class="mt-4 text-sm font-medium">{{ __('app.push_devices_empty_heading') }}</p>
+            <p class="mt-1 text-sm text-muted-foreground">{{ __('app.push_devices_empty_desc') }}</p>
+        @else
+            <ul class="mt-4 divide-y divide-border">
+                @foreach ($devices as $device)
+                    <li class="flex flex-wrap items-center justify-between gap-3 py-3" wire:key="push-device-{{ $device->id }}">
+                        <div>
+                            <p class="text-sm font-medium">{{ $device->device_label ?: __('app.push_devices_unknown') }}</p>
+                            <p class="text-xs text-muted-foreground">{{ $device->created_at?->diffForHumans() }}</p>
+                        </div>
+                        <x-dashboard.button
+                            type="button"
+                            variant="destructive"
+                            class="!px-2 !py-1 text-xs"
+                            wire:click="removeDevice({{ $device->id }})"
+                            wire:confirm="{{ __('app.push_devices_remove_confirm_body') }}"
+                        >
+                            {{ __('app.push_devices_remove') }}
+                        </x-dashboard.button>
+                    </li>
+                @endforeach
+            </ul>
+        @endif
     </x-dashboard.card>
 </div>

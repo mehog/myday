@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use NotificationChannels\WebPush\HasPushSubscriptions;
+use NotificationChannels\WebPush\PushSubscription;
 use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 use Thomasjohnkane\Snooze\Traits\SnoozeNotifiable;
 
@@ -133,6 +134,12 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLocale
     public function ownsDemoInvitation(): bool
     {
         return $this->weddingEvent?->suppressesOutboundMail() === true;
+    }
+
+    public function ownsPushSubscription(PushSubscription $subscription): bool
+    {
+        return $subscription->subscribable_type === $this->getMorphClass()
+            && (int) $subscription->subscribable_id === (int) $this->getKey();
     }
 
     /**
