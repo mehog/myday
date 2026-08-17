@@ -12,6 +12,7 @@ use App\Notifications\Channels\DispatchScheduledPushChannel;
 use App\Observers\GuestMessageObserver;
 use App\Observers\GuestObserver;
 use App\Observers\WeddingEventObserver;
+use App\Support\BrandTranslator;
 use Filament\Auth\Http\Responses\Contracts\EmailVerificationResponse as EmailVerificationResponseContract;
 use Filament\Auth\Http\Responses\Contracts\LoginResponse as LoginResponseContract;
 use Illuminate\Mail\Events\MessageSending;
@@ -19,6 +20,7 @@ use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Translation\Translator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +31,17 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
         $this->app->singleton(EmailVerificationResponseContract::class, EmailVerificationResponse::class);
+
+        $this->app->extend('translator', function (Translator $translator): BrandTranslator {
+            if ($translator instanceof BrandTranslator) {
+                return $translator;
+            }
+
+            $branded = new BrandTranslator($translator->getLoader(), $translator->getLocale());
+            $branded->setFallback($translator->getFallback());
+
+            return $branded;
+        });
     }
 
     /**

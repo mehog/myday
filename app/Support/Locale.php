@@ -10,6 +10,20 @@ use Illuminate\Support\Facades\App;
 class Locale
 {
     /**
+     * Accept-Language / query aliases that resolve to a supported locale.
+     *
+     * @var array<string, string>
+     */
+    private const ALIASES = [
+        'sr' => 'sr_Latn',
+        'sr_rs' => 'sr_Latn',
+        'sr_latn' => 'sr_Latn',
+        'sr_latn_rs' => 'sr_Latn',
+        'sr_cyrl' => 'sr_Latn',
+        'sr_cyrl_rs' => 'sr_Latn',
+    ];
+
+    /**
      * @return list<string>
      */
     public static function supported(): array
@@ -19,21 +33,46 @@ class Locale
 
     public static function default(): string
     {
-        return config('app.default_locale', 'bs');
+        return config('app.default_locale', 'en');
+    }
+
+    public static function canonicalize(?string $locale): ?string
+    {
+        if (! is_string($locale) || $locale === '') {
+            return null;
+        }
+
+        $normalized = strtolower(str_replace('-', '_', $locale));
+
+        if (isset(self::ALIASES[$normalized])) {
+            return self::ALIASES[$normalized];
+        }
+
+        foreach (self::supported() as $supported) {
+            if (strtolower($supported) === $normalized) {
+                return $supported;
+            }
+        }
+
+        $short = explode('_', $normalized)[0];
+
+        foreach (self::supported() as $supported) {
+            if (strtolower($supported) === $short) {
+                return $supported;
+            }
+        }
+
+        return null;
     }
 
     public static function isSupported(string $locale): bool
     {
-        return in_array($locale, self::supported(), true);
+        return self::canonicalize($locale) !== null;
     }
 
     public static function resolve(?string $locale): string
     {
-        if (is_string($locale) && self::isSupported($locale)) {
-            return $locale;
-        }
-
-        return self::default();
+        return self::canonicalize($locale) ?? self::default();
     }
 
     public static function current(): string
@@ -41,22 +80,33 @@ class Locale
         return App::getLocale();
     }
 
+    public static function htmlLang(?string $locale = null): string
+    {
+        $resolved = $locale === null
+            ? self::current()
+            : (self::canonicalize($locale) ?? $locale);
+
+        return str_replace('_', '-', $resolved);
+    }
+
     public static function set(string $locale, bool $persistToUser = true): bool
     {
-        if (! self::isSupported($locale)) {
+        $canonical = self::canonicalize($locale);
+
+        if ($canonical === null) {
             return false;
         }
 
-        session(['locale' => $locale]);
+        session(['locale' => $canonical]);
 
         if ($persistToUser) {
             $user = auth()->user();
             if ($user instanceof User) {
-                $user->update(['locale' => $locale]);
+                $user->update(['locale' => $canonical]);
             }
         }
 
-        self::apply($locale);
+        self::apply($canonical);
 
         return true;
     }
@@ -65,32 +115,65 @@ class Locale
     {
         $queryLocale = $request->query('locale');
 
-        if (is_string($queryLocale) && self::isSupported($queryLocale)) {
-            session(['locale' => $queryLocale]);
+        if (is_string($queryLocale)) {
+            $canonical = self::canonicalize($queryLocale);
 
-            return $queryLocale;
+            if ($canonical !== null) {
+                session(['locale' => $canonical]);
+
+                return $canonical;
+            }
         }
 
         $user = auth()->user();
-        if ($user instanceof User && $user->locale && self::isSupported($user->locale)) {
-            session(['locale' => $user->locale]);
+        if ($user instanceof User && $user->locale) {
+            $canonical = self::canonicalize($user->locale);
 
-            return $user->locale;
+            if ($canonical !== null) {
+                session(['locale' => $canonical]);
+
+                return $canonical;
+            }
         }
 
-        $sessionLocale = session('locale', self::default());
+        $sessionLocale = session('locale');
 
-        if (self::isSupported($sessionLocale)) {
-            return $sessionLocale;
+        if (is_string($sessionLocale)) {
+            $canonical = self::canonicalize($sessionLocale);
+
+            if ($canonical !== null) {
+                return $canonical;
+            }
+        }
+
+        $accepted = self::fromAcceptLanguage($request);
+
+        if ($accepted !== null) {
+            return $accepted;
         }
 
         return self::default();
     }
 
+    public static function fromAcceptLanguage(Request $request): ?string
+    {
+        foreach ($request->getLanguages() as $language) {
+            $canonical = self::canonicalize($language);
+
+            if ($canonical !== null) {
+                return $canonical;
+            }
+        }
+
+        return null;
+    }
+
     public static function apply(string $locale): void
     {
-        App::setLocale($locale);
-        Carbon::setLocale($locale);
+        $canonical = self::canonicalize($locale) ?? $locale;
+
+        App::setLocale($canonical);
+        Carbon::setLocale($canonical);
     }
 
     public static function ogLocale(): string
@@ -99,6 +182,7 @@ class Locale
             'bs' => 'bs_BA',
             'de' => 'de_DE',
             'hr' => 'hr_HR',
+            'sr_Latn' => 'sr_RS',
             default => 'en_US',
         };
     }

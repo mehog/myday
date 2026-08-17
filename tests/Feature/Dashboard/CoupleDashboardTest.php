@@ -54,7 +54,7 @@ class CoupleDashboardTest extends TestCase
         $this->actingAs($user)
             ->get(route('dashboard'))
             ->assertOk()
-            ->assertSee('NasDan')
+            ->assertSee('Nuptoria')
             ->assertSee(__('dashboard.classic_app'))
             ->assertDontSee('id="locale-picker"', false);
     }

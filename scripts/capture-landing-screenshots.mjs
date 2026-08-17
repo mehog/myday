@@ -9,32 +9,39 @@ const PASSWORD = '5E3L1Y84uFdd';
 
 const PROFILES = {
     bs: {
-        email: 'jasmin-djordje@nasdan.ba',
+        email: 'jasmin-djordje@nuptoria.com',
         slug: 'jasmina-djordje',
         guestToken: 'mktbsfeaturedguesttoken000000001',
         islamicDemo: 'demo-islamsko',
         christianDemo: 'demo-krscansko',
     },
     hr: {
-        email: 'marketing-hr@nasdan.ba',
+        email: 'marketing-hr@nuptoria.com',
         slug: 'ivan-lucija',
         guestToken: 'mkthrfeaturedguesttoken000000001',
         islamicDemo: 'demo-islamsko-hr',
         christianDemo: 'demo-krscansko-hr',
     },
     de: {
-        email: 'marketing-de@nasdan.ba',
+        email: 'marketing-de@nuptoria.com',
         slug: 'lukas-sophie',
         guestToken: 'mktdefaturedguesttoken000000001',
         islamicDemo: 'demo-islamsko-de',
         christianDemo: 'demo-krscansko-de',
     },
     en: {
-        email: 'marketing-en@nasdan.ba',
+        email: 'marketing-en@nuptoria.com',
         slug: 'oliver-emily',
         guestToken: 'mktenfeaturedguesttoken000000001',
         islamicDemo: 'demo-islamsko-en',
         christianDemo: 'demo-krscansko-en',
+    },
+    sr_Latn: {
+        email: 'marketing-sr@nuptoria.com',
+        slug: 'nikola-milica',
+        guestToken: 'mktsrfeaturedguesttoken000000001',
+        islamicDemo: 'demo-islamsko-sr',
+        christianDemo: 'demo-krscansko-sr',
     },
 };
 
@@ -48,11 +55,13 @@ function parseLocales(argv) {
         return ALL_LOCALES;
     }
 
-    if (! PROFILES[value]) {
-        throw new Error(`Unsupported locale [${value}]. Use bs|hr|de|en|all.`);
+    const key = Object.keys(PROFILES).find((locale) => locale.toLowerCase() === value);
+
+    if (! key) {
+        throw new Error(`Unsupported locale [${value}]. Use bs|hr|de|en|sr_Latn|all.`);
     }
 
-    return [value];
+    return [key];
 }
 
 async function wait(ms) {

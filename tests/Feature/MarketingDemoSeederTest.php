@@ -23,10 +23,11 @@ class MarketingDemoSeederTest extends TestCase
     public static function localeProfileProvider(): array
     {
         return [
-            'bosnian' => ['bs', 'jasmin-djordje@nasdan.ba', 'jasmina-djordje', 'Anes', 'Jasmina', 'mktbsfeaturedguesttoken000000001'],
-            'croatian' => ['hr', 'marketing-hr@nasdan.ba', 'ivan-lucija', 'Ivan', 'Lucija', 'mkthrfeaturedguesttoken000000001'],
-            'german' => ['de', 'marketing-de@nasdan.ba', 'lukas-sophie', 'Lukas', 'Sophie', 'mktdefaturedguesttoken000000001'],
-            'english' => ['en', 'marketing-en@nasdan.ba', 'oliver-emily', 'Oliver', 'Emily', 'mktenfeaturedguesttoken000000001'],
+            'bosnian' => ['bs', 'jasmin-djordje@nuptoria.com', 'jasmina-djordje', 'Anes', 'Jasmina', 'mktbsfeaturedguesttoken000000001'],
+            'croatian' => ['hr', 'marketing-hr@nuptoria.com', 'ivan-lucija', 'Ivan', 'Lucija', 'mkthrfeaturedguesttoken000000001'],
+            'german' => ['de', 'marketing-de@nuptoria.com', 'lukas-sophie', 'Lukas', 'Sophie', 'mktdefaturedguesttoken000000001'],
+            'english' => ['en', 'marketing-en@nuptoria.com', 'oliver-emily', 'Oliver', 'Emily', 'mktenfeaturedguesttoken000000001'],
+            'serbian' => ['sr_Latn', 'marketing-sr@nuptoria.com', 'nikola-milica', 'Nikola', 'Milica', 'mktsrfeaturedguesttoken000000001'],
         ];
     }
 
@@ -48,7 +49,6 @@ class MarketingDemoSeederTest extends TestCase
         $this->assertNotNull($user);
         $this->assertSame($locale, $user->locale);
         $this->assertNotNull($user->email_verified_at);
-
 
         $event = WeddingEvent::query()->where('slug', $slug)->first();
         $this->assertNotNull($event);

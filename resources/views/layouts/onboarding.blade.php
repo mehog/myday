@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ \App\Support\Locale::htmlLang() }}">
 <head>
     <x-google-analytics />
     <meta charset="utf-8">
@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#ffffff">
 
-    <title>{{ __('onboarding.meta_title') }} | {{ config('app.name', 'NasDan') }}</title>
+    <title>{{ __('onboarding.meta_title') }} | {{ config('app.name') }}</title>
 
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ \App\Support\Locale::htmlLang() }}">
 <head>
     <x-google-analytics />
     <meta charset="utf-8">
@@ -16,14 +16,14 @@
         $resolvedCanonicalUrl = $canonicalUrl ?? url('/');
     @endphp
 
-    <title>{{ $resolvedPageTitle }} | {{ config('app.name', 'NasDan') }}</title>
+    <title>{{ $resolvedPageTitle }} | {{ config('app.name') }}</title>
     <meta name="description" content="{{ $resolvedPageDescription }}">
     <link rel="canonical" href="{{ $resolvedCanonicalUrl }}">
 
     @foreach (\App\Support\Locale::supported() as $hreflangLocale)
         <link
             rel="alternate"
-            hreflang="{{ $hreflangLocale }}"
+            hreflang="{{ \App\Support\Locale::htmlLang($hreflangLocale) }}"
             href="{{ \App\Support\LocaleUrl::withLocale($resolvedCanonicalUrl, $hreflangLocale) }}"
         >
     @endforeach
@@ -47,7 +47,7 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="{{ \App\Support\Locale::ogLocale() }}">
-    <meta property="og:site_name" content="{{ config('app.name', 'NasDan') }}">
+    <meta property="og:site_name" content="{{ config('app.name') }}">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $resolvedPageTitle }}">

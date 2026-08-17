@@ -10,6 +10,7 @@ use App\Models\GuestMessage;
 use App\Models\LinkVisit;
 use App\Models\User;
 use App\Models\WeddingEvent;
+use App\PlanTier;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -114,6 +115,8 @@ class GuestMessageVisitMatchTest extends TestCase
             'theme' => 'amber-gold',
             'template' => 'classic',
             'link_mode' => 'public',
+            'plan_tier' => PlanTier::Basic,
+            'guest_limit' => 100,
             'is_active' => true,
         ]);
         $guest = Guest::query()->create([

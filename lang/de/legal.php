@@ -4,7 +4,7 @@ return [
 
     'nav_home' => 'Startseite',
     'effective_date' => 'Gültig ab: :date',
-    'operator_address_default' => 'Online-Dienst unter der Marke NasDan unter :website',
+    'operator_address_default' => 'Online-Dienst unter der Marke :brand unter :website',
 
     'footer_terms' => 'Nutzungsbedingungen',
     'footer_privacy' => 'Datenschutz',
@@ -13,11 +13,11 @@ return [
 
     'terms' => [
         'meta_title' => 'Nutzungsbedingungen',
-        'meta_description' => 'Bedingungen für die Nutzung der NasDan-Hochzeitsplattform und zugehörigen Dienste.',
+        'meta_description' => 'Bedingungen für die Nutzung der :brand-Hochzeitsplattform und zugehörigen Dienste.',
         'heading' => 'Nutzungsbedingungen',
-        'intro' => 'Diese Nutzungsbedingungen (“Bedingungen”) regeln Ihren Zugang zu und die Nutzung der von :operator betriebenen NasDan-Hochzeitsplattform (“wir”, “uns” oder “NasDan”). NasDan ist keine Gesellschaft und keine LLC; der Dienst wird von einer natürlichen Person (Einzelhändler) unter der Marke NasDan angeboten. Mit der Erstellung eines Kontos, einer Bestellung oder der Nutzung des Dienstes stimmen Sie diesen Bedingungen zu.',
+        'intro' => 'Diese Nutzungsbedingungen (“Bedingungen”) regeln Ihren Zugang zu und die Nutzung der von :operator betriebenen :brand-Hochzeitsplattform (“wir”, “uns” oder “:brand”). :brand ist keine Gesellschaft und keine LLC; der Dienst wird von einer natürlichen Person (Einzelhändler) unter der Marke :brand angeboten. Mit der Erstellung eines Kontos, einer Bestellung oder der Nutzung des Dienstes stimmen Sie diesen Bedingungen zu.',
         'section_1_title' => '1. Der Dienst',
-        'section_1_body' => 'NasDan bietet eine Hochzeitsplattform, einschließlich personalisierter Einladungsseiten, Gästeverwaltung, RSVP, Sitzpläne, Gästenachrichten und -fotos sowie weiterer auf der Website und in Ihrem Panel beschriebener Funktionen. Funktionen können je nach Tarif variieren.',
+        'section_1_body' => ':brand bietet eine Hochzeitsplattform, einschließlich personalisierter Einladungsseiten, Gästeverwaltung, RSVP, Sitzpläne, Gästenachrichten und -fotos sowie weiterer auf der Website und in Ihrem Panel beschriebener Funktionen. Funktionen können je nach Tarif variieren.',
         'section_2_title' => '2. Konten und Berechtigung',
         'section_2_body' => 'Sie müssen korrekte Kontodaten angeben und Zugangsdaten schützen. Sie sind für Aktivitäten unter Ihrem Konto verantwortlich. Der Dienst richtet sich an Erwachsene, die eine Hochzeit organisieren, und deren Gäste.',
         'section_3_title' => '3. Tarife, Preise und Einmalzahlung',
@@ -35,7 +35,7 @@ return [
         'section_9_title' => '9. Rückerstattungen',
         'section_9_body' => 'Rückerstattungsanfragen unterliegen unserer Rückerstattungsrichtlinie. Genehmigte Rückerstattungen können den bezahlten Zugang zum gekauften Tarif widerrufen.',
         'section_10_title' => '10. Haftungsbeschränkung',
-        'section_10_body' => 'Soweit gesetzlich zulässig, haftet NasDan nicht für indirekte, zufällige oder Folgeschäden. Unsere Gesamthaftung für einen Anspruch im Zusammenhang mit einem Kauf ist auf den für den betreffenden Tarif gezahlten Betrag begrenzt, außer wo eine Beschränkung gesetzlich unzulässig ist.',
+        'section_10_body' => 'Soweit gesetzlich zulässig, haftet :brand nicht für indirekte, zufällige oder Folgeschäden. Unsere Gesamthaftung für einen Anspruch im Zusammenhang mit einem Kauf ist auf den für den betreffenden Tarif gezahlten Betrag begrenzt, außer wo eine Beschränkung gesetzlich unzulässig ist.',
         'section_11_title' => '11. Anwendbares Recht',
         'section_11_body' => 'Diese Bedingungen unterliegen dem Recht von :jurisdiction, unter Ausschluss von Kollisionsnormen, sofern zwingende Verbraucherschutzvorschriften Ihres Wohnsitzlandes nichts anderes verlangen.',
         'section_12_title' => '12. Kontakt',
@@ -44,11 +44,11 @@ return [
 
     'privacy' => [
         'meta_title' => 'Datenschutzrichtlinie',
-        'meta_description' => 'Wie NasDan personenbezogene Daten für Konten, Einladungen, Gäste, Zahlungen und Cookies erhebt, nutzt und schützt.',
+        'meta_description' => 'Wie :brand personenbezogene Daten für Konten, Einladungen, Gäste, Zahlungen und Cookies erhebt, nutzt und schützt.',
         'heading' => 'Datenschutzrichtlinie',
-        'intro' => 'Diese Datenschutzrichtlinie erklärt, wie :operator (“NasDan”, “wir” oder “uns”) personenbezogene Daten verarbeitet, wenn Sie unsere Website nutzen, ein Konto erstellen, einen Tarif kaufen oder eine Einladung öffnen. Kontakt: :email.',
+        'intro' => 'Diese Datenschutzrichtlinie erklärt, wie :operator (“:brand”, “wir” oder “uns”) personenbezogene Daten verarbeitet, wenn Sie unsere Website nutzen, ein Konto erstellen, einen Tarif kaufen oder eine Einladung öffnen. Kontakt: :email.',
         'section_1_title' => '1. Welche Daten wir erheben',
-        'section_1_body' => 'Je nach Nutzung können wir verarbeiten: Kontodaten; Hochzeits- und Einladungsinhalte; Gästelisten; Nachrichten, Sprachnachrichten und Fotos; Sitzplandaten; Supportnachrichten; technische Logs; Referral-Cookies; Analytics; sowie zahlungsbezogene Kennungen, die mit dem Zahlungsdienstleister geteilt werden.',
+        'section_1_body' => 'Je nach Nutzung von :brand können wir verarbeiten: Kontodaten; Hochzeits- und Einladungsinhalte; Gästelisten; Nachrichten, Sprachnachrichten und Fotos; Sitzplandaten; Supportnachrichten; technische Logs; Referral-Cookies; Analytics; sowie zahlungsbezogene Kennungen, die mit dem Zahlungsdienstleister geteilt werden.',
         'section_2_title' => '2. Zwecke',
         'section_2_body' => 'Wir nutzen personenbezogene Daten zur Bereitstellung und Verbesserung des Dienstes, Aktivierung von Tarifen, Zahlungsabwicklung, Kommunikation, Support, Missbrauchsprävention, Nutzungsanalyse, Referral-Programm und gesetzlichen Pflichten.',
         'section_3_title' => '3. Rechtsgrundlagen',
@@ -73,9 +73,9 @@ return [
 
     'refund' => [
         'meta_title' => 'Rückerstattungsrichtlinie',
-        'meta_description' => 'NasDan-Rückerstattungsregeln für einmalige Hochzeitspläne, abgewickelt über Dodo Payments.',
+        'meta_description' => ':brand-Rückerstattungsregeln für einmalige Hochzeitspläne, abgewickelt über Dodo Payments.',
         'heading' => 'Rückerstattungsrichtlinie',
-        'intro' => 'Diese Rückerstattungsrichtlinie erklärt Rückerstattungen für NasDan-Einmalkäufe. Betreiber: :operator. Support: :email.',
+        'intro' => 'Diese Rückerstattungsrichtlinie erklärt Rückerstattungen für :brand-Einmalkäufe. Betreiber: :operator. Support: :email.',
         'section_1_title' => '1. Rückerstattungsfrist',
         'section_1_body' => 'Sie können innerhalb von :days Tagen ab Kaufdatum eine Rückerstattung beantragen. Spätere Anfragen können abgelehnt werden, sofern das Gesetz nichts anderes verlangt.',
         'section_2_title' => '2. So beantragen Sie eine Rückerstattung',
@@ -92,9 +92,9 @@ return [
 
     'faq' => [
         'meta_title' => 'FAQ',
-        'meta_description' => 'Antworten zu NasDan-Tarifen, Einmalpreisen, Aktivierung, Lieferung, Rückerstattungen, Datenschutz und Support.',
+        'meta_description' => 'Antworten zu :brand-Tarifen, Einmalpreisen, Aktivierung, Lieferung, Rückerstattungen, Datenschutz und Support.',
         'heading' => 'Häufig gestellte Fragen',
-        'intro' => 'Kurzantworten zum Kauf und zur Nutzung der NasDan-Hochzeitsplattform.',
+        'intro' => 'Kurzantworten zum Kauf und zur Nutzung der :brand-Hochzeitsplattform.',
         'q1' => 'Was kaufe ich?',
         'a1' => 'Einen einmaligen Hochzeitsplan. Er schaltet die Einladungsseite, Gästetools und enthaltene Funktionen bis zur Gästekapazität des gewählten Tarifs frei.',
         'q2' => 'Gibt es ein monatliches Abonnement?',
@@ -104,7 +104,7 @@ return [
         'q4' => 'Wann wird meine Einladung aktiviert?',
         'a4' => 'Nach Zahlungsbestätigung wird der Tarif automatisch aktiviert. Danach können Sie anpassen und teilen. Bis dahin kann die Einladung in der Vorschau oder inaktiv bleiben.',
         'q5' => 'Wie wird das Produkt geliefert?',
-        'a5' => 'Die Lieferung ist digital: Zugang erfolgt in Ihrem NasDan-Konto. Es gibt keinen physischen Versand.',
+        'a5' => 'Die Lieferung ist digital: Zugang erfolgt in Ihrem :brand-Konto. Es gibt keinen physischen Versand.',
         'q6' => 'Wer verarbeitet die Zahlung?',
         'a6' => 'Dodo Payments verarbeitet den Checkout als Merchant of Record, einschließlich Steuern wo anwendbar. Auf der Hosted-Checkout-Seite sehen Sie Dodos Käuferbedingungen und Datenschutzrichtlinie.',
         'q7' => 'Kann ich später upgraden?',

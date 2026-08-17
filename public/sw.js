@@ -24,7 +24,7 @@ self.addEventListener('push', (event) => {
         payload = { body: event.data.text() };
     }
 
-    const title = payload.title ?? 'NasDan';
+    const title = payload.title ?? 'Nuptoria';
     const options = {
         body: payload.body ?? '',
         icon: payload.icon ?? '/favicon.ico',

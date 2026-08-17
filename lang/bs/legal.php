@@ -4,7 +4,7 @@ return [
 
     'nav_home' => 'Početna',
     'effective_date' => 'Datum stupanja na snagu: :date',
-    'operator_address_default' => 'Online usluga pod brendom NasDan na :website',
+    'operator_address_default' => 'Online usluga pod brendom :brand na :website',
 
     'footer_terms' => 'Uslovi korištenja',
     'footer_privacy' => 'Politika privatnosti',
@@ -13,11 +13,11 @@ return [
 
     'terms' => [
         'meta_title' => 'Uslovi korištenja',
-        'meta_description' => 'Uslovi koji uređuju korištenje NasDan platforme za vjenčanje i povezanih usluga.',
+        'meta_description' => 'Uslovi koji uređuju korištenje :brand platforme za vjenčanje i povezanih usluga.',
         'heading' => 'Uslovi korištenja',
-        'intro' => 'Ovi Uslovi korištenja (“Uslovi”) uređuju vaš pristup i korištenje NasDan platforme za vjenčanje koju vodi :operator (“mi”, “nas” ili “NasDan”). NasDan nije kompanija ni LLC; uslugu nudi fizičko lice (individualni trgovac) pod brendom NasDan. Kreiranjem računa, kupovinom ili korištenjem usluge prihvatate ove Uslove.',
+        'intro' => 'Ovi Uslovi korištenja (“Uslovi”) uređuju vaš pristup i korištenje :brand platforme za vjenčanje koju vodi :operator (“mi”, “nas” ili “:brand”). :brand nije kompanija ni LLC; uslugu nudi fizičko lice (individualni trgovac) pod brendom :brand. Kreiranjem računa, kupovinom ili korištenjem usluge prihvatate ove Uslove.',
         'section_1_title' => '1. Usluga',
-        'section_1_body' => 'NasDan pruža platformu za vjenčanje, uključujući personalizirane stranice pozivnica, upravljanje gostima, RSVP, raspored sjedenja, poruke i fotografije gostiju te povezane funkcije opisane na web stranici i u vašem panelu. Funkcije mogu varirati prema planu.',
+        'section_1_body' => ':brand pruža platformu za vjenčanje, uključujući personalizirane stranice pozivnica, upravljanje gostima, RSVP, raspored sjedenja, poruke i fotografije gostiju te povezane funkcije opisane na web stranici i u vašem panelu. Funkcije mogu varirati prema planu.',
         'section_2_title' => '2. Računi i podobnost',
         'section_2_body' => 'Morate navesti tačne podatke o računu i čuvati pristupne podatke. Odgovorni ste za aktivnost na svom računu. Usluga je namijenjena odraslima koji organizuju vjenčanje i njihovim pozvanim gostima.',
         'section_3_title' => '3. Planovi, cijene i jednokratna uplata',
@@ -35,7 +35,7 @@ return [
         'section_9_title' => '9. Refundacije',
         'section_9_body' => 'Zahtjevi za refundaciju uređeni su Politikom refundacije. Odobrene refundacije mogu ukinuti plaćeni pristup kupljenom planu.',
         'section_10_title' => '10. Ograničenje odgovornosti',
-        'section_10_body' => 'U najvećoj mjeri dozvoljenoj važećim pravom, NasDan nije odgovoran za indirektne, slučajne ili posljedične štete. Naša ukupna odgovornost za potraživanje vezano za kupovinu ograničena je na iznos koji ste platili za relevantni plan, osim gdje zakon ne dozvoljava ograničenje.',
+        'section_10_body' => 'U najvećoj mjeri dozvoljenoj važećim pravom, :brand nije odgovoran za indirektne, slučajne ili posljedične štete. Naša ukupna odgovornost za potraživanje vezano za kupovinu ograničena je na iznos koji ste platili za relevantni plan, osim gdje zakon ne dozvoljava ograničenje.',
         'section_11_title' => '11. Mjerodavno pravo',
         'section_11_body' => 'Ovi Uslovi se tumače prema pravima :jurisdiction, bez obzira na sukob zakona, osim gdje obavezujuća potrošačka pravila vaše zemlje prebivališta nalažu drugačije.',
         'section_12_title' => '12. Kontakt',
@@ -44,11 +44,11 @@ return [
 
     'privacy' => [
         'meta_title' => 'Politika privatnosti',
-        'meta_description' => 'Kako NasDan prikuplja, koristi i štiti lične podatke za račune, pozivnice, goste, plaćanja i kolačiće.',
+        'meta_description' => 'Kako :brand prikuplja, koristi i štiti lične podatke za račune, pozivnice, goste, plaćanja i kolačiće.',
         'heading' => 'Politika privatnosti',
-        'intro' => 'Ova Politika privatnosti objašnjava kako :operator (“NasDan”, “mi” ili “nas”) obrađuje lične podatke kada koristite našu web stranicu, kreirate račun, kupite plan ili otvorite pozivnicu. Kontakt: :email.',
+        'intro' => 'Ova Politika privatnosti objašnjava kako :operator (“:brand”, “mi” ili “nas”) obrađuje lične podatke kada koristite našu web stranicu, kreirate račun, kupite plan ili otvorite pozivnicu. Kontakt: :email.',
         'section_1_title' => '1. Podaci koje prikupljamo',
-        'section_1_body' => 'Zavisno od korištenja, možemo obrađivati: podatke o računu; sadržaj vjenčanja i pozivnice; listu gostiju; poruke, glasovne poruke i fotografije; raspored sjedenja; poruke podrške; tehničke logove; referral kolačiće; analitiku; i identifikatore plaćanja dijeljene s procesorom plaćanja.',
+        'section_1_body' => 'Zavisno od korištenja :brand, možemo obrađivati: podatke o računu; sadržaj vjenčanja i pozivnice; listu gostiju; poruke, glasovne poruke i fotografije; raspored sjedenja; poruke podrške; tehničke logove; referral kolačiće; analitiku; i identifikatore plaćanja dijeljene s procesorom plaćanja.',
         'section_2_title' => '2. Svrhe',
         'section_2_body' => 'Koristimo lične podatke za pružanje i poboljšanje usluge, aktivaciju planova, obradu plaćanja, komunikaciju, podršku, sprečavanje zloupotrebe, mjerenje korištenja, program preporuka i ispunjavanje zakonskih obaveza.',
         'section_3_title' => '3. Pravni osnovi',
@@ -73,9 +73,9 @@ return [
 
     'refund' => [
         'meta_title' => 'Politika refundacije',
-        'meta_description' => 'Pravila refundacije NasDan za jednokratne kupovine planova za vjenčanje koje obrađuje Dodo Payments.',
+        'meta_description' => 'Pravila refundacije :brand za jednokratne kupovine planova za vjenčanje koje obrađuje Dodo Payments.',
         'heading' => 'Politika refundacije',
-        'intro' => 'Ova Politika refundacije objašnjava kako funkcionisu refundacije za NasDan jednokratne kupovine planova. Operator: :operator. Podrška: :email.',
+        'intro' => 'Ova Politika refundacije objašnjava kako funkcionisu refundacije za :brand jednokratne kupovine planova. Operator: :operator. Podrška: :email.',
         'section_1_title' => '1. Rok za refundaciju',
         'section_1_body' => 'Možete zatražiti refundaciju u roku od :days dana od datuma kupovine. Zahtjevi nakon toga mogu biti odbijeni, osim ako zakon nalaže drugačije.',
         'section_2_title' => '2. Kako zatražiti refundaciju',
@@ -92,9 +92,9 @@ return [
 
     'faq' => [
         'meta_title' => 'Često pitanja',
-        'meta_description' => 'Odgovori o NasDan planovima, jednokratnim cijenama, aktivaciji, isporuci, refundacijama, privatnosti i podršci.',
+        'meta_description' => 'Odgovori o :brand planovima, jednokratnim cijenama, aktivaciji, isporuci, refundacijama, privatnosti i podršci.',
         'heading' => 'Često postavljana pitanja',
-        'intro' => 'Brzi odgovori o kupovini i korištenju NasDan platforme za vjenčanje.',
+        'intro' => 'Brzi odgovori o kupovini i korištenju :brand platforme za vjenčanje.',
         'q1' => 'Šta kupujem?',
         'a1' => 'Jednokratni plan za vaše vjenčanje. Plan otključava stranicu pozivnice, alate za goste i uključene funkcije do kapaciteta odabranog nivoa.',
         'q2' => 'Postoji li mjesečna pretplata?',
@@ -104,7 +104,7 @@ return [
         'q4' => 'Kada se pozivnica aktivira?',
         'a4' => 'Nakon potvrde uplate plan se aktivira automatski. Zatim možete prilagoditi i dijeliti pozivnicu. Do tada može ostati u pregledu ili neaktivna.',
         'q5' => 'Kako se proizvod isporučuje?',
-        'a5' => 'Isporuka je digitalna: pristup se daje u vašem NasDan računu. Nema fizičke pošiljke.',
+        'a5' => 'Isporuka je digitalna: pristup se daje u vašem :brand računu. Nema fizičke pošiljke.',
         'q6' => 'Ko obrađuje plaćanje?',
         'a6' => 'Dodo Payments obrađuje checkout kao Merchant of Record, uključujući porez gdje je primjenjivo. Na hosted checkoutu vidite Dodo kupovne uslove i politiku privatnosti.',
         'q7' => 'Mogu li kasnije nadograditi?',

@@ -66,7 +66,7 @@ class NotificationLocaleTest extends TestCase
 
         $this->assertSame('en', app()->getLocale());
         $this->assertSame(
-            'Dobrodošli u NasDan — dodajte prve goste',
+            'Dobrodošli u Nuptoria — dodajte prve goste',
             $this->lastSentEmail()->getSubject(),
         );
     }
@@ -79,6 +79,7 @@ class NotificationLocaleTest extends TestCase
             'groom_name' => 'Marko',
             'rsvp_deadline' => now()->addDays(7),
             'is_active' => true,
+            'invitation_locale' => 'bs',
         ]));
         $guest = Guest::withoutEvents(fn () => Guest::factory()->for($event)->create([
             'name' => 'Guest',

@@ -26,7 +26,7 @@ return [
     'edit_invitation' => 'Einladung bearbeiten',
     'view_invitation' => 'Einladung ansehen',
     'preview_invitation' => 'Einladung ansehen',
-    'no_invitation' => 'Ihre Einladung wurde noch nicht erstellt. Kontaktieren Sie das NasDan-Team, um sie einzurichten.',
+    'no_invitation' => 'Ihre Einladung wurde noch nicht erstellt. Kontaktieren Sie das :brand-Team, um sie einzurichten.',
     'invitation_inactive_suffix' => '— Link noch nicht aktiv',
     'email_readonly' => 'Die E-Mail-Adresse kann hier nicht geändert werden.',
     'wedding_archived_badge' => 'Erinnerungen',

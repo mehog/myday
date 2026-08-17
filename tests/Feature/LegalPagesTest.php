@@ -62,7 +62,7 @@ class LegalPagesTest extends TestCase
             ->assertSee(route('legal.faq'), false)
             ->assertSee('id="cijene"', false)
             ->assertSee('One-time payment', false)
-            ->assertSee('After payment is confirmed', false);
+            ->assertSee('Your invitation is live on Free', false);
     }
 
     public function test_sitemap_includes_legal_pages(): void

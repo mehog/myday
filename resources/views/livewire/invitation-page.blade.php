@@ -65,7 +65,7 @@
                     <a href="{{ route('home') }}" class="shrink-0">
                         <img
                             src="{{ asset('icons/nd-logo-transparent.webp') }}"
-                            alt="{{ config('app.name', 'NasDan') }}"
+                            alt="{{ config('app.name') }}"
                             class="max-w-[50px] w-full h-auto"
                             style="max-width: 50px;"
                         >

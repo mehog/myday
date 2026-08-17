@@ -10,36 +10,7 @@
         </div>
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-14">
-            @foreach ([
-                [
-                    'tier' => 'free',
-                    'name' => __('landing.pricing_plan_free_name'),
-                    'guests' => __('landing.pricing_plan_free_guests'),
-                    'price' => __('landing.pricing_plan_free_price'),
-                    'highlighted' => false,
-                ],
-                [
-                    'tier' => 'basic',
-                    'name' => __('landing.pricing_plan_basic_name'),
-                    'guests' => __('landing.pricing_plan_basic_guests'),
-                    'price' => __('landing.pricing_plan_basic_price'),
-                    'highlighted' => false,
-                ],
-                [
-                    'tier' => 'plus',
-                    'name' => __('landing.pricing_plan_plus_name'),
-                    'guests' => __('landing.pricing_plan_plus_guests'),
-                    'price' => __('landing.pricing_plan_plus_price'),
-                    'highlighted' => true,
-                ],
-                [
-                    'tier' => 'premium',
-                    'name' => __('landing.pricing_plan_premium_name'),
-                    'guests' => __('landing.pricing_plan_premium_guests'),
-                    'price' => __('landing.pricing_plan_premium_price'),
-                    'highlighted' => false,
-                ],
-            ] as $plan)
+            @foreach ($pricingPlans as $plan)
                 <div @class([
                     'landing-card rounded-2xl p-6 sm:p-8 landing-fade-in relative flex flex-col',
                     'border-2 border-[#c9a227]/60 bg-[#c9a227]/5' => $plan['highlighted'],

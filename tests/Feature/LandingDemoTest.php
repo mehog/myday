@@ -27,6 +27,7 @@ class LandingDemoTest extends TestCase
             'english' => ['en', '-en'],
             'german' => ['de', '-de'],
             'croatian' => ['hr', '-hr'],
+            'serbian' => ['sr_Latn', '-sr'],
         ];
     }
 
@@ -99,5 +100,19 @@ class LandingDemoTest extends TestCase
     public function test_supported_locales_include_croatian(): void
     {
         $this->assertContains('hr', Locale::supported());
+    }
+
+    public function test_supported_locales_include_serbian_latin(): void
+    {
+        $this->assertContains('sr_Latn', Locale::supported());
+        $this->assertSame('Srpski (latinica)', Locale::options()['sr_Latn'] ?? null);
+    }
+
+    public function test_demo_slug_maps_serbian_latin_to_sr_suffix(): void
+    {
+        $this->assertSame('demo-islamsko-sr', DemoInvitationExamples::demoSlug('sr_Latn'));
+        $this->assertSame('demo-islamsko-sr', DemoInvitationExamples::demoSlug('sr'));
+        $this->assertSame('demo-islamsko', DemoInvitationExamples::demoSlug('bs'));
+        $this->assertSame('demo-islamsko-en', DemoInvitationExamples::demoSlug('en'));
     }
 }

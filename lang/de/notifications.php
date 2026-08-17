@@ -24,7 +24,7 @@ return [
 
     'couple_onboarding_greeting' => 'Hallo :name,',
     'couple_onboarding_action' => 'Dashboard öffnen',
-    'couple_onboarding_subject_day1' => 'Willkommen bei NasDan — erste Gäste hinzufügen',
+    'couple_onboarding_subject_day1' => 'Willkommen bei :brand — erste Gäste hinzufügen',
     'couple_onboarding_body_day1' => 'Ihre Einladung für :couple ist bereit. Beginnen Sie mit Gästen und persönlichen RSVP-Links.',
     'couple_onboarding_subject_day3' => 'Tipp: Push-Benachrichtigungen für Gäste',
     'couple_onboarding_body_day3' => 'Gäste können Push-Updates von Ihnen erhalten. Erwähnen Sie es beim Versenden der Links für :couple.',

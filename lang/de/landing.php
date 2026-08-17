@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'meta_title' => 'NasDan - Alles für Ihre Hochzeit, an einem Ort',
+    'meta_title' => ':brand - Alles für Ihre Hochzeit, an einem Ort',
     'meta_description' => 'Einladung, RSVP, Sitzplan, Gästeerinnerungen und Tagesablauf — alles auf einem Link für Ihre Hochzeit.',
 
     'nav_demo' => 'Demo',
@@ -12,11 +12,11 @@ return [
     'nav_panel' => 'Mein Panel',
     'back_to_invitation' => 'Zurück zur Einladung',
 
-    'hero_title' => 'Ihre Hochzeitsgeschichte verdient mehr als ein Foto im Chat',
+    'hero_title' => 'Ihre Hochzeit, von der ersten Einladung bis zur letzten Erinnerung.',
     'hero_subtitle' => 'Ein Ort für Ihre Gäste: Einladung, RSVP, Sitzplan, Locations und Erinnerungen. In drei Schritten einrichten und teilen.',
     'hero_cta_demo' => 'Demo ansehen',
     'hero_cta_create' => 'Loslegen',
-    'hero_image_alt' => 'Mobile Vorschau einer personalisierten NasDan-Hochzeitsseite',
+    'hero_image_alt' => 'Mobile Vorschau einer personalisierten :brand-Hochzeitsseite',
 
     'benefits_title' => 'Alles, was Ihre Gäste brauchen, in einem Link',
     'benefits_subtitle' => 'Einladung, Live-RSVPs, Gästeerinnerungen und ein Sitzplan. Alles aus einem Panel.',
@@ -43,7 +43,7 @@ return [
     'feature_invite_point_2' => 'Tagesablauf und Karten für mehrere Locations',
     'feature_invite_point_3' => 'Galerie und Musik auf derselben Seite',
     'feature_invite_point_4' => 'Themen und Layouts, die zu Ihrem Stil passen',
-    'feature_invite_alt' => 'Screenshot einer digitalen NasDan-Hochzeitseinladung auf dem Handy',
+    'feature_invite_alt' => 'Screenshot einer digitalen :brand-Hochzeitseinladung auf dem Handy',
 
     'feature_rsvp_eyebrow' => 'Gästeliste',
     'feature_rsvp_title' => 'Sehen Sie, wer kommt, sobald Antworten eintreffen',
@@ -52,7 +52,7 @@ return [
     'feature_rsvp_point_2' => 'Live-Status: zugesagt, abgesagt, ausstehend',
     'feature_rsvp_point_3' => 'Menüwahl für jeden Gast, Begleitung und jedes Kind',
     'feature_rsvp_point_4' => 'Optionale Unterkunftsanfragen, wenn Sie sie aktivieren',
-    'feature_rsvp_alt' => 'Screenshot der NasDan-Gästeliste mit RSVP-Status',
+    'feature_rsvp_alt' => 'Screenshot der :brand-Gästeliste mit RSVP-Status',
 
     'feature_menu_eyebrow' => 'Menü und Unterkunft',
     'feature_menu_title' => 'Menüwahl und Übernachtungen auf einen Blick',
@@ -60,7 +60,7 @@ return [
     'feature_menu_point_1' => 'Plattformmenüs und eigene Optionen',
     'feature_menu_point_2' => 'Auswahl für Gäste, Begleitung und Kinder',
     'feature_menu_point_3' => 'Realistische Unterkunftsanfragen pro Partie',
-    'feature_menu_alt' => 'Screenshot der NasDan-Übersicht zu Menü und Unterkunft',
+    'feature_menu_alt' => 'Screenshot der :brand-Übersicht zu Menü und Unterkunft',
 
     'feature_seating_eyebrow' => 'Sitzplan',
     'feature_seating_title' => 'Tische visuell anordnen und als PDF exportieren',
@@ -68,7 +68,7 @@ return [
     'feature_seating_point_1' => 'Runde, rechteckige und Haupttische',
     'feature_seating_point_2' => 'Gäste und Begleitpersonen Plätzen zuweisen',
     'feature_seating_point_3' => 'Sitzplan als PDF exportieren',
-    'feature_seating_alt' => 'Screenshot des interaktiven NasDan-Sitzplan-Editors',
+    'feature_seating_alt' => 'Screenshot des interaktiven :brand-Sitzplan-Editors',
 
     'feature_updates_eyebrow' => 'Updates und Einblick',
     'feature_updates_title' => 'Wissen, was passiert, Gäste informiert halten',
@@ -76,7 +76,7 @@ return [
     'feature_updates_point_1' => 'Besuchs-, RSVP-, Menü- und Unterkunftsübersicht',
     'feature_updates_point_2' => 'Push-Benachrichtigungen für wichtige Updates',
     'feature_updates_point_3' => 'Live-Bearbeitung, die Gäste sofort sehen',
-    'feature_updates_alt' => 'Screenshot des NasDan-Dashboards mit Besuchs- und RSVP-Statistiken',
+    'feature_updates_alt' => 'Screenshot des :brand-Dashboards mit Besuchs- und RSVP-Statistiken',
 
     'interaction_eyebrow' => 'Gästeerinnerungen',
     'interaction_title' => 'Nachrichten und Erinnerungen von Ihren Gästen',
@@ -87,7 +87,7 @@ return [
     'interaction_2_text' => 'Gäste können eine Sprachnachricht aufnehmen. Hören Sie ihr Lachen, ihre Freude und persönlichen Grüße lange nach dem Tag.',
     'interaction_3_title' => 'Fotos teilen',
     'interaction_3_text' => 'Gäste laden Fotos vom Hochzeitstag und den Tagen danach hoch. Alles landet an einem Ort, 30 Tage lang für Sie verfügbar.',
-    'interaction_inbox_alt' => 'Screenshot des Gästenachrichten-Posteingangs im NasDan-Panel',
+    'interaction_inbox_alt' => 'Screenshot des Gästenachrichten-Posteingangs im :brand-Panel',
     'interaction_upload_alt' => 'Screenshot der Gäste-Upload-Seite auf dem Handy',
     'interaction_demo_name' => 'Aylin',
     'interaction_demo_message' => 'Ich wünsche euch eine Liebe fürs Leben, ich kann es kaum erwarten, mit euch zu feiern!',
@@ -134,7 +134,7 @@ return [
     'pricing_one_time' => 'Einmalzahlung',
     'pricing_free_forever' => 'Für immer kostenlos',
     'pricing_activation_note' => 'Ihre Einladung ist bereits im Free-Plan live. Bezahlte Pläne schalten höhere Gästelimits und Premium-Funktionen frei: QR-Fotokarten, Push-Versand und PDF-Export des Sitzplans.',
-    'pricing_currency_note' => 'Angezeigte Beträge sind Beispiele. Im Checkout zahlen Sie in EUR oder BAM, abhängig von Ihrer Preisregion.',
+    'pricing_currency_note' => 'Beträge werden je nach Standort in EUR oder BAM angezeigt. Der Checkout verwendet dieselbe Währung.',
     'pricing_free_limitations_note' => 'Free enthält das Kern-Einladungserlebnis (bis 50 Gäste). QR-Fotoalbum, Push-Versand und PDF-Export des Sitzplans erfordern einen bezahlten Plan.',
     'pricing_plan_free_name' => 'Free',
     'pricing_plan_free_guests' => 'Bis zu 50 Gäste',

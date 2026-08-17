@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'meta_title' => 'NasDan - Sve za vaše vjenčanje, na jednom mjestu',
+    'meta_title' => ':brand - Sve za vaše vjenčanje, na jednom mjestu',
     'meta_description' => 'Pozivnica, potvrde dolaska, sjedenje, uspomene gostiju i plan dana — sve na jednom linku za vaše vjenčanje.',
 
     'nav_demo' => 'Demo',
@@ -12,11 +12,11 @@ return [
     'nav_panel' => 'Moj panel',
     'back_to_invitation' => 'Nazad na pozivnicu',
 
-    'hero_title' => 'Vaša vjenčana priča zaslužuje više od slike u chatu',
+    'hero_title' => 'Vaše vjenčanje, od prve pozivnice do posljednje uspomene.',
     'hero_subtitle' => 'Jedno mjesto za goste: pozivnica, potvrde, sjedenje, lokacije i uspomene. Postavite i podijelite u tri koraka.',
     'hero_cta_demo' => 'Pogledaj demo',
     'hero_cta_create' => 'Započnite',
-    'hero_image_alt' => 'Prikaz personalizovane NasDan stranice za vjenčanje na telefonu',
+    'hero_image_alt' => 'Prikaz personalizovane :brand stranice za vjenčanje na telefonu',
 
     'benefits_title' => 'Sve što gostima treba, na jednom linku',
     'benefits_subtitle' => 'Pozivnica, potvrde uživo, uspomene gostiju i plan sjedenja. Sve iz jednog panela.',
@@ -43,7 +43,7 @@ return [
     'feature_invite_point_2' => 'Plan dana i mape za više lokacija',
     'feature_invite_point_3' => 'Galerija i muzika na istoj stranici',
     'feature_invite_point_4' => 'Teme i izgledi koji odgovaraju vašem stilu',
-    'feature_invite_alt' => 'Screenshot NasDan digitalne pozivnice na telefonu',
+    'feature_invite_alt' => 'Screenshot :brand digitalne pozivnice na telefonu',
 
     'feature_rsvp_eyebrow' => 'Lista gostiju',
     'feature_rsvp_title' => 'Vidite ko dolazi čim odgovori stignu',
@@ -52,7 +52,7 @@ return [
     'feature_rsvp_point_2' => 'Statusi dolazim, ne dolazim i na čekanju uživo',
     'feature_rsvp_point_3' => 'Izbor menija za svakog gosta, pratnju i dijete',
     'feature_rsvp_point_4' => 'Opcioni upiti za smještaj kada ih uključite',
-    'feature_rsvp_alt' => 'Screenshot NasDan liste gostiju sa statusima potvrde',
+    'feature_rsvp_alt' => 'Screenshot :brand liste gostiju sa statusima potvrde',
 
     'feature_menu_eyebrow' => 'Meni i smještaj',
     'feature_menu_title' => 'Zbirni pregled menija i smještaja',
@@ -60,7 +60,7 @@ return [
     'feature_menu_point_1' => 'Platformski i prilagođeni meniji',
     'feature_menu_point_2' => 'Izbori za goste, pratnju i djecu',
     'feature_menu_point_3' => 'Realni zahtjevi za smještaj po partiji',
-    'feature_menu_alt' => 'Screenshot NasDan panela sa pregledom menija i smještaja',
+    'feature_menu_alt' => 'Screenshot :brand panela sa pregledom menija i smještaja',
 
     'feature_seating_eyebrow' => 'Plan sjedenja',
     'feature_seating_title' => 'Rasporedite stolove vizuelno, pa izvezite PDF',
@@ -68,7 +68,7 @@ return [
     'feature_seating_point_1' => 'Okrugli, pravougaoni i glavni stolovi',
     'feature_seating_point_2' => 'Dodjeljivanje gostiju i pratnje na mjesta',
     'feature_seating_point_3' => 'Izvoz plana sjedenja kao PDF',
-    'feature_seating_alt' => 'Screenshot interaktivnog NasDan editora plana sjedenja',
+    'feature_seating_alt' => 'Screenshot interaktivnog :brand editora plana sjedenja',
 
     'feature_updates_eyebrow' => 'Obavijesti i uvid',
     'feature_updates_title' => 'Znate šta se dešava i držite goste u toku',
@@ -76,7 +76,7 @@ return [
     'feature_updates_point_1' => 'Pregled posjeta, potvrda, menija i smještaja',
     'feature_updates_point_2' => 'Push obavijesti za važne novosti',
     'feature_updates_point_3' => 'Izmjene uživo koje gosti odmah vide',
-    'feature_updates_alt' => 'Screenshot NasDan panela sa statistikom posjeta i potvrda',
+    'feature_updates_alt' => 'Screenshot :brand panela sa statistikom posjeta i potvrda',
 
     'interaction_eyebrow' => 'Uspomene gostiju',
     'interaction_title' => 'Poruke i uspomene od vaših gostiju',
@@ -87,7 +87,7 @@ return [
     'interaction_2_text' => 'Gosti mogu snimiti glasovnu poruku. Čujte njihov smijeh, uzbuđenje i lične pozdrave i nakon što prođe taj dan.',
     'interaction_3_title' => 'Dijeljenje fotografija',
     'interaction_3_text' => 'Gosti uploaduju fotografije sa dana vjenčanja i dana koji slijede. Sve se sliva na jedno mjesto, dostupno vam 30 dana nakon proslave.',
-    'interaction_inbox_alt' => 'Screenshot sandučeta poruka gostiju u NasDan panelu',
+    'interaction_inbox_alt' => 'Screenshot sandučeta poruka gostiju u :brand panelu',
     'interaction_upload_alt' => 'Screenshot stranice za slanje poruke gostiju na telefonu',
     'interaction_demo_name' => 'Amina',
     'interaction_demo_message' => 'Želim vam ljubav koja traje cijeli život, jedva čekam da proslavim s vama!',
@@ -134,7 +134,7 @@ return [
     'pricing_one_time' => 'Jednokratna uplata',
     'pricing_free_forever' => 'Zauvijek besplatno',
     'pricing_activation_note' => 'Pozivnica je aktivna već na besplatnom paketu. Plaćeni paketi otključavaju veći limit gostiju i premium mogućnosti: QR foto kartice, slanje push notifikacija i PDF izvoz rasporeda.',
-    'pricing_currency_note' => 'Prikazani iznosi su primjeri. Na checkoutu plaćate u EUR ili BAM, zavisno od vaše cjenovne regije.',
+    'pricing_currency_note' => 'Prikazani iznosi su u EUR ili BAM, zavisno od vaše lokacije. Ista valuta se koristi na checkoutu.',
     'pricing_free_limitations_note' => 'Besplatni paket uključuje osnovno iskustvo pozivnice (do 50 gostiju). QR foto album, slanje push notifikacija i PDF izvoz rasporeda zahtijevaju plaćeni paket.',
     'pricing_plan_free_name' => 'Besplatno',
     'pricing_plan_free_guests' => 'Do 50 gostiju',

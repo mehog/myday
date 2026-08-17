@@ -40,8 +40,8 @@ class TokenOnlyInvitationPreviewTest extends TestCase
         $this->actingAs($owner)
             ->get(route('invitation.show', $event->slug))
             ->assertOk()
-            ->assertSee(__('invitation.token_only_preview_banner'), false)
-            ->assertSee(__('invitation.token_only_preview_rsvp'), false);
+            ->assertSee(__('invitation.token_only_preview_banner'))
+            ->assertSee(__('invitation.token_only_preview_rsvp'));
     }
 
     public function test_admin_can_preview_public_link_when_token_only(): void
@@ -55,7 +55,7 @@ class TokenOnlyInvitationPreviewTest extends TestCase
         $this->actingAs($admin)
             ->get(route('invitation.show', $event->slug))
             ->assertOk()
-            ->assertSee(__('invitation.token_only_preview_banner'), false);
+            ->assertSee(__('invitation.token_only_preview_banner'));
     }
 
     public function test_other_user_cannot_open_public_link_when_token_only(): void
@@ -87,7 +87,7 @@ class TokenOnlyInvitationPreviewTest extends TestCase
             'token' => $guest->token,
         ]))
             ->assertOk()
-            ->assertDontSee(__('invitation.token_only_preview_banner'), false);
+            ->assertDontSee(__('invitation.token_only_preview_banner'));
     }
 
     public function test_owner_cannot_rsvp_from_token_only_public_preview(): void

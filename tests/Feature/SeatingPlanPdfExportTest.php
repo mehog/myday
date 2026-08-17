@@ -13,7 +13,7 @@ class SeatingPlanPdfExportTest extends TestCase
     public function test_authenticated_user_can_export_seating_plan_pdf_without_session_image(): void
     {
         $user = User::factory()->create();
-        $event = WeddingEvent::factory()->for($user)->create([
+        $event = WeddingEvent::factory()->for($user)->paid()->create([
             'bride_name' => 'Ana',
             'groom_name' => 'Marko',
             'seating_plan' => [

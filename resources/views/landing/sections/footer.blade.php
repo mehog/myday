@@ -26,7 +26,7 @@
             </a>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4 text-sm text-[#5c5246]">
-        <p class="text-center md:text-left">&copy; {{ date('Y') }} {{ config('app.name', 'NasDan') }}. {{ __('landing.footer_rights') }}</p>
+        <p class="text-center md:text-left">&copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('landing.footer_rights') }}</p>
         <p class="text-center">{{ __('landing.footer_contact') }}: <a href="mailto:{{ config('legal.support_email') }}" class="text-[#c9a227] hover:underline">{{ config('legal.support_email') }}</a></p>
         <div class="flex justify-center md:justify-end">
             <x-locale-picker />

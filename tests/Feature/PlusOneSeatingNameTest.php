@@ -75,7 +75,7 @@ class PlusOneSeatingNameTest extends TestCase
     public function test_place_cards_use_formal_plus_one_name_when_set(): void
     {
         $user = User::factory()->create();
-        $event = WeddingEvent::factory()->for($user)->create();
+        $event = WeddingEvent::factory()->for($user)->paid()->create();
 
         Guest::query()->create([
             'wedding_event_id' => $event->id,

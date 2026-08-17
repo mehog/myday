@@ -38,7 +38,7 @@ class AppPanelProvider extends PanelProvider
             ->path('app')
             ->login(Login::class)
             ->passwordReset(resetAction: ResetPassword::class)
-            ->brandName('NasDan')
+            ->brandName(config('app.name'))
             ->brandLogo(asset('icons/nd-logo-transparent.webp'))
             ->brandLogoHeight('2.25rem')
             ->viteTheme('resources/css/filament/app/theme.css')

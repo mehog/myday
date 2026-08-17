@@ -20,10 +20,10 @@ return [
     'qr_format_a4' => 'A4 poster',
     'qr_format_a5' => 'A5 letak',
     'qr_format_letter' => 'US Letter',
-    'qr_pdf_heading' => 'Planirajte vjenčanje s NasDan',
-    'qr_pdf_instructions' => 'Skenirajte ovaj kod da istražite NasDan i registrirajte se preko našeg referral programa — parovi dobivaju :percent% popusta na bilo koji paket.',
+    'qr_pdf_heading' => 'Planirajte vjenčanje s :brand',
+    'qr_pdf_instructions' => 'Skenirajte ovaj kod da istražite :brand i registrirajte se preko našeg referral programa — parovi dobivaju :percent% popusta na bilo koji paket.',
     'qr_pdf_link_label' => 'Ili posjetite ovaj link',
-    'qr_pdf_footer' => 'Pokreće NasDan',
+    'qr_pdf_footer' => 'Pokreće :brand',
 
     'how_it_works_heading' => 'Kako funkcionira',
     'step_1_title' => 'Podijelite link',

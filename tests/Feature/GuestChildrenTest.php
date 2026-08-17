@@ -222,7 +222,7 @@ class GuestChildrenTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->create();
-        $event = WeddingEvent::factory()->for($user)->create();
+        $event = WeddingEvent::factory()->for($user)->paid()->create();
         $guest = Guest::factory()->for($event)->create([
             'name' => 'Ana Kovačević',
             'rsvp_status' => RsvpStatus::Yes,

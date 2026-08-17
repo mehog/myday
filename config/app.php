@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Nuptoria'),
 
     /*
     |--------------------------------------------------------------------------
@@ -78,19 +78,20 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'bs'),
+    'locale' => env('APP_LOCALE', 'en'),
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
-    'supported_locales' => ['en', 'bs', 'de', 'hr'],
+    'supported_locales' => ['en', 'bs', 'de', 'hr', 'sr_Latn'],
 
-    'default_locale' => 'bs',
+    'default_locale' => env('APP_DEFAULT_LOCALE', env('APP_LOCALE', 'en')),
 
     'locale_labels' => [
         'bs' => 'Bosanski',
         'en' => 'English',
         'de' => 'Deutsch',
         'hr' => 'Hrvatski',
+        'sr_Latn' => 'Srpski (latinica)',
     ],
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),

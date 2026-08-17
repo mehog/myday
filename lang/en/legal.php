@@ -4,7 +4,7 @@ return [
 
     'nav_home' => 'Home',
     'effective_date' => 'Effective date: :date',
-    'operator_address_default' => 'Online service operated under the NasDan brand at :website',
+    'operator_address_default' => 'Online service operated under the :brand brand at :website',
 
     'footer_terms' => 'Terms of Service',
     'footer_privacy' => 'Privacy Policy',
@@ -13,11 +13,11 @@ return [
 
     'terms' => [
         'meta_title' => 'Terms of Service',
-        'meta_description' => 'Terms governing the use of the NasDan wedding platform and related services.',
+        'meta_description' => 'Terms governing the use of the :brand wedding platform and related services.',
         'heading' => 'Terms of Service',
-        'intro' => 'These Terms of Service (“Terms”) govern your access to and use of the NasDan wedding platform operated by :operator (“we”, “us”, or “NasDan”). NasDan is not a company or LLC; it is offered by an individual merchant under the NasDan brand. By creating an account, placing an order, or using the service, you agree to these Terms.',
+        'intro' => 'These Terms of Service (“Terms”) govern your access to and use of the :brand wedding platform operated by :operator (“we”, “us”, or “:brand”). :brand is not a company or LLC; it is offered by an individual merchant under the :brand brand. By creating an account, placing an order, or using the service, you agree to these Terms.',
         'section_1_title' => '1. The service',
-        'section_1_body' => 'NasDan provides a wedding platform, including personalized invitation pages, guest management, RSVP tracking, seating plans, guest messages and photos, and related features described on our website and in your account panel. Features may vary by plan tier.',
+        'section_1_body' => ':brand provides a wedding platform, including personalized invitation pages, guest management, RSVP tracking, seating plans, guest messages and photos, and related features described on our website and in your account panel. Features may vary by plan tier.',
         'section_2_title' => '2. Accounts and eligibility',
         'section_2_body' => 'You must provide accurate account information and keep your login credentials secure. You are responsible for activity under your account. The service is intended for adults arranging a wedding event and their invited guests.',
         'section_3_title' => '3. Plans, pricing, and one-time payment',
@@ -35,7 +35,7 @@ return [
         'section_9_title' => '9. Refunds',
         'section_9_body' => 'Refund requests are handled under our Refund Policy. Approved refunds may revoke paid access to the purchased plan.',
         'section_10_title' => '10. Limitation of liability',
-        'section_10_body' => 'To the fullest extent permitted by applicable law, NasDan is not liable for indirect, incidental, or consequential damages arising from use of the service. Our aggregate liability for a claim relating to a purchase is limited to the amount you paid for the relevant plan, except where liability cannot be limited by law.',
+        'section_10_body' => 'To the fullest extent permitted by applicable law, :brand is not liable for indirect, incidental, or consequential damages arising from use of the service. Our aggregate liability for a claim relating to a purchase is limited to the amount you paid for the relevant plan, except where liability cannot be limited by law.',
         'section_11_title' => '11. Governing law',
         'section_11_body' => 'These Terms are governed by the laws of :jurisdiction, without regard to conflict-of-law principles, except where mandatory consumer-protection rules of your country of residence apply.',
         'section_12_title' => '12. Contact',
@@ -44,11 +44,11 @@ return [
 
     'privacy' => [
         'meta_title' => 'Privacy Policy',
-        'meta_description' => 'How NasDan collects, uses, and protects personal data for accounts, invitations, guests, payments, and cookies.',
+        'meta_description' => 'How :brand collects, uses, and protects personal data for accounts, invitations, guests, payments, and cookies.',
         'heading' => 'Privacy Policy',
-        'intro' => 'This Privacy Policy explains how :operator (“NasDan”, “we”, or “us”) processes personal data when you use our website, create an account, purchase a plan, or open a wedding invitation. Contact: :email.',
+        'intro' => 'This Privacy Policy explains how :operator (“:brand”, “we”, or “us”) processes personal data when you use our website, create an account, purchase a plan, or open a wedding invitation. Contact: :email.',
         'section_1_title' => '1. Data we collect',
-        'section_1_body' => 'Depending on how you use NasDan, we may process: account details (name, email, password hash, locale, pricing region); wedding and invitation content you enter; guest list data you upload (names, contact details, RSVP answers); messages, voice notes, and photos submitted by guests; seating-plan data; support messages; technical logs (IP address, device/browser data); referral cookies; analytics events; and payment-related identifiers shared with our payment processor.',
+        'section_1_body' => 'Depending on how you use :brand, we may process: account details (name, email, password hash, locale, pricing region); wedding and invitation content you enter; guest list data you upload (names, contact details, RSVP answers); messages, voice notes, and photos submitted by guests; seating-plan data; support messages; technical logs (IP address, device/browser data); referral cookies; analytics events; and payment-related identifiers shared with our payment processor.',
         'section_2_title' => '2. Purposes',
         'section_2_body' => 'We use personal data to provide and improve the service, activate and manage plans, process payments, communicate with you, support customers, prevent abuse, measure product usage, run the referral program, and comply with legal obligations.',
         'section_3_title' => '3. Legal bases',
@@ -73,9 +73,9 @@ return [
 
     'refund' => [
         'meta_title' => 'Refund Policy',
-        'meta_description' => 'NasDan refund rules for one-time wedding plan purchases processed by Dodo Payments.',
+        'meta_description' => ':brand refund rules for one-time wedding plan purchases processed by Dodo Payments.',
         'heading' => 'Refund Policy',
-        'intro' => 'This Refund Policy explains how refunds work for NasDan one-time wedding plan purchases. Operator: :operator. Support: :email.',
+        'intro' => 'This Refund Policy explains how refunds work for :brand one-time wedding plan purchases. Operator: :operator. Support: :email.',
         'section_1_title' => '1. Refund window',
         'section_1_body' => 'You may request a refund within :days days of the purchase date. Requests received after that window may be declined unless applicable law requires otherwise.',
         'section_2_title' => '2. How to request a refund',
@@ -92,9 +92,9 @@ return [
 
     'faq' => [
         'meta_title' => 'FAQ',
-        'meta_description' => 'Answers about NasDan plans, one-time pricing, activation, delivery, refunds, privacy, and support.',
+        'meta_description' => 'Answers about :brand plans, one-time pricing, activation, delivery, refunds, privacy, and support.',
         'heading' => 'Frequently asked questions',
-        'intro' => 'Quick answers about buying and using the NasDan wedding platform.',
+        'intro' => 'Quick answers about buying and using the :brand wedding platform.',
         'q1' => 'What am I buying?',
         'a1' => 'A one-time wedding plan for your event. Your plan unlocks the invitation page, guest tools, and included features up to the guest capacity of the selected tier.',
         'q2' => 'Is there a monthly subscription?',
@@ -104,7 +104,7 @@ return [
         'q4' => 'When is my invitation activated?',
         'a4' => 'After payment is confirmed, your plan is activated automatically. You can then customize and share the invitation from your panel. Until then, the invitation may remain in preview or inactive.',
         'q5' => 'How is the product delivered?',
-        'a5' => 'Delivery is digital: access is granted in your NasDan account. There is no physical shipment.',
+        'a5' => 'Delivery is digital: access is granted in your :brand account. There is no physical shipment.',
         'q6' => 'Who processes the payment?',
         'a6' => 'Dodo Payments processes checkout as Merchant of Record, including tax handling for the transaction where applicable. You will see Dodo’s buyer terms and privacy policy on the hosted checkout page.',
         'q7' => 'Can I upgrade later?',

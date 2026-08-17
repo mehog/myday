@@ -93,7 +93,7 @@
 </head>
 <body>
     <div class="page">
-        <img src="{{ $logoDataUri }}" alt="NasDan" class="logo">
+        <img src="{{ $logoDataUri }}" alt="{{ config('app.name') }}" class="logo">
 
         <h1 class="heading">{{ $heading }}</h1>
 

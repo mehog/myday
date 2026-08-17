@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ \App\Support\Locale::htmlLang() }}">
 <head>
     <x-google-analytics />
     <meta charset="utf-8">
@@ -16,7 +16,7 @@
         <meta property="og:description" content="{{ __('invitation.meta_og_description', ['date' => $event->wedding_date->translatedFormat('j. F Y.')]) }}">
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ url()->current() }}">
-        <meta property="og:site_name" content="{{ config('app.name', 'NasDan') }}">
+        <meta property="og:site_name" content="{{ config('app.name') }}">
         <meta property="og:locale" content="{{ \App\Support\Locale::ogLocale() }}">
         @if ($event->hero_image_url)
             <meta property="og:image" content="{{ $event->hero_image_url }}">

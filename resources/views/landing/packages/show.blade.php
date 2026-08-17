@@ -11,7 +11,7 @@
             <a href="{{ route('home') }}" class="inline-flex items-center">
                 <img
                     src="{{ asset('icons/nd-logo-transparent.webp') }}"
-                    alt="{{ config('app.name', 'NasDan') }}"
+                    alt="{{ config('app.name') }}"
                     class="h-9 w-auto"
                     width="120"
                     height="36"

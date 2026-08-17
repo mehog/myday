@@ -7,7 +7,7 @@
             <a href="{{ route('legal.faq') }}" class="text-[#c9a227] hover:underline">{{ __('legal.footer_faq') }}</a>
         </div>
         <div class="w-full flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p>&copy; {{ date('Y') }} {{ config('app.name', 'NasDan') }}</p>
+            <p>&copy; {{ date('Y') }} {{ config('app.name') }}</p>
             <x-locale-picker />
         </div>
     </div>

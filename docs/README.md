@@ -1,6 +1,6 @@
-# NasDan documentation
+# Nuptoria documentation
 
-Project docs for the NasDan (MyDay) digital wedding invitation platform.
+Project docs for the Nuptoria digital wedding invitation platform.
 
 ## Structure
 

@@ -1,4 +1,4 @@
-# NasDan Brand Colors (CSS Variables)
+# Nuptoria Brand Colors (CSS Variables)
 
 Gold (`#c9a227`) is the shared brand accent across surfaces. Marketing is a **light wedding** palette; Filament and the default invitation theme (`amber-gold`) keep the Night background.
 

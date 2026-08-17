@@ -1,0 +1,63 @@
+<?php
+
+return [
+
+    'nav_label' => 'Raspored sedenja',
+    'page_title' => 'Raspored sedenja',
+    'pdf_title' => 'Raspored sedenja',
+    'save' => 'Sačuvaj',
+    'saved' => 'Raspored sedenja je sačuvan.',
+    'export_pdf' => 'Izvezi PDF',
+    'pdf_heading' => 'Lista gostiju & Raspored sedenja',
+    'pdf_total_people' => 'Ukupno gostiju',
+    'pdf_total_seats' => 'Ukupno mesta',
+    'pdf_tables' => 'Stolovi',
+    'pdf_no_guests' => 'Nema dodeljenih gostiju',
+    'pdf_unassigned_guests' => 'Nedodeljeni gosti',
+    'pdf_generated' => 'Generisano:',
+    'invalid_data' => 'Neispravni podaci rasporeda.',
+    'duplicate_assignment' => 'Isti gost je dodeljen na više mesta.',
+
+    'guests_heading' => 'Lista gostiju',
+    'unassigned' => 'Neraspoređeni',
+    'assigned' => 'Raspoređeni',
+    'no_guests' => 'Nema gostiju u listi.',
+
+    'inspector_heading' => 'Sto',
+    'select_table' => 'Odaberite sto na platnu.',
+    'table_label' => 'Naziv stola',
+    'chairs' => 'Stolice',
+    'add_chair' => 'Dodaj stolicu',
+    'remove_chair' => 'Ukloni stolicu',
+    'delete_table' => 'Obriši sto',
+    'rotation' => 'Rotacija',
+    'rotate_left' => 'Rotiraj levo',
+    'rotate_right' => 'Rotiraj desno',
+    'reset_rotation' => '0°',
+
+    'add_round' => 'Okrugli',
+    'add_rect' => 'Pravougaoni',
+    'add_head' => 'Glavni',
+    'select_table_type' => 'Izaberi tip stola',
+    'zoom_controls' => 'Zoom kontrole',
+    'seats_label' => 'Mesta',
+
+    'zoom_in' => 'Uvećaj',
+    'zoom_out' => 'Umanji',
+    'reset_zoom' => 'Resetuj',
+
+    'duplicate_guest' => 'Ovaj gost je već raspoređen.',
+    'remove_guest_confirm' => 'Ukloniti gosta sa ovog mesta?',
+    'remove_chair_confirm' => 'Ova stolica ima dodeljenog gosta. Ukloniti je?',
+    'remove_guest' => 'Ukloni gosta',
+    'assign_guest' => 'Dodeli gosta',
+    'search_guest' => 'Pretraži goste...',
+    'no_guests_available' => 'Nema dostupnih gostiju.',
+
+    'unsaved_save_before_leave' => 'Imate nesačuvane promene. Sačuvati pre odlaska?',
+    'unsaved_leave_without_saving' => 'Otići bez čuvanja?',
+
+    'default_table_head' => 'Glavni sto',
+    'default_table_numbered' => 'Sto :number',
+
+];

@@ -9,7 +9,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@isset($title){{ $title }} — @endisset{{ config('app.name', 'NasDan') }}</title>
+    <title>@isset($title){{ $title }} — @endisset{{ config('app.name') }}</title>
 
     <script>
         (function () {
@@ -58,8 +58,8 @@
         >
             <div class="flex h-14 shrink-0 items-center gap-2 border-b border-sidebar-border px-3">
                 <a href="{{ route('dashboard') }}" class="flex min-w-0 items-center gap-2 overflow-hidden rounded-md px-1 py-1.5 hover:bg-sidebar-accent">
-                    <img src="{{ asset('icons/nd-logo-transparent.webp') }}" alt="NasDan" class="h-8 w-8 shrink-0 object-contain">
-                    <span class="truncate text-sm font-semibold" x-show="sidebarOpen || window.innerWidth < 1024" x-cloak>NasDan</span>
+                    <img src="{{ asset('icons/nd-logo-transparent.webp') }}" alt="{{ config('app.name') }}" class="h-8 w-8 shrink-0 object-contain">
+                    <span class="truncate text-sm font-semibold" x-show="sidebarOpen || window.innerWidth < 1024" x-cloak>{{ config('app.name') }}</span>
                 </a>
             </div>
 

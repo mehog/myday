@@ -158,7 +158,7 @@ class PostWeddingInviteLockTest extends TestCase
 
     public function test_closed_rsvp_message_shown_after_wedding(): void
     {
-        $event = WeddingEvent::factory()->create([
+        $event = WeddingEvent::factory()->paid()->create([
             'wedding_date' => now()->subDays(2)->setTime(16, 0),
             'is_active' => true,
         ]);
@@ -170,15 +170,15 @@ class PostWeddingInviteLockTest extends TestCase
 
         $this->get(route('invitation.guest', ['slug' => $event->slug, 'token' => $guest->token]))
             ->assertOk()
-            ->assertSee(__('invitation.rsvp_closed_after_wedding'), false)
-            ->assertSee(__('invitation.share_photos_and_messages'), false)
+            ->assertSee(__('invitation.rsvp_closed_after_wedding'))
+            ->assertSee(__('invitation.share_photos_and_messages'))
             ->assertSee(route('invitation.contact.guest', [$event->slug, $guest->token]), false)
-            ->assertDontSee(__('invitation.add_to_calendar'), false);
+            ->assertDontSee(__('invitation.add_to_calendar'));
     }
 
     public function test_contact_link_shown_after_wedding_for_guests_without_yes_rsvp(): void
     {
-        $event = WeddingEvent::factory()->create([
+        $event = WeddingEvent::factory()->paid()->create([
             'wedding_date' => now()->subDays(2)->setTime(16, 0),
             'is_active' => true,
         ]);
@@ -194,18 +194,18 @@ class PostWeddingInviteLockTest extends TestCase
 
         $this->get(route('invitation.guest', ['slug' => $event->slug, 'token' => $guest->token]))
             ->assertOk()
-            ->assertSee(__('invitation.share_photos_and_messages'), false)
+            ->assertSee(__('invitation.share_photos_and_messages'))
             ->assertSee(route('invitation.contact.guest', [$event->slug, $guest->token]), false);
 
         $this->get(route('invitation.guest', ['slug' => $event->slug, 'token' => $pendingGuest->token]))
             ->assertOk()
-            ->assertSee(__('invitation.share_photos_and_messages'), false)
+            ->assertSee(__('invitation.share_photos_and_messages'))
             ->assertSee(route('invitation.contact.guest', [$event->slug, $pendingGuest->token]), false);
     }
 
     public function test_personal_contact_page_reachable_after_wedding(): void
     {
-        $event = WeddingEvent::factory()->create([
+        $event = WeddingEvent::factory()->paid()->create([
             'wedding_date' => now()->subDay()->setTime(16, 0),
             'is_active' => true,
         ]);

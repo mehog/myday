@@ -20,10 +20,10 @@ return [
     'qr_format_a4' => 'A4 poster',
     'qr_format_a5' => 'A5 flyer',
     'qr_format_letter' => 'US Letter',
-    'qr_pdf_heading' => 'Plan your wedding with NasDan',
-    'qr_pdf_instructions' => 'Scan this code to explore NasDan and sign up through our referral program — couples get :percent% off any plan.',
+    'qr_pdf_heading' => 'Plan your wedding with :brand',
+    'qr_pdf_instructions' => 'Scan this code to explore :brand and sign up through our referral program — couples get :percent% off any plan.',
     'qr_pdf_link_label' => 'Or visit this link',
-    'qr_pdf_footer' => 'Powered by NasDan',
+    'qr_pdf_footer' => 'Powered by :brand',
 
     'how_it_works_heading' => 'How it works',
     'step_1_title' => 'Share your link',

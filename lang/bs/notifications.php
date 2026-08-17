@@ -24,7 +24,7 @@ return [
 
     'couple_onboarding_greeting' => 'Zdravo :name,',
     'couple_onboarding_action' => 'Otvori kontrolnu tablu',
-    'couple_onboarding_subject_day1' => 'Dobrodošli u NasDan — dodajte prve goste',
+    'couple_onboarding_subject_day1' => 'Dobrodošli u :brand — dodajte prve goste',
     'couple_onboarding_body_day1' => 'Vaša pozivnica za :couple je spremna za postavljanje. Započnite dodavanjem gostiju i dijeljenjem personalnih RSVP linkova.',
     'couple_onboarding_subject_day3' => 'Savjet: uključite push obavijesti za goste',
     'couple_onboarding_body_day3' => 'Gosti mogu primiti push obavijesti od vas. Spomenite to kada šaljete personalne linkove za :couple.',

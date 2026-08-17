@@ -54,9 +54,7 @@ class PackagePageController extends Controller
 
     private function displayRegion(): PricingRegion
     {
-        return app()->getLocale() === 'bs'
-            ? PricingRegion::ThirdWorld
-            : PricingRegion::FirstWorld;
+        return PricingRegion::forVisitor();
     }
 
     /**
@@ -196,11 +194,11 @@ class PackagePageController extends Controller
         return [
             '@context' => 'https://schema.org',
             '@type' => 'Product',
-            'name' => config('app.name', 'NasDan').' '.$plan['name'],
+            'name' => config('app.name').' '.$plan['name'],
             'description' => __('packages.tiers.'.$tier->value.'.summary'),
             'brand' => [
                 '@type' => 'Brand',
-                'name' => config('app.name', 'NasDan'),
+                'name' => config('app.name'),
             ],
             'category' => 'Digital wedding invitation',
             'offers' => [

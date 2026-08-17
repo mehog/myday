@@ -79,4 +79,72 @@ class LocaleSwitcherTest extends TestCase
         $this->assertSame('bs', $user->fresh()->locale);
         $this->assertSame('bs', session('locale'));
     }
+
+    public function test_first_visit_defaults_to_english_without_accept_language(): void
+    {
+        $this->get('/plans')
+            ->assertOk()
+            ->assertSee(__('packages.index.heading', [], 'en'), false)
+            ->assertSee('hreflang="x-default"', false)
+            ->assertSee('locale=en', false)
+            ->assertDontSee(__('packages.index.heading', [], 'bs'), false);
+    }
+
+    public function test_first_visit_uses_accept_language_when_supported(): void
+    {
+        $this->withHeader('Accept-Language', 'hr-HR,hr;q=0.9,en;q=0.8')
+            ->get('/plans')
+            ->assertOk()
+            ->assertSee(__('packages.index.heading', [], 'hr'), false)
+            ->assertSee('value="hr" selected', false)
+            ->assertDontSee(__('packages.index.heading', [], 'en'), false);
+    }
+
+    public function test_query_locale_wins_over_accept_language(): void
+    {
+        $this->withHeader('Accept-Language', 'de-DE,de;q=0.9')
+            ->get('/plans?locale=bs')
+            ->assertOk()
+            ->assertSee(__('packages.index.heading', [], 'bs'), false)
+            ->assertSee('value="bs" selected', false);
+    }
+
+    public function test_unsupported_accept_language_falls_back_to_english(): void
+    {
+        $this->withHeader('Accept-Language', 'fr-FR,fr;q=0.9')
+            ->get('/plans')
+            ->assertOk()
+            ->assertSee(__('packages.index.heading', [], 'en'), false)
+            ->assertDontSee(__('packages.index.heading', [], 'bs'), false);
+    }
+
+    public function test_first_visit_maps_serbian_accept_language_to_latin(): void
+    {
+        $this->withHeader('Accept-Language', 'sr-RS,sr;q=0.9,en;q=0.8')
+            ->get('/plans')
+            ->assertOk()
+            ->assertSee('value="sr_Latn" selected', false)
+            ->assertSee('hreflang="sr-Latn"', false)
+            ->assertSee('lang="sr-Latn"', false)
+            ->assertSee(__('packages.index.compare_subheading', [], 'sr_Latn'), false);
+    }
+
+    public function test_first_visit_maps_sr_latn_accept_language(): void
+    {
+        $this->withHeader('Accept-Language', 'sr-Latn,sr;q=0.9')
+            ->get('/plans')
+            ->assertOk()
+            ->assertSee('value="sr_Latn" selected', false)
+            ->assertSee(__('packages.index.compare_subheading', [], 'sr_Latn'), false);
+    }
+
+    public function test_query_locale_sr_canonicalizes_to_sr_latn(): void
+    {
+        $this->get('/plans?locale=sr')
+            ->assertOk()
+            ->assertSee('value="sr_Latn" selected', false)
+            ->assertSee(__('packages.index.compare_subheading', [], 'sr_Latn'), false);
+
+        $this->assertSame('sr_Latn', session('locale'));
+    }
 }

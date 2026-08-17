@@ -67,8 +67,13 @@ class DemoInvitationExamples
 
     public static function demoSlug(?string $locale = null): string
     {
-        $locale ??= app()->getLocale();
-        $suffix = $locale !== 'bs' ? '-'.$locale : '';
+        $locale = Locale::resolve($locale ?? app()->getLocale());
+
+        $suffix = match ($locale) {
+            'bs' => '',
+            'sr_Latn' => '-sr',
+            default => '-'.$locale,
+        };
 
         return 'demo-islamsko'.$suffix;
     }

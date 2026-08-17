@@ -2,7 +2,7 @@
     <header class="border-b border-[#1a1208]/10 bg-white/80 backdrop-blur-md">
         <div class="max-w-2xl mx-auto px-6 py-4">
             <a href="{{ route('home') }}" class="landing-heading text-xl font-semibold text-[#1a1208]">
-                {{ config('app.name', 'NasDan') }}
+                {{ config('app.name') }}
             </a>
         </div>
     </header>

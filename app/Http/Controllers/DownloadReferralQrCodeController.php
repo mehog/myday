@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Support\Referral;
 use chillerlan\QRCode\Common\EccLevel;
 use chillerlan\QRCode\Output\QROutputInterface;
 use chillerlan\QRCode\QRCode;
@@ -75,7 +76,7 @@ class DownloadReferralQrCodeController extends Controller
         $pdf = Pdf::view('pdf.referral-qr-code', [
             'heading' => __('referrals.qr_pdf_heading'),
             'instructions' => __('referrals.qr_pdf_instructions', [
-                'percent' => \App\Support\Referral::buyerDiscountPercent(),
+                'percent' => Referral::buyerDiscountPercent(),
             ]),
             'linkLabel' => __('referrals.qr_pdf_link_label'),
             'referralLink' => $referralLink,
@@ -87,7 +88,7 @@ class DownloadReferralQrCodeController extends Controller
             'qrSize' => (int) $formatConfig['qrSize'],
         ])
             ->driver('dompdf')
-            ->name('nasdan-referral-qr.pdf');
+            ->name('nuptoria-referral-qr.pdf');
 
         if ($formatConfig['type'] === 'format') {
             $pdf->format((string) $formatConfig['value']);

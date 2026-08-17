@@ -22,7 +22,7 @@ class GuestPhotoUploadTest extends TestCase
         Storage::fake('media');
         config()->set('filesystems.media_disk', 'media');
 
-        $event = WeddingEvent::factory()->create([
+        $event = WeddingEvent::factory()->paid()->create([
             'wedding_date' => now(),
             'is_active' => true,
         ]);
@@ -55,7 +55,7 @@ class GuestPhotoUploadTest extends TestCase
         Storage::fake('media');
         config()->set('filesystems.media_disk', 'media');
 
-        $event = WeddingEvent::factory()->create([
+        $event = WeddingEvent::factory()->paid()->create([
             'wedding_date' => now(),
             'is_active' => true,
         ]);

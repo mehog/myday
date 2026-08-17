@@ -59,7 +59,7 @@ class MarketingDemoSeeder extends Seeder
      */
     public static function supportedLocales(): array
     {
-        return ['bs', 'hr', 'de', 'en'];
+        return ['bs', 'hr', 'de', 'en', 'sr_Latn'];
     }
 
     public function run(): void
@@ -305,6 +305,12 @@ class MarketingDemoSeeder extends Seeder
                 'attire' => 'Dress & suit',
                 'invites' => 'Invitations',
             ],
+            'sr_Latn' => [
+                'dinner' => 'Svečana večera',
+                'band' => 'Bend',
+                'attire' => 'Venčanica i odelo',
+                'invites' => 'Pozivnice',
+            ],
             default => [
                 'dinner' => 'Svečana večera',
                 'band' => 'Bend',
@@ -313,7 +319,7 @@ class MarketingDemoSeeder extends Seeder
             ],
         };
 
-        $currency = $locale === 'en' || $locale === 'de' ? 'EUR' : 'BAM';
+        $currency = $locale === 'bs' ? 'BAM' : 'EUR';
 
         $event->update([
             'budget_currency' => $currency,

@@ -8,12 +8,12 @@ return [
     |--------------------------------------------------------------------------
     |
     | Grouped by audience. Regional songs are included only for locales listed
-    | in regional_song_locales (bs, hr). Browse shuffles the resolved catalog;
+    | in regional_song_locales (bs, hr, sr_Latn). Browse shuffles the resolved catalog;
     | search filters it. Users can also paste any YouTube URL.
     |
     */
 
-    'regional_song_locales' => ['bs', 'hr'],
+    'regional_song_locales' => ['bs', 'hr', 'sr_Latn'],
 
     'songs' => [
         'regional' => [

@@ -48,4 +48,17 @@ class UserPricingCurrencyTest extends TestCase
         $this->assertSame(PricingRegion::FirstWorld, $user->pricingRegion());
         $this->assertSame('EUR', $user->pricingCurrency());
     }
+
+    public function test_visitor_region_uses_ip_country_not_locale(): void
+    {
+        $this->assertSame(PricingRegion::ThirdWorld, PricingRegion::fromCountryCode('BA'));
+        $this->assertSame(PricingRegion::FirstWorld, PricingRegion::fromCountryCode('DE'));
+        $this->assertSame(PricingRegion::FirstWorld, PricingRegion::fromCountryCode(null));
+
+        $this->fakeVisitorCountry('BA');
+        $this->assertSame(PricingRegion::ThirdWorld, PricingRegion::forVisitor(request()));
+
+        $this->fakeVisitorCountry('US', '203.0.113.20');
+        $this->assertSame(PricingRegion::FirstWorld, PricingRegion::forVisitor(request()));
+    }
 }

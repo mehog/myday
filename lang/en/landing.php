@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'meta_title' => 'NasDan - Everything for your wedding, in one place',
+    'meta_title' => ':brand - Everything for your wedding, in one place',
     'meta_description' => 'Invitation, RSVP, seating, guest memories and your day schedule — all on one link for your wedding.',
 
     'nav_demo' => 'Demo',
@@ -12,11 +12,11 @@ return [
     'nav_panel' => 'My panel',
     'back_to_invitation' => 'Back to invitation',
 
-    'hero_title' => 'Your wedding story deserves more than a photo in a chat',
+    'hero_title' => 'Your wedding, from first invite to last memory.',
     'hero_subtitle' => 'One place for your guests: invitation, RSVP, seating, venues and memories. Set it up and share it in three steps.',
     'hero_cta_demo' => 'View demo',
     'hero_cta_create' => 'Get started',
-    'hero_image_alt' => 'Mobile preview of a personalized NasDan wedding page',
+    'hero_image_alt' => 'Mobile preview of a personalized :brand wedding page',
 
     'benefits_title' => 'Everything your guests need, in one link',
     'benefits_subtitle' => 'Invitation, live RSVPs, guest memories and a seating plan. All managed from one panel.',
@@ -43,7 +43,7 @@ return [
     'feature_invite_point_2' => 'Day schedule and multiple venue maps',
     'feature_invite_point_3' => 'Gallery and music on the same page',
     'feature_invite_point_4' => 'Themes and templates that match your style',
-    'feature_invite_alt' => 'Screenshot of a NasDan digital wedding invitation on a phone',
+    'feature_invite_alt' => 'Screenshot of a :brand digital wedding invitation on a phone',
 
     'feature_rsvp_eyebrow' => 'Guest list',
     'feature_rsvp_title' => 'See who is coming as answers arrive',
@@ -52,7 +52,7 @@ return [
     'feature_rsvp_point_2' => 'Live yes, no and pending statuses',
     'feature_rsvp_point_3' => 'Menu choice for every guest, companion and child',
     'feature_rsvp_point_4' => 'Optional accommodation requests when you enable them',
-    'feature_rsvp_alt' => 'Screenshot of the NasDan guest list with RSVP statuses',
+    'feature_rsvp_alt' => 'Screenshot of the :brand guest list with RSVP statuses',
 
     'feature_menu_eyebrow' => 'Menus and stays',
     'feature_menu_title' => 'Meal choices and accommodation at a glance',
@@ -60,7 +60,7 @@ return [
     'feature_menu_point_1' => 'Platform menus plus your custom options',
     'feature_menu_point_2' => 'Choices for guests, plus-ones and children',
     'feature_menu_point_3' => 'Realistic accommodation requests per party',
-    'feature_menu_alt' => 'Screenshot of the NasDan dashboard menu and accommodation summary',
+    'feature_menu_alt' => 'Screenshot of the :brand dashboard menu and accommodation summary',
 
     'feature_seating_eyebrow' => 'Seating plan',
     'feature_seating_title' => 'Arrange tables visually, then export a PDF',
@@ -68,7 +68,7 @@ return [
     'feature_seating_point_1' => 'Round, rectangular and head tables',
     'feature_seating_point_2' => 'Assign guests and plus-ones to seats',
     'feature_seating_point_3' => 'Export the seating plan as a PDF',
-    'feature_seating_alt' => 'Screenshot of the interactive NasDan seating plan editor',
+    'feature_seating_alt' => 'Screenshot of the interactive :brand seating plan editor',
 
     'feature_updates_eyebrow' => 'Updates and insight',
     'feature_updates_title' => 'Know what is happening, keep guests informed',
@@ -76,7 +76,7 @@ return [
     'feature_updates_point_1' => 'Visit, RSVP, menu and accommodation overview',
     'feature_updates_point_2' => 'Push notifications for important updates',
     'feature_updates_point_3' => 'Live editing guests see instantly',
-    'feature_updates_alt' => 'Screenshot of the NasDan couple dashboard with visit and RSVP stats',
+    'feature_updates_alt' => 'Screenshot of the :brand couple dashboard with visit and RSVP stats',
 
     'interaction_eyebrow' => 'Guest memories',
     'interaction_title' => 'Messages and memories from your guests',
@@ -87,7 +87,7 @@ return [
     'interaction_2_text' => 'Let guests record a voice message. Hear their laughter, excitement and personal greetings long after the day is over.',
     'interaction_3_title' => 'Photo sharing',
     'interaction_3_text' => 'Guests upload photos from the big day and the days after. Everything lands in one place for you, for 30 days after the celebration.',
-    'interaction_inbox_alt' => 'Screenshot of the guest messages inbox in the NasDan panel',
+    'interaction_inbox_alt' => 'Screenshot of the guest messages inbox in the :brand panel',
     'interaction_upload_alt' => 'Screenshot of the guest message upload screen on a phone',
     'interaction_demo_name' => 'Layla',
     'interaction_demo_message' => 'Wishing you both a lifetime of love, can\'t wait to celebrate with you!',
@@ -134,7 +134,7 @@ return [
     'pricing_one_time' => 'One-time payment',
     'pricing_free_forever' => 'Free forever',
     'pricing_activation_note' => 'Your invitation is live on Free. Paid plans unlock higher guest limits and premium features like QR photo cards, push sending and seating PDF export.',
-    'pricing_currency_note' => 'Shown amounts are examples. At checkout you pay in EUR or BAM based on your pricing region.',
+    'pricing_currency_note' => 'Prices are shown in EUR or BAM based on your location. Checkout uses the same currency.',
     'pricing_free_limitations_note' => 'Free includes the core invitation experience (up to 50 guests). QR photo album, sending push notifications and seating PDF export require a paid plan.',
     'pricing_plan_free_name' => 'Free',
     'pricing_plan_free_guests' => 'Up to 50 guests',

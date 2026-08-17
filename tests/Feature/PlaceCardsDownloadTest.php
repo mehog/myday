@@ -7,6 +7,7 @@ use App\InvitationTheme;
 use App\Models\Guest;
 use App\Models\User;
 use App\Models\WeddingEvent;
+use App\PlanTier;
 use App\RsvpStatus;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use ReflectionMethod;
@@ -210,6 +211,8 @@ class PlaceCardsDownloadTest extends TestCase
             'theme' => $theme,
             'template' => 'classic',
             'link_mode' => 'public',
+            'plan_tier' => PlanTier::Basic,
+            'guest_limit' => 100,
             'is_active' => true,
         ]);
     }

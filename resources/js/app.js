@@ -7,10 +7,10 @@ window.nasdanSwitchLocale = (locale) => {
 document.addEventListener('alpine:init', () => {
     Alpine.data('countdown', (targetDate, labels = {}) => ({
         units: [
-            { value: '00', label: labels.days ?? 'Dana' },
-            { value: '00', label: labels.hours ?? 'Sati' },
-            { value: '00', label: labels.minutes ?? 'Minuta' },
-            { value: '00', label: labels.seconds ?? 'Sekundi' },
+            { value: '00', label: labels.days ?? 'Days' },
+            { value: '00', label: labels.hours ?? 'Hours' },
+            { value: '00', label: labels.minutes ?? 'Minutes' },
+            { value: '00', label: labels.seconds ?? 'Seconds' },
         ],
         interval: null,
         start() {

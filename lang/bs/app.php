@@ -26,7 +26,7 @@ return [
     'edit_invitation' => 'Uredi pozivnicu',
     'view_invitation' => 'Pogledaj pozivnicu',
     'preview_invitation' => 'Pregled pozivnice',
-    'no_invitation' => 'Vaša pozivnica nije još kreirana. Kontaktirajte NasDan tim da vam je postavi.',
+    'no_invitation' => 'Vaša pozivnica nije još kreirana. Kontaktirajte :brand tim da vam je postavi.',
     'invitation_inactive_suffix' => '— link nije još aktivan',
     'email_readonly' => 'Email se ovdje ne može mijenjati.',
     'wedding_archived_badge' => 'Uspomene',

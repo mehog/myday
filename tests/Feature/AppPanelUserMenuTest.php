@@ -67,6 +67,7 @@ class AppPanelUserMenuTest extends TestCase
             'bs' => 'Paketi',
             'de' => 'Tarife',
             'hr' => 'Paketi',
+            'sr_Latn' => 'Paketi',
         ];
 
         foreach ($expected as $locale => $label) {

@@ -16,6 +16,7 @@ class OnboardingSongsTest extends TestCase
         return [
             'bosnian' => ['bs', true],
             'croatian' => ['hr', true],
+            'serbian' => ['sr_Latn', true],
             'english' => ['en', false],
             'german' => ['de', false],
         ];

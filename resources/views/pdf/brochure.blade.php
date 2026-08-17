@@ -296,7 +296,7 @@
                     </div>
                 </td>
                 <td style="color: #faf6ee; vertical-align: middle; padding-top: 25mm; text-align: center;">
-                    <img src="{{ $logoDataUri }}" alt="NasDan" class="logo">
+                    <img src="{{ $logoDataUri }}" alt="{{ config('app.name') }}" class="logo">
                     <h1 class="cover-title">{{ __('landing.hero_title') }}</h1>
                     <p class="cover-subtitle">{{ __('landing.meta_description') }}</p>
                     <p class="cover-url">{{ $siteUrl }}</p>

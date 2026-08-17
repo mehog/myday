@@ -37,7 +37,7 @@ class DownloadBrochureController extends Controller
             ->driver('dompdf')
             ->format('a4')
             ->landscape()
-            ->name('nasdan-brochure.pdf');
+            ->name('nuptoria-brochure.pdf');
 
         return $pdf->toResponse(request());
     }

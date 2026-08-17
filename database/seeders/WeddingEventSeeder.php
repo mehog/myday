@@ -271,6 +271,65 @@ class WeddingEventSeeder extends Seeder
             isDemo: true,
             invitationLocale: 'hr',
         );
+
+        // Serbian Latin public demos (Belgrade)
+        $this->seedEvent(
+            slug: 'demo-islamsko-sr',
+            groom: 'Amar',
+            bride: 'Emina',
+            locationName: 'Bajrakli džamija',
+            locationAddress: 'Beograd, Srbija',
+            lat: 44.8220,
+            lng: 20.4574,
+            theme: InvitationTheme::AmberGold,
+            schedule: [
+                ['time' => '09:00', 'title' => 'Odlazak po mladu', 'description' => 'Mladoženja i svatovi dolaze po mladu.', 'sort_order' => 1],
+                ['time' => '10:00', 'title' => 'Opštinsko/matičarsko venčanje', 'description' => 'Potpisivanje u matičnom uredu.', 'sort_order' => 2],
+                ['time' => '11:00', 'title' => 'Šerijatsko venčanje (nikah)', 'description' => 'Venčanje u džamiji.', 'sort_order' => 3],
+                ['time' => '13:00', 'title' => 'Svečani ručak za goste', 'description' => 'Ručak za porodicu i najbliže goste.', 'sort_order' => 4],
+                ['time' => '19:00', 'title' => 'Svečana večera i proslava', 'description' => 'Večera, ples i slavlje.', 'sort_order' => 5],
+            ],
+            guests: [
+                ['name' => 'Demo gost', 'email' => 'demo-islamsko-sr@example.com'],
+            ],
+            isDemo: true,
+            invitationLocale: 'sr_Latn',
+            extraLocations: [
+                [
+                    'label' => 'Opština',
+                    'name' => 'Gradska uprava grada Beograda',
+                    'address' => 'Beograd, Srbija',
+                    'lat' => 44.8176,
+                    'lng' => 20.4569,
+                    'is_primary' => false,
+                    'sort_order' => 1,
+                ],
+            ],
+            primaryLocationLabel: 'Džamija',
+        );
+
+        $this->seedEvent(
+            slug: 'demo-krscansko-sr',
+            groom: 'Stefan',
+            bride: 'Jovana',
+            locationName: 'Hram Svetog Save',
+            locationAddress: 'Beograd, Srbija',
+            lat: 44.7981,
+            lng: 20.4686,
+            theme: InvitationTheme::RoyalWedding,
+            schedule: [
+                ['time' => '10:00', 'title' => 'Odlazak po mladu', 'description' => 'Mladoženja i svatovi dolaze po mladu.', 'sort_order' => 1],
+                ['time' => '11:30', 'title' => 'Venčanje u crkvi', 'description' => 'Crkvena ceremonija i blagoslov.', 'sort_order' => 2],
+                ['time' => '13:30', 'title' => 'Svečani ručak za goste', 'description' => 'Ručak za porodicu i najbliže goste.', 'sort_order' => 3],
+                ['time' => '16:00', 'title' => 'Fotografisanje', 'description' => 'Zajedničko fotografisanje mladenca.', 'sort_order' => 4],
+                ['time' => '19:00', 'title' => 'Svečana večera i proslava', 'description' => 'Večera, ples i slavlje.', 'sort_order' => 5],
+            ],
+            guests: [
+                ['name' => 'Demo gost', 'email' => 'demo-krscansko-sr@example.com'],
+            ],
+            isDemo: true,
+            invitationLocale: 'sr_Latn',
+        );
     }
 
     /**

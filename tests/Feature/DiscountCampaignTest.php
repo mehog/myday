@@ -515,7 +515,7 @@ class DiscountCampaignTest extends TestCase
         $this->assertTrue($templates->contains('name', 'Free plan is live'));
 
         foreach ($templates as $template) {
-            foreach (['en', 'bs', 'de', 'hr'] as $locale) {
+            foreach (['en', 'bs', 'de', 'hr', 'sr_Latn'] as $locale) {
                 $this->assertNotEmpty($template->subjectFor($locale));
                 $this->assertNotEmpty($template->bodyFor($locale));
             }

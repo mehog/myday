@@ -20,7 +20,7 @@ class PackagePagesTest extends TestCase
     {
         $this->get('/plans?locale=en')
             ->assertOk()
-            ->assertSee('NasDan plans', false)
+            ->assertSee('Nuptoria plans', false)
             ->assertSee(route('packages.show', ['tier' => 'free']), false)
             ->assertSee(route('packages.show', ['tier' => 'premium']), false)
             ->assertSee('application/ld+json', false)
@@ -51,13 +51,34 @@ class PackagePagesTest extends TestCase
         $this->get('/plans/enterprise')->assertNotFound();
     }
 
-    public function test_package_pages_render_in_bosnian_with_bam_prices(): void
+    public function test_package_pages_render_in_bosnian_with_eur_prices_by_default(): void
     {
         $this->get('/plans/premium?locale=bs')
             ->assertOk()
             ->assertSee('Premium paket za vjenčanje', false)
-            ->assertSee('240 BAM', false)
+            ->assertSee('240 EUR', false)
+            ->assertDontSee('240 BAM', false)
             ->assertSee('Kreiraj besplatno', false);
+    }
+
+    public function test_package_pages_show_bam_prices_for_bosnia_visitors_regardless_of_locale(): void
+    {
+        $this->fakeVisitorCountry('BA');
+
+        $this->get('/plans/premium?locale=en')
+            ->assertOk()
+            ->assertSee('240 BAM', false)
+            ->assertDontSee('240 EUR', false);
+    }
+
+    public function test_package_pages_show_eur_for_non_bosnia_visitors_in_bosnian(): void
+    {
+        $this->fakeVisitorCountry('DE');
+
+        $this->get('/plans?locale=bs')
+            ->assertOk()
+            ->assertSee('80 EUR', false)
+            ->assertDontSee('80 BAM', false);
     }
 
     public function test_package_pages_render_in_croatian_and_german(): void
@@ -94,6 +115,17 @@ class PackagePagesTest extends TestCase
             ->assertOk()
             ->assertSee(route('packages.index'), false)
             ->assertSee(route('packages.show', ['tier' => 'plus']), false)
-            ->assertSee('View plan details', false);
+            ->assertSee('View plan details', false)
+            ->assertSee('80 EUR', false);
+    }
+
+    public function test_homepage_shows_bam_prices_for_bosnia_visitors(): void
+    {
+        $this->fakeVisitorCountry('BA');
+
+        $this->get('/?locale=en')
+            ->assertOk()
+            ->assertSee('80 BAM', false)
+            ->assertDontSee('80 EUR', false);
     }
 }

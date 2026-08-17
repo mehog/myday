@@ -1,6 +1,6 @@
-# NasDan (MyDay) — Full Project Context
+# Nuptoria (MyDay) — Full Project Context
 
-> This document is a complete reference for the NasDan/MyDay wedding invitation platform, intended to give AI assistants full context about the project's architecture, features, codebase, and design decisions.
+> This document is a complete reference for the Nuptoria wedding invitation platform, intended to give AI assistants full context about the project's architecture, features, codebase, and design decisions.
 
 > **Docs index:** [../README.md](../README.md) · **Product / visual design:** [../design/project-design.md](../design/project-design.md)
 
@@ -30,15 +30,17 @@
 20. [Integrations](#20-integrations)
 21. [Environment Variables & Configuration](#21-environment-variables--configuration)
 22. [Build, Development & Deployment](#22-build-development--deployment)
-23. [Testing](#23-testing)
-24. [Key Architectural Decisions](#24-key-architectural-decisions)
-25. [Known Limitations & Future Opportunities](#25-known-limitations--future-opportunities)
+23. [Adding a locale](#23-adding-a-locale)
+24. [nuptoria.com cutover](#24-nuptoriacom-cutover)
+25. [Testing](#25-testing)
+26. [Key Architectural Decisions](#26-key-architectural-decisions)
+27. [Known Limitations & Future Opportunities](#27-known-limitations--future-opportunities)
 
 ---
 
 ## 1. Project Overview
 
-**NasDan** (brand name; repo folder: `myday`) is a **digital wedding invitation SaaS platform** built for couples primarily in Bosnia and Herzegovina, and the broader Balkans/European market.
+**Nuptoria** (brand name; repo folder: `myday`; formerly NasDan) is a **digital wedding invitation SaaS platform** for international couples, with Bosnia and the Balkans as the original market.
 
 The platform allows couples to:
 
@@ -50,7 +52,7 @@ The platform allows couples to:
 - Track how many people opened their invitation and from what channels
 - Earn money by referring other couples (affiliate program)
 
-The name "NasDan" is a portmanteau of "naš dan" (Bosnian for "our day"). The product is multilingual: Bosnian (primary), English, and German.
+The former name "NasDan" is a portmanteau of "naš dan" (Bosnian for "our day"). The product is multilingual: English (default), Bosnian, German, Croatian, and Serbian Latin (`sr_Latn`). First visit follows `Accept-Language` when it matches a supported locale (`sr` / `sr-RS` / `sr-Latn` map to Serbian Latin). Marketing and checkout prices use IP geolocation (Bosnia → BAM, everyone else → EUR).
 
 ---
 
@@ -932,7 +934,7 @@ Reveals use inline vanilla JS in Blade partials. On tap, they set Livewire `invi
 
 **VAPID keys** configured in `.env`:
 ```
-VAPID_SUBJECT=mailto:contact@nasdan.ba
+VAPID_SUBJECT=mailto:info@nuptoria.com
 VAPID_PUBLIC_KEY=...
 VAPID_PRIVATE_KEY=...
 ```
@@ -1056,18 +1058,24 @@ Data captured:
 
 ## 19. Localization
 
-**Supported locales:** `bs` (Bosnian), `en` (English), `de` (German)
-**Default locale:** `bs`
+**Supported locales:** `en` (English, default), `bs` (Bosnian), `de` (German), `hr` (Croatian)
 
-**Translation files:** `lang/{bs,en,de}/`
+**Default locale:** `en` (`config('app.default_locale')`, env `APP_DEFAULT_LOCALE`)
 
-**Locale switching:**
-- `POST /lang/{locale}` → stores in session
-- `SetAppLocale` middleware reads from session on every request
-- Landing page and invitation pages have locale switchers
+**Translation files:** `lang/{en,bs,de,hr}/` — user-facing brand strings use `:brand` (filled from `config('app.name')`).
 
-**Per-user locale:** `users.locale` column stores user's preferred locale
-**Per-wedding locale:** Not stored — defaults to user's or app locale
+**Locale switching (priority):**
+1. `?locale=` query param
+2. Authenticated `users.locale`
+3. Session `locale`
+4. `Accept-Language` when it matches a supported locale
+5. App default (`en`)
+
+- `POST /lang/{locale}` stores in session (and user profile unless the referrer is an invitation)
+- `SetAppLocale` middleware applies this on every web request (including Filament admin)
+
+**Per-user locale:** `users.locale`
+**Per-wedding locale:** `wedding_events.invitation_locale` (guest override: `guests.invitation_locale`)
 
 **Filament panels:** Use app locale (translations applied to all panel strings)
 
@@ -1104,12 +1112,13 @@ Data captured:
 
 | Variable | Default | Purpose |
 |----------|---------|---------|
-| `APP_NAME` | Laravel | Application name |
+| `APP_NAME` | Nuptoria | Application name |
 | `APP_ENV` | local | Environment (local/production/staging) |
 | `APP_KEY` | (empty) | Application encryption key — MUST be set |
 | `APP_DEBUG` | true | Debug mode — set `false` in production |
-| `APP_URL` | http://localhost | Base URL |
-| `APP_LOCALE` | en | Laravel locale (set to `bs` in production) |
+| `APP_URL` | http://localhost | Base URL (`https://nuptoria.com` in production) |
+| `APP_LOCALE` | en | Laravel locale |
+| `APP_DEFAULT_LOCALE` | en | Product default for first visits without `Accept-Language` |
 | `APP_FALLBACK_LOCALE` | en | Fallback locale |
 
 ### Database
@@ -1171,13 +1180,14 @@ Data captured:
 
 **`config/app.php` additions:**
 ```php
-'supported_locales' => ['en', 'bs', 'de', 'hr'],
-'default_locale' => 'bs',
+'supported_locales' => ['en', 'bs', 'de', 'hr', 'sr_Latn'],
+'default_locale' => env('APP_DEFAULT_LOCALE', env('APP_LOCALE', 'en')),
 'locale_labels' => [
     'bs' => 'Bosanski',
     'en' => 'English',
     'de' => 'Deutsch',
     'hr' => 'Hrvatski',
+    'sr_Latn' => 'Srpski (latinica)',
 ],
 ```
 
@@ -1245,7 +1255,58 @@ npm run build  # Production build → public/build/
 
 ---
 
-## 23. Testing
+## 23. Adding a locale
+
+Keep locale lists in `config/app.php` (`supported_locales`, `locale_labels`). User-facing brand name is `:brand` in translation strings (injected as `config('app.name')`). Serbian Latin uses Laravel/Carbon code `sr_Latn` (picker: Srpski (latinica)); `Accept-Language` values `sr`, `sr-RS`, `sr-Latn`, and `sr-Cyrl` canonicalize to it. `htmlLang()` emits BCP 47 hyphens (`sr-Latn`) for `<html lang>` and hreflang. Locale columns are `varchar(16)`.
+
+To add a language:
+
+1. Copy `lang/en/` to `lang/{code}/` and translate every PHP file.
+2. Add the code to `supported_locales` and `locale_labels`.
+3. Add an `ogLocale()` map entry in `app/Support/Locale.php` (and a Carbon locale). Add `canonicalize()` aliases if the language has script or regional variants.
+4. Translate `lang/vendor/support-bubble/{code}` if the package does not already ship it.
+5. Run tests, including a completeness check against `lang/en` keys (see `tests/Unit/CroatianTranslationCompletenessTest.php` and `tests/Unit/SerbianLatinTranslationCompletenessTest.php`).
+
+Do not add URL prefixes (`/{locale}/...`) unless starting a dedicated SEO project. Locale is still a `?locale=` query param plus session / profile / `Accept-Language`.
+
+---
+
+## 24. nuptoria.com cutover
+
+Production lives on Laravel Cloud. Canonicals, OG, sitemap, and robots follow `APP_URL`.
+
+**App env (Laravel Cloud)**
+
+- `APP_NAME=Nuptoria`
+- `APP_URL=https://nuptoria.com`
+- `APP_LOCALE=en`
+- `APP_DEFAULT_LOCALE=en`
+- `MAIL_FROM_ADDRESS=info@nuptoria.com`
+- `MAIL_FROM_NAME=Nuptoria`
+- `VAPID_SUBJECT=mailto:info@nuptoria.com`
+- `LEGAL_DOMAIN=nuptoria.com`
+- `LEGAL_WEBSITE_URL=https://nuptoria.com`
+- `LEGAL_BRAND_NAME=Nuptoria`
+- `LEGAL_OPERATOR_NAME=Nuptoria`
+- `LEGAL_SUPPORT_EMAIL=info@nuptoria.com`
+- `DODO_PAYMENTS_RETURN_URL=https://nuptoria.com/dashboard/pricing?checkout=return`
+- `DODO_PAYMENTS_CANCEL_URL=https://nuptoria.com/dashboard/pricing?checkout=cancel`
+
+**Ops outside this repo**
+
+- Attach `nuptoria.com` (and `www`) in Laravel Cloud; DNS + TLS.
+- 301 from `nasdan.ba` / `nasdan.app` to `nuptoria.com`, path-preserving, so live `/e/{slug}` invitation links keep working.
+- Resend (or mail) domain: SPF/DKIM/DMARC for nuptoria.com.
+- Dodo dashboard: webhook `https://nuptoria.com/webhooks/dodo`, allowed return URLs.
+- Search Console + GA4 / `GOOGLE_ANALYTICS_ID` for the new domain.
+- Re-seed or update existing `discount_email_templates` rows that still say NasDan (seeder only runs on seed).
+- Replace `nd-logo-*` and add `public/img/og-image.jpg` (1200×630) when the Nuptoria mark is ready.
+
+Existing `users.locale` and `wedding_events.invitation_locale` are not migrated. Referral cookie stays `nasdan_ref` so in-flight attribution is not dropped.
+
+---
+
+## 25. Testing
 
 **Framework:** PHPUnit 12.5 with Laravel test helpers
 
@@ -1268,7 +1329,7 @@ Test coverage is minimal (only referral downloads tested). Most features are unt
 
 ---
 
-## 24. Key Architectural Decisions
+## 26. Key Architectural Decisions
 
 1. **Monolith over SPA:** No React/Vue frontend. Everything is server-rendered Blade + Livewire + Filament. This simplifies deployment and matches the team's PHP expertise.
 
@@ -1294,7 +1355,7 @@ Test coverage is minimal (only referral downloads tested). Most features are unt
 
 ---
 
-## 25. Known Limitations & Future Opportunities
+## 27. Known Limitations & Future Opportunities
 
 ### Current Limitations
 

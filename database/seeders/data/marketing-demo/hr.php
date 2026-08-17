@@ -3,7 +3,7 @@
 return [
     'locale' => 'hr',
     'user' => [
-        'email' => 'marketing-hr@nasdan.ba',
+        'email' => 'marketing-hr@nuptoria.com',
         'name' => 'Ivan&Lucija',
         'password' => '5E3L1Y84uFdd',
     ],
@@ -61,7 +61,7 @@ TEXT,
     'featured_guest_token' => 'mkthrfeaturedguesttoken000000001',
     'featured_guest_name' => 'Marko Horvat',
     'phone_prefix' => '+38591',
-    'email_domain' => 'nasdan.ba',
+    'email_domain' => 'nuptoria.com',
     'first_names' => [
         'Marko', 'Ivan', 'Luka', 'Josip', 'Ante', 'Mateo', 'Fran', 'Petar', 'Nikola', 'Tomislav',
         'Ana', 'Lucija', 'Mia', 'Ema', 'Sara', 'Petra', 'Iva', 'Lana', 'Nina', 'Marta',
