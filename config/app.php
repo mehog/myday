@@ -98,6 +98,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Legacy Domain Redirects
+    |--------------------------------------------------------------------------
+    |
+    | Hosts that should 301 to APP_URL while preserving path and query string.
+    | Attach these domains in Laravel Cloud and point DNS there (do not use
+    | path-stripping DNS forwarding).
+    |
+    */
+
+    'legacy_redirect_hosts' => array_values(array_filter(array_map(
+        static fn (string $host): string => strtolower(trim($host)),
+        explode(',', (string) env('LEGACY_REDIRECT_HOSTS', 'nasdan.app,www.nasdan.app,nasdan.ba,www.nasdan.ba')),
+    ))),
+
+    /*
+    |--------------------------------------------------------------------------
     | Encryption Key
     |--------------------------------------------------------------------------
     |

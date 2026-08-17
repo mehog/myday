@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\RedirectLegacyDomains;
 use App\Http\Middleware\SetAppLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -13,6 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->prepend(RedirectLegacyDomains::class);
+
         $middleware->web(append: [
             SetAppLocale::class,
         ]);

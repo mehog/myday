@@ -1295,7 +1295,7 @@ Production lives on Laravel Cloud. Canonicals, OG, sitemap, and robots follow `A
 **Ops outside this repo**
 
 - Attach `nuptoria.com` (and `www`) in Laravel Cloud; DNS + TLS.
-- 301 from `nasdan.ba` / `nasdan.app` to `nuptoria.com`, path-preserving, so live `/e/{slug}` invitation links keep working.
+- Attach legacy hosts (`nasdan.app`, `www.nasdan.app`, and `nasdan.ba` / `www` if still used) on the same Laravel Cloud environment; remove GoDaddy path-stripping forwarding and point DNS A to Cloud. Path-preserving 301s to `APP_URL` are handled by `RedirectLegacyDomains` middleware (`LEGACY_REDIRECT_HOSTS`).
 - Resend (or mail) domain: SPF/DKIM/DMARC for nuptoria.com.
 - Dodo dashboard: webhook `https://nuptoria.com/webhooks/dodo`, allowed return URLs.
 - Search Console + GA4 / `GOOGLE_ANALYTICS_ID` for the new domain.
