@@ -58,8 +58,24 @@ enum PricingRegion: string
         }
 
         $data = IpStackCacheHelper::getOrFetch($ip);
-        $code = is_object($data) ? ($data->country_code ?? null) : null;
 
-        return self::fromCountryCode(is_string($code) ? $code : null);
+        return self::fromCountryCode(self::countryCodeFrom($data));
+    }
+
+    private static function countryCodeFrom(mixed $data): ?string
+    {
+        if ($data instanceof \stdClass) {
+            $code = $data->country_code ?? null;
+
+            return is_string($code) ? $code : null;
+        }
+
+        if (is_array($data)) {
+            $code = $data['country_code'] ?? null;
+
+            return is_string($code) ? $code : null;
+        }
+
+        return null;
     }
 }

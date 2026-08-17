@@ -5,6 +5,7 @@ namespace App\Helpers;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use stdClass;
 
 class IpStackCacheHelper
 {
@@ -26,15 +27,22 @@ class IpStackCacheHelper
         $cacheKey = self::CACHE_PREFIX.$ip;
 
         $cachedData = Cache::get($cacheKey);
-        if ($cachedData) {
-            Log::info('✅ Using cached IPStack data', ['ip' => $ip]);
+        if ($cachedData !== null) {
+            $normalized = self::normalize($cachedData);
 
-            return $cachedData;
+            if ($normalized !== null) {
+                Log::info('✅ Using cached IPStack data', ['ip' => $ip]);
+
+                return $normalized;
+            }
+
+            Cache::forget($cacheKey);
+            Log::warning('Discarded unusable IPStack cache entry', ['ip' => $ip]);
         }
 
         $freshData = self::fetchFromApi($ip);
         if ($freshData) {
-            Cache::put($cacheKey, $freshData, self::CACHE_DURATION);
+            Cache::put($cacheKey, self::toArray($freshData), self::CACHE_DURATION);
             Log::info('✅ Cached fresh IPStack data', [
                 'ip' => $ip,
                 'country_code' => $freshData->country_code ?? 'unknown',
@@ -77,7 +85,7 @@ class IpStackCacheHelper
     {
         $cacheKey = self::CACHE_PREFIX.$ip;
 
-        return Cache::get($cacheKey);
+        return self::normalize(Cache::get($cacheKey));
     }
 
     /**
@@ -88,7 +96,7 @@ class IpStackCacheHelper
         $cacheKey = self::CACHE_PREFIX.$ip;
         $cacheDuration = $duration ?? self::CACHE_DURATION;
 
-        $result = Cache::put($cacheKey, $data, $cacheDuration);
+        $result = Cache::put($cacheKey, self::toArray($data), $cacheDuration);
 
         if ($result) {
             Log::info('✅ Manually cached IPStack data', [
@@ -98,6 +106,43 @@ class IpStackCacheHelper
         }
 
         return $result;
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    public static function toArray(mixed $data): ?array
+    {
+        if (is_array($data)) {
+            return $data;
+        }
+
+        // Only trust real stdClass payloads. Incomplete/unserializable cache
+        // entries (__PHP_Incomplete_Class) must be discarded and refetched.
+        if (! $data instanceof stdClass) {
+            return null;
+        }
+
+        $encoded = json_encode($data);
+
+        if ($encoded === false) {
+            return null;
+        }
+
+        $decoded = json_decode($encoded, true);
+
+        return is_array($decoded) ? $decoded : null;
+    }
+
+    public static function normalize(mixed $data): ?object
+    {
+        $array = self::toArray($data);
+
+        if ($array === null) {
+            return null;
+        }
+
+        return json_decode(json_encode($array));
     }
 
     /**
@@ -117,12 +162,20 @@ class IpStackCacheHelper
             $response = Http::timeout(10)->get('https://api.ipstack.com/'.$ip.'?access_key='.$apiKey);
 
             if ($response->successful()) {
-                $data = $response->object();
+                $payload = $response->json();
 
-                if (! isset($data->ip) || $data->ip !== $ip) {
+                if (! is_array($payload)) {
+                    Log::warning('IPStack API returned non-array payload', ['ip' => $ip]);
+
+                    return null;
+                }
+
+                $data = self::normalize($payload);
+
+                if ($data === null || ! isset($data->ip) || $data->ip !== $ip) {
                     Log::warning('IPStack API returned invalid data', [
                         'ip' => $ip,
-                        'response_ip' => $data->ip ?? 'missing',
+                        'response_ip' => is_object($data) ? ($data->ip ?? 'missing') : 'missing',
                     ]);
 
                     return null;
