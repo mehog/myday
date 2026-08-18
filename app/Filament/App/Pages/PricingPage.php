@@ -5,6 +5,7 @@ namespace App\Filament\App\Pages;
 use App\Models\DodoPayment;
 use App\PlanTier;
 use App\Support\DodoCatalog;
+use App\Support\MetaPixel;
 use BackedEnum;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -57,6 +58,8 @@ class PricingPage extends Page
                 ->warning()
                 ->send();
         }
+
+        MetaPixel::handleCheckoutQuery(is_string($checkout) ? $checkout : null);
 
         if (session('error')) {
             Notification::make()

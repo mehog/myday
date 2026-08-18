@@ -56,7 +56,7 @@ return [
         'section_4_title' => '4. Payments (Dodo Payments)',
         'section_4_body' => 'Checkout and payment processing are handled by Dodo Payments as Merchant of Record. Dodo receives the personal and payment data needed to complete the transaction, issue invoices, collect tax where required, and handle refunds or disputes. See Dodo’s privacy policy presented at checkout.',
         'section_5_title' => '5. Cookies and similar technologies',
-        'section_5_body' => 'We use essential cookies for sessions, authentication, and locale. Referral links may set a referral cookie that remembers an affiliate code for a limited period so commissions and buyer discounts can be attributed. If Google Analytics is enabled, it may set analytics cookies to understand site usage. You can control cookies through your browser settings.',
+        'section_5_body' => 'We use essential cookies for sessions, authentication, and locale. Referral links may set a referral cookie that remembers an affiliate code for a limited period so commissions and buyer discounts can be attributed. If Google Analytics or Meta Pixel is enabled, they may set analytics or advertising cookies to understand site usage and measure conversions. You can control cookies through your browser settings.',
         'section_6_title' => '6. Push notifications',
         'section_6_body' => 'If you or a guest opt in to browser push notifications, we store the subscription endpoint needed to deliver those notifications. You can unsubscribe in the browser or through the invitation/account controls.',
         'section_7_title' => '7. Guest content and shared links',

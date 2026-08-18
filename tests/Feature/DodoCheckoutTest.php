@@ -8,9 +8,11 @@ use App\Models\Referral;
 use App\Models\User;
 use App\Models\WeddingEvent;
 use App\PlanTier;
+use App\PricingRegion;
 use App\Services\Dodo\DodoCheckoutService;
 use App\Services\Dodo\DodoClientFactory;
 use App\Support\DashboardNav;
+use App\Support\MetaPixel;
 use Dodopayments\CheckoutSessions\CheckoutSessionResponse;
 use Illuminate\Validation\ValidationException;
 use Mockery;
@@ -135,6 +137,11 @@ class DodoCheckoutTest extends TestCase
         $this->assertSame('pdt_fw_basic', $payment->dodo_product_id);
         $this->assertSame('cks_test_123', $payment->dodo_checkout_session_id);
         $this->assertSame((string) $user->id, $payment->metadata['user_id'] ?? null);
+        $this->assertSame($this->purchasePixelPayload(
+            PricingRegion::FirstWorld->priceFor(PlanTier::Basic),
+            'EUR',
+            'basic',
+        ), session(MetaPixel::PENDING_PURCHASE_KEY));
     }
 
     public function test_checkout_applies_referral_discount_code_for_referred_user(): void
@@ -284,6 +291,60 @@ class DodoCheckoutTest extends TestCase
             ->assertSessionHasErrors('tier');
     }
 
+    public function test_filament_pricing_return_consumes_purchase_pixel_once(): void
+    {
+        $user = User::factory()->create(['is_admin' => false]);
+        WeddingEvent::factory()->inactive()->create(['user_id' => $user->id]);
+        $payload = $this->purchasePixelPayload();
+
+        $this->actingAs($user)
+            ->withSession([MetaPixel::PENDING_PURCHASE_KEY => $payload])
+            ->get('/app/pricing?checkout=return')
+            ->assertOk();
+
+        $this->assertNull(session(MetaPixel::PENDING_PURCHASE_KEY));
+
+        $this->get('/app/pricing?checkout=return')->assertOk();
+
+        $this->assertNull(session(MetaPixel::PENDING_PURCHASE_KEY));
+        $this->assertNull(session(MetaPixel::EVENT_KEY));
+    }
+
+    public function test_filament_pricing_cancel_forgets_purchase_pixel_without_firing(): void
+    {
+        $user = User::factory()->create(['is_admin' => false]);
+        WeddingEvent::factory()->inactive()->create(['user_id' => $user->id]);
+
+        $this->actingAs($user)
+            ->withSession([MetaPixel::PENDING_PURCHASE_KEY => $this->purchasePixelPayload()])
+            ->get('/app/pricing?checkout=cancel')
+            ->assertOk();
+
+        $this->assertNull(session(MetaPixel::PENDING_PURCHASE_KEY));
+        $this->assertNull(session(MetaPixel::EVENT_KEY));
+    }
+
+    public function test_dashboard_pricing_return_consumes_purchase_pixel_once(): void
+    {
+        $this->withoutVite();
+
+        $user = User::factory()->create(['is_admin' => false]);
+        WeddingEvent::factory()->create(['user_id' => $user->id]);
+        $payload = $this->purchasePixelPayload();
+
+        $this->actingAs($user)
+            ->withSession([MetaPixel::PENDING_PURCHASE_KEY => $payload])
+            ->get(route('dashboard.pricing').'?checkout=return')
+            ->assertOk();
+
+        $this->assertNull(session(MetaPixel::PENDING_PURCHASE_KEY));
+
+        $this->get(route('dashboard.pricing').'?checkout=return')->assertOk();
+
+        $this->assertNull(session(MetaPixel::PENDING_PURCHASE_KEY));
+        $this->assertNull(session(MetaPixel::EVENT_KEY));
+    }
+
     public function test_landing_page_includes_public_pricing_section(): void
     {
         $this->get('/?locale=en')
@@ -292,5 +353,21 @@ class DodoCheckoutTest extends TestCase
             ->assertSee('One-time payment', false)
             ->assertSee('Free forever', false)
             ->assertSee('Up to 50 guests', false);
+    }
+
+    /**
+     * @return array{name: string, params: array{value: int, currency: string, content_name: string, content_type: string}}
+     */
+    private function purchasePixelPayload(int $value = 80, string $currency = 'EUR', string $contentName = 'basic'): array
+    {
+        return [
+            'name' => 'Purchase',
+            'params' => [
+                'value' => $value,
+                'currency' => $currency,
+                'content_name' => $contentName,
+                'content_type' => 'product',
+            ],
+        ];
     }
 }

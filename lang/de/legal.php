@@ -56,7 +56,7 @@ return [
         'section_4_title' => '4. Zahlungen (Dodo Payments)',
         'section_4_body' => 'Checkout und Zahlungsabwicklung erfolgen durch Dodo Payments als Merchant of Record. Dodo erhält die für Transaktion, Rechnung, Steuer und Rückerstattungen/Streitigkeiten erforderlichen Daten. Siehe Dodos Datenschutzrichtlinie im Checkout.',
         'section_5_title' => '5. Cookies und ähnliche Technologien',
-        'section_5_body' => 'Wir verwenden essenzielle Cookies für Sitzungen, Authentifizierung und Sprache. Referral-Links können ein Cookie setzen. Ist Google Analytics aktiv, können Analyse-Cookies gesetzt werden. Cookies können Sie in den Browser-Einstellungen steuern.',
+        'section_5_body' => 'Wir verwenden essenzielle Cookies für Sitzungen, Authentifizierung und Sprache. Referral-Links können ein Cookie setzen. Sind Google Analytics oder das Meta Pixel aktiv, können Analyse- oder Werbe-Cookies gesetzt werden, um die Nutzung zu verstehen und Conversions zu messen. Cookies können Sie in den Browser-Einstellungen steuern.',
         'section_6_title' => '6. Push-Benachrichtigungen',
         'section_6_body' => 'Wenn Sie oder ein Gast Push-Benachrichtigungen aktivieren, speichern wir den für die Zustellung nötigen Subscription-Endpoint. Abmeldung ist im Browser oder über Einladungs-/Kontosteuerung möglich.',
         'section_7_title' => '7. Gästeinhalt und geteilte Links',

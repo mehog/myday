@@ -39,6 +39,10 @@ return [
         'id' => env('GOOGLE_ANALYTICS_ID'),
     ],
 
+    'meta_pixel' => [
+        'id' => env('META_PIXEL_ID'),
+    ],
+
     'ipstack' => [
         'access_key' => env('IPSTACK_ACCESS_KEY', ''),
     ],

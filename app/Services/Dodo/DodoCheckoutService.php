@@ -7,6 +7,7 @@ use App\Models\User;
 use App\PlanTier;
 use App\Support\DashboardNav;
 use App\Support\DodoCatalog;
+use App\Support\MetaPixel;
 use Dodopayments\CheckoutSessions\CheckoutSessionResponse;
 use Illuminate\Validation\ValidationException;
 use RuntimeException;
@@ -92,6 +93,12 @@ class DodoCheckoutService
                 'local_payment_id' => (string) $payment->id,
             ]),
         ])->save();
+
+        MetaPixel::storePendingPurchase(
+            value: $payment->amount,
+            currency: $payment->currency,
+            contentName: $tier->value,
+        );
 
         return [
             'checkout_url' => $checkoutUrl,

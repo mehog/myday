@@ -6,6 +6,7 @@ use App\Livewire\Dashboard\Concerns\RendersDashboard;
 use App\Models\DodoPayment;
 use App\PlanTier;
 use App\Support\DodoCatalog;
+use App\Support\MetaPixel;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 
@@ -24,6 +25,8 @@ class Pricing extends Component
         if ($checkout === 'cancel') {
             session()->flash('warning', __('pricing.cancel_title').' — '.__('pricing.cancel_body'));
         }
+
+        MetaPixel::handleCheckoutQuery(is_string($checkout) ? $checkout : null);
     }
 
     public function render()

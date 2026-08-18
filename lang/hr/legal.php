@@ -56,7 +56,7 @@ return [
         'section_4_title' => '4. Plaćanja (Dodo Payments)',
         'section_4_body' => 'Checkout i obradu plaćanja vrši Dodo Payments kao Merchant of Record. Dodo prima podatke potrebne za transakciju, račune, porez i refundacije/sporove. Pogledajte Dodo politiku privatnosti na checkoutu.',
         'section_5_title' => '5. Kolačići i slične tehnologije',
-        'section_5_body' => 'Koristimo bitne kolačiće za sesije, autentifikaciju i jezik. Referral linkovi mogu postaviti kolačić za praćenje preporuke. Ako je omogućen Google Analytics, može postaviti analitičke kolačiće. Kolačiće možete kontrolirati u pregledniku.',
+        'section_5_body' => 'Koristimo bitne kolačiće za sesije, autentifikaciju i jezik. Referral linkovi mogu postaviti kolačić za praćenje preporuke. Ako je omogućen Google Analytics ili Meta Pixel, mogu postaviti analitičke ili reklamne kolačiće za mjerenje korištenja i konverzija. Kolačiće možete kontrolirati u pregledniku.',
         'section_6_title' => '6. Push obavijesti',
         'section_6_body' => 'Ako vi ili gost pristane na push obavijesti, čuvamo subscription endpoint potreban za dostavu. Možete se odjaviti u pregledniku ili preko kontrola pozivnice/računa.',
         'section_7_title' => '7. Sadržaj gostiju i dijeljeni linkovi',

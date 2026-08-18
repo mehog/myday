@@ -16,6 +16,7 @@ use App\PlanTier;
 use App\Support\DashboardNav;
 use App\Support\Locale;
 use App\Support\MediaDisk;
+use App\Support\MetaPixel;
 use App\Support\OnboardingSongs;
 use App\Support\OnboardingSteps;
 use Carbon\Carbon;
@@ -528,6 +529,8 @@ class WeddingOnboarding extends Component
 
         Auth::login($user);
         $user->sendEmailVerificationNotification();
+
+        MetaPixel::flashCompleteRegistration();
 
         $this->redirectRoute('verification.notice');
     }

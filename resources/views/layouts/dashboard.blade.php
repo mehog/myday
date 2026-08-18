@@ -22,6 +22,7 @@
     </script>
 
     @include('components.google-analytics')
+    @include('components.meta-pixel')
     @include('components.app.disable-mobile-zoom')
 
     @vite(['resources/css/dashboard.css', 'resources/js/dashboard.js'])

@@ -15,6 +15,7 @@ use App\Models\WeddingEvent;
 use App\Models\WeddingLocation;
 use App\PlanTier;
 use App\Support\Locale;
+use App\Support\MetaPixel;
 use App\Support\OnboardingSongs;
 use App\Support\OnboardingSteps;
 use Illuminate\Auth\Notifications\VerifyEmail;
@@ -175,6 +176,10 @@ class WeddingOnboardingTest extends TestCase
         $this->assertTrue((bool) $guest->plus_one_allowed);
 
         Notification::assertSentTo($user, VerifyEmail::class);
+
+        $this->assertSame([
+            'name' => 'CompleteRegistration',
+        ], session(MetaPixel::EVENT_KEY));
     }
 
     public function test_submit_allows_empty_entry_animation(): void

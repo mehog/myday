@@ -73,6 +73,10 @@ class AppPanelProvider extends PanelProvider
                 fn () => view('components.google-analytics'),
             )
             ->renderHook(
+                PanelsRenderHook::HEAD_START,
+                fn () => view('components.meta-pixel'),
+            )
+            ->renderHook(
                 PanelsRenderHook::HEAD_END,
                 fn () => view('components.app.disable-mobile-zoom'),
             )
