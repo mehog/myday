@@ -180,19 +180,6 @@ class WeddingOnboarding extends Component
         $this->songSuggestions = [];
     }
 
-    public function updatedStep(): void
-    {
-        $this->js(<<<'JS'
-            document.activeElement?.blur?.();
-
-            const scrollToTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-
-            scrollToTop();
-            requestAnimationFrame(scrollToTop);
-            setTimeout(scrollToTop, 150);
-        JS);
-    }
-
     public function nextStep(): void
     {
         $this->previewError = null;

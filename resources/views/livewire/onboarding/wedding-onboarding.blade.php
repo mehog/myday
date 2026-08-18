@@ -1,5 +1,36 @@
-<div class="min-h-screen flex flex-col">
-    <header class="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur-md border-b border-[#1a1208]/10">
+<div
+    class="min-h-screen flex flex-col"
+    x-data="{
+        scrollStepBelowHeader(stepEl = null) {
+            document.activeElement?.blur?.();
+
+            const header = this.$refs.header;
+            const step = stepEl || this.$refs.step;
+            if (!step) {
+                window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+                return;
+            }
+
+            const headerHeight = header?.getBoundingClientRect().height ?? 0;
+            const top = window.scrollY + step.getBoundingClientRect().top - headerHeight - 16;
+
+            window.scrollTo({ top: Math.max(0, top), left: 0, behavior: 'auto' });
+        },
+    }"
+    x-on:scroll-onboarding-step="
+        const stepEl = $event.detail?.el || null;
+        $nextTick(() => {
+            scrollStepBelowHeader(stepEl);
+            requestAnimationFrame(() => scrollStepBelowHeader(stepEl));
+            setTimeout(() => scrollStepBelowHeader(stepEl), 150);
+            setTimeout(() => scrollStepBelowHeader(stepEl), 350);
+        })
+    "
+>
+    <header
+        x-ref="header"
+        class="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur-md border-b border-[#1a1208]/10"
+    >
         <div class="px-4 py-3">
             <div class="flex items-center justify-between max-w-lg mx-auto">
                 @if ($canGoBack)
@@ -42,7 +73,17 @@
     </header>
 
     <main class="flex-1 min-w-0 px-4 pt-24 pb-10 overflow-x-hidden">
-        <div class="max-w-md mx-auto min-w-0 landing-fade-in" wire:key="step-{{ $step }}">
+        <div
+            class="max-w-md mx-auto min-w-0 landing-fade-in"
+            wire:key="step-{{ $step }}"
+            x-data
+            x-init="
+                if (window.__onboardingStepScrollReady) {
+                    $dispatch('scroll-onboarding-step', { el: $el });
+                }
+                window.__onboardingStepScrollReady = true;
+            "
+        >
             @if ($submitError)
                 <div class="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
                     {{ $submitError }}
