@@ -1,30 +1,38 @@
 <div
     class="min-h-screen flex flex-col"
     x-data="{
+        scrollTimeout: null,
         scrollStepBelowHeader(stepEl = null) {
             document.activeElement?.blur?.();
 
             const header = this.$refs.header;
             const step = stepEl || this.$refs.step;
             if (!step) {
-                window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+                window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
                 return;
             }
 
             const headerHeight = header?.getBoundingClientRect().height ?? 0;
             const top = window.scrollY + step.getBoundingClientRect().top - headerHeight - 16;
 
-            window.scrollTo({ top: Math.max(0, top), left: 0, behavior: 'auto' });
+            window.scrollTo({ top: Math.max(0, top), left: 0, behavior: 'smooth' });
+        },
+        queueScrollStepBelowHeader(stepEl = null) {
+            document.activeElement?.blur?.();
+
+            if (this.scrollTimeout) {
+                clearTimeout(this.scrollTimeout);
+            }
+
+            this.scrollTimeout = setTimeout(() => {
+                this.scrollTimeout = null;
+                this.scrollStepBelowHeader(stepEl);
+            }, 500);
         },
     }"
     x-on:scroll-onboarding-step="
         const stepEl = $event.detail?.el || null;
-        $nextTick(() => {
-            scrollStepBelowHeader(stepEl);
-            requestAnimationFrame(() => scrollStepBelowHeader(stepEl));
-            setTimeout(() => scrollStepBelowHeader(stepEl), 150);
-            setTimeout(() => scrollStepBelowHeader(stepEl), 350);
-        })
+        $nextTick(() => queueScrollStepBelowHeader(stepEl));
     "
 >
     <header
