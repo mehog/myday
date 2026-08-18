@@ -2,9 +2,6 @@
 
 namespace App;
 
-use App\Helpers\IpStackCacheHelper;
-use Illuminate\Http\Request;
-
 enum PricingRegion: string
 {
     case FirstWorld = 'first_world';
@@ -42,40 +39,5 @@ enum PricingRegion: string
         return $normalized !== null && in_array($normalized, self::BAM_COUNTRIES, true)
             ? self::ThirdWorld
             : self::FirstWorld;
-    }
-
-    public static function forVisitor(?Request $request = null): self
-    {
-        $request ??= request();
-        $ip = $request->ip();
-
-        if (! is_string($ip) || $ip === '' || ! filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
-            return self::FirstWorld;
-        }
-
-        if (! config('services.ipstack.access_key')) {
-            return self::FirstWorld;
-        }
-
-        $data = IpStackCacheHelper::getOrFetch($ip);
-
-        return self::fromCountryCode(self::countryCodeFrom($data));
-    }
-
-    private static function countryCodeFrom(mixed $data): ?string
-    {
-        if ($data instanceof \stdClass) {
-            $code = $data->country_code ?? null;
-
-            return is_string($code) ? $code : null;
-        }
-
-        if (is_array($data)) {
-            $code = $data['country_code'] ?? null;
-
-            return is_string($code) ? $code : null;
-        }
-
-        return null;
     }
 }

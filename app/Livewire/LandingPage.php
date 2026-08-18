@@ -22,8 +22,7 @@ class LandingPage extends Component
     public function render()
     {
         $demos = $this->loadDemos();
-        $pricingRegion = PricingRegion::forVisitor();
-        $pricingPlans = $this->pricingPlans($pricingRegion);
+        $pricingPlans = $this->pricingPlans(PricingRegion::FirstWorld);
 
         return view('livewire.landing-page', compact('demos', 'pricingPlans'))
             ->title(__('landing.meta_title'));

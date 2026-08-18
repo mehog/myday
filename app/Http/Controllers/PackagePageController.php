@@ -54,7 +54,7 @@ class PackagePageController extends Controller
 
     private function displayRegion(): PricingRegion
     {
-        return PricingRegion::forVisitor();
+        return PricingRegion::FirstWorld;
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Support\Facades\Http;
 use Tests\Concerns\RefreshInMemoryDatabase;
 use Tests\TestCase;
 
@@ -61,20 +62,20 @@ class PackagePagesTest extends TestCase
             ->assertSee('Kreiraj besplatno', false);
     }
 
-    public function test_package_pages_show_bam_prices_for_bosnia_visitors_regardless_of_locale(): void
+    public function test_package_pages_always_show_eur_even_for_bosnia_visitors(): void
     {
-        $this->fakeVisitorCountry('BA');
+        Http::fake();
 
         $this->get('/plans/premium?locale=en')
             ->assertOk()
-            ->assertSee('240 BAM', false)
-            ->assertDontSee('240 EUR', false);
+            ->assertSee('240 EUR', false)
+            ->assertDontSee('240 BAM', false);
+
+        Http::assertNothingSent();
     }
 
-    public function test_package_pages_show_eur_for_non_bosnia_visitors_in_bosnian(): void
+    public function test_package_pages_show_eur_in_bosnian(): void
     {
-        $this->fakeVisitorCountry('DE');
-
         $this->get('/plans?locale=bs')
             ->assertOk()
             ->assertSee('80 EUR', false)
@@ -119,13 +120,15 @@ class PackagePagesTest extends TestCase
             ->assertSee('80 EUR', false);
     }
 
-    public function test_homepage_shows_bam_prices_for_bosnia_visitors(): void
+    public function test_homepage_always_shows_eur_prices(): void
     {
-        $this->fakeVisitorCountry('BA');
+        Http::fake();
 
         $this->get('/?locale=en')
             ->assertOk()
-            ->assertSee('80 BAM', false)
-            ->assertDontSee('80 EUR', false);
+            ->assertSee('80 EUR', false)
+            ->assertDontSee('80 BAM', false);
+
+        Http::assertNothingSent();
     }
 }

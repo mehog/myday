@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Helpers\IpStackCacheHelper;
-use App\PricingRegion;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
@@ -69,25 +68,5 @@ class IpStackCacheHelperTest extends TestCase
         $this->assertSame('BA', $data->country_code);
         $this->assertIsArray(Cache::get('ipstack_data_'.$ip));
         Http::assertSentCount(1);
-    }
-
-    public function test_visitor_pricing_survives_incomplete_cache_entry(): void
-    {
-        $ip = '203.0.113.53';
-        $incomplete = unserialize('O:14:"MissingIpClass":1:{s:12:"country_code";s:2:"BA";}');
-
-        Cache::put('ipstack_data_'.$ip, $incomplete, 3600);
-        config()->set('services.ipstack.access_key', 'test-access-key');
-        $this->withServerVariables(['REMOTE_ADDR' => $ip]);
-        $this->app->instance('request', request()->duplicate(server: ['REMOTE_ADDR' => $ip]));
-
-        Http::fake([
-            'api.ipstack.com/*' => Http::response([
-                'ip' => $ip,
-                'country_code' => 'BA',
-            ]),
-        ]);
-
-        $this->assertSame(PricingRegion::ThirdWorld, PricingRegion::forVisitor(request()));
     }
 }
