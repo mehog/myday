@@ -40,6 +40,7 @@ use App\Livewire\LandingPage;
 use App\Livewire\Onboarding\OnboardingPreview;
 use App\Livewire\Onboarding\VerifyEmailNotice;
 use App\Livewire\Onboarding\WeddingOnboarding;
+use App\Livewire\StartLandingPage;
 use App\Support\DashboardNav;
 use App\Support\Locale;
 use App\Support\LocaleUrl;
@@ -47,6 +48,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', LandingPage::class)->name('home');
+Route::get('/start', StartLandingPage::class)->name('start');
 Route::get('/demo-examples', DemoExamplesPage::class)->name('demo.examples');
 
 Route::supportBubble();

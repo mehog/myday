@@ -1,0 +1,95 @@
+<section id="pricing" class="landing-section px-6 py-20 scroll-mt-20">
+    <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-14 landing-fade-in">
+            <h2 class="landing-heading text-3xl sm:text-4xl text-[#1a1208] mb-4">
+                {{ __('start.pricing_title') }}
+            </h2>
+            <p class="landing-body text-[#5c5246]">
+                {{ __('start.pricing_subtitle') }}
+            </p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-14">
+            @foreach ($pricingPlans as $plan)
+                <div @class([
+                    'landing-card rounded-2xl p-6 sm:p-8 landing-fade-in relative flex flex-col',
+                    'border-2 border-[#c9a227]/60 bg-[#c9a227]/5' => $plan['highlighted'],
+                    'border border-[#1a1208]/15 bg-white' => ! $plan['highlighted'],
+                ])>
+                    @if ($plan['highlighted'])
+                        <span class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#c9a227] text-[#1a1208] text-xs font-medium uppercase tracking-wider text-center">
+                            {{ __('start.pricing_plan_popular') }}
+                        </span>
+                    @endif
+
+                    <div class="text-center mb-6">
+                        <h3 class="landing-heading text-2xl text-[#1a1208] mb-2">
+                            <a href="{{ route('packages.show', ['tier' => $plan['tier']]) }}" class="hover:text-[#c9a227] transition">
+                                {{ $plan['name'] }}
+                            </a>
+                        </h3>
+                        <p class="landing-body text-sm text-[#5c5246] mb-4">{{ $plan['guests'] }}</p>
+                        <p class="landing-heading text-4xl sm:text-5xl text-[#1a1208]">{{ $plan['price'] }}</p>
+                        <p class="landing-body text-xs text-[#5c5246]/80 mt-2">
+                            {{ $plan['tier'] === 'free' ? __('start.pricing_free_forever') : __('start.pricing_one_time') }}
+                        </p>
+                    </div>
+
+                    <a
+                        href="{{ route('packages.show', ['tier' => $plan['tier']]) }}"
+                        class="mb-3 text-center text-sm text-[#c9a227] hover:underline"
+                    >
+                        {{ __('start.pricing_view_details') }}
+                    </a>
+
+                    <a
+                        href="{{ route('onboarding', ['locale' => app()->getLocale()]) }}"
+                        @class([
+                            'mt-auto w-full py-4 rounded-xl landing-heading text-lg transition text-center',
+                            'landing-btn-primary' => $plan['highlighted'],
+                            'landing-btn-secondary' => ! $plan['highlighted'],
+                        ])
+                    >
+                        {{ __('start.hero_cta_create') }}
+                    </a>
+                </div>
+            @endforeach
+        </div>
+
+        <div class="landing-fade-in">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="landing-label text-xs text-[#c9a227] uppercase whitespace-nowrap">
+                    {{ __('start.pricing_features_title') }}
+                </span>
+                <span class="h-px flex-1 bg-[#1a1208]/10"></span>
+            </div>
+
+            <ul class="grid sm:grid-cols-2 gap-x-10 gap-y-4">
+                @foreach (range(1, 14) as $i)
+                    <li class="landing-body text-sm text-[#5c5246] leading-relaxed pl-4 border-l border-[#c9a227]/40">
+                        {{ __('start.pricing_feature_' . $i) }}
+                    </li>
+                @endforeach
+            </ul>
+
+            <p class="landing-body text-sm text-[#5c5246] mt-8 leading-relaxed">
+                {{ __('start.pricing_free_limitations_note') }}
+            </p>
+
+            <div class="mt-10 text-center space-y-3">
+                <p class="landing-body text-sm text-[#5c5246]">
+                    {{ __('start.pricing_activation_note') }}
+                </p>
+                <p class="landing-body text-sm text-[#5c5246]">
+                    {{ __('start.pricing_currency_note') }}
+                </p>
+                <a
+                    href="{{ route('onboarding', ['locale' => app()->getLocale()]) }}"
+                    class="landing-btn-secondary inline-block px-8 py-4 rounded-xl landing-heading text-lg transition mt-6 mb-0"
+                >
+                    {{ __('start.hero_cta_create') }}
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

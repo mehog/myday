@@ -1,0 +1,15 @@
+<div>
+    @include('landing.start.sections.hero')
+    @include('landing.start.sections.value-strip')
+    @include('landing.start.sections.empathy')
+    @include('landing.start.sections.future')
+    @include('landing.start.sections.stories')
+    @include('landing.start.sections.how-it-works')
+    @include('landing.start.sections.demo', ['demos' => $demos])
+    @include('landing.start.sections.testimonials')
+    @include('landing.start.sections.pricing')
+    @include('landing.start.sections.guarantee')
+    @include('landing.start.sections.faq')
+    @include('landing.start.sections.cta')
+    @include('landing.start.sections.footer')
+</div>
