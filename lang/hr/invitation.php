@@ -46,6 +46,7 @@ return [
     'your_response' => 'Vaš odgovor',
     'response_received' => 'Primili smo vaš odgovor.',
     'greeting_question' => 'Pridružujete li nam se?',
+    'hero_rsvp_question' => ':name, hoćete li biti s nama?',
     'greeting_hello' => 'Zdravo',
     'your_name' => 'Vaše ime',
     'name_placeholder' => 'Unesite ime i prezime',

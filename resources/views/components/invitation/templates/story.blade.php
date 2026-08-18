@@ -302,7 +302,10 @@
                     @endif
 
                     @if ($showRsvpNudge ?? false)
-                        @include('components.invitation.rsvp-nudge-link', ['variant' => 'story'])
+                        @include('components.invitation.hero-rsvp-prompt', [
+                            'guest' => $guest,
+                            'variant' => 'story',
+                        ])
                     @endif
                 </div>
             </section>

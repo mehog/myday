@@ -485,7 +485,8 @@ class InvitationPage extends Component
                 && $this->isPersonalLink
                 && $this->guest
                 && ! $this->guest->hasResponded()
-                && ! $this->rsvpSubmitted,
+                && ! $this->rsvpSubmitted
+                && $this->event->acceptsRsvps(),
         ])
             ->title($this->event->couple_names.' | '.__('invitation.title'))
             ->layoutData([

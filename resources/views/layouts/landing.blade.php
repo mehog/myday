@@ -59,12 +59,8 @@
         <link rel="apple-touch-icon" href="{{ asset('img/apple-touch-icon.png') }}">
     @endif
 
-    <link rel="preload" as="image" href="{{ asset('img/wedding-bckg.webp') }}" type="image/webp">
-    <link rel="preload" as="image" href="{{ asset(\App\Support\LandingAsset::path('hero-invitation-mobile.webp')) }}" type="image/webp">
-    <link rel="preload" as="image" href="{{ asset(\App\Support\LandingAsset::path('hero-dashboard-desktop.webp')) }}" type="image/webp">
-
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.bunny.net/css?family=cormorant-garamond:500,600,600i,700,700i|poppins:400,500,600,700" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles

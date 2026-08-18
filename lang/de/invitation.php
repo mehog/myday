@@ -46,6 +46,7 @@ return [
     'your_response' => 'Ihre Antwort',
     'response_received' => 'Wir haben Ihre Antwort erhalten.',
     'greeting_question' => 'Werden Sie dabei sein?',
+    'hero_rsvp_question' => ':name, sind Sie dabei?',
     'greeting_hello' => 'Hallo',
     'your_name' => 'Ihr Name',
     'name_placeholder' => 'Geben Sie Ihren vollständigen Namen ein',

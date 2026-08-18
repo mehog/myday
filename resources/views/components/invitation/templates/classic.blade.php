@@ -1,5 +1,6 @@
 @include('components.invitation.hero', [
     'event' => $event,
+    'guest' => $guest ?? null,
     'showRsvpNudge' => $showRsvpNudge ?? false,
 ])
 

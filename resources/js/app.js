@@ -5,13 +5,13 @@ window.nasdanSwitchLocale = (locale) => {
 };
 
 document.addEventListener('alpine:init', () => {
-    Alpine.data('countdown', (targetDate, labels = {}) => ({
+    Alpine.data('countdown', (targetDate, labels = {}, unitCount = 4) => ({
         units: [
             { value: '00', label: labels.days ?? 'Days' },
             { value: '00', label: labels.hours ?? 'Hours' },
             { value: '00', label: labels.minutes ?? 'Minutes' },
             { value: '00', label: labels.seconds ?? 'Seconds' },
-        ],
+        ].slice(0, unitCount),
         interval: null,
         start() {
             this.tick();
@@ -21,20 +21,17 @@ document.addEventListener('alpine:init', () => {
             const target = new Date(targetDate).getTime();
             let diff = Math.max(0, target - Date.now());
 
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            diff -= days * (1000 * 60 * 60 * 24);
-            const hours = Math.floor(diff / (1000 * 60 * 60));
-            diff -= hours * (1000 * 60 * 60);
-            const minutes = Math.floor(diff / (1000 * 60));
-            diff -= minutes * (1000 * 60);
-            const seconds = Math.floor(diff / 1000);
-
-            this.units = [
-                { value: String(days).padStart(2, '0'), label: this.units[0].label },
-                { value: String(hours).padStart(2, '0'), label: this.units[1].label },
-                { value: String(minutes).padStart(2, '0'), label: this.units[2].label },
-                { value: String(seconds).padStart(2, '0'), label: this.units[3].label },
+            const values = [
+                Math.floor(diff / (1000 * 60 * 60 * 24)),
+                Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+                Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+                Math.floor((diff % (1000 * 60)) / 1000),
             ];
+
+            this.units = this.units.map((unit, index) => ({
+                value: String(values[index] ?? 0).padStart(2, '0'),
+                label: unit.label,
+            }));
         },
     }));
 

@@ -41,7 +41,26 @@ class DemoConversionCtaTest extends TestCase
             ->assertSee('theme=dusty-rose', false)
             ->assertSee('template=editorial', false)
             ->assertSee('reveal=wax-seal', false)
-            ->assertDontSee(__('invitation.rsvp_nudge_sticky_text'));
+            ->assertDontSee(__('invitation.rsvp_nudge_sticky_text'))
+            ->assertDontSee(__('invitation.hero_rsvp_question', [
+                'name' => explode(' ', trim($guest->name), 2)[0],
+            ]));
+    }
+
+    public function test_public_invitation_does_not_show_hero_rsvp_buttons(): void
+    {
+        $event = WeddingEvent::factory()->create([
+            'is_active' => true,
+            'is_demo' => false,
+            'theme' => InvitationTheme::AmberGold,
+            'template' => InvitationTemplate::Classic,
+        ]);
+
+        Guest::factory()->for($event)->create(['name' => 'James Thompson']);
+
+        $this->get(route('invitation.show', ['slug' => $event->slug]))
+            ->assertOk()
+            ->assertDontSee(__('invitation.hero_rsvp_question', ['name' => 'James']));
     }
 
     public function test_non_demo_personal_link_still_shows_rsvp_sticky_nudge(): void
@@ -61,6 +80,10 @@ class DemoConversionCtaTest extends TestCase
         ]))
             ->assertOk()
             ->assertSee(__('invitation.rsvp_nudge_sticky_text'))
+            ->assertSee(__('invitation.hero_rsvp_question', [
+                'name' => explode(' ', trim($guest->name), 2)[0],
+            ]))
+            ->assertSee(__('invitation.yes_attending'))
             ->assertDontSee('data-demo-create-sticky', false)
             ->assertDontSee(__('invitation.demo_create_sticky_text'));
     }

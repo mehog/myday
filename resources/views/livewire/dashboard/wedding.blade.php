@@ -62,6 +62,17 @@
             <x-dashboard.card>
                 <h3 class="mb-4 font-medium">{{ __('app.section_design') }}</h3>
                 <div class="grid gap-4 sm:grid-cols-2">
+                    <div class="sm:col-span-2">
+                        <label class="mb-2 block text-sm font-medium">{{ __('app.template') }}</label>
+                        <x-dashboard.pills
+                            name="template"
+                            :selected="$template"
+                            :options="collect($templates)->mapWithKeys(fn ($templateOption) => [$templateOption->value => $templateOption->label()])->all()"
+                            :disabled="$locked"
+                            :label="__('app.template')"
+                        />
+                        @error('template') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
+                    </div>
                     <div>
                         <label class="mb-1 block text-sm font-medium">{{ __('app.theme') }}</label>
                         <select wire:model="theme" class="{{ $controlClass }} h-10" @disabled($locked)>
@@ -70,15 +81,6 @@
                             @endforeach
                         </select>
                         @error('theme') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
-                    </div>
-                    <div>
-                        <label class="mb-1 block text-sm font-medium">{{ __('app.template') }}</label>
-                        <select wire:model="template" class="{{ $controlClass }} h-10" @disabled($locked)>
-                            @foreach ($templates as $templateOption)
-                                <option value="{{ $templateOption->value }}">{{ $templateOption->label() }}</option>
-                            @endforeach
-                        </select>
-                        @error('template') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
                     </div>
                     <div>
                         <label class="mb-1 block text-sm font-medium">{{ __('app.reveal_animation') }}</label>

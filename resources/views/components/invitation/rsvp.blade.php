@@ -147,6 +147,7 @@
     "
     @keydown.escape.window="pending = null; showPushPrompt = false; showCalendarModal = false"
     @rsvp-accepted.window="if (subscribeUrl) { showPushPrompt = true; pushError = null; }"
+    @hero-rsvp.window="pending = $event.detail.pending"
 >
     <div class="max-w-xl mx-auto text-center invitation-fade-in">
         @unless ($event->isWeddingDay())

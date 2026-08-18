@@ -51,6 +51,14 @@ class LandingDemoTest extends TestCase
         $firstTitle = DemoInvitationExamples::title($featured[0]);
 
         Livewire::test(LandingPage::class)
+            ->assertSee(__('landing.hero_title_emphasis'))
+            ->assertSee(__('landing.trust_free'))
+            ->assertSee(__('landing.value_1_text'))
+            ->assertSee(__('landing.pillar_1_title'))
+            ->assertSee(__('landing.story_invite_eyebrow'))
+            ->assertSee(__('landing.step_4_title'))
+            ->assertSee(__('landing.cta_title_emphasis'))
+            ->assertSee(__('landing.mock_getting_married'))
             ->assertSee(__('landing.demo_title'))
             ->assertSee(__('landing.demo_show_all'))
             ->assertSee($firstTitle)

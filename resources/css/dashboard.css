@@ -119,3 +119,44 @@
         @apply bg-background text-foreground antialiased;
     }
 }
+
+.dashboard-pills {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--muted) 80%, transparent);
+}
+
+.dashboard-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 0;
+    background: transparent;
+    color: var(--muted-foreground);
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.2;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.dashboard-pill:hover:not(:disabled):not(.is-active) {
+    color: var(--foreground);
+    background: color-mix(in srgb, var(--foreground) 6%, transparent);
+}
+
+.dashboard-pill.is-active {
+    background: var(--foreground);
+    color: var(--background);
+}
+
+.dashboard-pill:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}

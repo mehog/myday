@@ -3,6 +3,8 @@
 namespace Tests\Feature\Dashboard;
 
 use App\GuestMessageType;
+use App\InvitationTemplate;
+use App\Livewire\Dashboard\Home as DashboardHome;
 use App\Livewire\Dashboard\NotificationsBell;
 use App\Livewire\Dashboard\Profile as DashboardProfile;
 use App\Livewire\Dashboard\Wedding as DashboardWedding;
@@ -57,6 +59,22 @@ class CoupleDashboardTest extends TestCase
             ->assertSee('Nuptoria')
             ->assertSee(__('dashboard.classic_app'))
             ->assertDontSee('id="locale-picker"', false);
+    }
+
+    public function test_dashboard_home_marks_the_active_tab_pill(): void
+    {
+        $user = User::factory()->create(['is_admin' => false]);
+        WeddingEvent::factory()->create([
+            'user_id' => $user->id,
+            'wedding_date' => now()->addMonth(),
+        ]);
+
+        Livewire::actingAs($user)
+            ->test(DashboardHome::class)
+            ->assertSeeHtml('dashboard-pill is-active')
+            ->set('tab', 'stats')
+            ->assertSet('tab', 'stats')
+            ->assertSeeHtml('dashboard-pill is-active');
     }
 
     public function test_dashboard_pages_are_reachable(): void
@@ -136,6 +154,28 @@ class CoupleDashboardTest extends TestCase
             ->assertHasNoErrors();
 
         $this->assertNull($wedding->fresh()->hero_image);
+    }
+
+    public function test_wedding_template_uses_pills_instead_of_select(): void
+    {
+        $user = User::factory()->create(['is_admin' => false]);
+        WeddingEvent::factory()->create([
+            'user_id' => $user->id,
+            'template' => InvitationTemplate::Classic,
+            'wedding_date' => now()->addMonth(),
+        ]);
+
+        Livewire::actingAs($user)
+            ->test(DashboardWedding::class)
+            ->assertSee(__('app.template_classic'))
+            ->assertSee(__('app.template_story'))
+            ->assertSee(__('app.template_editorial'))
+            ->assertSeeHtml('dashboard-pills')
+            ->assertSeeHtml('dashboard-pill is-active')
+            ->assertDontSeeHtml('wire:model="template"')
+            ->set('template', InvitationTemplate::Editorial->value)
+            ->assertSet('template', InvitationTemplate::Editorial->value)
+            ->assertSeeHtml('dashboard-pill is-active');
     }
 
     public function test_locked_wedding_rejects_hero_mutation(): void

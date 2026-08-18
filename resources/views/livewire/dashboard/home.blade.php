@@ -104,25 +104,17 @@
                 </x-dashboard.card>
             </div>
         @else
-            <div class="flex flex-wrap justify-center gap-2 border-b border-border pb-3">
-                @foreach ([
-                    'overview' => ['label' => __('app.dashboard_tab_overview'), 'icon' => 'home'],
-                    'menu' => ['label' => __('app.dashboard_tab_menu_accommodation'), 'icon' => 'cake'],
-                    'stats' => ['label' => __('app.dashboard_tab_statistics'), 'icon' => 'chart'],
-                ] as $key => $item)
-                    <button
-                        type="button"
-                        wire:click="$set('tab', '{{ $key }}')"
-                        @class([
-                            'inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium transition',
-                            'bg-primary text-primary-foreground' => $tab === $key,
-                            'text-muted-foreground hover:bg-accent hover:text-accent-foreground' => $tab !== $key,
-                        ])
-                    >
-                        <x-dashboard.icon :name="$item['icon']" class="h-4 w-4" />
-                        {{ $item['label'] }}
-                    </button>
-                @endforeach
+            <div class="flex justify-center border-b border-border pb-3">
+                <x-dashboard.pills
+                    name="tab"
+                    :selected="$tab"
+                    :options="[
+                        'overview' => ['label' => __('app.dashboard_tab_overview'), 'icon' => 'home'],
+                        'menu' => ['label' => __('app.dashboard_tab_menu_accommodation'), 'icon' => 'cake'],
+                        'stats' => ['label' => __('app.dashboard_tab_statistics'), 'icon' => 'chart'],
+                    ]"
+                    :label="__('app.dashboard_tabs_label')"
+                />
             </div>
 
             @if ($tab === 'overview')

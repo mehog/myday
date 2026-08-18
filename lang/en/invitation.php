@@ -46,6 +46,7 @@ return [
     'your_response' => 'Your response',
     'response_received' => 'We received your response.',
     'greeting_question' => 'Will you be joining us?',
+    'hero_rsvp_question' => ':name, will you join us?',
     'greeting_hello' => 'Hello',
     'your_name' => 'Your name',
     'name_placeholder' => 'Enter your full name',
