@@ -1,4 +1,4 @@
-# Nuptoria (MyDay)
+# NasDan (MyDay)
 
 Wedding guest platform for international couples, with Bosnian, English, German, and Croatian. English is the default language; Bosnia visitors still see BAM pricing.
 

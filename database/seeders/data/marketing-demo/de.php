@@ -3,7 +3,7 @@
 return [
     'locale' => 'de',
     'user' => [
-        'email' => 'marketing-de@nuptoria.com',
+        'email' => 'marketing-de@nasdan.app',
         'name' => 'Lukas&Sophie',
         'password' => '5E3L1Y84uFdd',
     ],
@@ -61,7 +61,7 @@ TEXT,
     'featured_guest_token' => 'mktdefaturedguesttoken000000001',
     'featured_guest_name' => 'Jonas Müller',
     'phone_prefix' => '+49171',
-    'email_domain' => 'nuptoria.com',
+    'email_domain' => 'nasdan.app',
     'first_names' => [
         'Jonas', 'Lukas', 'Leon', 'Paul', 'Finn', 'Noah', 'Felix', 'Max', 'Ben', 'Elias',
         'Sophie', 'Emma', 'Mia', 'Hannah', 'Emilia', 'Lina', 'Marie', 'Clara', 'Lea', 'Laura',

@@ -30,7 +30,7 @@ class BrandTranslator extends BaseTranslator
     private function withBrand(array $replace): array
     {
         if (! array_key_exists('brand', $replace)) {
-            $replace['brand'] = (string) config('app.name', 'Nuptoria');
+            $replace['brand'] = (string) config('app.name', 'NasDan');
         }
 
         return $replace;

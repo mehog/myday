@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Nuptoria'),
+    'name' => env('APP_NAME', 'NasDan'),
 
     /*
     |--------------------------------------------------------------------------
@@ -109,7 +109,7 @@ return [
 
     'legacy_redirect_hosts' => array_values(array_filter(array_map(
         static fn (string $host): string => strtolower(trim($host)),
-        explode(',', (string) env('LEGACY_REDIRECT_HOSTS', 'nasdan.app,www.nasdan.app,nasdan.ba,www.nasdan.ba')),
+        explode(',', (string) env('LEGACY_REDIRECT_HOSTS', 'nuptoria.com,www.nuptoria.com,www.nasdan.app,nasdan.ba,www.nasdan.ba')),
     ))),
 
     /*

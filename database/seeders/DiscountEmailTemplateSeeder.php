@@ -9,7 +9,7 @@ class DiscountEmailTemplateSeeder extends Seeder
 {
     public function run(): void
     {
-        $brand = (string) config('app.name', 'Nuptoria');
+        $brand = (string) config('app.name', 'NasDan');
 
         DiscountEmailTemplate::query()->updateOrCreate(
             ['name' => 'Activation discount'],

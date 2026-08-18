@@ -19,7 +19,7 @@
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>
-        <env name="APP_NAME" value="Nuptoria"/>
+        <env name="APP_NAME" value="NasDan"/>
         <env name="APP_LOCALE" value="en"/>
         <env name="APP_DEFAULT_LOCALE" value="en"/>
         <env name="APP_FALLBACK_LOCALE" value="en"/>

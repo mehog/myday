@@ -88,7 +88,7 @@ class DownloadReferralQrCodeController extends Controller
             'qrSize' => (int) $formatConfig['qrSize'],
         ])
             ->driver('dompdf')
-            ->name('nuptoria-referral-qr.pdf');
+            ->name('nasdan-referral-qr.pdf');
 
         if ($formatConfig['type'] === 'format') {
             $pdf->format((string) $formatConfig['value']);

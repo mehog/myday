@@ -9,35 +9,35 @@ const PASSWORD = '5E3L1Y84uFdd';
 
 const PROFILES = {
     bs: {
-        email: 'jasmin-djordje@nuptoria.com',
+        email: 'jasmin-djordje@nasdan.app',
         slug: 'jasmina-djordje',
         guestToken: 'mktbsfeaturedguesttoken000000001',
         islamicDemo: 'demo-islamsko',
         christianDemo: 'demo-krscansko',
     },
     hr: {
-        email: 'marketing-hr@nuptoria.com',
+        email: 'marketing-hr@nasdan.app',
         slug: 'ivan-lucija',
         guestToken: 'mkthrfeaturedguesttoken000000001',
         islamicDemo: 'demo-islamsko-hr',
         christianDemo: 'demo-krscansko-hr',
     },
     de: {
-        email: 'marketing-de@nuptoria.com',
+        email: 'marketing-de@nasdan.app',
         slug: 'lukas-sophie',
         guestToken: 'mktdefaturedguesttoken000000001',
         islamicDemo: 'demo-islamsko-de',
         christianDemo: 'demo-krscansko-de',
     },
     en: {
-        email: 'marketing-en@nuptoria.com',
+        email: 'marketing-en@nasdan.app',
         slug: 'oliver-emily',
         guestToken: 'mktenfeaturedguesttoken000000001',
         islamicDemo: 'demo-islamsko-en',
         christianDemo: 'demo-krscansko-en',
     },
     sr_Latn: {
-        email: 'marketing-sr@nuptoria.com',
+        email: 'marketing-sr@nasdan.app',
         slug: 'nikola-milica',
         guestToken: 'mktsrfeaturedguesttoken000000001',
         islamicDemo: 'demo-islamsko-sr',

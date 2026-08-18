@@ -3,7 +3,7 @@
 return [
     'locale' => 'en',
     'user' => [
-        'email' => 'marketing-en@nuptoria.com',
+        'email' => 'marketing-en@nasdan.app',
         'name' => 'Oliver&Emily',
         'password' => '5E3L1Y84uFdd',
     ],
@@ -61,7 +61,7 @@ TEXT,
     'featured_guest_token' => 'mktenfeaturedguesttoken000000001',
     'featured_guest_name' => 'James Thompson',
     'phone_prefix' => '+44771',
-    'email_domain' => 'nuptoria.com',
+    'email_domain' => 'nasdan.app',
     'first_names' => [
         'James', 'Oliver', 'William', 'George', 'Harry', 'Jack', 'Charlie', 'Thomas', 'Oscar', 'Henry',
         'Emily', 'Olivia', 'Amelia', 'Isla', 'Ava', 'Mia', 'Grace', 'Sophia', 'Lily', 'Freya',

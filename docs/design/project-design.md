@@ -1,12 +1,12 @@
-# Nuptoria — Project Design
+# NasDan — Project Design
 
-Product, UX, and visual design reference for the Nuptoria digital wedding invitation platform. For technical architecture, see [Project Context](../architecture/project-context.md).
+Product, UX, and visual design reference for the NasDan digital wedding invitation platform. For technical architecture, see [Project Context](../architecture/project-context.md).
 
 ---
 
 ## 1. Product intent
 
-Nuptoria helps couples create a personal digital wedding invitation that guests open like a real page, not a chat photo. The product started as NasDan (“naš dan” — “our day”) for Bosnia and the wider Balkans, and now ships internationally on nuptoria.com.
+NasDan (“naš dan” — “our day”) helps couples create a personal digital wedding invitation that guests open like a real page, not a chat photo. The product ships on nasdan.app; support mail currently uses nasdan.ba (info@nasdan.ba).
 
 The product should feel:
 

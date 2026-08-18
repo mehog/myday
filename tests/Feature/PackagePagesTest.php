@@ -21,7 +21,7 @@ class PackagePagesTest extends TestCase
     {
         $this->get('/plans?locale=en')
             ->assertOk()
-            ->assertSee('Nuptoria plans', false)
+            ->assertSee('NasDan plans', false)
             ->assertSee(route('packages.show', ['tier' => 'free']), false)
             ->assertSee(route('packages.show', ['tier' => 'premium']), false)
             ->assertSee('application/ld+json', false)

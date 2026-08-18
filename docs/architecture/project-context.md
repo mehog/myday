@@ -1,6 +1,6 @@
-# Nuptoria (MyDay) — Full Project Context
+# NasDan (MyDay) — Full Project Context
 
-> This document is a complete reference for the Nuptoria wedding invitation platform, intended to give AI assistants full context about the project's architecture, features, codebase, and design decisions.
+> This document is a complete reference for the NasDan wedding invitation platform, intended to give AI assistants full context about the project's architecture, features, codebase, and design decisions.
 
 > **Docs index:** [../README.md](../README.md) · **Product / visual design:** [../design/project-design.md](../design/project-design.md)
 
@@ -31,7 +31,7 @@
 21. [Environment Variables & Configuration](#21-environment-variables--configuration)
 22. [Build, Development & Deployment](#22-build-development--deployment)
 23. [Adding a locale](#23-adding-a-locale)
-24. [nuptoria.com cutover](#24-nuptoriacom-cutover)
+24. [nasdan.app production](#24-nasdanapp-production)
 25. [Testing](#25-testing)
 26. [Key Architectural Decisions](#26-key-architectural-decisions)
 27. [Known Limitations & Future Opportunities](#27-known-limitations--future-opportunities)
@@ -40,7 +40,7 @@
 
 ## 1. Project Overview
 
-**Nuptoria** (brand name; repo folder: `myday`; formerly NasDan) is a **digital wedding invitation SaaS platform** for international couples, with Bosnia and the Balkans as the original market.
+**NasDan** (brand name; repo folder: `myday`) is a **digital wedding invitation SaaS platform** for international couples, with Bosnia and the Balkans as the original market.
 
 The platform allows couples to:
 
@@ -52,7 +52,7 @@ The platform allows couples to:
 - Track how many people opened their invitation and from what channels
 - Earn money by referring other couples (affiliate program)
 
-The former name "NasDan" is a portmanteau of "naš dan" (Bosnian for "our day"). The product is multilingual: English (default), Bosnian, German, Croatian, and Serbian Latin (`sr_Latn`). First visit follows `Accept-Language` when it matches a supported locale (`sr` / `sr-RS` / `sr-Latn` map to Serbian Latin). Marketing and checkout prices use IP geolocation (Bosnia → BAM, everyone else → EUR).
+The name "NasDan" is a portmanteau of "naš dan" (Bosnian for "our day"). The product is multilingual: English (default), Bosnian, German, Croatian, and Serbian Latin (`sr_Latn`). First visit follows `Accept-Language` when it matches a supported locale (`sr` / `sr-RS` / `sr-Latn` map to Serbian Latin). Marketing and checkout prices use IP geolocation (Bosnia → BAM, everyone else → EUR).
 
 ---
 
@@ -934,7 +934,7 @@ Reveals use inline vanilla JS in Blade partials. On tap, they set Livewire `invi
 
 **VAPID keys** configured in `.env`:
 ```
-VAPID_SUBJECT=mailto:info@nuptoria.com
+VAPID_SUBJECT=mailto:info@nasdan.ba
 VAPID_PUBLIC_KEY=...
 VAPID_PRIVATE_KEY=...
 ```
@@ -1112,11 +1112,11 @@ Data captured:
 
 | Variable | Default | Purpose |
 |----------|---------|---------|
-| `APP_NAME` | Nuptoria | Application name |
+| `APP_NAME` | NasDan | Application name |
 | `APP_ENV` | local | Environment (local/production/staging) |
 | `APP_KEY` | (empty) | Application encryption key — MUST be set |
 | `APP_DEBUG` | true | Debug mode — set `false` in production |
-| `APP_URL` | http://localhost | Base URL (`https://nuptoria.com` in production) |
+| `APP_URL` | http://localhost | Base URL (`https://nasdan.app` in production) |
 | `APP_LOCALE` | en | Laravel locale |
 | `APP_DEFAULT_LOCALE` | en | Product default for first visits without `Accept-Language` |
 | `APP_FALLBACK_LOCALE` | en | Fallback locale |
@@ -1271,36 +1271,36 @@ Do not add URL prefixes (`/{locale}/...`) unless starting a dedicated SEO projec
 
 ---
 
-## 24. nuptoria.com cutover
+## 24. nasdan.app production
 
-Production lives on Laravel Cloud. Canonicals, OG, sitemap, and robots follow `APP_URL`.
+Production lives on Laravel Cloud. Canonicals, OG, sitemap, and robots follow `APP_URL`. The product brand is **NasDan**; the site is **nasdan.app**. Support mail currently uses **nasdan.ba** (`info@nasdan.ba`).
 
 **App env (Laravel Cloud)**
 
-- `APP_NAME=Nuptoria`
-- `APP_URL=https://nuptoria.com`
+- `APP_NAME=NasDan`
+- `APP_URL=https://nasdan.app`
 - `APP_LOCALE=en`
 - `APP_DEFAULT_LOCALE=en`
-- `MAIL_FROM_ADDRESS=info@nuptoria.com`
-- `MAIL_FROM_NAME=Nuptoria`
-- `VAPID_SUBJECT=mailto:info@nuptoria.com`
-- `LEGAL_DOMAIN=nuptoria.com`
-- `LEGAL_WEBSITE_URL=https://nuptoria.com`
-- `LEGAL_BRAND_NAME=Nuptoria`
-- `LEGAL_OPERATOR_NAME=Nuptoria`
-- `LEGAL_SUPPORT_EMAIL=info@nuptoria.com`
-- `DODO_PAYMENTS_RETURN_URL=https://nuptoria.com/dashboard/pricing?checkout=return`
-- `DODO_PAYMENTS_CANCEL_URL=https://nuptoria.com/dashboard/pricing?checkout=cancel`
+- `MAIL_FROM_ADDRESS=info@nasdan.ba`
+- `MAIL_FROM_NAME=NasDan`
+- `VAPID_SUBJECT=mailto:info@nasdan.ba`
+- `LEGAL_DOMAIN=nasdan.app`
+- `LEGAL_WEBSITE_URL=https://nasdan.app`
+- `LEGAL_BRAND_NAME=NasDan`
+- `LEGAL_OPERATOR_NAME=NasDan`
+- `LEGAL_SUPPORT_EMAIL=info@nasdan.ba`
+- `DODO_PAYMENTS_RETURN_URL=https://nasdan.app/dashboard/pricing?checkout=return`
+- `DODO_PAYMENTS_CANCEL_URL=https://nasdan.app/dashboard/pricing?checkout=cancel`
+- `LEGACY_REDIRECT_HOSTS=nuptoria.com,www.nuptoria.com,www.nasdan.app,nasdan.ba,www.nasdan.ba`
 
 **Ops outside this repo**
 
-- Attach `nuptoria.com` (and `www`) in Laravel Cloud; DNS + TLS.
-- Attach legacy hosts (`nasdan.app`, `www.nasdan.app`, and `nasdan.ba` / `www` if still used) on the same Laravel Cloud environment; remove GoDaddy path-stripping forwarding and point DNS A to Cloud. Path-preserving 301s to `APP_URL` are handled by `RedirectLegacyDomains` middleware (`LEGACY_REDIRECT_HOSTS`).
-- Resend (or mail) domain: SPF/DKIM/DMARC for nuptoria.com.
-- Dodo dashboard: webhook `https://nuptoria.com/webhooks/dodo`, allowed return URLs.
-- Search Console + GA4 / `GOOGLE_ANALYTICS_ID` for the new domain.
-- Re-seed or update existing `discount_email_templates` rows that still say NasDan (seeder only runs on seed).
-- Replace `nd-logo-*` and add `public/img/og-image.jpg` (1200×630) when the Nuptoria mark is ready.
+- Attach `nasdan.app` (canonical) in Laravel Cloud; DNS + TLS.
+- Attach legacy hosts (`nuptoria.com`, `www.nuptoria.com`, `www.nasdan.app`, and `nasdan.ba` / `www` if used as a website) on the same Laravel Cloud environment; remove path-stripping DNS forwarding and point DNS A to Cloud. Path-preserving 301s to `APP_URL` are handled by `RedirectLegacyDomains` middleware (`LEGACY_REDIRECT_HOSTS`). Keep MX for `nasdan.ba` on the mail host — website visits can still 301 to nasdan.app.
+- Resend (or mail) domain: SPF/DKIM/DMARC for nasdan.ba (from address `info@nasdan.ba`).
+- Dodo dashboard: webhook `https://nasdan.app/webhooks/dodo`, allowed return URLs.
+- Search Console + GA4 / `GOOGLE_ANALYTICS_ID` for nasdan.app.
+- Re-seed or update existing `discount_email_templates` rows that still say Nuptoria (seeder only runs on seed).
 
 Existing `users.locale` and `wedding_events.invitation_locale` are not migrated. Referral cookie stays `nasdan_ref` so in-flight attribution is not dropped.
 

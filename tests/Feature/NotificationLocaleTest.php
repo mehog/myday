@@ -66,7 +66,7 @@ class NotificationLocaleTest extends TestCase
 
         $this->assertSame('en', app()->getLocale());
         $this->assertSame(
-            'Dobrodošli u Nuptoria — dodajte prve goste',
+            'Dobrodošli u NasDan — dodajte prve goste',
             $this->lastSentEmail()->getSubject(),
         );
     }

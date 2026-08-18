@@ -1,9 +1,9 @@
 <?php
 
-$domain = env('LEGAL_DOMAIN', 'nuptoria.com');
+$domain = env('LEGAL_DOMAIN', 'nasdan.app');
 $websiteUrl = rtrim(env('LEGAL_WEBSITE_URL', 'https://'.$domain), '/');
-$supportEmail = env('LEGAL_SUPPORT_EMAIL', 'info@'.$domain);
-$brandName = env('LEGAL_BRAND_NAME', env('APP_NAME', 'Nuptoria'));
+$supportEmail = env('LEGAL_SUPPORT_EMAIL', 'info@nasdan.ba');
+$brandName = env('LEGAL_BRAND_NAME', env('APP_NAME', 'NasDan'));
 
 return [
 
@@ -12,8 +12,8 @@ return [
     | Merchant / operator details
     |--------------------------------------------------------------------------
     |
-    | Nuptoria is operated by an individual (no company/LLC). Domain and support
-    | email default from LEGAL_DOMAIN so a future domain change is one env update.
+    | NasDan is operated by an individual (no company/LLC). The product lives on
+    | nasdan.app; support mail currently uses nasdan.ba (info@nasdan.ba).
     | Leave LEGAL_OPERATOR_ADDRESS empty to use the localized default that
     | references website_url.
     |

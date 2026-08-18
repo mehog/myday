@@ -3,7 +3,7 @@
 return [
     'locale' => 'sr_Latn',
     'user' => [
-        'email' => 'marketing-sr@nuptoria.com',
+        'email' => 'marketing-sr@nasdan.app',
         'name' => 'Nikola&Milica',
         'password' => '5E3L1Y84uFdd',
     ],
@@ -61,7 +61,7 @@ TEXT,
     'featured_guest_token' => 'mktsrfeaturedguesttoken000000001',
     'featured_guest_name' => 'Stefan Jovanović',
     'phone_prefix' => '+38164',
-    'email_domain' => 'nuptoria.com',
+    'email_domain' => 'nasdan.app',
     'first_names' => [
         'Stefan', 'Nikola', 'Marko', 'Luka', 'Filip', 'Aleksandar', 'Miloš', 'Nemanja', 'Dušan', 'Vuk',
         'Petar', 'Jovan', 'Uroš', 'Igor', 'Vladimir', 'Bojan', 'Darko', 'Ivan', 'Milan', 'Andrija',

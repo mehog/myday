@@ -3,7 +3,7 @@
 return [
     'locale' => 'bs',
     'user' => [
-        'email' => 'jasmin-djordje@nuptoria.com',
+        'email' => 'jasmin-djordje@nasdan.app',
         'name' => 'Anes&Jasmina',
         'password' => '5E3L1Y84uFdd',
     ],
@@ -61,7 +61,7 @@ TEXT,
     'featured_guest_token' => 'mktbsfeaturedguesttoken000000001',
     'featured_guest_name' => 'Emir Hadžić',
     'phone_prefix' => '+38761',
-    'email_domain' => 'nuptoria.com',
+    'email_domain' => 'nasdan.app',
     'first_names' => [
         'Emir', 'Adnan', 'Haris', 'Kenan', 'Mirza', 'Tarik', 'Dino', 'Senad', 'Faruk', 'Nedim',
         'Alen', 'Edin', 'Amer', 'Armin', 'Vedad', 'Nedžad', 'Elvir', 'Samir', 'Kemal', 'Dženan',

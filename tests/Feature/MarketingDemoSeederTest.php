@@ -23,11 +23,11 @@ class MarketingDemoSeederTest extends TestCase
     public static function localeProfileProvider(): array
     {
         return [
-            'bosnian' => ['bs', 'jasmin-djordje@nuptoria.com', 'jasmina-djordje', 'Anes', 'Jasmina', 'mktbsfeaturedguesttoken000000001'],
-            'croatian' => ['hr', 'marketing-hr@nuptoria.com', 'ivan-lucija', 'Ivan', 'Lucija', 'mkthrfeaturedguesttoken000000001'],
-            'german' => ['de', 'marketing-de@nuptoria.com', 'lukas-sophie', 'Lukas', 'Sophie', 'mktdefaturedguesttoken000000001'],
-            'english' => ['en', 'marketing-en@nuptoria.com', 'oliver-emily', 'Oliver', 'Emily', 'mktenfeaturedguesttoken000000001'],
-            'serbian' => ['sr_Latn', 'marketing-sr@nuptoria.com', 'nikola-milica', 'Nikola', 'Milica', 'mktsrfeaturedguesttoken000000001'],
+            'bosnian' => ['bs', 'jasmin-djordje@nasdan.app', 'jasmina-djordje', 'Anes', 'Jasmina', 'mktbsfeaturedguesttoken000000001'],
+            'croatian' => ['hr', 'marketing-hr@nasdan.app', 'ivan-lucija', 'Ivan', 'Lucija', 'mkthrfeaturedguesttoken000000001'],
+            'german' => ['de', 'marketing-de@nasdan.app', 'lukas-sophie', 'Lukas', 'Sophie', 'mktdefaturedguesttoken000000001'],
+            'english' => ['en', 'marketing-en@nasdan.app', 'oliver-emily', 'Oliver', 'Emily', 'mktenfeaturedguesttoken000000001'],
+            'serbian' => ['sr_Latn', 'marketing-sr@nasdan.app', 'nikola-milica', 'Nikola', 'Milica', 'mktsrfeaturedguesttoken000000001'],
         ];
     }
 

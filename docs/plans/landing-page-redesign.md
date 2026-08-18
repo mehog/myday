@@ -1,4 +1,4 @@
-# Nuptoria Landing Page Redesign Plan
+# NasDan Landing Page Redesign Plan
 
 > Part of [docs/](../README.md). Design system: [project-design.md](../design/project-design.md).
 
