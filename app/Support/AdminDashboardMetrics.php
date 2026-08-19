@@ -4,29 +4,11 @@ namespace App\Support;
 
 use App\Models\ReferralPayout;
 use App\Models\User;
-use App\Models\WeddingEvent;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog;
 
 class AdminDashboardMetrics
 {
-    public static function pendingActivationsCount(): int
-    {
-        return self::pendingActivationsQuery()->count();
-    }
-
-    /**
-     * @return Builder<WeddingEvent>
-     */
-    public static function pendingActivationsQuery(): Builder
-    {
-        return WeddingEvent::query()
-            ->with('user')
-            ->where('is_active', false)
-            ->where('is_demo', false)
-            ->orderBy('wedding_date');
-    }
-
     public static function unverifiedCouplesCount(): int
     {
         return self::unverifiedUsersQuery()->count();

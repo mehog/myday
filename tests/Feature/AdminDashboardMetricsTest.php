@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\ReferralPayout;
 use App\Models\User;
-use App\Models\WeddingEvent;
 use App\ReferralPayoutStatus;
 use App\Support\AdminDashboardMetrics;
 use Tests\Concerns\RefreshInMemoryDatabase;
@@ -13,16 +12,6 @@ use Tests\TestCase;
 class AdminDashboardMetricsTest extends TestCase
 {
     use RefreshInMemoryDatabase;
-
-    public function test_pending_activations_count_excludes_active_and_demo_weddings(): void
-    {
-        WeddingEvent::factory()->inactive()->create();
-        WeddingEvent::factory()->create(['is_active' => true]);
-        WeddingEvent::factory()->inactive()->create(['is_demo' => true]);
-
-        $this->assertSame(1, AdminDashboardMetrics::pendingActivationsCount());
-        $this->assertCount(1, AdminDashboardMetrics::pendingActivationsQuery()->get());
-    }
 
     public function test_unverified_couples_count_excludes_admins(): void
     {
