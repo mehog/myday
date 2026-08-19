@@ -31,6 +31,9 @@ class DemoInvitationUrlParamsTest extends TestCase
         ]))
             ->assertOk()
             ->assertSee('--color-bg: #0f1a2e', false)
+            ->assertSee('--color-cta: #d4af37', false)
+            ->assertSee('--color-on-cta: #0f1a2e', false)
+            ->assertSee('--color-date: #e8d48a', false)
             ->assertSee('editorial-hero', false)
             ->assertSee('env-photo-envelope', false)
             ->assertDontSee('wire:model.live="previewTheme"', false)
@@ -102,6 +105,7 @@ class DemoInvitationUrlParamsTest extends TestCase
         ]))
             ->assertOk()
             ->assertSee('--color-bg: #F9F1EE', false)
+            ->assertSee('--color-date: #6B3D38', false)
             ->assertSee('editorial-hero', false)
             ->assertSee('seal-photo-stage', false);
     }

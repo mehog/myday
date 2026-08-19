@@ -73,14 +73,15 @@
 }
 
 .rsvp-btn-yes {
-    background-color: var(--color-primary);
-    color: var(--color-bg);
-    border: 1px solid var(--color-primary);
+    background-color: var(--color-cta, var(--color-primary));
+    color: var(--color-on-cta, var(--color-bg));
+    border: 1px solid var(--color-cta, var(--color-primary));
 }
 
 .rsvp-btn-yes:hover {
     background-color: var(--color-primary-dark);
     border-color: var(--color-primary-dark);
+    color: var(--color-on-cta, var(--color-bg));
 }
 
 .rsvp-btn-no {
@@ -378,7 +379,7 @@
 
 .story-amp {
     display: block;
-    color: var(--color-accent);
+    color: var(--color-ornament, var(--color-accent));
     font-size: 0.85em;
     margin: 0.25rem 0;
 }
@@ -386,7 +387,7 @@
 .story-subtitle {
     margin-top: 0.75rem;
     font-size: 1.125rem;
-    color: var(--color-accent);
+    color: var(--color-date, var(--color-accent));
 }
 
 .story-meta {
@@ -519,8 +520,8 @@
     font-size: 0.75rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    background: var(--color-primary);
-    color: var(--color-bg);
+    background: var(--color-cta, var(--color-primary));
+    color: var(--color-on-cta, var(--color-bg));
     transition: background-color 0.2s ease;
 }
 

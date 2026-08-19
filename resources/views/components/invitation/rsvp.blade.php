@@ -217,7 +217,7 @@
         @else
             @if ($guest)
                 <p class="invitation-body text-[var(--color-text-muted)] mb-8">
-                    {{ __('invitation.greeting_hello') }}, <span class="text-[var(--color-accent)]">{{ $guest->name }}</span>. {{ __('invitation.greeting_question') }}
+                    {{ __('invitation.greeting_hello') }}, <span class="text-[var(--color-date,var(--color-accent))]">{{ $guest->name }}</span>. {{ __('invitation.greeting_question') }}
                 </p>
 
                 @if ($guest->plus_one_allowed)

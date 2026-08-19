@@ -20,10 +20,10 @@
         </p>
         <h1 class="invitation-heading text-5xl sm:text-6xl md:text-7xl font-semibold text-[var(--color-text)] mb-4">
             {{ $event->groom_name }}
-            <span class="text-[var(--color-primary)]">&</span>
+            <span class="text-[var(--color-ornament,var(--color-primary))]">&</span>
             {{ $event->bride_name }}
         </h1>
-        <p class="text-xl sm:text-2xl text-[var(--color-accent)] invitation-body">
+        <p class="text-xl sm:text-2xl text-[var(--color-date,var(--color-accent))] invitation-body">
             {{ $event->wedding_date->translatedFormat('l, j. F Y.') }}
         </p>
         @if ($event->primaryLocationName())
