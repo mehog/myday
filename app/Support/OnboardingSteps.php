@@ -15,16 +15,16 @@ final class OnboardingSteps
             ['id' => 'tip-rsvp', 'counted' => false, 'optional' => false],
             ['id' => 'theme', 'counted' => true, 'optional' => false],
             ['id' => 'template', 'counted' => true, 'optional' => false],
-            ['id' => 'reveal', 'counted' => true, 'optional' => true],
-            ['id' => 'location', 'counted' => true, 'optional' => true],
+            ['id' => 'reveal', 'counted' => true, 'optional' => false],
+            ['id' => 'location', 'counted' => true, 'optional' => false],
             ['id' => 'tip-budget', 'counted' => false, 'optional' => false],
-            ['id' => 'motto', 'counted' => true, 'optional' => true],
-            ['id' => 'cover', 'counted' => true, 'optional' => true],
+            ['id' => 'motto', 'counted' => true, 'optional' => false],
+            ['id' => 'cover', 'counted' => true, 'optional' => false],
             ['id' => 'tip-photos', 'counted' => false, 'optional' => false],
-            ['id' => 'song', 'counted' => true, 'optional' => true],
-            ['id' => 'schedule', 'counted' => true, 'optional' => true],
+            ['id' => 'song', 'counted' => true, 'optional' => false],
+            ['id' => 'schedule', 'counted' => true, 'optional' => false],
             ['id' => 'tip-seating', 'counted' => false, 'optional' => false],
-            ['id' => 'guests', 'counted' => true, 'optional' => true],
+            ['id' => 'guests', 'counted' => true, 'optional' => false],
             ['id' => 'tip-menus', 'counted' => false, 'optional' => false],
             ['id' => 'account', 'counted' => true, 'optional' => false],
             ['id' => 'review', 'counted' => true, 'optional' => false],
@@ -122,7 +122,7 @@ final class OnboardingSteps
     /**
      * Whether the user may open this step given completed required fields so far.
      *
-     * @param  array{groom_name?: string, bride_name?: string, wedding_date?: string, theme?: string, template?: string, your_name?: string, email?: string}  $data
+     * @param  array<string, mixed>  $data
      */
     public static function canAccess(string $step, array $data): bool
     {
@@ -150,7 +150,7 @@ final class OnboardingSteps
     }
 
     /**
-     * @param  array{groom_name?: string, bride_name?: string, wedding_date?: string, theme?: string, template?: string, your_name?: string, email?: string}  $data
+     * @param  array<string, mixed>  $data
      */
     public static function firstIncompleteStep(array $data): string
     {
@@ -172,7 +172,7 @@ final class OnboardingSteps
     }
 
     /**
-     * @param  array{groom_name?: string, bride_name?: string, wedding_date?: string, theme?: string, template?: string, your_name?: string, email?: string}  $data
+     * @param  array<string, mixed>  $data
      */
     public static function hasRequiredDataForStep(string $step, array $data): bool
     {
@@ -181,9 +181,54 @@ final class OnboardingSteps
             'date' => filled($data['wedding_date'] ?? null),
             'theme' => filled($data['theme'] ?? null),
             'template' => filled($data['template'] ?? null),
+            'reveal' => true,
+            'location' => filled($data['location_name'] ?? null) && filled($data['location_address'] ?? null),
+            'motto' => filled($data['motto'] ?? null),
+            'cover' => (bool) ($data['has_hero_image'] ?? false),
+            'song' => filled($data['music_url'] ?? null),
+            'schedule' => self::hasCompleteScheduleItem($data['scheduleItems'] ?? []),
+            'guests' => self::hasNamedGuest($data['guests'] ?? []),
             'account' => filled($data['your_name'] ?? null) && filled($data['email'] ?? null),
             default => true,
         };
+    }
+
+    private static function hasCompleteScheduleItem(mixed $items): bool
+    {
+        if (! is_array($items)) {
+            return false;
+        }
+
+        foreach ($items as $item) {
+            if (! is_array($item)) {
+                continue;
+            }
+
+            if (filled($item['time'] ?? null) && filled($item['title'] ?? null)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static function hasNamedGuest(mixed $guests): bool
+    {
+        if (! is_array($guests)) {
+            return false;
+        }
+
+        foreach ($guests as $guest) {
+            if (! is_array($guest)) {
+                continue;
+            }
+
+            if (filled($guest['name'] ?? null)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -15,11 +15,14 @@ use App\Models\WeddingEvent;
 use App\Models\WeddingLocation;
 use App\PlanTier;
 use App\Support\Locale;
+use App\Support\MediaDisk;
 use App\Support\MetaPixel;
 use App\Support\OnboardingSongs;
 use App\Support\OnboardingSteps;
 use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Tests\Concerns\RefreshInMemoryDatabase;
 use Tests\TestCase;
@@ -99,14 +102,15 @@ class WeddingOnboardingTest extends TestCase
             ->assertSet('step', 'reveal');
     }
 
-    public function test_skip_optional_reveal_clears_animation(): void
+    public function test_skip_step_does_not_advance_required_reveal(): void
     {
         Livewire::test(WeddingOnboarding::class)
             ->set('step', 'reveal')
             ->set('reveal_animation', InvitationReveal::Envelope->value)
             ->call('skipStep')
-            ->assertSet('reveal_animation', '')
-            ->assertSet('step', 'location');
+            ->assertSet('reveal_animation', InvitationReveal::Envelope->value)
+            ->assertSet('step', 'reveal')
+            ->assertDontSee(__('onboarding.skip'));
     }
 
     public function test_interstitial_tip_seating_navigates_forward_and_back(): void
@@ -122,9 +126,10 @@ class WeddingOnboardingTest extends TestCase
             ->assertSet('step', 'schedule');
     }
 
-    public function test_submit_persists_optional_setup_data(): void
+    public function test_submit_persists_setup_data(): void
     {
         Notification::fake();
+        Storage::fake(MediaDisk::name());
 
         Livewire::test(WeddingOnboarding::class)
             ->set('groom_name', 'Amir')
@@ -136,6 +141,7 @@ class WeddingOnboardingTest extends TestCase
             ->set('location_name', 'Garden Hall')
             ->set('location_address', 'Sarajevo')
             ->set('motto', 'Forever yes')
+            ->set('hero_image', UploadedFile::fake()->image('cover.jpg'))
             ->set('music_url', 'https://www.youtube.com/watch?v=2Vv-BfVoq4g')
             ->set('scheduleItems', [
                 ['time' => '12:00', 'title' => 'Ceremony', 'description' => 'Welcome'],
@@ -166,6 +172,8 @@ class WeddingOnboardingTest extends TestCase
         $this->assertSame('https://www.youtube.com/watch?v=2Vv-BfVoq4g', $wedding->music_url);
         $this->assertSame('Forever yes', $wedding->motto);
         $this->assertSame('Garden Hall', $wedding->location_name);
+        $this->assertNotNull($wedding->hero_image);
+        $this->assertTrue(Storage::disk(MediaDisk::name())->exists($wedding->hero_image));
 
         $this->assertSame(1, WeddingLocation::query()->where('wedding_event_id', $wedding->id)->count());
         $this->assertSame(1, ScheduleItem::query()->where('wedding_event_id', $wedding->id)->count());
@@ -174,6 +182,7 @@ class WeddingOnboardingTest extends TestCase
         $guest = Guest::query()->where('wedding_event_id', $wedding->id)->first();
         $this->assertSame('Sara Softic', $guest->name);
         $this->assertTrue((bool) $guest->plus_one_allowed);
+        $this->assertSame(__('app.guest_message_default'), $wedding->send_message);
 
         Notification::assertSentTo($user, VerifyEmail::class);
 
@@ -185,6 +194,7 @@ class WeddingOnboardingTest extends TestCase
     public function test_submit_allows_empty_entry_animation(): void
     {
         Notification::fake();
+        Storage::fake(MediaDisk::name());
 
         Livewire::test(WeddingOnboarding::class)
             ->set('groom_name', 'Amir')
@@ -193,6 +203,17 @@ class WeddingOnboardingTest extends TestCase
             ->set('theme', InvitationTheme::AmberGold->value)
             ->set('template', InvitationTemplate::Classic->value)
             ->set('reveal_animation', '')
+            ->set('location_name', 'Garden Hall')
+            ->set('location_address', 'Sarajevo')
+            ->set('motto', 'Forever yes')
+            ->set('hero_image', UploadedFile::fake()->image('cover.jpg'))
+            ->set('music_url', 'https://www.youtube.com/watch?v=2Vv-BfVoq4g')
+            ->set('scheduleItems', [
+                ['time' => '16:00', 'title' => 'Ceremony', 'description' => ''],
+            ])
+            ->set('guests', [
+                ['name' => 'Sara Softic', 'email' => '', 'plus_one_allowed' => false],
+            ])
             ->set('your_name', 'Amir Softic')
             ->set('email', 'amina@example.com')
             ->set('password', 'password123')
@@ -271,7 +292,7 @@ class WeddingOnboardingTest extends TestCase
             ->assertSee(__('onboarding.preview_draft_banner'));
     }
 
-    public function test_preview_rsvp_is_non_interactive_and_respond_is_safe(): void
+    public function test_preview_without_draft_guests_shows_token_only_rsvp_placeholder(): void
     {
         session()->put(config('onboarding.draft_session_key'), [
             'groom_name' => 'Amir',
@@ -300,6 +321,43 @@ class WeddingOnboardingTest extends TestCase
         $this->assertDatabaseCount('guests', 0);
     }
 
+    public function test_preview_with_draft_guest_shows_mock_rsvp_without_persisting(): void
+    {
+        session()->put(config('onboarding.draft_session_key'), [
+            'groom_name' => 'Amir',
+            'bride_name' => 'Amina',
+            'wedding_date' => now()->addMonths(3)->toDateString(),
+            'theme' => InvitationTheme::AmberGold->value,
+            'template' => InvitationTemplate::Classic->value,
+            'reveal_animation' => '',
+            'location_name' => 'Garden Hall',
+            'location_address' => 'Sarajevo',
+            'motto' => 'Forever',
+            'music_url' => '',
+            'hero_temp_url' => null,
+            'schedule_items' => [],
+            'guests' => [
+                ['name' => 'Sara Softic', 'email' => 'sara@example.com', 'plus_one_allowed' => true],
+            ],
+            'invitation_locale' => 'en',
+        ]);
+
+        Livewire::test(OnboardingPreview::class)
+            ->assertSet('isTokenOnlyPreview', false)
+            ->assertSet('isPersonalLink', true)
+            ->assertDontSee(__('invitation.token_only_preview_rsvp'))
+            ->assertSee('Sara Softic')
+            ->assertSee(__('invitation.yes_attending'))
+            ->assertSee(__('invitation.no_attending'))
+            ->assertSee(__('invitation.plus_one_notice'))
+            ->call('respond', 'yes')
+            ->assertSet('rsvpSubmitted', true)
+            ->assertSee(__('invitation.thank_you', ['name' => 'Sara Softic']))
+            ->assertDontSee('manifest.webmanifest', false);
+
+        $this->assertDatabaseCount('guests', 0);
+    }
+
     public function test_open_preview_stores_draft_and_shows_modal(): void
     {
         Livewire::test(WeddingOnboarding::class)
@@ -308,6 +366,9 @@ class WeddingOnboardingTest extends TestCase
             ->set('wedding_date', now()->addMonths(3)->toDateString())
             ->set('theme', InvitationTheme::AmberGold->value)
             ->set('template', InvitationTemplate::Classic->value)
+            ->set('guests', [
+                ['name' => 'Sara Softic', 'email' => '', 'plus_one_allowed' => false],
+            ])
             ->set('step', 'review')
             ->call('openPreview')
             ->assertDispatched('invitation-preview-open', function (string $name, array $params): bool {
@@ -320,6 +381,9 @@ class WeddingOnboardingTest extends TestCase
         $draft = session(config('onboarding.draft_session_key'));
         $this->assertIsArray($draft);
         $this->assertSame('Amir', $draft['groom_name']);
+        $this->assertSame([
+            ['name' => 'Sara Softic', 'email' => '', 'plus_one_allowed' => false],
+        ], $draft['guests']);
     }
 
     public function test_open_preview_blocks_when_required_fields_missing(): void
@@ -353,10 +417,56 @@ class WeddingOnboardingTest extends TestCase
             ->assertSet('theme', InvitationTheme::AmberGold->value)
             ->assertSet('your_name', 'Amir Softic')
             ->assertSet('email', 'amir@example.com')
+            ->assertSet('step', 'location');
+    }
+
+    public function test_cover_photo_survives_reload_and_submit(): void
+    {
+        Notification::fake();
+        Storage::fake(MediaDisk::name());
+
+        Livewire::test(WeddingOnboarding::class)
+            ->set('groom_name', 'Amir')
+            ->set('bride_name', 'Amina')
+            ->set('wedding_date', now()->addMonths(3)->toDateString())
+            ->set('theme', InvitationTheme::AmberGold->value)
+            ->set('template', InvitationTemplate::Classic->value)
+            ->set('location_name', 'Garden Hall')
+            ->set('location_address', 'Sarajevo')
+            ->set('motto', 'Forever yes')
+            ->set('step', 'cover')
+            ->set('hero_image', UploadedFile::fake()->image('cover.jpg'))
+            ->call('nextStep')
+            ->assertHasNoErrors()
+            ->set('music_url', 'https://www.youtube.com/watch?v=2Vv-BfVoq4g')
+            ->set('scheduleItems', [
+                ['time' => '16:00', 'title' => 'Ceremony', 'description' => ''],
+            ])
+            ->set('guests', [
+                ['name' => 'Sara Softic', 'email' => '', 'plus_one_allowed' => false],
+            ])
+            ->set('your_name', 'Amir Softic')
+            ->set('email', 'amir-cover@example.com');
+
+        $progress = session(config('onboarding.progress_session_key'));
+        $this->assertIsArray($progress);
+        $this->assertNotSame('', $progress['hero_image_path'] ?? '');
+        $this->assertTrue(Storage::disk(MediaDisk::name())->exists($progress['hero_image_path']));
+
+        Livewire::withQueryParams(['step' => 'review'])
+            ->test(WeddingOnboarding::class)
             ->assertSet('step', 'review')
-            ->assertSee('Amir')
-            ->assertSee('Amina')
-            ->assertSee('amir@example.com');
+            ->assertSet('hero_image_path', $progress['hero_image_path'])
+            ->set('password', 'password123')
+            ->set('password_confirmation', 'password123')
+            ->call('submit')
+            ->assertHasNoErrors()
+            ->assertRedirect(route('verification.notice'));
+
+        $wedding = WeddingEvent::query()->where('groom_name', 'Amir')->first();
+        $this->assertNotNull($wedding);
+        $this->assertNotNull($wedding->hero_image);
+        $this->assertTrue(Storage::disk(MediaDisk::name())->exists($wedding->hero_image));
     }
 
     public function test_inaccessible_review_step_snaps_to_names(): void
@@ -383,6 +493,36 @@ class WeddingOnboardingTest extends TestCase
             ->assertHasErrors(['theme'])
             ->assertSet('step', 'theme')
             ->assertSet('submitError', __('onboarding.submit_fix_errors'));
+    }
+
+    public function test_required_steps_block_continue_when_empty(): void
+    {
+        $component = Livewire::test(WeddingOnboarding::class);
+
+        $component->set('step', 'location')->call('nextStep')
+            ->assertHasErrors(['location_name', 'location_address'])
+            ->assertSet('step', 'location')
+            ->assertDontSee(__('onboarding.skip'));
+
+        $component->set('location_name', 'Garden Hall')->set('location_address', 'Sarajevo')->set('step', 'motto')->call('nextStep')
+            ->assertHasErrors(['motto'])
+            ->assertSet('step', 'motto');
+
+        $component->set('motto', 'Forever yes')->set('step', 'cover')->call('nextStep')
+            ->assertHasErrors(['hero_image'])
+            ->assertSet('step', 'cover');
+
+        $component->set('hero_image', UploadedFile::fake()->image('cover.jpg'))->set('step', 'song')->call('nextStep')
+            ->assertHasErrors(['music_url'])
+            ->assertSet('step', 'song');
+
+        $component->set('music_url', 'https://www.youtube.com/watch?v=2Vv-BfVoq4g')->set('step', 'schedule')->call('nextStep')
+            ->assertHasErrors(['scheduleItems'])
+            ->assertSet('step', 'schedule');
+
+        $component->set('scheduleItems', [['time' => '12:00', 'title' => 'Ceremony', 'description' => '']])->set('step', 'guests')->call('nextStep')
+            ->assertHasErrors(['guests'])
+            ->assertSet('step', 'guests');
     }
 
     public function test_select_motto_fills_textarea(): void

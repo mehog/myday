@@ -46,6 +46,25 @@ class OnboardingStepsTest extends TestCase
         $this->assertTrue(OnboardingSteps::canAccess('theme', $partial));
         $this->assertFalse(OnboardingSteps::canAccess('template', $partial));
         $this->assertSame('theme', OnboardingSteps::firstIncompleteStep($partial));
+
+        $styled = [
+            ...$partial,
+            'theme' => 'amber-gold',
+            'template' => 'classic',
+        ];
+        $this->assertSame('location', OnboardingSteps::firstIncompleteStep($styled));
+        $this->assertTrue(OnboardingSteps::canAccess('location', $styled));
+        $this->assertFalse(OnboardingSteps::canAccess('review', $styled));
+
+        $withoutSong = [
+            ...$styled,
+            'location_name' => 'Garden Hall',
+            'location_address' => 'Sarajevo',
+            'motto' => 'Forever',
+            'has_hero_image' => true,
+        ];
+        $this->assertSame('song', OnboardingSteps::firstIncompleteStep($withoutSong));
+        $this->assertFalse(OnboardingSteps::canAccess('review', $withoutSong));
     }
 
     public function test_step_for_field(): void

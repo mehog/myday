@@ -106,6 +106,7 @@ return [
     'guest_message' => 'Poruka za goste',
     'guest_message_helper' => 'Koristite {name} za ime gosta i {link} za personalizovani link.',
     'guest_message_placeholder' => "Npr: Dragi {name}, sa radošću vas pozivamo na naše vjenčanje!\nVaš link za potvrdu dolaska: {link}",
+    'guest_message_default' => "Dragi {name}, sa radošću vas pozivamo na naše vjenčanje!\nVaš link za potvrdu dolaska: {link}",
 
     // Wedding overview widget
     'stat_guests' => 'Gosti',

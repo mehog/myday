@@ -1,4 +1,4 @@
-@if (! empty($isPersonalLink) && $guest && config('webpush.vapid.public_key'))
+@if (! empty($isPersonalLink) && $guest && filled($guest->token) && config('webpush.vapid.public_key'))
     <div class="mt-4 flex flex-col items-center gap-2" x-show="! subscribed" x-cloak>
         <button
             type="button"

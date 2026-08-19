@@ -34,7 +34,7 @@
             <meta name="robots" content="noindex, nofollow">
         @endisset
 
-        @if (! empty($isPersonalLink) && isset($guest))
+        @if (! empty($isPersonalLink) && isset($guest) && filled($guest->token))
             <link rel="manifest" href="{{ route('invitation.manifest', [$event->slug, $guest->token]) }}">
             <meta name="mobile-web-app-capable" content="yes">
             <meta name="apple-mobile-web-app-capable" content="yes">

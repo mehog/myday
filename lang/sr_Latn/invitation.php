@@ -146,7 +146,7 @@ return [
 
     'token_required' => 'Ova pozivnica zahteva lični link.',
     'token_only_preview_banner' => 'Pregledavate javni link. Gosti mogu otvoriti ovu pozivnicu samo preko svog ličnog linka.',
-    'token_only_preview_rsvp' => 'Potvrda dolaska je dostupna samo na ličnom linku svakog gosta.',
+    'token_only_preview_rsvp' => 'Potvrda dolaska biće vidljiva svakom gostu kada otvori svoj lični link, ali ne ovde na javnom pregledu.',
     'rsvp_closed_after_wedding' => 'Potvrda dolaska više nije dostupna — venčanje je već održano.',
     'rsvp_closed_after_deadline' => 'Potvrda dolaska više nije dostupna — rok je istekao.',
 

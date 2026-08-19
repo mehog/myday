@@ -21,13 +21,20 @@
         @endif
     >
         <x-theme :theme="$activeTheme">
-            <div class="invitation-page pb-8">
+            <div @class(['invitation-page pb-8', 'pb-20' => $showRsvpNudge])>
                 @include('components.invitation.templates.'.$activeTemplate->value, [
                     'event' => $event,
-                    'guest' => null,
-                    'isPersonalLink' => false,
-                    'showRsvpNudge' => false,
+                    'guest' => $guest,
+                    'isPersonalLink' => $isPersonalLink,
+                    'showRsvpNudge' => $showRsvpNudge,
                     'visibleMenuOptions' => $visibleMenuOptions,
+                    'isTokenOnlyPreview' => $isTokenOnlyPreview,
+                ])
+
+                @include('components.invitation.rsvp-sticky-bar', [
+                    'showRsvpNudge' => $showRsvpNudge,
+                    'showDemoCreateNudge' => $showDemoCreateNudge,
+                    'demoCreateUrl' => $demoCreateUrl,
                 ])
             </div>
         </x-theme>

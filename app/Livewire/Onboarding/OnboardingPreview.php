@@ -6,9 +6,12 @@ use App\InvitationReveal;
 use App\InvitationTemplate;
 use App\InvitationTheme;
 use App\LinkMode;
+use App\Models\Guest;
+use App\Models\GuestChild;
 use App\Models\ScheduleItem;
 use App\Models\WeddingLocation;
 use App\PlanTier;
+use App\RsvpStatus;
 use App\Support\DraftWeddingEvent;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -32,7 +35,21 @@ class OnboardingPreview extends Component
 
     public bool $missingDraft = false;
 
-    public $guest = null;
+    public string $plusOneName = '';
+
+    /** @var list<string> */
+    public array $childNames = [];
+
+    /** @var list<string|int|null> */
+    public array $childMenuOptionIds = [];
+
+    public string $rsvpNote = '';
+
+    public bool $needsAccommodation = false;
+
+    public ?int $accommodationCount = null;
+
+    public ?string $mockRsvpStatus = null;
 
     public function mount(): void
     {
@@ -50,7 +67,42 @@ class OnboardingPreview extends Component
 
     public function respond(string $status): void
     {
-        // Draft preview has no guest/event to RSVP against.
+        $rsvpStatus = RsvpStatus::tryFrom($status);
+
+        if ($rsvpStatus === null || $this->mockGuestFromDraft() === null) {
+            return;
+        }
+
+        $this->mockRsvpStatus = $rsvpStatus->value;
+        $this->rsvpSubmitted = true;
+        $this->isEditing = false;
+    }
+
+    public function editRsvp(): void
+    {
+        $this->isEditing = true;
+        $this->rsvpSubmitted = false;
+    }
+
+    public function addChildName(): void
+    {
+        if (count($this->childNames) >= GuestChild::MAX_PER_GUEST) {
+            return;
+        }
+
+        $this->childNames[] = '';
+        $this->childMenuOptionIds[] = null;
+    }
+
+    public function removeChildName(int $index): void
+    {
+        if (! array_key_exists($index, $this->childNames)) {
+            return;
+        }
+
+        unset($this->childNames[$index], $this->childMenuOptionIds[$index]);
+        $this->childNames = array_values($this->childNames);
+        $this->childMenuOptionIds = array_values($this->childMenuOptionIds);
     }
 
     public function render()
@@ -62,6 +114,10 @@ class OnboardingPreview extends Component
         }
 
         $event = $this->buildEventFromDraft();
+        $guest = $this->mockGuestFromDraft();
+        $this->isTokenOnlyPreview = $guest === null;
+        $this->isPersonalLink = $guest !== null;
+        $showRsvpNudge = $guest !== null && ! $guest->hasResponded() && ! $this->rsvpSubmitted;
         $activeReveal = $event->reveal_animation;
 
         return view('livewire.onboarding.onboarding-preview', [
@@ -72,21 +128,52 @@ class OnboardingPreview extends Component
             'demoCreateUrl' => null,
             'showDemoCreateNudge' => false,
             'visibleMenuOptions' => collect(),
-            'showRsvpNudge' => false,
-            'guest' => null,
+            'showRsvpNudge' => $showRsvpNudge,
+            'guest' => $guest,
             'isPreview' => true,
-            'isTokenOnlyPreview' => true,
-            'isPersonalLink' => false,
+            'isTokenOnlyPreview' => $this->isTokenOnlyPreview,
+            'isPersonalLink' => $this->isPersonalLink,
         ])
             ->title($event->couple_names.' | '.__('invitation.title'))
             ->layout('layouts.invitation')
             ->layoutData([
                 'event' => $event,
-                'guest' => null,
+                'guest' => $guest,
                 'isPreview' => true,
-                'isTokenOnlyPreview' => true,
-                'isPersonalLink' => false,
+                'isTokenOnlyPreview' => $this->isTokenOnlyPreview,
+                'isPersonalLink' => $this->isPersonalLink,
             ]);
+    }
+
+    private function mockGuestFromDraft(): ?Guest
+    {
+        $draft = session(config('onboarding.draft_session_key'));
+
+        if (! is_array($draft) || ! is_array($draft['guests'] ?? null)) {
+            return null;
+        }
+
+        $first = collect($draft['guests'])
+            ->first(fn (mixed $guest): bool => is_array($guest) && filled($guest['name'] ?? null));
+
+        if (! is_array($first)) {
+            return null;
+        }
+
+        $guest = new Guest;
+        $guest->forceFill([
+            'name' => (string) $first['name'],
+            'email' => filled($first['email'] ?? null) ? (string) $first['email'] : null,
+            'plus_one_allowed' => (bool) ($first['plus_one_allowed'] ?? false),
+            'rsvp_status' => $this->mockRsvpStatus !== null
+                ? RsvpStatus::from($this->mockRsvpStatus)
+                : null,
+        ]);
+        $guest->exists = false;
+        $guest->id = null;
+        $guest->setRelation('children', collect());
+
+        return $guest;
     }
 
     private function buildEventFromDraft(): DraftWeddingEvent

@@ -146,7 +146,7 @@ return [
 
     'token_required' => 'This invitation requires a personal link.',
     'token_only_preview_banner' => 'You\'re previewing the public link. Guests can only open this invitation with their personal link.',
-    'token_only_preview_rsvp' => 'RSVP is only available on each guest\'s personal invitation link.',
+    'token_only_preview_rsvp' => 'Each guest will see the RSVP when they open their personal invitation link. It is not shown on this public preview.',
     'rsvp_closed_after_wedding' => 'RSVP is no longer available — the wedding has already taken place.',
     'rsvp_closed_after_deadline' => 'RSVP is no longer available — the deadline has passed.',
 

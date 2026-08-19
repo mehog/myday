@@ -18,7 +18,7 @@
                     @endif
                 </div>
                 <div>
-                    <label class="block text-sm text-[#5c5246] mb-1">{{ __('onboarding.guest_name') }}</label>
+                    <label class="block text-sm text-[#5c5246] mb-1">{{ __('onboarding.guest_name') }} *</label>
                     <input type="text" wire:model="guests.{{ $index }}.name" class="landing-input w-full">
                     @error('guests.'.$index.'.name') <p class="mt-1 text-sm text-red-500">{{ $message }}</p> @enderror
                 </div>
@@ -27,10 +27,13 @@
                     <input type="email" wire:model="guests.{{ $index }}.email" class="landing-input w-full">
                     @error('guests.'.$index.'.email') <p class="mt-1 text-sm text-red-500">{{ $message }}</p> @enderror
                 </div>
-                <label class="inline-flex items-center gap-2 text-sm text-[#5c5246]">
-                    <input type="checkbox" wire:model="guests.{{ $index }}.plus_one_allowed" class="rounded border-[#1a1208]/20 text-[#c9a227] focus:ring-[#c9a227]">
-                    {{ __('onboarding.guest_plus_one') }}
-                </label>
+                <div>
+                    <label class="inline-flex items-center gap-2 text-sm text-[#5c5246]">
+                        <input type="checkbox" wire:model="guests.{{ $index }}.plus_one_allowed" class="rounded border-[#1a1208]/20 text-[#c9a227] focus:ring-[#c9a227]">
+                        {{ __('onboarding.guest_plus_one') }}
+                    </label>
+                    <p class="mt-1 text-xs text-[#5c5246] pl-6">{{ __('onboarding.guest_plus_one_help') }}</p>
+                </div>
             </div>
         @endforeach
 

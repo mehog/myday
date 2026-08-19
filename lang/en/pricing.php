@@ -17,7 +17,7 @@ return [
     'popular' => 'Most popular',
     'features_title' => 'Included in paid plans',
     'features_paid_note' => 'Basic, Plus and Premium include the full feature set.',
-    'features_free_note' => 'Free includes invitation, RSVP and seating editor, but locks QR photo cards, sending push notifications and seating PDF export.',
+    'features_free_note' => 'Free includes invitation, RSVP and seating editor (up to :count guests), but locks QR photo cards, sending push notifications and seating PDF export.',
     'return_pending_title' => 'Payment received — upgrading',
     'return_pending_body' => 'We are confirming your payment. Your higher plan will activate automatically in a moment.',
     'cancel_title' => 'Checkout cancelled',

@@ -65,6 +65,8 @@ class WeddingOnboarding extends Component
     /** @var TemporaryUploadedFile|string|null */
     public $hero_image = null;
 
+    public string $hero_image_path = '';
+
     public string $music_url = '';
 
     public string $song_query = '';
@@ -139,7 +141,7 @@ class WeddingOnboarding extends Component
 
     public function updated(string $property): void
     {
-        if (in_array($property, ['password', 'password_confirmation', 'hero_image', 'previewError', 'submitError', 'songPreview', 'songSuggestions'], true)) {
+        if (in_array($property, ['password', 'password_confirmation', 'hero_image', 'hero_image_path', 'previewError', 'submitError', 'songPreview', 'songSuggestions'], true)) {
             return;
         }
 
@@ -148,6 +150,13 @@ class WeddingOnboarding extends Component
         }
 
         $this->persistProgress();
+    }
+
+    public function updatedHeroImage(): void
+    {
+        if ($this->hero_image instanceof TemporaryUploadedFile) {
+            $this->persistOnboardingCover($this->hero_image);
+        }
     }
 
     protected function applyStyleQueryParams(): void
@@ -188,6 +197,10 @@ class WeddingOnboarding extends Component
 
         if (! OnboardingSteps::isTip($this->step)) {
             $this->validate($this->rulesForStep($this->step), $this->messagesForStep($this->step));
+        }
+
+        if ($this->step === 'cover' && $this->hero_image instanceof TemporaryUploadedFile) {
+            $this->persistOnboardingCover($this->hero_image);
         }
 
         $next = OnboardingSteps::next($this->step);
@@ -405,6 +418,7 @@ class WeddingOnboarding extends Component
                 $this->rulesForStep('date'),
                 $this->rulesForStep('theme'),
                 $this->rulesForStep('template'),
+                $this->rulesForStep('reveal'),
                 $this->rulesForStep('account'),
                 $this->rulesForStep('song'),
                 $this->rulesForStep('cover'),
@@ -417,6 +431,7 @@ class WeddingOnboarding extends Component
                 $this->messagesForStep('date'),
                 $this->messagesForStep('theme'),
                 $this->messagesForStep('template'),
+                $this->messagesForStep('reveal'),
                 $this->messagesForStep('account'),
                 $this->messagesForStep('song'),
                 $this->messagesForStep('cover'),
@@ -466,6 +481,7 @@ class WeddingOnboarding extends Component
                     'hero_image' => $heroPath,
                     'location_name' => $this->location_name !== '' ? $this->location_name : null,
                     'location_address' => $this->location_address !== '' ? $this->location_address : null,
+                    'send_message' => __('app.guest_message_default'),
                 ]);
 
                 if ($this->location_name !== '' || $this->location_address !== '') {
@@ -585,6 +601,10 @@ class WeddingOnboarding extends Component
             'songBrowseMode' => $songBrowseMode,
             'schedulePresets' => config('onboarding.schedule_presets', []),
             'mottoPresets' => $mottoPresets,
+            'coverPreviewUrl' => $this->hero_image instanceof TemporaryUploadedFile
+                ? $this->hero_image->temporaryUrl()
+                : ($this->hasPersistedCover() ? MediaDisk::url($this->hero_image_path) : null),
+            'hasPersistedCover' => $this->hasPersistedCover(),
         ])->title(__('onboarding.meta_title'));
     }
 
@@ -611,26 +631,49 @@ class WeddingOnboarding extends Component
                 'reveal_animation' => ['nullable', 'string', Rule::in(array_column(InvitationReveal::cases(), 'value'))],
             ],
             'location' => [
-                'location_name' => ['nullable', 'string', 'max:255'],
-                'location_address' => ['nullable', 'string', 'max:500'],
+                'location_name' => ['required', 'string', 'max:255'],
+                'location_address' => ['required', 'string', 'max:500'],
             ],
             'motto' => [
-                'motto' => ['nullable', 'string', 'max:300'],
+                'motto' => ['required', 'string', 'max:300'],
             ],
             'cover' => [
-                'hero_image' => ['nullable', 'image', 'max:5120'],
+                'hero_image' => [
+                    Rule::requiredIf(fn (): bool => ! $this->hasPersistedCover()),
+                    'nullable',
+                    'image',
+                    'max:5120',
+                ],
             ],
             'song' => [
-                'music_url' => ['nullable', 'url', 'max:500'],
+                'music_url' => ['required', 'url', 'max:500'],
             ],
             'schedule' => [
-                'scheduleItems' => ['array'],
-                'scheduleItems.*.time' => ['nullable', 'date_format:H:i'],
-                'scheduleItems.*.title' => ['nullable', 'string', 'max:255'],
+                'scheduleItems' => [
+                    'required',
+                    'array',
+                    'min:1',
+                    function (string $attribute, mixed $value, \Closure $fail): void {
+                        if ($this->normalizedScheduleItems() === []) {
+                            $fail(__('onboarding.schedule_required'));
+                        }
+                    },
+                ],
+                'scheduleItems.*.time' => ['nullable', 'date_format:H:i', 'required_with:scheduleItems.*.title'],
+                'scheduleItems.*.title' => ['nullable', 'string', 'max:255', 'required_with:scheduleItems.*.time'],
                 'scheduleItems.*.description' => ['nullable', 'string', 'max:1000'],
             ],
             'guests' => [
-                'guests' => ['array', 'max:'.(PlanTier::Free->guestLimit() ?? 50)],
+                'guests' => [
+                    'required',
+                    'array',
+                    'max:'.(PlanTier::Free->guestLimit() ?? 50),
+                    function (string $attribute, mixed $value, \Closure $fail): void {
+                        if ($this->normalizedGuests() === []) {
+                            $fail(__('onboarding.guests_required'));
+                        }
+                    },
+                ],
                 'guests.*.name' => ['nullable', 'string', 'max:255'],
                 'guests.*.email' => ['nullable', 'email', 'max:255'],
                 'guests.*.plus_one_allowed' => ['boolean'],
@@ -673,8 +716,24 @@ class WeddingOnboarding extends Component
                 'password.min' => __('onboarding.password_min'),
                 'password.confirmed' => __('onboarding.password_confirmed'),
             ],
+            'location' => [
+                'location_name.required' => __('onboarding.location_name_required'),
+                'location_address.required' => __('onboarding.location_address_required'),
+            ],
+            'motto' => [
+                'motto.required' => __('onboarding.motto_required'),
+            ],
+            'cover' => [
+                'hero_image.required' => __('onboarding.cover_required'),
+                'hero_image.image' => __('onboarding.cover_image'),
+            ],
             'song' => [
+                'music_url.required' => __('onboarding.music_url_required'),
                 'music_url.url' => __('onboarding.music_url_invalid'),
+            ],
+            'schedule' => [
+                'scheduleItems.*.time.required_with' => __('onboarding.schedule_time_required'),
+                'scheduleItems.*.title.required_with' => __('onboarding.schedule_title_required'),
             ],
             default => [],
         };
@@ -686,7 +745,7 @@ class WeddingOnboarding extends Component
             'reveal' => $this->reveal_animation = '',
             'location' => [$this->location_name, $this->location_address] = ['', ''],
             'motto' => $this->motto = '',
-            'cover' => $this->hero_image = null,
+            'cover' => $this->clearOnboardingCover(),
             'song' => [$this->music_url, $this->song_query, $this->songPreview] = ['', '', null],
             'schedule' => $this->scheduleItems = [['time' => '', 'title' => '', 'description' => '']],
             'guests' => $this->guests = [['name' => '', 'email' => '', 'plus_one_allowed' => false]],
@@ -695,7 +754,7 @@ class WeddingOnboarding extends Component
     }
 
     /**
-     * @return array{groom_name: string, bride_name: string, wedding_date: string, theme: string, template: string, your_name: string, email: string}
+     * @return array<string, mixed>
      */
     private function accessData(): array
     {
@@ -705,6 +764,13 @@ class WeddingOnboarding extends Component
             'wedding_date' => $this->wedding_date,
             'theme' => $this->theme,
             'template' => $this->template,
+            'location_name' => $this->location_name,
+            'location_address' => $this->location_address,
+            'motto' => $this->motto,
+            'has_hero_image' => $this->hero_image instanceof TemporaryUploadedFile || $this->hasPersistedCover(),
+            'music_url' => $this->music_url,
+            'scheduleItems' => $this->scheduleItems,
+            'guests' => $this->guests,
             'your_name' => $this->your_name,
             'email' => $this->email,
         ];
@@ -725,6 +791,7 @@ class WeddingOnboarding extends Component
             'motto' => $this->motto,
             'music_url' => $this->music_url,
             'song_query' => $this->song_query,
+            'hero_image_path' => $this->hero_image_path,
             'scheduleItems' => $this->scheduleItems,
             'guests' => $this->guests,
             'your_name' => $this->your_name,
@@ -742,7 +809,7 @@ class WeddingOnboarding extends Component
 
         foreach ([
             'groom_name', 'bride_name', 'wedding_date', 'theme', 'template', 'reveal_animation',
-            'location_name', 'location_address', 'motto', 'music_url', 'song_query',
+            'location_name', 'location_address', 'motto', 'music_url', 'song_query', 'hero_image_path',
             'your_name', 'email',
         ] as $field) {
             if (array_key_exists($field, $progress) && is_string($progress[$field])) {
@@ -770,6 +837,8 @@ class WeddingOnboarding extends Component
         $heroTempUrl = null;
         if ($this->hero_image instanceof TemporaryUploadedFile) {
             $heroTempUrl = $this->hero_image->temporaryUrl();
+        } elseif ($this->hasPersistedCover()) {
+            $heroTempUrl = MediaDisk::url($this->hero_image_path);
         }
 
         session()->put(config('onboarding.draft_session_key'), [
@@ -785,17 +854,60 @@ class WeddingOnboarding extends Component
             'music_url' => $this->music_url,
             'hero_temp_url' => $heroTempUrl,
             'schedule_items' => $this->normalizedScheduleItems(),
+            'guests' => $this->normalizedGuests(),
             'invitation_locale' => app()->getLocale(),
         ]);
     }
 
     private function storeHeroImage(): ?string
     {
-        if (! $this->hero_image instanceof TemporaryUploadedFile) {
-            return null;
+        if ($this->hero_image instanceof TemporaryUploadedFile) {
+            $path = $this->hero_image->store('hero-images', MediaDisk::name());
+            $this->deleteOnboardingCoverFiles();
+
+            return $path;
         }
 
-        return $this->hero_image->store('hero-images', MediaDisk::name());
+        if ($this->hasPersistedCover()) {
+            $extension = pathinfo($this->hero_image_path, PATHINFO_EXTENSION) ?: 'jpg';
+            $destination = 'hero-images/'.Str::uuid().'.'.$extension;
+            MediaDisk::disk()->copy($this->hero_image_path, $destination);
+            $this->deleteOnboardingCoverFiles();
+
+            return $destination;
+        }
+
+        return null;
+    }
+
+    private function persistOnboardingCover(TemporaryUploadedFile $file): void
+    {
+        $this->deleteOnboardingCoverFiles();
+        $this->hero_image_path = $file->store('onboarding-covers/'.session()->getId(), MediaDisk::name());
+        $this->persistProgress();
+    }
+
+    private function hasPersistedCover(): bool
+    {
+        return $this->hero_image_path !== '' && MediaDisk::disk()->exists($this->hero_image_path);
+    }
+
+    private function clearOnboardingCover(): void
+    {
+        $this->deleteOnboardingCoverFiles();
+        $this->hero_image = null;
+        $this->hero_image_path = '';
+    }
+
+    private function deleteOnboardingCoverFiles(): void
+    {
+        $directory = 'onboarding-covers/'.session()->getId();
+
+        if (MediaDisk::disk()->exists($directory)) {
+            MediaDisk::disk()->deleteDirectory($directory);
+        }
+
+        $this->hero_image_path = '';
     }
 
     /**

@@ -17,7 +17,7 @@ return [
     'popular' => 'Beliebteste',
     'features_title' => 'In bezahlten Plänen enthalten',
     'features_paid_note' => 'Basic, Plus und Premium enthalten den vollen Funktionsumfang.',
-    'features_free_note' => 'Der Free-Plan enthält Einladung, RSVP und Sitzplan-Editor, sperrt jedoch QR-Fotokarten, Push-Versand und PDF-Export des Sitzplans.',
+    'features_free_note' => 'Der Free-Plan enthält Einladung, RSVP und Sitzplan-Editor (bis zu :count Gäste), sperrt jedoch QR-Fotokarten, Push-Versand und PDF-Export des Sitzplans.',
     'return_pending_title' => 'Zahlung eingegangen — Upgrade',
     'return_pending_body' => 'Wir bestätigen Ihre Zahlung. Ihr höherer Plan wird in Kürze automatisch aktiviert.',
     'cancel_title' => 'Checkout abgebrochen',

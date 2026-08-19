@@ -17,7 +17,7 @@ return [
     'popular' => 'Najpopularnije',
     'features_title' => 'Uključeno u plaćene pakete',
     'features_paid_note' => 'Basic, Plus i Premium uključuju kompletni set mogućnosti.',
-    'features_free_note' => 'Besplatni paket uključuje pozivnicu, RSVP i uređivač sjedenja, ali zaključava QR foto kartice, slanje push obavijesti i PDF izvoz rasporeda.',
+    'features_free_note' => 'Besplatni paket uključuje pozivnicu, RSVP i uređivač sjedenja (do :count gostiju), ali zaključava QR foto kartice, slanje push obavijesti i PDF izvoz rasporeda.',
     'return_pending_title' => 'Uplata primljena — nadogradnja',
     'return_pending_body' => 'Potvrđujemo uplatu. Viši paket aktivirat će se automatski za trenutak.',
     'cancel_title' => 'Plaćanje otkazano',

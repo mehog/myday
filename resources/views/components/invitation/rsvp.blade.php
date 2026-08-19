@@ -17,7 +17,7 @@
             subscribing: false,
             subscribed: false,
             pushError: null,
-            subscribeUrl: @js(! empty($isPersonalLink) && $guest ? route('push.subscribe', $guest->token) : null),
+            subscribeUrl: @js(! empty($isPersonalLink) && $guest && filled($guest->token) ? route('push.subscribe', $guest->token) : null),
             pushErrorMessages: @js([
                 'push_ios_update' => __('app.push_ios_update'),
                 'push_error_not_supported' => __('app.push_error_not_supported'),
@@ -101,12 +101,14 @@
                         >
                             {{ __('invitation.add_to_google_calendar') }}
                         </a>
-                        <a
-                            href="{{ route('invitation.ics', $event->slug) }}"
-                            class="rsvp-btn rsvp-btn-no w-full py-4 rounded-xl invitation-heading text-lg transition"
-                        >
-                            {{ __('invitation.download_ics') }}
-                        </a>
+                        @if ($event->exists)
+                            <a
+                                href="{{ route('invitation.ics', $event->slug) }}"
+                                class="rsvp-btn rsvp-btn-no w-full py-4 rounded-xl invitation-heading text-lg transition"
+                            >
+                                {{ __('invitation.download_ics') }}
+                            </a>
+                        @endif
                         <button
                             type="button"
                             class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition mt-2"
@@ -130,7 +132,7 @@
         subscribing: false,
         subscribed: false,
         pushError: null,
-        subscribeUrl: @js(! empty($isPersonalLink) && $guest ? route('push.subscribe', $guest->token) : null),
+        subscribeUrl: @js(! empty($isPersonalLink) && $guest && filled($guest->token) ? route('push.subscribe', $guest->token) : null),
         pushErrorMessages: @js([
             'push_ios_update' => __('app.push_ios_update'),
             'push_error_not_supported' => __('app.push_error_not_supported'),
@@ -263,7 +265,7 @@
 
             <p class="invitation-body text-sm text-[var(--color-text-muted)] mt-6">
                 {{ __('invitation.rsvp_update_helper_text') }}
-                @if ($guest && ($isPersonalLink ?? false))
+                @if ($guest && ($isPersonalLink ?? false) && filled($guest->token))
                     &nbsp;·&nbsp;
                     <a
                         href="{{ route('invitation.contact.guest', [$event->slug, $guest->token]) }}"
@@ -566,12 +568,14 @@
                 >
                     {{ __('invitation.add_to_google_calendar') }}
                 </a>
-                <a
-                    href="{{ route('invitation.ics', $event->slug) }}"
-                    class="rsvp-btn rsvp-btn-no w-full py-4 rounded-xl invitation-heading text-lg transition"
-                >
-                    {{ __('invitation.download_ics') }}
-                </a>
+                @if ($event->exists)
+                    <a
+                        href="{{ route('invitation.ics', $event->slug) }}"
+                        class="rsvp-btn rsvp-btn-no w-full py-4 rounded-xl invitation-heading text-lg transition"
+                    >
+                        {{ __('invitation.download_ics') }}
+                    </a>
+                @endif
                 <button
                     type="button"
                     class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition mt-2"

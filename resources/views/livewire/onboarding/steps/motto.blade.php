@@ -24,8 +24,8 @@
 
     <form wire:submit="nextStep" class="space-y-5">
         <div>
-            <label for="motto" class="block text-sm text-[#5c5246] mb-2">{{ __('onboarding.motto') }}</label>
-            <textarea id="motto" wire:model.live="motto" rows="3" maxlength="300" class="landing-input w-full" placeholder="{{ __('onboarding.motto_placeholder') }}"></textarea>
+            <label for="motto" class="block text-sm text-[#5c5246] mb-2">{{ __('onboarding.motto') }} *</label>
+            <textarea id="motto" wire:model.live="motto" rows="3" maxlength="300" required class="landing-input w-full" placeholder="{{ __('onboarding.motto_placeholder') }}"></textarea>
             @error('motto') <p class="mt-1 text-sm text-red-500">{{ $message }}</p> @enderror
         </div>
         <button type="submit" class="w-full landing-btn-primary py-4 rounded-xl landing-heading text-lg transition">

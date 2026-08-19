@@ -1,3 +1,4 @@
+@if ($guest && filled($guest->token))
 <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
     <a
         href="{{ route('invitation.contact.guest', [$event->slug, $guest->token]) }}"
@@ -8,3 +9,4 @@
             : __('invitation.send_message_to_newlyweds') }}
     </a>
 </div>
+@endif

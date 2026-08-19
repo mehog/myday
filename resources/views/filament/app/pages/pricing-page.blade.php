@@ -109,7 +109,7 @@
                 @endforeach
             </ul>
             <p class="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                {{ __('pricing.features_free_note') }}
+                {{ __('pricing.features_free_note', ['count' => \App\PlanTier::Free->guestLimit()]) }}
             </p>
         </section>
 

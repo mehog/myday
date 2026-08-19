@@ -8,7 +8,7 @@
             {{ __('invitation.add_to_calendar') }}
         </button>
     @endunless
-    @if ($guest)
+    @if ($guest && filled($guest->token))
         <a
             href="{{ route('invitation.contact.guest', [$event->slug, $guest->token]) }}"
             class="rsvp-btn rsvp-btn-no rounded-xl px-6 py-3 invitation-heading text-base transition"
@@ -17,7 +17,7 @@
                 ? __('invitation.share_photos_and_messages')
                 : __('invitation.send_message_to_newlyweds') }}
         </a>
-        @if ($event->pushNotificationLogs()->where('status', 'sent')->exists())
+        @if ($event->exists && $event->pushNotificationLogs()->where('status', 'sent')->exists())
             <a
                 href="{{ route('invitation.push.guest', [$event->slug, $guest->token]) }}"
                 class="rsvp-btn rsvp-btn-no rounded-xl px-6 py-3 invitation-heading text-base transition"

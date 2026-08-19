@@ -106,6 +106,7 @@ return [
     'guest_message' => 'Nachricht für Gäste',
     'guest_message_helper' => 'Verwenden Sie {name} für den Namen des Gastes und {link} für den persönlichen Link.',
     'guest_message_placeholder' => "Z. B.: Liebe/r {name}, wir laden Sie herzlich zu unserer Hochzeit ein!\nIhr RSVP-Link: {link}",
+    'guest_message_default' => "Liebe/r {name}, wir laden Sie herzlich zu unserer Hochzeit ein!\nIhr RSVP-Link: {link}",
 
     // Wedding overview widget
     'stat_guests' => 'Gäste',

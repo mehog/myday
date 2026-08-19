@@ -106,6 +106,7 @@ return [
     'guest_message' => 'Message for guests',
     'guest_message_helper' => 'Use {name} for the guest\'s name and {link} for their personal link.',
     'guest_message_placeholder' => "E.g.: Dear {name}, we joyfully invite you to our wedding!\nYour RSVP link: {link}",
+    'guest_message_default' => "Dear {name}, we joyfully invite you to our wedding!\nYour RSVP link: {link}",
 
     // Wedding overview widget
     'stat_guests' => 'Guests',
