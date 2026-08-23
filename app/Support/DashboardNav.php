@@ -19,6 +19,12 @@ class DashboardNav
                 'match' => ['dashboard'],
             ],
             [
+                'label' => __('dashboard.nav.checklist'),
+                'route' => 'dashboard.checklist',
+                'icon' => 'checklist',
+                'match' => ['dashboard.checklist'],
+            ],
+            [
                 'label' => __('dashboard.nav.wedding'),
                 'route' => 'dashboard.wedding',
                 'icon' => 'heart',

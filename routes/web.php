@@ -18,6 +18,7 @@ use App\Http\Controllers\ReferralProgramController;
 use App\Http\Controllers\WeddingEventCalendarController;
 use App\Http\Middleware\EnsureCoupleUser;
 use App\Livewire\Dashboard\Budget;
+use App\Livewire\Dashboard\Checklist;
 use App\Livewire\Dashboard\CreatePush;
 use App\Livewire\Dashboard\Guests;
 use App\Livewire\Dashboard\Home;
@@ -173,6 +174,7 @@ Route::middleware(['auth', 'verified', EnsureCoupleUser::class])
     ->prefix('dashboard')
     ->group(function () {
         Route::get('/', Home::class)->name('dashboard');
+        Route::get('/checklist', Checklist::class)->name('dashboard.checklist');
         Route::get('/wedding', Wedding::class)->name('dashboard.wedding');
         Route::get('/locations', Locations::class)->name('dashboard.locations');
         Route::get('/menus', Menus::class)->name('dashboard.menus');

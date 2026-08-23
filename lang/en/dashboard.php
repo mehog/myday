@@ -3,6 +3,7 @@
 return [
     'nav' => [
         'overview' => 'Overview',
+        'checklist' => 'Checklist',
         'wedding' => 'My wedding',
         'locations' => 'Locations',
         'menus' => 'Menus',

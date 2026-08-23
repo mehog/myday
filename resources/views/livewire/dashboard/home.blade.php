@@ -130,6 +130,49 @@
                     @endforeach
                 </div>
 
+                @if ($checklist)
+                    <x-dashboard.card>
+                        <x-slot:header>
+                            <div class="flex w-full items-center justify-between gap-2">
+                                <h3 class="font-medium">{{ __('checklist.summary_label') }}</h3>
+                                <a href="{{ route('dashboard.checklist') }}" class="text-xs font-medium text-primary hover:underline">{{ __('checklist.view_all') }}</a>
+                            </div>
+                        </x-slot:header>
+                        <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+                            <div class="checklist-ring" style="--progress: {{ $checklist['percent'] }}" aria-hidden="true">
+                                <span class="checklist-ring-inner">{{ $checklist['percent'] }}%</span>
+                            </div>
+                            <div>
+                                <p class="text-xl font-semibold tabular-nums">
+                                    {{ __('checklist.summary_value', ['completed' => $checklist['completed'], 'total' => $checklist['total']]) }}
+                                </p>
+                                <p class="mt-1 text-sm text-muted-foreground">{{ __('checklist.summary_percent', ['percent' => $checklist['percent']]) }}</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 border-t border-border pt-3">
+                            <p class="mb-2 text-sm font-medium">{{ __('checklist.next_heading') }}</p>
+                            @forelse ($checklist['next'] as $row)
+                                <div class="border-b border-border py-2 last:border-0">
+                                    <p class="text-sm font-medium">{{ $row['title'] }}</p>
+                                    <p class="mt-0.5 text-xs text-muted-foreground">
+                                        @if ($row['due_label'])
+                                            {{ $row['due_label'] }}
+                                        @endif
+                                        @if ($row['due_label'] && $row['progress'])
+                                            ·
+                                        @endif
+                                        @if ($row['progress'])
+                                            {{ $row['progress']['label'] }}
+                                        @endif
+                                    </p>
+                                </div>
+                            @empty
+                                <p class="text-sm text-muted-foreground">{{ __('checklist.next_empty') }}</p>
+                            @endforelse
+                        </div>
+                    </x-dashboard.card>
+                @endif
+
                 <x-dashboard.card>
                     <x-slot:header>
                         <h3 class="font-medium">{{ __('app.recent_rsvp_notes_heading') }}</h3>
