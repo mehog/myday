@@ -3,6 +3,7 @@
 return [
     'nav' => [
         'overview' => 'Pregled',
+        'checklist' => 'Lista obaveza',
         'wedding' => 'Moje venčanje',
         'locations' => 'Lokacije',
         'menus' => 'Meniji',

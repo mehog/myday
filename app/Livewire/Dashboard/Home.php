@@ -10,6 +10,7 @@ use App\Models\LinkVisit;
 use App\Models\WeddingEvent;
 use App\Models\WeddingMenuOption;
 use App\RsvpStatus;
+use App\Services\WeddingChecklistPresenter;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -28,7 +29,7 @@ class Home extends Component
         }
     }
 
-    public function render()
+    public function render(WeddingChecklistPresenter $presenter)
     {
         $wedding = auth()->user()?->weddingEvent;
         $title = $wedding?->isArchived()
@@ -37,6 +38,7 @@ class Home extends Component
 
         return $this->dashboardView('livewire.dashboard.home', [
             'wedding' => $wedding,
+            'checklist' => $this->checklistSummary($wedding, $presenter),
             'overviewStats' => $this->overviewStats($wedding),
             'recentNotes' => $this->recentNotes($wedding),
             'menuData' => $this->menuData($wedding),
@@ -122,6 +124,18 @@ class Home extends Component
                 'href' => route('dashboard.messages'),
             ],
         ];
+    }
+
+    /**
+     * @return array{total: int, completed: int, percent: int, next: Collection<int, array<string, mixed>>}|null
+     */
+    protected function checklistSummary(?WeddingEvent $wedding, WeddingChecklistPresenter $presenter): ?array
+    {
+        if (! $wedding || $wedding->isArchived()) {
+            return null;
+        }
+
+        return $presenter->summary($wedding);
     }
 
     /**

@@ -194,6 +194,11 @@ class WeddingEvent extends Model
         return $this->hasMany(WeddingBudgetItem::class)->orderBy('sort_order')->orderBy('id');
     }
 
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(WeddingTask::class)->orderBy('sort_order')->orderBy('id');
+    }
+
     public function getCoupleNamesAttribute(): string
     {
         return "{$this->groom_name} & {$this->bride_name}";
