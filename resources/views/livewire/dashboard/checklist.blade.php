@@ -96,27 +96,25 @@
                 >
                     <x-dashboard.card flush>
                         <x-slot:header>
-                            <div class="flex w-full items-center justify-between gap-3">
+                            <button
+                                type="button"
+                                class="flex w-full items-center justify-between gap-3 text-left"
+                                x-on:click="toggle()"
+                                x-bind:aria-expanded="(!collapsed).toString()"
+                                aria-label="{{ \App\WeddingTaskPeriod::from($period)->label() }}"
+                            >
                                 <div class="flex min-w-0 flex-wrap items-center gap-2">
                                     <h3 class="font-medium">{{ \App\WeddingTaskPeriod::from($period)->label() }}</h3>
                                     <span class="text-sm text-muted-foreground tabular-nums">
                                         {{ __('checklist.period_progress', ['completed' => $periodSummary['completed'], 'total' => $periodSummary['total']]) }}
                                     </span>
                                 </div>
-                                <button
-                                    type="button"
-                                    class="shrink-0 rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
-                                    x-on:click="toggle()"
-                                    x-bind:aria-expanded="(!collapsed).toString()"
-                                    aria-label="{{ \App\WeddingTaskPeriod::from($period)->label() }}"
-                                >
-                                    <x-dashboard.icon
-                                        name="chevron-down"
-                                        class="h-4 w-4 transition-transform"
-                                        x-bind:class="{ 'rotate-180': !collapsed }"
-                                    />
-                                </button>
-                            </div>
+                                <x-dashboard.icon
+                                    name="chevron-down"
+                                    class="h-4 w-4 shrink-0 text-muted-foreground transition-transform"
+                                    x-bind:class="{ 'rotate-180': !collapsed }"
+                                />
+                            </button>
                         </x-slot:header>
                         <div x-show="!collapsed" x-cloak class="p-4 md:p-5">
                             @foreach ($rows as $row)
@@ -142,9 +140,19 @@
                                     </button>
                                     <div class="min-w-0 flex-1">
                                         <div class="flex flex-wrap items-center gap-2">
-                                            <p @class(['font-medium', 'text-muted-foreground line-through' => $task->isCompleted()])>
+                                            <button
+                                                type="button"
+                                                @class([
+                                                    'text-left font-medium',
+                                                    'text-muted-foreground line-through' => $task->isCompleted(),
+                                                    'cursor-pointer hover:text-foreground' => ! $locked,
+                                                    'cursor-not-allowed opacity-60' => $locked,
+                                                ])
+                                                wire:click="toggle({{ $task->id }})"
+                                                @disabled($locked)
+                                            >
                                                 {{ $row['title'] }}
-                                            </p>
+                                            </button>
                                             @if ($task->priority === \App\WeddingTaskPriority::High && ! $task->isCompleted())
                                                 <span class="rounded-full bg-red-100 px-2 py-0.5 text-[11px] font-medium text-red-800 dark:bg-red-500/15 dark:text-red-200">{{ __('checklist.priority_high_badge') }}</span>
                                             @endif
