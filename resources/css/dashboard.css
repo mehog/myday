@@ -122,12 +122,22 @@
 
 .dashboard-pills {
     display: inline-flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    max-width: 100%;
     gap: 0.25rem;
     padding: 0.25rem;
     border-radius: 999px;
     border: 1px solid var(--border);
     background: color-mix(in srgb, var(--muted) 80%, transparent);
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.dashboard-pills::-webkit-scrollbar {
+    display: none;
 }
 
 .dashboard-pill {
@@ -143,7 +153,15 @@
     padding: 0.45rem 0.9rem;
     border-radius: 999px;
     cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
     transition: background 0.2s ease, color 0.2s ease;
+}
+
+@media (max-width: 639px) {
+    .dashboard-pill {
+        padding: 0.45rem 0.7rem;
+    }
 }
 
 .dashboard-pill:hover:not(:disabled):not(.is-active) {

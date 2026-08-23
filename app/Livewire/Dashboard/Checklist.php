@@ -47,12 +47,19 @@ class Checklist extends Component
         $allRows = $presenter->rows($wedding);
         $rows = $this->filteredRows($allRows);
         $summary = $presenter->summarize($allRows);
+        $grouped = $presenter->groupByPeriod($rows)->map(function (Collection $periodRows, string $period) use ($presenter): array {
+            return [
+                'period' => $period,
+                'rows' => $periodRows,
+                'summary' => $presenter->periodSummary($periodRows),
+            ];
+        })->values();
 
         return $this->dashboardView('livewire.dashboard.checklist', [
             'wedding' => $wedding,
             'locked' => $this->isLocked(),
             'summary' => $summary,
-            'grouped' => $presenter->groupByPeriod($rows),
+            'grouped' => $grouped,
             'isEmpty' => $rows->isEmpty(),
         ], __('checklist.title'), [
             ['label' => __('checklist.title'), 'url' => null],

@@ -36,6 +36,7 @@ return [
     'field_notes' => 'Bilješka',
     'delete_confirm' => 'Obrisati ovu obavezu?',
     'saved' => 'Sačuvano',
+    'period_progress' => ':completed/:total',
     'periods' => [
         '9_12_months' => '9–12 mjeseci prije',
         '6_9_months' => '6–9 mjeseci prije',
@@ -59,27 +60,27 @@ return [
     ],
     'tasks' => [
         'set_budget' => [
-            'title' => 'Odredite okvirni budžet',
+            'title' => 'Odrediti okvirni budžet',
             'description' => 'Zapišite koliko možete potrošiti i pratite to u NašDanu.',
         ],
         'add_guests' => [
-            'title' => 'Započnite listu gostiju',
+            'title' => 'Započeti listu gostiju',
             'description' => 'Dodajte prva imena da pozivnice i RSVP imaju kome ići.',
         ],
         'book_venue' => [
-            'title' => 'Rezervišite salu',
+            'title' => 'Rezervisati salu',
             'description' => 'Zaključajte salu ili mjesto ceremonije.',
         ],
         'book_photographer' => [
-            'title' => 'Rezervišite fotografa',
+            'title' => 'Rezervisati fotografa',
             'description' => 'Potvrdite ko snima fotografije i video.',
         ],
         'book_music' => [
-            'title' => 'Rezervišite muziku',
+            'title' => 'Rezervisati muziku',
             'description' => 'Bend, DJ ili playlist — i potvrđen datum.',
         ],
         'set_location' => [
-            'title' => 'Dodajte lokacije',
+            'title' => 'Dodati lokacije',
             'description' => 'Adrese ceremonije i proslave na pozivnici.',
         ],
         'book_attire' => [
@@ -87,7 +88,7 @@ return [
             'description' => 'Naručite ili zakažite probe na vrijeme za prepravke.',
         ],
         'book_rings' => [
-            'title' => 'Naručite prstenje',
+            'title' => 'Naručiti prstenje',
             'description' => 'Ostavite vremena za gravuru i veličinu.',
         ],
         'book_decor' => [
@@ -95,83 +96,83 @@ return [
             'description' => 'Cvjećara, stolovi i dekor ceremonije.',
         ],
         'plan_invitations' => [
-            'title' => 'Pripremite pozivnicu',
+            'title' => 'Pripremiti pozivnicu',
             'description' => 'Imena, datum, fotografije i izgled stranice.',
         ],
         'organize_accommodation' => [
-            'title' => 'Organizujte smještaj',
+            'title' => 'Organizovati smještaj',
             'description' => 'Sobe ili preporuke hotela za goste.',
         ],
         'book_transport' => [
-            'title' => 'Organizujte prijevoz',
+            'title' => 'Organizovati prijevoz',
             'description' => 'Automobili za par i goste po potrebi.',
         ],
         'add_photos' => [
-            'title' => 'Dodajte fotografije na pozivnicu',
+            'title' => 'Dodati fotografije na pozivnicu',
             'description' => 'Mala galerija čini stranicu ličnijom.',
         ],
         'set_schedule' => [
-            'title' => 'Napravite raspored dana',
+            'title' => 'Napraviti raspored dana',
             'description' => 'Ceremonija, koktel, večera, prvi ples.',
         ],
         'plan_menu' => [
-            'title' => 'Odlučite meni',
+            'title' => 'Odlučiti meni',
             'description' => 'Opcije koje gosti vide kad odgovaraju na pozivnicu.',
         ],
         'gather_documents' => [
-            'title' => 'Sakupite dokumentaciju',
+            'title' => 'Sakupiti dokumentaciju',
             'description' => 'Lični dokumenti, papiri za vjenčanje i zahtjevi sale.',
         ],
         'book_cake' => [
-            'title' => 'Naručite tortu',
+            'title' => 'Naručiti tortu',
             'description' => 'Okus, veličina i vrijeme isporuke.',
         ],
         'plan_ceremony' => [
-            'title' => 'Isplanirajte ceremoniju',
+            'title' => 'Isplanirati ceremoniju',
             'description' => 'Vjenčatelj, zavjeti, muzika i ko stoji gdje.',
         ],
         'send_invitations' => [
-            'title' => 'Pošaljite pozivnice',
+            'title' => 'Poslati pozivnice',
             'description' => 'Podijelite personalne linkove i označite ko je pozvan.',
         ],
         'track_rsvp' => [
-            'title' => 'Pratite RSVP odgovore',
+            'title' => 'Pratiti RSVP odgovore',
             'description' => 'Podsjetite goste koji još nisu odgovorili.',
         ],
         'finish_seating' => [
-            'title' => 'Završite raspored sjedenja',
+            'title' => 'Završiti raspored sjedenja',
             'description' => 'Rasporedite potvrđene goste prije konačnog broja.',
         ],
         'confirm_menu' => [
-            'title' => 'Prikupite izbor menija',
+            'title' => 'Prikupiti izbor menija',
             'description' => 'Svaki potvrđeni gost treba imati odabran obrok.',
         ],
         'confirm_guest_count' => [
-            'title' => 'Potvrdite broj gostiju',
+            'title' => 'Potvrditi broj gostiju',
             'description' => 'Dajte sali pouzdan broj.',
         ],
         'review_budget' => [
-            'title' => 'Provjerite budžet',
+            'title' => 'Provjeriti budžet',
             'description' => 'Šta je plaćeno, a šta još čeka.',
         ],
         'send_guest_updates' => [
-            'title' => 'Pošaljite obavijesti gostima',
+            'title' => 'Poslati obavijesti gostima',
             'description' => 'Vrijeme, parking ili posljednje napomene.',
         ],
         'finalize_details' => [
-            'title' => 'Zatvorite preostale detalje',
+            'title' => 'Zatvoriti preostale detalje',
             'description' => 'Sve što bi na dan vjenčanja stvaralo stres.',
         ],
         'confirm_vendors' => [
-            'title' => 'Potvrdite vendore',
+            'title' => 'Potvrditi vendore',
             'description' => 'Nazovite ili napišite svakom vendoru vrijeme i kontakt.',
         ],
         'collect_items' => [
-            'title' => 'Preuzmite stvari',
+            'title' => 'Preuzeti stvari',
             'description' => 'Haljina, odijelo, prstenje i sve što ste posudili.',
         ],
         'confirm_final_counts' => [
-            'title' => 'Potvrdite konačne brojke',
+            'title' => 'Potvrditi konačne brojke',
             'description' => 'Zadnja provjera gostiju, jela i soba.',
         ],
         'last_week_wrapup' => [

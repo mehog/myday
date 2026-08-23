@@ -36,6 +36,7 @@ return [
     'field_notes' => 'Notes',
     'delete_confirm' => 'Delete this task?',
     'saved' => 'Saved',
+    'period_progress' => ':completed/:total',
     'periods' => [
         '9_12_months' => '9–12 months before',
         '6_9_months' => '6–9 months before',

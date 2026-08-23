@@ -6,6 +6,7 @@ use App\Livewire\Dashboard\Checklist;
 use App\Livewire\Dashboard\Home as DashboardHome;
 use App\Models\User;
 use App\Models\WeddingEvent;
+use App\Services\WeddingChecklistPresenter;
 use App\Support\WeddingTaskCatalog;
 use App\WeddingTaskPeriod;
 use App\WeddingTaskPriority;
@@ -171,6 +172,33 @@ class WeddingChecklistTest extends TestCase
     public function test_catalog_has_a_full_suggested_list(): void
     {
         $this->assertGreaterThanOrEqual(25, count(WeddingTaskCatalog::all()));
+    }
+
+    public function test_period_summary_counts_completed_tasks(): void
+    {
+        [$user, $wedding] = $this->coupleWithWedding();
+
+        $venue = $wedding->tasks()->where('system_key', 'book_venue')->firstOrFail();
+        $venue->update(['completed_at' => now()]);
+
+        $presenter = app(WeddingChecklistPresenter::class);
+        $rows = $presenter->rows($wedding);
+        $grouped = $presenter->groupByPeriod($rows);
+        $periodRows = $grouped->get(WeddingTaskPeriod::NineToTwelveMonths->value);
+        $this->assertNotNull($periodRows);
+
+        $summary = $presenter->periodSummary($periodRows);
+
+        $this->assertSame($periodRows->count(), $summary['total']);
+        $this->assertGreaterThanOrEqual(1, $summary['completed']);
+        $this->assertLessThanOrEqual($summary['total'], $summary['completed']);
+
+        Livewire::actingAs($user)
+            ->test(Checklist::class)
+            ->assertSee(__('checklist.period_progress', [
+                'completed' => $summary['completed'],
+                'total' => $summary['total'],
+            ]));
     }
 
     /**

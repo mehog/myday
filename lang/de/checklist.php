@@ -36,6 +36,7 @@ return [
     'field_notes' => 'Notiz',
     'delete_confirm' => 'Diese Aufgabe löschen?',
     'saved' => 'Gespeichert',
+    'period_progress' => ':completed/:total',
     'periods' => [
         '9_12_months' => '9–12 Monate vorher',
         '6_9_months' => '6–9 Monate vorher',

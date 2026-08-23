@@ -42,14 +42,14 @@
         </div>
     </x-dashboard.card>
 
-    <div class="flex justify-center overflow-x-auto border-b border-border pb-3">
+    <div class="flex w-full min-w-0 justify-center border-b border-border pb-3">
         <x-dashboard.pills
             name="tab"
             :selected="$tab"
             :options="[
                 'all' => ['label' => __('checklist.tabs.all')],
-                'predefined' => ['label' => __('checklist.tabs.predefined')],
                 'mine' => ['label' => __('checklist.tabs.mine')],
+                'predefined' => ['label' => __('checklist.tabs.predefined')],
                 'completed' => ['label' => __('checklist.tabs.completed')],
             ]"
             :label="__('checklist.tabs_label')"
@@ -65,65 +65,116 @@
         </x-dashboard.card>
     @else
         <div class="space-y-5">
-            @foreach ($grouped as $period => $rows)
-                <x-dashboard.card>
-                    <x-slot:header>
-                        <h3 class="font-medium">{{ \App\WeddingTaskPeriod::from($period)->label() }}</h3>
-                    </x-slot:header>
-                    @foreach ($rows as $row)
-                        @php
-                            /** @var \App\Models\WeddingTask $task */
-                            $task = $row['task'];
-                        @endphp
-                        <div
-                            class="flex gap-3 border-b border-border py-3 last:border-0"
-                            wire:key="task-{{ $task->id }}"
-                        >
-                            <button
-                                type="button"
-                                class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border {{ $task->isCompleted() ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-background' }} {{ $locked ? 'cursor-not-allowed opacity-60' : '' }}"
-                                wire:click="toggle({{ $task->id }})"
-                                @disabled($locked)
-                                aria-pressed="{{ $task->isCompleted() ? 'true' : 'false' }}"
-                                aria-label="{{ $row['title'] }}"
-                            >
-                                @if ($task->isCompleted())
-                                    <x-dashboard.icon name="check" class="h-3.5 w-3.5" />
-                                @endif
-                            </button>
-                            <div class="min-w-0 flex-1">
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <p @class(['font-medium', 'text-muted-foreground line-through' => $task->isCompleted()])>
-                                        {{ $row['title'] }}
-                                    </p>
-                                    @if ($task->priority === \App\WeddingTaskPriority::High && ! $task->isCompleted())
-                                        <span class="rounded-full bg-red-100 px-2 py-0.5 text-[11px] font-medium text-red-800 dark:bg-red-500/15 dark:text-red-200">{{ __('checklist.priority_high_badge') }}</span>
-                                    @endif
+            @foreach ($grouped as $group)
+                @php
+                    $period = $group['period'];
+                    $rows = $group['rows'];
+                    $periodSummary = $group['summary'];
+                @endphp
+                <div
+                    wire:key="period-{{ $period }}"
+                    x-data="{
+                        collapsed: (() => {
+                            try {
+                                return JSON.parse(localStorage.getItem('checklist_periods') || '{}')['{{ $period }}'] ?? false;
+                            } catch (e) {
+                                return false;
+                            }
+                        })(),
+                        toggle() {
+                            this.collapsed = !this.collapsed;
+                            let stored = {};
+                            try {
+                                stored = JSON.parse(localStorage.getItem('checklist_periods') || '{}') || {};
+                            } catch (e) {
+                                stored = {};
+                            }
+                            stored['{{ $period }}'] = this.collapsed;
+                            localStorage.setItem('checklist_periods', JSON.stringify(stored));
+                        }
+                    }"
+                >
+                    <x-dashboard.card flush>
+                        <x-slot:header>
+                            <div class="flex w-full items-center justify-between gap-3">
+                                <div class="flex min-w-0 flex-wrap items-center gap-2">
+                                    <h3 class="font-medium">{{ \App\WeddingTaskPeriod::from($period)->label() }}</h3>
+                                    <span class="text-sm text-muted-foreground tabular-nums">
+                                        {{ __('checklist.period_progress', ['completed' => $periodSummary['completed'], 'total' => $periodSummary['total']]) }}
+                                    </span>
                                 </div>
-                                @if ($row['description'] && ! $task->isSystem())
-                                    <p class="mt-1 text-sm text-muted-foreground">{{ $row['description'] }}</p>
-                                @endif
-                                <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
-                                    @if ($row['due_label'])
-                                        <span @class(['tabular-nums', 'text-red-600 dark:text-red-400' => $task->isOverdue()])>{{ $row['due_label'] }}</span>
-                                    @endif
-                                    @if ($row['progress'])
-                                        <span class="tabular-nums">{{ $row['progress']['label'] }}</span>
-                                    @endif
-                                    @if ($row['action_url'])
-                                        <a href="{{ $row['action_url'] }}" class="font-medium text-primary hover:underline">{{ __('checklist.open_named', ['name' => $row['action_label']]) }}</a>
-                                    @endif
-                                </div>
+                                <button
+                                    type="button"
+                                    class="shrink-0 rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+                                    x-on:click="toggle()"
+                                    x-bind:aria-expanded="(!collapsed).toString()"
+                                    aria-label="{{ \App\WeddingTaskPeriod::from($period)->label() }}"
+                                >
+                                    <x-dashboard.icon
+                                        name="chevron-down"
+                                        class="h-4 w-4 transition-transform"
+                                        x-bind:class="{ 'rotate-180': !collapsed }"
+                                    />
+                                </button>
                             </div>
-                            @if (! $locked && ! $task->isSystem())
-                                <div class="flex shrink-0 flex-wrap gap-2 self-start">
-                                    <x-dashboard.button type="button" variant="secondary" class="!px-2 !py-1 text-xs" wire:click="openEdit({{ $task->id }})">{{ __('dashboard.edit') }}</x-dashboard.button>
-                                    <x-dashboard.button type="button" variant="destructive" class="!px-2 !py-1 text-xs" wire:click="delete({{ $task->id }})" wire:confirm="{{ __('checklist.delete_confirm') }}">{{ __('dashboard.delete') }}</x-dashboard.button>
+                        </x-slot:header>
+                        <div x-show="!collapsed" x-cloak class="p-4 md:p-5">
+                            @foreach ($rows as $row)
+                                @php
+                                    /** @var \App\Models\WeddingTask $task */
+                                    $task = $row['task'];
+                                @endphp
+                                <div
+                                    class="flex gap-3 border-b border-border py-3 last:border-0"
+                                    wire:key="task-{{ $task->id }}"
+                                >
+                                    <button
+                                        type="button"
+                                        class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border {{ $task->isCompleted() ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-background' }} {{ $locked ? 'cursor-not-allowed opacity-60' : '' }}"
+                                        wire:click="toggle({{ $task->id }})"
+                                        @disabled($locked)
+                                        aria-pressed="{{ $task->isCompleted() ? 'true' : 'false' }}"
+                                        aria-label="{{ $row['title'] }}"
+                                    >
+                                        @if ($task->isCompleted())
+                                            <x-dashboard.icon name="check" class="h-3.5 w-3.5" />
+                                        @endif
+                                    </button>
+                                    <div class="min-w-0 flex-1">
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <p @class(['font-medium', 'text-muted-foreground line-through' => $task->isCompleted()])>
+                                                {{ $row['title'] }}
+                                            </p>
+                                            @if ($task->priority === \App\WeddingTaskPriority::High && ! $task->isCompleted())
+                                                <span class="rounded-full bg-red-100 px-2 py-0.5 text-[11px] font-medium text-red-800 dark:bg-red-500/15 dark:text-red-200">{{ __('checklist.priority_high_badge') }}</span>
+                                            @endif
+                                        </div>
+                                        @if ($row['description'] && ! $task->isSystem())
+                                            <p class="mt-1 text-sm text-muted-foreground">{{ $row['description'] }}</p>
+                                        @endif
+                                        <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
+                                            @if ($row['due_label'])
+                                                <span @class(['tabular-nums', 'text-red-600 dark:text-red-400' => $task->isOverdue()])>{{ $row['due_label'] }}</span>
+                                            @endif
+                                            @if ($row['progress'])
+                                                <span class="tabular-nums">{{ $row['progress']['label'] }}</span>
+                                            @endif
+                                            @if ($row['action_url'])
+                                                <a href="{{ $row['action_url'] }}" class="font-medium text-primary hover:underline">{{ __('checklist.open_named', ['name' => $row['action_label']]) }}</a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    @if (! $locked && ! $task->isSystem())
+                                        <div class="flex shrink-0 flex-wrap gap-2 self-start">
+                                            <x-dashboard.button type="button" variant="secondary" class="!px-2 !py-1 text-xs" wire:click="openEdit({{ $task->id }})">{{ __('dashboard.edit') }}</x-dashboard.button>
+                                            <x-dashboard.button type="button" variant="destructive" class="!px-2 !py-1 text-xs" wire:click="delete({{ $task->id }})" wire:confirm="{{ __('checklist.delete_confirm') }}">{{ __('dashboard.delete') }}</x-dashboard.button>
+                                        </div>
+                                    @endif
                                 </div>
-                            @endif
+                            @endforeach
                         </div>
-                    @endforeach
-                </x-dashboard.card>
+                    </x-dashboard.card>
+                </div>
             @endforeach
         </div>
     @endif

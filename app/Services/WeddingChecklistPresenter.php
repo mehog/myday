@@ -78,6 +78,21 @@ class WeddingChecklistPresenter
     }
 
     /**
+     * @param  Collection<int, array<string, mixed>>  $rows
+     * @return array{total: int, completed: int}
+     */
+    public function periodSummary(Collection $rows): array
+    {
+        $total = $rows->count();
+        $completed = $rows->filter(fn (array $row): bool => $row['task']->isCompleted())->count();
+
+        return [
+            'total' => $total,
+            'completed' => $completed,
+        ];
+    }
+
+    /**
      * @return array<string, mixed>
      */
     protected function row(WeddingEvent $event, WeddingTask $task): array
