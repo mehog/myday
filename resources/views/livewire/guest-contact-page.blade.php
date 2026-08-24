@@ -34,6 +34,7 @@
 
                     <div class="space-y-6">
                         @includeWhen($event->acceptsGuestPhotos(), 'livewire.partials.guest-contact-photos-section')
+                        @includeWhen($event->acceptsGuestPhotos(), 'livewire.partials.guest-contact-videos-section')
 
                         {{-- Text message --}}
                         <div class="rounded-2xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)]/80 p-6">
@@ -217,6 +218,7 @@
                         </div>
 
                         @includeUnless($event->acceptsGuestPhotos(), 'livewire.partials.guest-contact-photos-section')
+                        @includeUnless($event->acceptsGuestPhotos(), 'livewire.partials.guest-contact-videos-section')
                     </div>
                 </div>
             </section>

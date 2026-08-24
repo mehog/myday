@@ -140,6 +140,33 @@
                         </div>
                     @endif
                 </div>
+
+                <div class="min-w-0">
+                    <div class="mb-3 flex items-center justify-between gap-3">
+                        <h3 class="min-w-0 text-sm font-semibold text-gray-950 dark:text-white">
+                            {{ __('app.memories_videos_heading') }}
+                            <span class="font-normal text-gray-500 dark:text-gray-400">({{ $videoCount }})</span>
+                        </h3>
+                        <x-filament::link :href="$messagesUrl" size="sm" class="shrink-0">
+                            {{ __('app.memories_view_all_messages') }}
+                        </x-filament::link>
+                    </div>
+
+                    @if ($videoMessages->isEmpty())
+                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('app.memories_videos_empty') }}</p>
+                    @else
+                        <div class="space-y-3">
+                            @foreach ($videoMessages as $message)
+                                <div class="rounded-xl border border-gray-200 p-3 sm:p-4 dark:border-white/10">
+                                    <p class="mb-2 text-sm font-medium text-gray-950 dark:text-white">{{ $message->sender_name }}</p>
+                                    @foreach ($message->fileUrls() as $url)
+                                        <video controls class="mb-2 w-full max-w-full rounded-lg" src="{{ $url }}"></video>
+                                    @endforeach
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
             </div>
 
             <div>

@@ -6,14 +6,10 @@ use App\Filament\App\Resources\GuestMessagesResource;
 use App\Models\GuestMessage;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
-class NewGuestMessageNotification extends Notification implements ShouldQueue
+class NewGuestMessageNotification extends Notification
 {
-    use Queueable;
-
     public function __construct(public readonly GuestMessage $message) {}
 
     /**

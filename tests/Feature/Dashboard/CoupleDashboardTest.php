@@ -157,6 +157,25 @@ class CoupleDashboardTest extends TestCase
         $this->assertNull($wedding->fresh()->hero_image);
     }
 
+    public function test_wedding_form_rejects_past_wedding_date(): void
+    {
+        $user = User::factory()->create(['is_admin' => false]);
+        $wedding = WeddingEvent::factory()->create([
+            'user_id' => $user->id,
+            'wedding_date' => now()->addMonth()->setTime(16, 0),
+        ]);
+
+        Livewire::actingAs($user)
+            ->test(DashboardWedding::class)
+            ->set('wedding_date', now()->subDay()->format('Y-m-d\TH:i'))
+            ->call('save')
+            ->assertHasErrors(['wedding_date' => 'after']);
+
+        $this->assertTrue(
+            $wedding->fresh()->wedding_date->isSameDay(now()->addMonth()),
+        );
+    }
+
     public function test_wedding_template_uses_pills_instead_of_select(): void
     {
         $user = User::factory()->create(['is_admin' => false]);
@@ -321,5 +340,32 @@ class CoupleDashboardTest extends TestCase
             ->assertRedirect(route('dashboard.messages'));
 
         $this->assertNotNull($notification->fresh()->read_at);
+    }
+
+    public function test_guest_photo_and_video_messages_create_dashboard_notifications(): void
+    {
+        $user = User::factory()->create(['is_admin' => false]);
+        $wedding = WeddingEvent::factory()->create(['user_id' => $user->id]);
+        $guest = Guest::factory()->create(['wedding_event_id' => $wedding->id]);
+
+        foreach ([GuestMessageType::Photo, GuestMessageType::Video] as $type) {
+            GuestMessage::query()->create([
+                'wedding_event_id' => $wedding->id,
+                'guest_id' => $guest->id,
+                'sender_name' => 'Ivana',
+                'type' => $type,
+                'file_paths' => ['guest-messages/test/file.mp4'],
+            ]);
+        }
+
+        $this->assertSame(2, $user->fresh()->notifications()->count());
+        $this->assertSame(2, $user->fresh()->unreadNotifications()->count());
+
+        Livewire::actingAs($user)
+            ->test(NotificationsBell::class)
+            ->assertSee(__('app.notification_new_message_title'))
+            ->assertSee('Ivana')
+            ->assertSee(GuestMessageType::Photo->label())
+            ->assertSee(GuestMessageType::Video->label());
     }
 }

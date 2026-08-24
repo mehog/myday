@@ -2,7 +2,7 @@
 
 return [
     'meta_title' => 'Know who is coming without chasing the group chat',
-    'meta_description' => 'Invitation, RSVPs, seating and guest photos on one :brand page. Start free. One-time payment.',
+    'meta_description' => 'Invitation, RSVPs, wedding checklist, seating and guest photos and videos on one :brand page. Start free. One-time payment.',
 
     'nav_demo' => 'Demo',
     'nav_how' => 'How it works',
@@ -16,7 +16,7 @@ return [
     'hero_title_lead' => 'Know who is coming',
     'hero_title_emphasis' => 'without chasing',
     'hero_title_tail' => 'the group chat.',
-    'hero_subtitle' => 'Invitation, RSVPs, seating and guest photos on one page guests open on their phone.',
+    'hero_subtitle' => 'Invitation, RSVPs, checklist, seating and guest photos and videos on one page guests open on their phone.',
     'hero_cta_create' => 'Create my wedding',
     'hero_cta_demo' => 'See a demo',
     'trust_free' => 'Free to start',
@@ -29,18 +29,18 @@ return [
     'value_2_text' => 'that arrive without the chase',
     'value_3_title' => 'The guest list',
     'value_3_text' => 'that stays true',
-    'value_4_title' => 'The photos',
-    'value_4_text' => 'in one album, not fifty phones',
+    'value_4_title' => 'The memories',
+    'value_4_text' => 'photos and videos in one place',
 
     'empathy_eyebrow' => 'Sound familiar',
     'empathy_title_lead' => 'The group chat is not',
     'empathy_title_emphasis' => 'a guest list.',
-    'empathy_text' => 'You sent the invitation as a screenshot. Then you asked who is coming. Then you asked again. The spreadsheet is already wrong. Seating is still in your head. Photos will scatter across phones and disappear.',
+    'empathy_text' => 'You sent the invitation as a screenshot. Then you asked who is coming. Then you asked again. The spreadsheet is already wrong. Seating is still in your head. Your checklist lives on sticky notes. Photos and videos will scatter across phones and disappear.',
 
     'future_eyebrow' => 'After',
     'future_title_lead' => 'The week of the wedding',
     'future_title_emphasis' => 'already makes sense.',
-    'future_text' => 'Every guest has a page with their name on it. Answers land in one list. Tables are arranged. On the day, a QR card on each table sends photos to one album you keep.',
+    'future_text' => 'Every guest has a page with their name on it. Answers land in one list. Your checklist keeps preparations on track. Tables are arranged. On the day, a QR card on each table sends photos and videos to one album you keep.',
 
     'story_invite_eyebrow' => '01  The invitation',
     'story_invite_title_lead' => 'An invitation they will',
@@ -61,20 +61,20 @@ return [
     'story_day_eyebrow' => '03  The wedding day',
     'story_day_title_lead' => 'Every moment,',
     'story_day_title_emphasis' => 'in the right order.',
-    'story_day_text' => 'Build your timeline and let guests follow the day. Arrange tables visually, then put QR cards on them so photos land in one album.',
+    'story_day_text' => 'Build your timeline and let guests follow the day. Arrange tables visually, then put QR cards on them so photos and videos land in one album.',
 
     'story_after_eyebrow' => '04  During and after',
     'story_after_title_lead' => 'The wedding does not end',
     'story_after_title_emphasis' => 'with the last dance.',
-    'story_after_text' => 'Guests share photos, voice notes and wishes. You choose what reaches your wall, and everything stays in your memories afterwards.',
+    'story_after_text' => 'Guests share photos, videos, voice notes and wishes. You choose what reaches your wall, and everything stays in your memories afterwards.',
     'story_after_point_1' => 'No account for your guests',
-    'story_after_point_2' => 'You approve every photo before it appears',
+    'story_after_point_2' => 'You approve every photo and video before it appears',
     'story_after_point_3' => 'A QR code for your tables',
 
     'journey_before' => 'Before',
-    'journey_before_text' => 'Invitation and RSVPs',
+    'journey_before_text' => 'Invitation, RSVPs and checklist',
     'journey_during' => 'During',
-    'journey_during_text' => 'Seating and photo wall',
+    'journey_during_text' => 'Seating, photos and videos',
     'journey_after' => 'After',
     'journey_after_text' => 'Your memories, together',
 
@@ -139,8 +139,9 @@ return [
     'pricing_feature_10' => 'Push notifications for important updates to guests',
     'pricing_feature_11' => 'Wedding budget calculator',
     'pricing_feature_12' => 'Audio messages from guests',
-    'pricing_feature_13' => 'Guest photo sharing on the wedding day and 30 days after',
+    'pricing_feature_13' => 'Guest photo and video sharing on the wedding day and 30 days after',
     'pricing_feature_14' => 'Interactive seating plan with PDF export',
+    'pricing_feature_15' => 'Wedding planning checklist with suggested tasks',
 
     'guarantee_title' => 'Try it with less risk.',
     'guarantee_text' => 'Request a refund within :days days of purchase. See the refund policy for how it works.',

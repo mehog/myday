@@ -55,6 +55,12 @@ class WeddingMemoriesWidget extends Widget
             ->latest()
             ->limit(5)
             ->get();
+        $videoMessages = $wedding->guestMessages()
+            ->where('type', GuestMessageType::Video)
+            ->whereNotNull('file_paths')
+            ->latest()
+            ->limit(5)
+            ->get();
         $photoMessages = $wedding->guestMessages()
             ->where('type', GuestMessageType::Photo)
             ->whereNotNull('file_paths')
@@ -81,8 +87,10 @@ class WeddingMemoriesWidget extends Widget
             'scheduleItems' => $wedding->scheduleItems()->orderBy('sort_order')->get(),
             'textMessages' => $textMessages,
             'audioMessages' => $audioMessages,
+            'videoMessages' => $videoMessages,
             'textCount' => $wedding->guestMessages()->where('type', GuestMessageType::Text)->count(),
             'audioCount' => $wedding->guestMessages()->where('type', GuestMessageType::Audio)->count(),
+            'videoCount' => $wedding->guestMessages()->where('type', GuestMessageType::Video)->count(),
             'photoCount' => $photoCount,
             'photoPreviews' => $photoPreviews,
             'messagesUrl' => GuestMessagesResource::getUrl(),

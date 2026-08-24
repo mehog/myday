@@ -125,7 +125,7 @@ class Wedding extends Component
         $data = $this->validate([
             'groom_name' => ['required', 'string', 'max:255'],
             'bride_name' => ['required', 'string', 'max:255'],
-            'wedding_date' => ['required', 'date'],
+            'wedding_date' => ['required', 'date', 'after:now'],
             'theme' => ['required', Rule::enum(InvitationTheme::class)],
             'template' => ['required', Rule::enum(InvitationTemplate::class)],
             'reveal_animation' => ['nullable', Rule::enum(InvitationReveal::class)],
@@ -136,6 +136,8 @@ class Wedding extends Component
             'invitation_locale' => ['required', Rule::in(array_keys(Locale::options()))],
             'send_message' => ['nullable', 'string'],
             'heroUpload' => ['nullable', 'image', 'max:5120'],
+        ], [
+            'wedding_date.after' => __('onboarding.wedding_date_future'),
         ]);
 
         $payload = [

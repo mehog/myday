@@ -49,7 +49,7 @@
                     </div>
                     <div class="sm:col-span-2">
                         <label class="mb-1 block text-sm font-medium">{{ __('app.wedding_datetime') }}</label>
-                        <input type="datetime-local" wire:model="wedding_date" class="{{ $controlClass }} h-10" @disabled($locked)>
+                        <input type="datetime-local" wire:model="wedding_date" min="{{ now()->format('Y-m-d\TH:i') }}" class="{{ $controlClass }} h-10" @disabled($locked)>
                         @error('wedding_date') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
                     </div>
                     <div class="sm:col-span-2">

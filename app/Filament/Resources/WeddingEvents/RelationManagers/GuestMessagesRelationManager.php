@@ -55,6 +55,17 @@ class GuestMessagesRelationManager extends RelationManager
                     ->openUrlInNewTab()
                     ->color('primary')
                     ->visible(fn ($record): bool => $record?->type === GuestMessageType::Audio),
+                TextColumn::make('video_count')
+                    ->label('Video')
+                    ->getStateUsing(fn (GuestMessage $record): string => count($record->file_paths ?? []).' video(s)')
+                    ->visible(fn ($record): bool => $record?->type === GuestMessageType::Video),
+                TextColumn::make('video_link')
+                    ->label('Video')
+                    ->formatStateUsing(fn (): string => 'Watch')
+                    ->url(fn (GuestMessage $record): ?string => $record->type === GuestMessageType::Video ? ($record->fileUrls()[0] ?? null) : null)
+                    ->openUrlInNewTab()
+                    ->color('primary')
+                    ->visible(fn ($record): bool => $record?->type === GuestMessageType::Video),
                 TextColumn::make('deviceSummary')
                     ->label('Device')
                     ->getStateUsing(fn (GuestMessage $record): ?string => $record->deviceSummary())

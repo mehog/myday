@@ -6,6 +6,7 @@ use App\GuestMessageType;
 use App\Models\Guest;
 use App\Models\GuestMessage;
 use App\Models\WeddingEvent;
+use App\PlanFeature;
 use App\Support\MediaDisk;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -32,6 +33,9 @@ class GuestContactPage extends Component
 
     /** @var array<int, TemporaryUploadedFile> */
     public array $photoFiles = [];
+
+    /** @var array<int, TemporaryUploadedFile> */
+    public array $videoFiles = [];
 
     public bool $messageSent = false;
 
@@ -67,6 +71,21 @@ class GuestContactPage extends Component
     public function canSendPhotos(): bool
     {
         return $this->event->acceptsGuestPhotos();
+    }
+
+    public function canSendVideos(): bool
+    {
+        return $this->event->acceptsGuestPhotos();
+    }
+
+    public function isWithinGuestMediaWindow(): bool
+    {
+        return $this->event->isWithinGuestPhotoWindow();
+    }
+
+    public function hasGuestMediaPlan(): bool
+    {
+        return $this->event->hasFeature(PlanFeature::QrPhotoAlbum);
     }
 
     public function submitText(): void
@@ -181,6 +200,55 @@ class GuestContactPage extends Component
         $this->reset('photoFiles');
         $this->markMessageSent('photo');
         $this->dispatch('photos-submitted');
+    }
+
+    public function submitVideos(): void
+    {
+        if (! $this->canSendVideos()) {
+            throw ValidationException::withMessages([
+                'videoFiles' => __('invitation.videos_not_available'),
+            ]);
+        }
+
+        if ($this->isDemo) {
+            $this->dispatch('demo-message-sent');
+            $this->dispatch('videos-submitted');
+
+            return;
+        }
+
+        $this->ensureCanSendMessage();
+
+        $this->validate([
+            'videoFiles' => ['required', 'array', 'min:1', 'max:3'],
+            'videoFiles.*' => ['required', 'file', 'mimetypes:video/mp4,video/quicktime,video/webm,video/3gpp', 'max:51200'],
+        ], [
+            'videoFiles.required' => __('invitation.videos_required'),
+            'videoFiles.max' => __('invitation.videos_max'),
+            'videoFiles.*.mimetypes' => __('invitation.videos_format_error'),
+        ]);
+
+        $paths = [];
+
+        foreach ($this->videoFiles as $video) {
+            $paths[] = $video->store(
+                'guest-messages/videos',
+                MediaDisk::name()
+            );
+        }
+
+        GuestMessage::query()->create([
+            'wedding_event_id' => $this->event->id,
+            'guest_id' => $this->guest->id,
+            'sender_name' => $this->senderName,
+            'type' => GuestMessageType::Video,
+            'file_paths' => $paths,
+            ...$this->fingerprint(),
+        ]);
+
+        $this->reset('videoFiles');
+        $this->markMessageSent('video');
+        $this->dispatch('videos-submitted');
     }
 
     protected function ensureCanSendMessage(): void

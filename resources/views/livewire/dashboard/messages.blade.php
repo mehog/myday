@@ -57,6 +57,17 @@
                             @if ($message->fileUrl())
                                 <audio controls class="w-full max-w-md" src="{{ $message->fileUrl() }}"></audio>
                             @endif
+                        @elseif ($message->type === GuestMessageType::Video)
+                            <div class="space-y-3">
+                                @foreach ($message->fileUrls() as $url)
+                                    <div class="space-y-2">
+                                        <video controls class="w-full max-w-xs rounded-md border border-border" src="{{ $url }}"></video>
+                                        <a href="{{ $url }}" target="_blank" rel="noopener noreferrer" class="text-sm text-primary underline">
+                                            {{ __('app.guest_messages_watch') }} ↗
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
                         @endif
                     </div>
                 </x-dashboard.card>

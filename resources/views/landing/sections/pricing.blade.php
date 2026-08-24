@@ -65,7 +65,7 @@
             </div>
 
             <ul class="grid sm:grid-cols-2 gap-x-10 gap-y-4">
-                @foreach (range(1, 14) as $i)
+                @foreach (range(1, 15) as $i)
                     <li class="landing-body text-sm text-[#5c5246] leading-relaxed pl-4 border-l border-[#c9a227]/40">
                         {{ __('landing.pricing_feature_' . $i) }}
                     </li>

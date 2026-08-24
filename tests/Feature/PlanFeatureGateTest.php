@@ -2,11 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\DodoPaymentStatus;
+use App\Models\DodoPayment;
 use App\Models\Guest;
 use App\Models\User;
 use App\Models\WeddingEvent;
 use App\PlanFeature;
 use App\PlanTier;
+use App\PricingRegion;
 use App\RsvpStatus;
 use App\Support\DashboardNav;
 use Tests\Concerns\RefreshInMemoryDatabase;
@@ -91,6 +94,32 @@ class PlanFeatureGateTest extends TestCase
 
         $this->assertTrue($wedding->hasFeature(PlanFeature::QrPhotoAlbum));
         $this->assertTrue($wedding->acceptsGuestPhotos());
+    }
+
+    public function test_succeeded_payment_syncs_free_wedding_plan_on_feature_check(): void
+    {
+        $wedding = WeddingEvent::factory()->create([
+            'plan_tier' => PlanTier::Free,
+            'guest_limit' => 50,
+            'wedding_date' => now(),
+            'is_active' => true,
+        ]);
+
+        DodoPayment::query()->create([
+            'user_id' => $wedding->user_id,
+            'wedding_event_id' => $wedding->id,
+            'plan_tier' => PlanTier::Basic,
+            'pricing_region' => PricingRegion::FirstWorld,
+            'currency' => 'EUR',
+            'amount' => 80,
+            'status' => DodoPaymentStatus::Succeeded,
+            'dodo_product_id' => 'pdt_fw_basic',
+            'dodo_payment_id' => 'pay_sync',
+            'paid_at' => now(),
+        ]);
+
+        $this->assertTrue($wedding->fresh()->acceptsGuestPhotos());
+        $this->assertSame(PlanTier::Basic, $wedding->fresh()->plan_tier);
     }
 
     public function test_checkout_rejects_free_and_deluxe_tiers(): void

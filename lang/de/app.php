@@ -46,6 +46,8 @@ return [
     'memories_wishes_empty' => 'Noch keine Textnachrichten.',
     'memories_audio_heading' => 'Audionachrichten',
     'memories_audio_empty' => 'Noch keine Audionachrichten.',
+    'memories_videos_heading' => 'Videonachrichten',
+    'memories_videos_empty' => 'Noch keine Videonachrichten.',
     'memories_photos_heading' => 'Gästefotos',
     'memories_photos_empty' => 'Noch keine Gästefotos. Gäste können im Fotofenster weiterhin hochladen.',
     'memories_view_all_messages' => 'Alle ansehen',

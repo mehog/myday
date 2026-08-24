@@ -2,7 +2,7 @@
 
 return [
     'meta_title' => 'Znajte ko dolazi bez jurnjave po grupnom četu',
-    'meta_description' => 'Pozivnica, potvrde dolaska, sedenje i fotografije gostiju na jednoj :brand stranici. Započnite besplatno. Jednokratna uplata.',
+    'meta_description' => 'Pozivnica, potvrde dolaska, checklista, sedenje te fotografije i video snimci gostiju na jednoj :brand stranici. Započnite besplatno. Jednokratna uplata.',
 
     'nav_demo' => 'Demo',
     'nav_how' => 'Kako radi',
@@ -16,7 +16,7 @@ return [
     'hero_title_lead' => 'Znajte ko dolazi',
     'hero_title_emphasis' => 'bez jurnjave',
     'hero_title_tail' => 'po grupnom četu.',
-    'hero_subtitle' => 'Pozivnica, potvrde dolaska, sedenje i fotografije gostiju na jednoj stranici koju gosti otvore na telefonu.',
+    'hero_subtitle' => 'Pozivnica, potvrde dolaska, checklista, sedenje te fotografije i video snimci gostiju na jednoj stranici koju gosti otvore na telefonu.',
     'hero_cta_create' => 'Kreirajte venčanje',
     'hero_cta_demo' => 'Pogledajte demo',
     'trust_free' => 'Besplatno za početak',
@@ -29,18 +29,18 @@ return [
     'value_2_text' => 'koje stignu bez jurnjave',
     'value_3_title' => 'Lista gostiju',
     'value_3_text' => 'koja ostaje tačna',
-    'value_4_title' => 'Fotografije',
-    'value_4_text' => 'u jednom albumu, ne na pedeset telefona',
+    'value_4_title' => 'Uspomene',
+    'value_4_text' => 'fotografije i video snimci na jednom mestu',
 
     'empathy_eyebrow' => 'Zvuči poznato',
     'empathy_title_lead' => 'Grupni čet nije',
     'empathy_title_emphasis' => 'lista gostiju.',
-    'empathy_text' => 'Poslali ste pozivnicu kao screenshot. Onda ste pitali ko dolazi. Onda ste pitali opet. Tabela je već pogrešna. Sedenje je još u glavi. Fotografije će se rasuti po telefonima i nestati.',
+    'empathy_text' => 'Poslali ste pozivnicu kao screenshot. Onda ste pitali ko dolazi. Onda ste pitali opet. Tabela je već pogrešna. Sedenje je još u glavi. Checklista je na lepljivim papirićima. Fotografije i video snimci će se rasuti po telefonima i nestati.',
 
     'future_eyebrow' => 'Posle',
     'future_title_lead' => 'Nedelja venčanja',
     'future_title_emphasis' => 'već ima smisla.',
-    'future_text' => 'Svaki gost ima stranicu sa svojim imenom. Odgovori dolaze na jednu listu. Stolovi su raspoređeni. Na dan venčanja QR kartica na svakom stolu šalje fotografije u jedan album koji čuvate.',
+    'future_text' => 'Svaki gost ima stranicu sa svojim imenom. Odgovori dolaze na jednu listu. Checklista drži pripreme pod kontrolom. Stolovi su raspoređeni. Na dan venčanja QR kartica na svakom stolu šalje fotografije i video snimke u jedan album koji čuvate.',
 
     'story_invite_eyebrow' => '01  Pozivnica',
     'story_invite_title_lead' => 'Pozivnica koju će',
@@ -61,20 +61,20 @@ return [
     'story_day_eyebrow' => '03  Dan venčanja',
     'story_day_title_lead' => 'Svaki trenutak,',
     'story_day_title_emphasis' => 'u pravom redu.',
-    'story_day_text' => 'Sastavite raspored i pustite goste da prate dan. Rasporedite stolove vizuelno, pa stavite QR kartice da fotografije stignu u jedan album.',
+    'story_day_text' => 'Sastavite raspored i pustite goste da prate dan. Rasporedite stolove vizuelno, pa stavite QR kartice da fotografije i video snimci stignu u jedan album.',
 
     'story_after_eyebrow' => '04  Tokom i posle',
     'story_after_title_lead' => 'Venčanje ne prestaje',
     'story_after_title_emphasis' => 'poslednjim plesom.',
-    'story_after_text' => 'Gosti dele fotografije, glasovne poruke i želje. Vi birate šta ide na zid, a sve ostaje u uspomenama.',
+    'story_after_text' => 'Gosti dele fotografije, video snimke, glasovne poruke i želje. Vi birate šta ide na zid, a sve ostaje u uspomenama.',
     'story_after_point_1' => 'Gosti ne trebaju nalog',
-    'story_after_point_2' => 'Vi odobravate svaku fotografiju pre nego što se pojavi',
+    'story_after_point_2' => 'Vi odobravate svaku fotografiju i video snimak pre nego što se pojavi',
     'story_after_point_3' => 'QR kod za vaše stolove',
 
     'journey_before' => 'Pre',
-    'journey_before_text' => 'Pozivnica i potvrde',
+    'journey_before_text' => 'Pozivnica, potvrde i checklista',
     'journey_during' => 'Tokom',
-    'journey_during_text' => 'Sedenje i zid fotografija',
+    'journey_during_text' => 'Sedenje, fotografije i video snimci',
     'journey_after' => 'Posle',
     'journey_after_text' => 'Vaše uspomene, zajedno',
 
@@ -139,8 +139,9 @@ return [
     'pricing_feature_10' => 'Push notifikacije za važne poruke gostima',
     'pricing_feature_11' => 'Budžet kalkulator za venčanje',
     'pricing_feature_12' => 'Audio poruke od gostiju',
-    'pricing_feature_13' => 'Deljenje fotografija gostiju na dan venčanja i 30 dana nakon',
+    'pricing_feature_13' => 'Deljenje fotografija i video snimaka gostiju na dan venčanja i 30 dana nakon',
     'pricing_feature_14' => 'Interaktivni plan sedenja sa PDF izvozom',
+    'pricing_feature_15' => 'Checklista za planiranje venčanja sa predloženim zadacima',
 
     'guarantee_title' => 'Isprobajte uz manji rizik.',
     'guarantee_text' => 'Zatražite refundaciju u roku od :days dana od kupovine. Pogledajte politiku refundacije kako to funkcioniše.',

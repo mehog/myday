@@ -118,25 +118,23 @@ class DodoWebhookProcessor
                     'paid_at' => now(),
                 ]);
             } else {
-                if ($payment->status === DodoPaymentStatus::Succeeded) {
-                    return;
+                if ($payment->status !== DodoPaymentStatus::Succeeded) {
+                    $payment->forceFill([
+                        'wedding_event_id' => $wedding->id,
+                        'plan_tier' => $tier,
+                        'pricing_region' => $region,
+                        'currency' => strtoupper((string) ($paymentData->currency ?? $payment->currency)),
+                        'amount' => $this->amountFromMinorUnits((int) ($paymentData->totalAmount ?? ($payment->amount * 100))),
+                        'status' => DodoPaymentStatus::Succeeded,
+                        'dodo_product_id' => $productId,
+                        'dodo_payment_id' => $paymentData->paymentID ?? $payment->dodo_payment_id,
+                        'dodo_checkout_session_id' => $paymentData->checkoutSessionID ?? $payment->dodo_checkout_session_id,
+                        'dodo_customer_id' => $paymentData->customer->customerID ?? $payment->dodo_customer_id,
+                        'metadata' => $metadata,
+                        'payload' => $this->toArray($paymentData),
+                        'paid_at' => now(),
+                    ])->save();
                 }
-
-                $payment->forceFill([
-                    'wedding_event_id' => $wedding->id,
-                    'plan_tier' => $tier,
-                    'pricing_region' => $region,
-                    'currency' => strtoupper((string) ($paymentData->currency ?? $payment->currency)),
-                    'amount' => $this->amountFromMinorUnits((int) ($paymentData->totalAmount ?? ($payment->amount * 100))),
-                    'status' => DodoPaymentStatus::Succeeded,
-                    'dodo_product_id' => $productId,
-                    'dodo_payment_id' => $paymentData->paymentID ?? $payment->dodo_payment_id,
-                    'dodo_checkout_session_id' => $paymentData->checkoutSessionID ?? $payment->dodo_checkout_session_id,
-                    'dodo_customer_id' => $paymentData->customer->customerID ?? $payment->dodo_customer_id,
-                    'metadata' => $metadata,
-                    'payload' => $this->toArray($paymentData),
-                    'paid_at' => now(),
-                ])->save();
             }
 
             $wedding->applyPlanTier($tier);

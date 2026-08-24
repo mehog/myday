@@ -2,7 +2,7 @@
 
 return [
     'meta_title' => ':brand - Sve za vaše vjenčanje, na jednom mjestu',
-    'meta_description' => 'Pozivnica, potvrde dolaska, sjedenje, uspomene gostiju i plan dana — sve na jednom linku za vaše vjenčanje.',
+    'meta_description' => 'Pozivnica, potvrde dolaska, checklista, sjedenje, fotografije i videozapisi gostiju — sve na jednom linku za vaše vjenčanje.',
 
     'nav_demo' => 'Demo',
     'nav_features' => 'Funkcije',
@@ -17,7 +17,7 @@ return [
     'hero_title_lead' => 'Vaše vjenčanje,',
     'hero_title_emphasis' => 'prelijepo',
     'hero_title_tail' => 'organizovano.',
-    'hero_subtitle' => 'Napravite prelijepo digitalno iskustvo vjenčanja, upravljajte gostima i olakšajte svaki trenutak.',
+    'hero_subtitle' => 'Napravite prelijepo digitalno iskustvo vjenčanja, upravljajte gostima, pratite pripreme checklistom i sakupite fotografije i videozapise sa dana.',
     'hero_cta_demo' => 'Pogledajte demo',
     'hero_cta_create' => 'Kreirajte vjenčanje',
     'hero_image_alt' => 'Prikaz personalizovane :brand stranice za vjenčanje na telefonu',
@@ -32,7 +32,7 @@ return [
     'value_3_title' => 'Lista gostiju',
     'value_3_text' => 'uvijek ažurna',
     'value_4_title' => 'Dan vjenčanja',
-    'value_4_text' => 'sjedenje i dijeljene fotografije',
+    'value_4_text' => 'sjedenje, dijeljene fotografije i videozapisi',
 
     'benefits_title' => 'Sve što vašem vjenčanju treba.',
     'benefits_title_lead' => 'Sve što vašem vjenčanju',
@@ -43,9 +43,9 @@ return [
     'pillar_2_title' => 'Pametne potvrde',
     'pillar_2_text' => 'Znate tačno ko dolazi — odrasli, djeca, odgovori uživo.',
     'pillar_3_title' => 'Upravljanje gostima',
-    'pillar_3_text' => 'Porodice, grupe, telefoni. Pretražite i filtrirajte u sekundama.',
+    'pillar_3_text' => 'Porodice, grupe, telefoni — plus checklista vjenčanja da pripreme ostanu pod kontrolom.',
     'pillar_4_title' => 'Dan vjenčanja',
-    'pillar_4_text' => 'Plan sjedenja za salu, QR kartice na stolovima za fotografije.',
+    'pillar_4_text' => 'Plan sjedenja za salu, QR kartice na stolovima za fotografije i videozapise.',
 
     'benefit_1_title' => 'Svaki gost dobija svoje ime',
     'benefit_1_text' => 'Svaki gost dobija svoj link, a njegovo ime je već tu čim ga otvori. Tako nema zabune oko toga ko je pozvan.',
@@ -59,8 +59,8 @@ return [
     'benefit_4_title' => 'Vizuelni plan sjedenja',
     'benefit_4_text' => 'Rasporedite goste na interaktivnom planu, dodijelite im mjesta za stolovima, a zatim izvezite kompletnu listu sa planom sjedenja kao PDF.',
 
-    'benefit_memories_title' => 'Poruke i fotografije od gostiju',
-    'benefit_memories_text' => 'Gosti šalju tekst, glasovne poruke i fotografije kroz pozivnicu. Sve stiže na jedno mjesto.',
+    'benefit_memories_title' => 'Poruke, fotografije i videozapisi od gostiju',
+    'benefit_memories_text' => 'Gosti šalju tekst, glasovne poruke, fotografije i videozapise kroz pozivnicu. Sve stiže na jedno mjesto.',
 
     'feature_invite_eyebrow' => 'Iskustvo gostiju',
     'feature_invite_title' => 'Prava pozivnica, ne screenshot iz chata',
@@ -98,8 +98,8 @@ return [
 
     'feature_updates_eyebrow' => 'Obavijesti i uvid',
     'feature_updates_title' => 'Znate šta se dešava i držite goste u toku',
-    'feature_updates_text' => 'Panel prikazuje otvaranja, odgovore, menije i potrebe za smještajem na prvi pogled. Šaljite push obavijesti kad se planovi promijene.',
-    'feature_updates_point_1' => 'Pregled posjeta, potvrda, menija i smještaja',
+    'feature_updates_text' => 'Panel prikazuje otvaranja, odgovore, menije, potrebe za smještajem i napredak checkliste na prvi pogled. Šaljite push obavijesti kad se planovi promijene.',
+    'feature_updates_point_1' => 'Pregled posjeta, potvrda, menija, smještaja i checkliste',
     'feature_updates_point_2' => 'Push obavijesti za važne novosti',
     'feature_updates_point_3' => 'Izmjene uživo koje gosti odmah vide',
     'feature_updates_alt' => 'Screenshot :brand panela sa statistikom posjeta i potvrda',
@@ -113,6 +113,8 @@ return [
     'interaction_2_text' => 'Gosti mogu snimiti glasovnu poruku. Čujte njihov smijeh, uzbuđenje i lične pozdrave i nakon što prođe taj dan.',
     'interaction_3_title' => 'Dijeljenje fotografija',
     'interaction_3_text' => 'Gosti uploaduju fotografije sa dana vjenčanja i dana koji slijede. Sve se sliva na jedno mjesto, dostupno vam 30 dana nakon proslave.',
+    'interaction_4_title' => 'Dijeljenje videozapisa',
+    'interaction_4_text' => 'Gosti mogu uploadovati kratke videozapise sa proslave — govore, ples, trenutke koje možda niste uhvatili. Sve u istom sandučiću kao fotografije i poruke.',
     'interaction_inbox_alt' => 'Screenshot sandučeta poruka gostiju u :brand panelu',
     'interaction_upload_alt' => 'Screenshot stranice za slanje poruke gostiju na telefonu',
     'interaction_demo_name' => 'Amina',
@@ -185,20 +187,20 @@ return [
     'story_day_eyebrow' => '03 — Dan vjenčanja',
     'story_day_title_lead' => 'Svaki trenutak,',
     'story_day_title_emphasis' => 'u pravom redu.',
-    'story_day_text' => 'Sastavite raspored i pustite goste da prate dan. Rasporedite stolove vizuelno, pa stavite QR kartice da fotografije stignu u jedan album.',
+    'story_day_text' => 'Sastavite raspored i pustite goste da prate dan. Rasporedite stolove vizuelno, pa stavite QR kartice da fotografije i videozapisi stignu u jedan album.',
 
     'story_after_eyebrow' => '04 — Tokom i poslije',
     'story_after_title_lead' => 'Vjenčanje ne prestaje',
     'story_after_title_emphasis' => 'posljednjim plesom.',
-    'story_after_text' => 'Gosti dijele fotografije, glasovne poruke i želje. Vi birate šta ide na zid, a sve ostaje u uspomenama.',
+    'story_after_text' => 'Gosti dijele fotografije, videozapise, glasovne poruke i želje. Vi birate šta ide na zid, a sve ostaje u uspomenama.',
     'story_after_point_1' => 'Gosti ne trebaju račun',
-    'story_after_point_2' => 'Vi odobravate svaku fotografiju',
+    'story_after_point_2' => 'Vi odobravate svaku fotografiju i videozapis',
     'story_after_point_3' => 'QR kod za stolove',
 
     'journey_before' => 'Prije',
-    'journey_before_text' => 'Pozivnica i potvrde',
+    'journey_before_text' => 'Pozivnica, potvrde i checklista',
     'journey_during' => 'Tokom',
-    'journey_during_text' => 'Sjedenje i zid fotografija',
+    'journey_during_text' => 'Sjedenje, fotografije i videozapisi',
     'journey_after' => 'Poslije',
     'journey_after_text' => 'Uspomene, na jednom mjestu',
 
@@ -238,7 +240,7 @@ return [
     'mock_seating_title' => 'Sto 4 · Emir Hadžić',
     'mock_seating_text' => 'Vizuelni plan sale i QR kartica na svakom stolu.',
     'mock_wall_title' => 'Naš zid fotografija',
-    'mock_share_photo' => 'Podijeli fotografiju',
+    'mock_share_photo' => 'Podijeli fotografiju ili videozapis',
 
     'pricing_title' => 'Odaberite paket',
     'pricing_subtitle' => 'Započnite besplatno, zatim nadogradite kad trebate više gostiju ili premium mogućnosti. Jednokratna uplata — bez mjesečne pretplate.',
@@ -273,6 +275,7 @@ return [
     'pricing_feature_10' => 'Push notifikacije za važne poruke gostima',
     'pricing_feature_11' => 'Budžet kalkulator za vjenčanje',
     'pricing_feature_12' => 'Audio poruke od gostiju',
-    'pricing_feature_13' => 'Dijeljenje fotografija gostiju na dan vjenčanja i 30 dana nakon',
+    'pricing_feature_13' => 'Dijeljenje fotografija i videozapisa gostiju na dan vjenčanja i 30 dana nakon',
     'pricing_feature_14' => 'Interaktivni plan sjedenja sa PDF izvozom',
+    'pricing_feature_15' => 'Checklista za planiranje vjenčanja sa predloženim zadacima',
 ];

@@ -102,6 +102,21 @@ class GuestMessagesResource extends Resource
                             ->url(fn (GuestMessage $record): ?string => $record->fileUrl())
                             ->openUrlInNewTab(),
                     ]),
+                Section::make(__('app.guest_messages_col_video'))
+                    ->columnSpanFull()
+                    ->collapsible()
+                    ->visible(fn (GuestMessage $record): bool => $record->type === GuestMessageType::Video)
+                    ->schema([
+                        TextEntry::make('video_count')
+                            ->hiddenLabel()
+                            ->getStateUsing(fn (GuestMessage $record): string => __('app.guest_messages_col_video_count', [
+                                'count' => count($record->file_paths ?? []),
+                            ])),
+                        ViewEntry::make('file_paths')
+                            ->hiddenLabel()
+                            ->view('filament.app.resources.guest-messages.video-gallery')
+                            ->columnSpanFull(),
+                    ]),
                 Section::make(__('app.guest_messages_detail_info'))
                     ->columnSpan(fn (GuestMessage $record): int|string => $record->hasFingerprint() ? 1 : 'full')
                     ->collapsible()
@@ -118,6 +133,7 @@ class GuestMessagesResource extends Resource
                                 GuestMessageType::Text => 'info',
                                 GuestMessageType::Audio => 'warning',
                                 GuestMessageType::Photo => 'success',
+                                GuestMessageType::Video => 'primary',
                                 default => 'gray',
                             }),
                         TextEntry::make('created_at')
@@ -179,6 +195,7 @@ class GuestMessagesResource extends Resource
                         GuestMessageType::Text => 'info',
                         GuestMessageType::Audio => 'warning',
                         GuestMessageType::Photo => 'success',
+                        GuestMessageType::Video => 'primary',
                         default => 'gray',
                     }),
                 TextColumn::make('content')
@@ -205,6 +222,19 @@ class GuestMessagesResource extends Resource
                     ->openUrlInNewTab()
                     ->color('primary')
                     ->visible(fn ($record): bool => $record?->type === GuestMessageType::Audio),
+                TextColumn::make('video_count')
+                    ->label(__('app.guest_messages_col_video'))
+                    ->getStateUsing(fn (GuestMessage $record): string => __('app.guest_messages_col_video_count', [
+                        'count' => count($record->file_paths ?? []),
+                    ]))
+                    ->visible(fn ($record): bool => $record?->type === GuestMessageType::Video),
+                TextColumn::make('video_link')
+                    ->label(__('app.guest_messages_col_video'))
+                    ->formatStateUsing(fn (): string => __('app.guest_messages_watch'))
+                    ->url(fn (GuestMessage $record): ?string => $record->type === GuestMessageType::Video ? ($record->fileUrls()[0] ?? null) : null)
+                    ->openUrlInNewTab()
+                    ->color('primary')
+                    ->visible(fn ($record): bool => $record?->type === GuestMessageType::Video),
                 TextColumn::make('visit_match')
                     ->label(__('app.guest_messages_col_origin'))
                     ->badge()

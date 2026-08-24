@@ -2,7 +2,7 @@
 
 return [
     'meta_title' => ':brand - Everything for your wedding, in one place',
-    'meta_description' => 'Invitation, RSVP, seating, guest memories and your day schedule — all on one link for your wedding.',
+    'meta_description' => 'Invitation, RSVP, wedding checklist, seating, guest photos and videos — all on one link for your wedding.',
 
     'nav_demo' => 'Demo',
     'nav_features' => 'Features',
@@ -17,7 +17,7 @@ return [
     'hero_title_lead' => 'Your wedding,',
     'hero_title_emphasis' => 'beautifully',
     'hero_title_tail' => 'organized.',
-    'hero_subtitle' => 'Create a beautiful digital wedding experience, manage your guests and make every moment easier.',
+    'hero_subtitle' => 'Create a beautiful digital wedding experience, manage your guests, track preparations with a checklist, and collect photos and videos from the day.',
     'hero_cta_demo' => 'See a demo',
     'hero_cta_create' => 'Create my wedding',
     'hero_image_alt' => 'Mobile preview of a personalized :brand wedding page',
@@ -32,7 +32,7 @@ return [
     'value_3_title' => 'Guest list',
     'value_3_text' => 'always up to date',
     'value_4_title' => 'The wedding day',
-    'value_4_text' => 'seating and shared photos',
+    'value_4_text' => 'seating, shared photos and videos',
 
     'benefits_title' => 'Everything your wedding needs.',
     'benefits_title_lead' => 'Everything your wedding',
@@ -43,9 +43,9 @@ return [
     'pillar_2_title' => 'Smart RSVPs',
     'pillar_2_text' => 'Know exactly who is coming — adults, children, live answers.',
     'pillar_3_title' => 'Guest management',
-    'pillar_3_text' => 'Families, groups, phone numbers. Search and filter in seconds.',
+    'pillar_3_text' => 'Families, groups, phone numbers — plus a wedding checklist so preparations stay on track.',
     'pillar_4_title' => 'Wedding day',
-    'pillar_4_text' => 'A seating plan for the room, QR cards on the tables for photos.',
+    'pillar_4_text' => 'A seating plan for the room, QR cards on the tables for photos and videos.',
 
     'benefit_1_title' => 'Every guest gets their own name',
     'benefit_1_text' => 'Every guest gets their own link. Their name is already on the page when they open it, so there is no mix-up about who is invited.',
@@ -59,8 +59,8 @@ return [
     'benefit_4_title' => 'Visual seating plan',
     'benefit_4_text' => 'Arrange guests on an interactive floor plan, assign them to tables, then export the full list with the seating layout as a PDF.',
 
-    'benefit_memories_title' => 'Messages and photos from guests',
-    'benefit_memories_text' => 'Guests send text, voice notes and photos through the invitation. Everything lands in one place for you.',
+    'benefit_memories_title' => 'Messages, photos and videos from guests',
+    'benefit_memories_text' => 'Guests send text, voice notes, photos and videos through the invitation. Everything lands in one place for you.',
 
     'feature_invite_eyebrow' => 'Guest experience',
     'feature_invite_title' => 'A real invitation, not a chat screenshot',
@@ -98,8 +98,8 @@ return [
 
     'feature_updates_eyebrow' => 'Updates and insight',
     'feature_updates_title' => 'Know what is happening, keep guests informed',
-    'feature_updates_text' => 'Your panel shows opens, responses, menus and accommodation needs at a glance. Send push updates when plans change.',
-    'feature_updates_point_1' => 'Visit, RSVP, menu and accommodation overview',
+    'feature_updates_text' => 'Your panel shows opens, responses, menus, accommodation needs and checklist progress at a glance. Send push updates when plans change.',
+    'feature_updates_point_1' => 'Visit, RSVP, menu, accommodation and checklist overview',
     'feature_updates_point_2' => 'Push notifications for important updates',
     'feature_updates_point_3' => 'Live editing guests see instantly',
     'feature_updates_alt' => 'Screenshot of the :brand couple dashboard with visit and RSVP stats',
@@ -113,6 +113,8 @@ return [
     'interaction_2_text' => 'Let guests record a voice message. Hear their laughter, excitement and personal greetings long after the day is over.',
     'interaction_3_title' => 'Photo sharing',
     'interaction_3_text' => 'Guests upload photos from the big day and the days after. Everything lands in one place for you, for 30 days after the celebration.',
+    'interaction_4_title' => 'Video sharing',
+    'interaction_4_text' => 'Guests can upload short videos from the celebration — speeches, dancing, moments you might have missed. All in the same inbox as photos and messages.',
     'interaction_inbox_alt' => 'Screenshot of the guest messages inbox in the :brand panel',
     'interaction_upload_alt' => 'Screenshot of the guest message upload screen on a phone',
     'interaction_demo_name' => 'Layla',
@@ -185,20 +187,20 @@ return [
     'story_day_eyebrow' => '03 — The wedding day',
     'story_day_title_lead' => 'Every moment,',
     'story_day_title_emphasis' => 'in the right order.',
-    'story_day_text' => 'Build your timeline and let guests follow the day. Arrange tables visually, then put QR cards on them so photos land in one album.',
+    'story_day_text' => 'Build your timeline and let guests follow the day. Arrange tables visually, then put QR cards on them so photos and videos land in one album.',
 
     'story_after_eyebrow' => '04 — During and after',
     'story_after_title_lead' => 'The wedding does not end',
     'story_after_title_emphasis' => 'with the last dance.',
-    'story_after_text' => 'Guests share photos, voice notes and wishes. You choose what reaches your wall, and everything stays in your memories afterwards.',
+    'story_after_text' => 'Guests share photos, videos, voice notes and wishes. You choose what reaches your wall, and everything stays in your memories afterwards.',
     'story_after_point_1' => 'No account for your guests',
-    'story_after_point_2' => 'You approve every photo before it appears',
+    'story_after_point_2' => 'You approve every photo and video before it appears',
     'story_after_point_3' => 'A QR code for your tables',
 
     'journey_before' => 'Before',
-    'journey_before_text' => 'Invitation and RSVPs',
+    'journey_before_text' => 'Invitation, RSVPs and checklist',
     'journey_during' => 'During',
-    'journey_during_text' => 'Seating and photo wall',
+    'journey_during_text' => 'Seating, photos and videos',
     'journey_after' => 'After',
     'journey_after_text' => 'Your memories, together',
 
@@ -238,7 +240,7 @@ return [
     'mock_seating_title' => 'Table 4 · James Thompson',
     'mock_seating_text' => 'A visual plan for the room, and a QR card on every table.',
     'mock_wall_title' => 'Our photo wall',
-    'mock_share_photo' => 'Share a photo',
+    'mock_share_photo' => 'Share a photo or video',
 
     'pricing_title' => 'Choose your plan',
     'pricing_subtitle' => 'Start free, then upgrade when you need more guests or premium features. One-time payment — no monthly subscription.',
@@ -273,6 +275,7 @@ return [
     'pricing_feature_10' => 'Push notifications for important updates to guests',
     'pricing_feature_11' => 'Wedding budget calculator',
     'pricing_feature_12' => 'Audio messages from guests',
-    'pricing_feature_13' => 'Guest photo sharing on the wedding day and 30 days after',
+    'pricing_feature_13' => 'Guest photo and video sharing on the wedding day and 30 days after',
     'pricing_feature_14' => 'Interactive seating plan with PDF export',
+    'pricing_feature_15' => 'Wedding planning checklist with suggested tasks',
 ];

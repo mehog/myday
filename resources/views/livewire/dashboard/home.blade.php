@@ -102,6 +102,25 @@
                         <p class="text-sm text-muted-foreground">{{ __('app.memories_wishes_empty') }}</p>
                     @endforelse
                 </x-dashboard.card>
+
+                <x-dashboard.card>
+                    <x-slot:header>
+                        <div class="flex w-full items-center justify-between gap-2">
+                            <h3 class="font-medium">{{ __('app.memories_videos_heading') }}</h3>
+                            <a href="{{ route('dashboard.messages') }}" class="text-xs font-medium text-primary hover:underline">{{ __('app.memories_view_all_messages') }}</a>
+                        </div>
+                    </x-slot:header>
+                    @forelse ($memories['videoMessages'] as $message)
+                        <div class="border-b border-border py-3 last:border-0">
+                            <p class="mb-2 text-sm font-medium">{{ $message->sender_name }}</p>
+                            @foreach ($message->fileUrls() as $url)
+                                <video controls class="w-full max-w-xs rounded-md border border-border" src="{{ $url }}"></video>
+                            @endforeach
+                        </div>
+                    @empty
+                        <p class="text-sm text-muted-foreground">{{ __('app.memories_videos_empty') }}</p>
+                    @endforelse
+                </x-dashboard.card>
             </div>
         @else
             <div class="flex justify-center border-b border-border pb-3">

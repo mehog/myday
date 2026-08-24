@@ -321,6 +321,12 @@ class Home extends Component
                 ->latest()
                 ->limit(8)
                 ->get(),
+            'videoMessages' => $wedding->guestMessages()
+                ->where('type', GuestMessageType::Video)
+                ->whereNotNull('file_paths')
+                ->latest()
+                ->limit(5)
+                ->get(),
         ];
     }
 }

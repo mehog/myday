@@ -2,7 +2,7 @@
 
 return [
     'meta_title' => 'Wissen Sie, wer kommt, ohne dem Gruppenchat hinterherzulaufen',
-    'meta_description' => 'Einladung, Zusagen, Sitzplan und Gästefotos auf einer :brand-Seite. Kostenlos starten. Einmalzahlung.',
+    'meta_description' => 'Einladung, Zusagen, Hochzeitscheckliste, Sitzplan sowie Gästefotos und -videos auf einer :brand-Seite. Kostenlos starten. Einmalzahlung.',
 
     'nav_demo' => 'Demo',
     'nav_how' => 'So funktioniert es',
@@ -16,7 +16,7 @@ return [
     'hero_title_lead' => 'Wissen Sie, wer kommt',
     'hero_title_emphasis' => 'ohne hinterherzulaufen',
     'hero_title_tail' => 'im Gruppenchat.',
-    'hero_subtitle' => 'Einladung, Zusagen, Sitzplan und Gästefotos auf einer Seite, die Gäste am Handy öffnen.',
+    'hero_subtitle' => 'Einladung, Zusagen, Checkliste, Sitzplan sowie Gästefotos und -videos auf einer Seite, die Gäste am Handy öffnen.',
     'hero_cta_create' => 'Hochzeit erstellen',
     'hero_cta_demo' => 'Demo ansehen',
     'trust_free' => 'Kostenlos starten',
@@ -29,18 +29,18 @@ return [
     'value_2_text' => 'die ohne Nachhaken kommen',
     'value_3_title' => 'Die Gästeliste',
     'value_3_text' => 'die stimmt',
-    'value_4_title' => 'Die Fotos',
-    'value_4_text' => 'in einem Album, nicht auf fünfzig Handys',
+    'value_4_title' => 'Die Erinnerungen',
+    'value_4_text' => 'Fotos und Videos an einem Ort',
 
     'empathy_eyebrow' => 'Kommt Ihnen bekannt vor',
     'empathy_title_lead' => 'Der Gruppenchat ist keine',
     'empathy_title_emphasis' => 'Gästeliste.',
-    'empathy_text' => 'Sie haben die Einladung als Screenshot geschickt. Dann gefragt, wer kommt. Dann nochmal gefragt. Die Tabelle stimmt schon nicht mehr. Der Sitzplan ist noch im Kopf. Die Fotos verteilen sich auf Handys und gehen verloren.',
+    'empathy_text' => 'Sie haben die Einladung als Screenshot geschickt. Dann gefragt, wer kommt. Dann nochmal gefragt. Die Tabelle stimmt schon nicht mehr. Der Sitzplan ist noch im Kopf. Ihre Checkliste klebt auf Post-its. Fotos und Videos verteilen sich auf Handys und gehen verloren.',
 
     'future_eyebrow' => 'Danach',
     'future_title_lead' => 'Die Woche der Hochzeit',
     'future_title_emphasis' => 'ergibt schon Sinn.',
-    'future_text' => 'Jeder Gast hat eine Seite mit seinem Namen. Antworten landen in einer Liste. Tische sind geplant. Am Tag schickt eine QR-Karte auf jedem Tisch Fotos in ein Album, das Sie behalten.',
+    'future_text' => 'Jeder Gast hat eine Seite mit seinem Namen. Antworten landen in einer Liste. Ihre Checkliste hält die Vorbereitungen im Blick. Tische sind geplant. Am Tag schickt eine QR-Karte auf jedem Tisch Fotos und Videos in ein Album, das Sie behalten.',
 
     'story_invite_eyebrow' => '01  Die Einladung',
     'story_invite_title_lead' => 'Eine Einladung, die sie',
@@ -61,20 +61,20 @@ return [
     'story_day_eyebrow' => '03  Der Hochzeitstag',
     'story_day_title_lead' => 'Jeder Moment',
     'story_day_title_emphasis' => 'in der richtigen Reihenfolge.',
-    'story_day_text' => 'Bauen Sie den Ablauf und lassen Sie Gäste dem Tag folgen. Ordnen Sie Tische visuell, legen Sie QR-Karten darauf, damit Fotos in einem Album landen.',
+    'story_day_text' => 'Bauen Sie den Ablauf und lassen Sie Gäste dem Tag folgen. Ordnen Sie Tische visuell, legen Sie QR-Karten darauf, damit Fotos und Videos in einem Album landen.',
 
     'story_after_eyebrow' => '04  Währenddessen und danach',
     'story_after_title_lead' => 'Die Hochzeit endet nicht',
     'story_after_title_emphasis' => 'mit dem letzten Tanz.',
-    'story_after_text' => 'Gäste teilen Fotos, Sprachnachrichten und Wünsche. Sie entscheiden, was an die Wand kommt, und alles bleibt danach in Ihren Erinnerungen.',
+    'story_after_text' => 'Gäste teilen Fotos, Videos, Sprachnachrichten und Wünsche. Sie entscheiden, was an die Wand kommt, und alles bleibt danach in Ihren Erinnerungen.',
     'story_after_point_1' => 'Kein Konto für Ihre Gäste',
-    'story_after_point_2' => 'Sie geben jedes Foto frei, bevor es erscheint',
+    'story_after_point_2' => 'Sie geben jedes Foto und Video frei, bevor es erscheint',
     'story_after_point_3' => 'Ein QR-Code für Ihre Tische',
 
     'journey_before' => 'Vorher',
-    'journey_before_text' => 'Einladung und Zusagen',
+    'journey_before_text' => 'Einladung, Zusagen und Checkliste',
     'journey_during' => 'Währenddessen',
-    'journey_during_text' => 'Sitzplan und Fotowand',
+    'journey_during_text' => 'Sitzplan, Fotos und Videos',
     'journey_after' => 'Danach',
     'journey_after_text' => 'Ihre Erinnerungen, zusammen',
 
@@ -139,8 +139,9 @@ return [
     'pricing_feature_10' => 'Push-Benachrichtigungen für wichtige Updates an Gäste',
     'pricing_feature_11' => 'Hochzeits-Budgetrechner',
     'pricing_feature_12' => 'Audio-Nachrichten von Gästen',
-    'pricing_feature_13' => 'Foto-Sharing der Gäste am Hochzeitstag und 30 Tage danach',
+    'pricing_feature_13' => 'Gäste-Foto- und Video-Sharing am Hochzeitstag und 30 Tage danach',
     'pricing_feature_14' => 'Interaktiver Sitzplan mit PDF-Export',
+    'pricing_feature_15' => 'Hochzeits-Checkliste mit vorgeschlagenen Aufgaben',
 
     'guarantee_title' => 'Mit weniger Risiko ausprobieren.',
     'guarantee_text' => 'Beantragen Sie innerhalb von :days Tagen nach dem Kauf eine Rückerstattung. In der Rückerstattungsrichtlinie steht, wie das funktioniert.',

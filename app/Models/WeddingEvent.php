@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\BudgetGuestMode;
+use App\DodoPaymentStatus;
 use App\InvitationReveal;
 use App\InvitationTemplate;
 use App\InvitationTheme;
@@ -220,11 +221,35 @@ class WeddingEvent extends Model
 
     public function hasFeature(PlanFeature $feature): bool
     {
+        $this->syncPlanFromSucceededPayments();
+
         if ($this->plan_tier === null) {
             return false;
         }
 
         return $this->plan_tier->hasFeature($feature);
+    }
+
+    public function syncPlanFromSucceededPayments(): void
+    {
+        if ($this->plan_tier !== null && $this->plan_tier->isPaid()) {
+            return;
+        }
+
+        $tier = DodoPayment::query()
+            ->where('wedding_event_id', $this->id)
+            ->where('status', DodoPaymentStatus::Succeeded)
+            ->orderByDesc('paid_at')
+            ->get()
+            ->map(fn (DodoPayment $payment): ?PlanTier => $payment->plan_tier)
+            ->filter(fn (?PlanTier $tier): bool => $tier instanceof PlanTier && $tier->isPaid())
+            ->sortByDesc(fn (PlanTier $tier): int => $tier->sortOrder())
+            ->first();
+
+        if ($tier instanceof PlanTier) {
+            $this->applyPlanTier($tier);
+            $this->refresh();
+        }
     }
 
     public function activeGuestCount(): int
@@ -533,6 +558,11 @@ class WeddingEvent extends Model
             return false;
         }
 
+        return $this->isWithinGuestPhotoWindow();
+    }
+
+    public function isWithinGuestPhotoWindow(): bool
+    {
         $start = $this->wedding_date->copy()->startOfDay();
         $end = $this->wedding_date->copy()->addDays(30)->endOfDay();
 

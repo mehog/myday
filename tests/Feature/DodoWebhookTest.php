@@ -139,6 +139,63 @@ class DodoWebhookTest extends TestCase
         $this->assertSame(250, $wedding->guest_limit);
     }
 
+    public function test_payment_succeeded_reapplies_plan_when_wedding_still_on_free_tier(): void
+    {
+        $user = User::factory()->create();
+        $wedding = WeddingEvent::factory()->create([
+            'user_id' => $user->id,
+            'plan_tier' => PlanTier::Free,
+            'guest_limit' => 50,
+            'wedding_date' => now(),
+            'is_active' => true,
+        ]);
+
+        $payment = DodoPayment::query()->create([
+            'user_id' => $user->id,
+            'wedding_event_id' => $wedding->id,
+            'plan_tier' => PlanTier::Basic,
+            'pricing_region' => PricingRegion::FirstWorld,
+            'currency' => 'EUR',
+            'amount' => 80,
+            'status' => DodoPaymentStatus::Succeeded,
+            'dodo_product_id' => 'pdt_fw_basic',
+            'dodo_payment_id' => 'pay_already_succeeded',
+            'metadata' => [
+                'user_id' => (string) $user->id,
+                'wedding_event_id' => (string) $wedding->id,
+                'plan_tier' => 'basic',
+                'pricing_region' => 'first_world',
+            ],
+            'paid_at' => now(),
+        ]);
+
+        $event = $this->paymentSucceededEvent(
+            paymentId: 'pay_already_succeeded',
+            productId: 'pdt_fw_basic',
+            metadata: [
+                'user_id' => (string) $user->id,
+                'wedding_event_id' => (string) $wedding->id,
+                'plan_tier' => 'basic',
+                'pricing_region' => 'first_world',
+                'local_payment_id' => (string) $payment->id,
+            ],
+        );
+
+        $webhookEvent = DodoWebhookEvent::query()->create([
+            'webhook_id' => 'evt_resync',
+            'event_type' => 'payment.succeeded',
+            'status' => 'received',
+        ]);
+
+        app(DodoWebhookProcessor::class)->process($webhookEvent, $event);
+
+        $wedding->refresh();
+
+        $this->assertSame(PlanTier::Basic, $wedding->plan_tier);
+        $this->assertSame(100, $wedding->guest_limit);
+        $this->assertTrue($wedding->acceptsGuestPhotos());
+    }
+
     public function test_refund_deactivates_when_no_other_succeeded_payments(): void
     {
         $user = User::factory()->create();

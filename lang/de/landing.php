@@ -2,7 +2,7 @@
 
 return [
     'meta_title' => ':brand - Alles für Ihre Hochzeit, an einem Ort',
-    'meta_description' => 'Einladung, RSVP, Sitzplan, Gästeerinnerungen und Tagesablauf — alles auf einem Link für Ihre Hochzeit.',
+    'meta_description' => 'Einladung, RSVP, Hochzeitscheckliste, Sitzplan, Gästefotos und -videos — alles auf einem Link für Ihre Hochzeit.',
 
     'nav_demo' => 'Demo',
     'nav_features' => 'Funktionen',
@@ -17,7 +17,7 @@ return [
     'hero_title_lead' => 'Ihre Hochzeit,',
     'hero_title_emphasis' => 'wunderschön',
     'hero_title_tail' => 'organisiert.',
-    'hero_subtitle' => 'Schaffen Sie ein schönes digitales Hochzeitserlebnis, verwalten Sie Ihre Gäste und machen Sie jeden Moment leichter.',
+    'hero_subtitle' => 'Schaffen Sie ein schönes digitales Hochzeitserlebnis, verwalten Sie Ihre Gäste, behalten Sie Vorbereitungen mit einer Checkliste im Blick und sammeln Sie Fotos und Videos vom Tag.',
     'hero_cta_demo' => 'Demo ansehen',
     'hero_cta_create' => 'Hochzeit erstellen',
     'hero_image_alt' => 'Mobile Vorschau einer personalisierten :brand-Hochzeitsseite',
@@ -32,7 +32,7 @@ return [
     'value_3_title' => 'Gästeliste',
     'value_3_text' => 'immer aktuell',
     'value_4_title' => 'Hochzeitstag',
-    'value_4_text' => 'Sitzplan und geteilte Fotos',
+    'value_4_text' => 'Sitzplan, geteilte Fotos und Videos',
 
     'benefits_title' => 'Alles, was Ihre Hochzeit braucht.',
     'benefits_title_lead' => 'Alles, was Ihre Hochzeit',
@@ -43,9 +43,9 @@ return [
     'pillar_2_title' => 'Kluge RSVPs',
     'pillar_2_text' => 'Wissen Sie genau, wer kommt — Erwachsene, Kinder, live Antworten.',
     'pillar_3_title' => 'Gästeverwaltung',
-    'pillar_3_text' => 'Familien, Gruppen, Telefonnummern. Suchen und filtern in Sekunden.',
+    'pillar_3_text' => 'Familien, Gruppen, Telefonnummern — plus eine Hochzeitscheckliste, damit nichts vergessen wird.',
     'pillar_4_title' => 'Hochzeitstag',
-    'pillar_4_text' => 'Ein Sitzplan für den Saal, QR-Karten auf den Tischen für Fotos.',
+    'pillar_4_text' => 'Ein Sitzplan für den Saal, QR-Karten auf den Tischen für Fotos und Videos.',
 
     'benefit_1_title' => 'Jeder Gast bekommt seinen Namen',
     'benefit_1_text' => 'Jeder Gast bekommt seinen eigenen Link, und sein Name steht schon dort, sobald er die Einladung öffnet. So gibt es keine Verwechslungen.',
@@ -59,8 +59,8 @@ return [
     'benefit_4_title' => 'Visueller Sitzplan',
     'benefit_4_text' => 'Ordnen Sie Gäste auf einem interaktiven Sitzplan an, weisen Sie ihnen Tische zu und exportieren Sie die vollständige Gästeliste mit Sitzplan als PDF.',
 
-    'benefit_memories_title' => 'Nachrichten und Fotos von Gästen',
-    'benefit_memories_text' => 'Gäste senden Text, Sprachnachrichten und Fotos über die Einladung. Alles landet an einem Ort.',
+    'benefit_memories_title' => 'Nachrichten, Fotos und Videos von Gästen',
+    'benefit_memories_text' => 'Gäste senden Text, Sprachnachrichten, Fotos und Videos über die Einladung. Alles landet an einem Ort.',
 
     'feature_invite_eyebrow' => 'Gästeerlebnis',
     'feature_invite_title' => 'Eine echte Einladung, kein Chat-Screenshot',
@@ -98,8 +98,8 @@ return [
 
     'feature_updates_eyebrow' => 'Updates und Einblick',
     'feature_updates_title' => 'Wissen, was passiert, Gäste informiert halten',
-    'feature_updates_text' => 'Ihr Panel zeigt Öffnungen, Antworten, Menüs und Unterkunftsbedarf auf einen Blick. Senden Sie Push-Updates, wenn sich Pläne ändern.',
-    'feature_updates_point_1' => 'Besuchs-, RSVP-, Menü- und Unterkunftsübersicht',
+    'feature_updates_text' => 'Ihr Panel zeigt Öffnungen, Antworten, Menüs, Unterkunftsbedarf und Checklisten-Fortschritt auf einen Blick. Senden Sie Push-Updates, wenn sich Pläne ändern.',
+    'feature_updates_point_1' => 'Übersicht über Besuche, RSVPs, Menüs, Unterkunft und Checkliste',
     'feature_updates_point_2' => 'Push-Benachrichtigungen für wichtige Updates',
     'feature_updates_point_3' => 'Live-Bearbeitung, die Gäste sofort sehen',
     'feature_updates_alt' => 'Screenshot des :brand-Dashboards mit Besuchs- und RSVP-Statistiken',
@@ -113,6 +113,8 @@ return [
     'interaction_2_text' => 'Gäste können eine Sprachnachricht aufnehmen. Hören Sie ihr Lachen, ihre Freude und persönlichen Grüße lange nach dem Tag.',
     'interaction_3_title' => 'Fotos teilen',
     'interaction_3_text' => 'Gäste laden Fotos vom Hochzeitstag und den Tagen danach hoch. Alles landet an einem Ort, 30 Tage lang für Sie verfügbar.',
+    'interaction_4_title' => 'Videos teilen',
+    'interaction_4_text' => 'Gäste können kurze Videos von der Feier hochladen — Reden, Tanz, Momente, die Sie vielleicht verpasst haben. Alles im gleichen Posteingang wie Fotos und Nachrichten.',
     'interaction_inbox_alt' => 'Screenshot des Gästenachrichten-Posteingangs im :brand-Panel',
     'interaction_upload_alt' => 'Screenshot der Gäste-Upload-Seite auf dem Handy',
     'interaction_demo_name' => 'Aylin',
@@ -185,20 +187,20 @@ return [
     'story_day_eyebrow' => '03 — Der Hochzeitstag',
     'story_day_title_lead' => 'Jeder Moment,',
     'story_day_title_emphasis' => 'in der richtigen Reihenfolge.',
-    'story_day_text' => 'Erstellen Sie den Ablauf und lassen Sie Gäste dem Tag folgen. Ordnen Sie Tische visuell an und legen Sie QR-Karten aus, damit Fotos in einem Album landen.',
+    'story_day_text' => 'Erstellen Sie den Ablauf und lassen Sie Gäste dem Tag folgen. Ordnen Sie Tische visuell an und legen Sie QR-Karten aus, damit Fotos und Videos in einem Album landen.',
 
     'story_after_eyebrow' => '04 — Während und danach',
     'story_after_title_lead' => 'Die Hochzeit endet nicht',
     'story_after_title_emphasis' => 'mit dem letzten Tanz.',
-    'story_after_text' => 'Gäste teilen Fotos, Sprachnachrichten und Wünsche. Sie wählen, was an die Wand kommt, und alles bleibt in Ihren Erinnerungen.',
+    'story_after_text' => 'Gäste teilen Fotos, Videos, Sprachnachrichten und Wünsche. Sie wählen, was an die Wand kommt, und alles bleibt in Ihren Erinnerungen.',
     'story_after_point_1' => 'Kein Konto für Ihre Gäste',
-    'story_after_point_2' => 'Sie geben jedes Foto frei',
+    'story_after_point_2' => 'Sie geben jedes Foto und Video frei',
     'story_after_point_3' => 'Ein QR-Code für die Tische',
 
     'journey_before' => 'Vorher',
-    'journey_before_text' => 'Einladung und RSVPs',
+    'journey_before_text' => 'Einladung, RSVPs und Checkliste',
     'journey_during' => 'Währenddessen',
-    'journey_during_text' => 'Sitzplan und Fotowand',
+    'journey_during_text' => 'Sitzplan, Fotos und Videos',
     'journey_after' => 'Danach',
     'journey_after_text' => 'Ihre Erinnerungen, beisammen',
 
@@ -238,7 +240,7 @@ return [
     'mock_seating_title' => 'Tisch 4 · Jonas Müller',
     'mock_seating_text' => 'Ein visueller Saalplan und eine QR-Karte auf jedem Tisch.',
     'mock_wall_title' => 'Unsere Fotowand',
-    'mock_share_photo' => 'Foto teilen',
+    'mock_share_photo' => 'Foto oder Video teilen',
 
     'pricing_title' => 'Wählen Sie Ihren Plan',
     'pricing_subtitle' => 'Starten Sie kostenlos und upgraden Sie, wenn Sie mehr Gäste oder Premium-Funktionen brauchen. Einmalzahlung — kein monatliches Abo.',
@@ -273,6 +275,7 @@ return [
     'pricing_feature_10' => 'Push-Benachrichtigungen für wichtige Updates an Gäste',
     'pricing_feature_11' => 'Hochzeits-Budgetrechner',
     'pricing_feature_12' => 'Audio-Nachrichten von Gästen',
-    'pricing_feature_13' => 'Foto-Sharing der Gäste am Hochzeitstag und 30 Tage danach',
+    'pricing_feature_13' => 'Gäste-Foto- und Video-Sharing am Hochzeitstag und 30 Tage danach',
     'pricing_feature_14' => 'Interaktiver Sitzplan mit PDF-Export',
+    'pricing_feature_15' => 'Hochzeits-Checkliste mit vorgeschlagenen Aufgaben',
 ];
