@@ -20,7 +20,9 @@ use App\Http\Middleware\EnsureCoupleUser;
 use App\Livewire\Dashboard\Budget;
 use App\Livewire\Dashboard\Checklist;
 use App\Livewire\Dashboard\CreatePush;
+use App\Livewire\Dashboard\GuestPhotos;
 use App\Livewire\Dashboard\Guests;
+use App\Livewire\Dashboard\GuestVideos;
 use App\Livewire\Dashboard\Home;
 use App\Livewire\Dashboard\Locations;
 use App\Livewire\Dashboard\Menus;
@@ -182,6 +184,8 @@ Route::middleware(['auth', 'verified', EnsureCoupleUser::class])
         Route::get('/photos', Photos::class)->name('dashboard.photos');
         Route::get('/guests', Guests::class)->name('dashboard.guests');
         Route::get('/messages', Messages::class)->name('dashboard.messages');
+        Route::get('/messages/photos', GuestPhotos::class)->name('dashboard.messages.photos');
+        Route::get('/messages/videos', GuestVideos::class)->name('dashboard.messages.videos');
         Route::get('/budget', Budget::class)->name('dashboard.budget');
         Route::get('/seating', Seating::class)->name('dashboard.seating');
         Route::get('/pushes', Pushes::class)->name('dashboard.pushes');

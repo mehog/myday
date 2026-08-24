@@ -10,6 +10,7 @@ use App\Models\LinkVisit;
 use App\Models\WeddingEvent;
 use App\Models\WeddingMenuOption;
 use App\RsvpStatus;
+use App\Services\GuestMessageMediaGallery;
 use App\Services\WeddingChecklistPresenter;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Url;
@@ -321,6 +322,7 @@ class Home extends Component
                 ->latest()
                 ->limit(8)
                 ->get(),
+            'photoCount' => app(GuestMessageMediaGallery::class)->countPhotos($wedding),
             'videoMessages' => $wedding->guestMessages()
                 ->where('type', GuestMessageType::Video)
                 ->whereNotNull('file_paths')

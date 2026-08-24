@@ -1,18 +1,16 @@
 <?php
 
-namespace App\Filament\App\Resources\GuestMessagesResource\Pages;
+namespace App\Livewire\Dashboard;
 
-use App\Filament\App\Resources\GuestMessagesResource;
 use App\GuestMessageType;
+use App\Livewire\Dashboard\Concerns\RendersDashboard;
+use App\Models\WeddingEvent;
 use App\Services\GuestMessageMediaGallery;
-use Filament\Actions\Action;
-use Filament\Resources\Pages\Page;
+use Livewire\Component;
 
-class ViewAllGuestPhotos extends Page
+class GuestPhotos extends Component
 {
-    protected static string $resource = GuestMessagesResource::class;
-
-    protected string $view = 'filament.app.resources.guest-messages.all-photo-gallery';
+    use RendersDashboard;
 
     /**
      * @var list<array{key: string, message_id: int, index: int, url: string, name: string, sender_name: string}>
@@ -29,36 +27,14 @@ class ViewAllGuestPhotos extends Page
 
     public function mount(GuestMessageMediaGallery $gallery): void
     {
-        abort_unless(auth()->user()?->weddingEvent !== null, 403);
+        abort_unless(auth()->user()?->weddingEvent instanceof WeddingEvent, 403);
 
         $wedding = auth()->user()->weddingEvent;
         $this->totalPhotoCount = $gallery->countPhotos($wedding);
         $this->loadMore($gallery);
     }
 
-    public function getTitle(): string
-    {
-        return __('app.guest_messages_all_photos_title');
-    }
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Action::make('downloadPhotos')
-                ->label(__('app.guest_messages_download_photos'))
-                ->icon('heroicon-o-arrow-down-tray')
-                ->color('gray')
-                ->url(route('guest-messages.photos.download'))
-                ->visible(fn (): bool => $this->totalPhotoCount > 0),
-            Action::make('back')
-                ->label(__('app.guest_messages_back'))
-                ->icon('heroicon-o-arrow-left')
-                ->url(GuestMessagesResource::getUrl())
-                ->color('gray'),
-        ];
-    }
-
-    public function loadMore(?GuestMessageMediaGallery $gallery = null): void
+    public function loadMore(GuestMessageMediaGallery $gallery): void
     {
         if ($this->isLoading || ! $this->hasMore) {
             return;
@@ -66,13 +42,11 @@ class ViewAllGuestPhotos extends Page
 
         $wedding = auth()->user()?->weddingEvent;
 
-        if (! $wedding) {
+        if (! $wedding instanceof WeddingEvent) {
             $this->hasMore = false;
 
             return;
         }
-
-        $gallery ??= app(GuestMessageMediaGallery::class);
 
         $this->isLoading = true;
 
@@ -92,5 +66,13 @@ class ViewAllGuestPhotos extends Page
         $this->page++;
         $this->hasMore = $messages->count() === GuestMessageMediaGallery::PER_PAGE;
         $this->isLoading = false;
+    }
+
+    public function render()
+    {
+        return $this->dashboardView('livewire.dashboard.guest-photos', [], __('app.guest_messages_all_photos_title'), [
+            ['label' => __('dashboard.nav.messages'), 'url' => route('dashboard.messages')],
+            ['label' => __('app.guest_messages_all_photos_title'), 'url' => null],
+        ]);
     }
 }

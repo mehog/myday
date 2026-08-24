@@ -92,6 +92,8 @@ class CoupleDashboardTest extends TestCase
             'dashboard.photos',
             'dashboard.guests',
             'dashboard.messages',
+            'dashboard.messages.photos',
+            'dashboard.messages.videos',
             'dashboard.budget',
             'dashboard.seating',
             'dashboard.pushes',

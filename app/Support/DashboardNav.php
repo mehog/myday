@@ -64,7 +64,7 @@ class DashboardNav
                 'label' => __('dashboard.nav.messages'),
                 'route' => 'dashboard.messages',
                 'icon' => 'message',
-                'match' => ['dashboard.messages', 'dashboard.messages.*'],
+                'match' => ['dashboard.messages', 'dashboard.messages.photos', 'dashboard.messages.videos'],
             ],
             [
                 'label' => __('dashboard.nav.budget'),

@@ -1,14 +1,31 @@
 @php
     use App\GuestMessageType;
+    use App\Services\GuestMessageMediaGallery;
+
+    $gallery = app(GuestMessageMediaGallery::class);
 @endphp
 
 <div class="space-y-6">
     <div class="flex flex-wrap items-center justify-between gap-3">
         <h2 class="text-xl font-semibold">{{ __('dashboard.messages_title') }}</h2>
         @if ($wedding)
-            <x-dashboard.button variant="secondary" href="{{ route('guest-messages.photos.download') }}" target="_blank">
-                {{ __('dashboard.messages_download_zip') }}
-            </x-dashboard.button>
+            <div class="flex flex-wrap gap-2">
+                @if ($hasPhotos)
+                    <x-dashboard.button variant="secondary" href="{{ route('dashboard.messages.photos') }}">
+                        {{ __('app.guest_messages_view_all_photos') }}
+                    </x-dashboard.button>
+                @endif
+                @if ($hasVideos)
+                    <x-dashboard.button variant="secondary" href="{{ route('dashboard.messages.videos') }}">
+                        {{ __('app.guest_messages_view_all_videos') }}
+                    </x-dashboard.button>
+                @endif
+                @if ($hasPhotos)
+                    <x-dashboard.button variant="outline" href="{{ route('guest-messages.photos.download') }}" target="_blank">
+                        {{ __('dashboard.messages_download_zip') }}
+                    </x-dashboard.button>
+                @endif
+            </div>
         @endif
     </div>
 
@@ -39,13 +56,10 @@
                         @if ($message->type === GuestMessageType::Text)
                             <p class="whitespace-pre-wrap text-sm">{{ $message->content }}</p>
                         @elseif ($message->type === GuestMessageType::Photo)
-                            <div class="flex flex-wrap gap-2">
-                                @foreach ($message->fileUrls() as $url)
-                                    <a href="{{ $url }}" target="_blank" rel="noopener noreferrer">
-                                        <img src="{{ $url }}" alt="" class="h-24 w-24 rounded-md object-cover border border-border">
-                                    </a>
-                                @endforeach
-                            </div>
+                            <x-dashboard.guest-message-photo-gallery
+                                :photos="$gallery->photosForLightbox($message)"
+                                :download-url="route('guest-messages.photos.download', ['message' => $message->id])"
+                            />
                             @if (! empty($message->file_paths))
                                 <div class="mt-3">
                                     <a href="{{ route('guest-messages.photos.download', ['message' => $message->id]) }}" class="text-sm text-primary underline" target="_blank" rel="noopener noreferrer">

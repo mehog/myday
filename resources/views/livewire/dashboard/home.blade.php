@@ -107,7 +107,7 @@
                     <x-slot:header>
                         <div class="flex w-full items-center justify-between gap-2">
                             <h3 class="font-medium">{{ __('app.memories_videos_heading') }}</h3>
-                            <a href="{{ route('dashboard.messages') }}" class="text-xs font-medium text-primary hover:underline">{{ __('app.memories_view_all_messages') }}</a>
+                            <a href="{{ route('dashboard.messages.videos') }}" class="text-xs font-medium text-primary hover:underline">{{ __('app.guest_messages_view_all_videos') }}</a>
                         </div>
                     </x-slot:header>
                     @forelse ($memories['videoMessages'] as $message)
@@ -120,6 +120,62 @@
                     @empty
                         <p class="text-sm text-muted-foreground">{{ __('app.memories_videos_empty') }}</p>
                     @endforelse
+                </x-dashboard.card>
+
+                <x-dashboard.card>
+                    <x-slot:header>
+                        <div class="flex w-full items-center justify-between gap-2">
+                            <h3 class="font-medium">
+                                {{ __('app.memories_photos_heading') }}
+                                @if ($memories['photoCount'] > 0)
+                                    <span class="font-normal text-muted-foreground">({{ $memories['photoCount'] }})</span>
+                                @endif
+                            </h3>
+                            @if ($memories['photoCount'] > 0)
+                                <a href="{{ route('dashboard.messages.photos') }}" class="text-xs font-medium text-primary hover:underline">{{ __('app.guest_messages_view_all_photos') }}</a>
+                            @endif
+                        </div>
+                    </x-slot:header>
+
+                    @if ($memories['photoCount'] > 0)
+                        <div class="mb-4 flex flex-wrap gap-2">
+                            <x-dashboard.button variant="secondary" href="{{ route('guest-messages.photos.download') }}" target="_blank">
+                                {{ __('app.guest_messages_download_photos') }}
+                            </x-dashboard.button>
+                            <x-dashboard.button variant="outline" href="{{ route('dashboard.messages.photos') }}">
+                                {{ __('app.guest_messages_view_all_photos') }}
+                            </x-dashboard.button>
+                        </div>
+                    @endif
+
+                    @php
+                        $photoPreviews = collect($memories['photoMessages'])
+                            ->flatMap(fn ($message) => collect($message->fileUrls())->map(fn ($url) => [
+                                'url' => $url,
+                                'sender_name' => $message->sender_name,
+                            ]))
+                            ->take(8);
+                    @endphp
+
+                    @if ($photoPreviews->isEmpty())
+                        <p class="text-sm text-muted-foreground">{{ __('app.memories_photos_empty') }}</p>
+                    @else
+                        <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                            @foreach ($photoPreviews as $photo)
+                                <a
+                                    href="{{ route('dashboard.messages.photos') }}"
+                                    class="group relative aspect-square overflow-hidden rounded-xl border border-border bg-muted"
+                                >
+                                    <img
+                                        src="{{ $photo['url'] }}"
+                                        alt="{{ $photo['sender_name'] }}"
+                                        class="h-full w-full object-cover transition group-hover:scale-105"
+                                        loading="lazy"
+                                    >
+                                </a>
+                            @endforeach
+                        </div>
+                    @endif
                 </x-dashboard.card>
             </div>
         @else
