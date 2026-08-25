@@ -73,11 +73,13 @@ class GuestsRelationManager extends RelationManager
                 TextInput::make('email')
                     ->label($this->trans('field_email'))
                     ->email()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->hidden(),
                 TextInput::make('phone')
                     ->label($this->trans('field_phone'))
                     ->tel()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->hidden(),
                 Select::make('invitation_locale')
                     ->label($this->trans('field_invitation_locale'))
                     ->helperText($this->trans('field_invitation_locale_helper'))
@@ -137,7 +139,7 @@ class GuestsRelationManager extends RelationManager
                     ->label($this->trans('field_email'))
                     ->searchable()
                     ->placeholder('—')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->hidden(),
                 TextColumn::make('labels')
                     ->label($this->trans('field_labels'))
                     ->badge()

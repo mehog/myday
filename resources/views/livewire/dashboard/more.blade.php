@@ -74,4 +74,8 @@
             <p class="truncate text-xs text-muted-foreground">{{ auth()->user()->email }}</p>
         </div>
     </div>
+
+    <div class="dashboard-support-bubble-host">
+        @include('components.app.support-bubble')
+    </div>
 </div>

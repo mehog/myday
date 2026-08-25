@@ -44,7 +44,9 @@ class GuestsTable
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('email')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->hidden(),
                 TextColumn::make('rsvp_status')
                     ->badge()
                     ->formatStateUsing(fn (?RsvpStatus $state) => $state?->label() ?? 'Pending'),
