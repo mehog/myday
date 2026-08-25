@@ -40,21 +40,21 @@
     @else
         <div class="space-y-3">
             @foreach ($messages as $message)
-                <x-dashboard.card wire:key="message-{{ $message->id }}">
-                    <div class="flex flex-wrap items-start justify-between gap-3">
-                        <div>
+                <article class="dashboard-message-row" wire:key="message-{{ $message->id }}">
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="min-w-0">
                             <p class="font-medium">{{ $message->sender_name }}</p>
                             <p class="text-xs text-muted-foreground">
                                 {{ $message->type?->label() }}
                                 · {{ $message->created_at?->diffForHumans() }}
                             </p>
                         </div>
-                        <span class="rounded-md border border-border px-2 py-0.5 text-xs">{{ $message->type?->label() }}</span>
+                        <span class="shrink-0 rounded-full bg-muted px-2.5 py-1 text-[11px] font-medium">{{ $message->type?->label() }}</span>
                     </div>
 
-                    <div class="mt-4">
+                    <div class="mt-3">
                         @if ($message->type === GuestMessageType::Text)
-                            <p class="whitespace-pre-wrap text-sm">{{ $message->content }}</p>
+                            <p class="whitespace-pre-wrap text-sm leading-relaxed">{{ $message->content }}</p>
                         @elseif ($message->type === GuestMessageType::Photo)
                             <x-dashboard.guest-message-photo-gallery
                                 :photos="$gallery->photosForLightbox($message)"
@@ -84,7 +84,7 @@
                             </div>
                         @endif
                     </div>
-                </x-dashboard.card>
+                </article>
             @endforeach
         </div>
     @endif

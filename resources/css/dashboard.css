@@ -201,3 +201,78 @@
     font-weight: 600;
     font-variant-numeric: tabular-nums;
 }
+
+/* Mobile app shell */
+.dashboard-topbar {
+    padding-top: env(safe-area-inset-top, 0px);
+    min-height: calc(3.5rem + env(safe-area-inset-top, 0px));
+}
+
+.dashboard-bottom-nav {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+}
+
+.dashboard-main {
+    padding-bottom: calc(1rem + 3.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 1024px) {
+    .dashboard-main {
+        padding-bottom: 1.5rem;
+    }
+}
+
+.dashboard-fab {
+    position: fixed;
+    right: max(1rem, env(safe-area-inset-right, 0px));
+    bottom: calc(4.25rem + env(safe-area-inset-bottom, 0px));
+    z-index: 30;
+    display: inline-flex;
+    height: 3.25rem;
+    min-width: 3.25rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    padding: 0 1.1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 35%, transparent);
+}
+
+@media (min-width: 1024px) {
+    .dashboard-fab {
+        display: none;
+    }
+}
+
+.dashboard-guest-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    border-radius: 1rem;
+    border: 1px solid var(--border);
+    background: var(--card);
+    padding: 1rem;
+    box-shadow: 0 1px 2px color-mix(in srgb, var(--foreground) 4%, transparent);
+}
+
+.dashboard-message-row {
+    border-radius: 1rem;
+    border: 1px solid var(--border);
+    background: var(--card);
+    padding: 1rem;
+}
+
+/* Keep support bubble above the tab bar on phones */
+@media (max-width: 1023px) {
+    .support-bubble,
+    [data-support-bubble],
+    .fi-support-bubble {
+        bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px)) !important;
+    }
+}

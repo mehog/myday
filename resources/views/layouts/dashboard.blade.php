@@ -7,8 +7,10 @@
 >
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>@isset($title){{ $title }} — @endisset{{ config('app.name') }}</title>
 
     <script>
@@ -33,34 +35,21 @@
         class="flex h-full min-h-0"
         x-data="{
             sidebarOpen: localStorage.getItem('dashboard_sidebar') !== '0',
-            mobileOpen: false,
             toggleSidebar() {
                 this.sidebarOpen = !this.sidebarOpen;
                 localStorage.setItem('dashboard_sidebar', this.sidebarOpen ? '1' : '0');
             }
         }"
     >
-        {{-- Mobile overlay --}}
-        <div
-            x-show="mobileOpen"
-            x-transition.opacity
-            class="fixed inset-0 z-40 bg-black/40 lg:hidden"
-            @click="mobileOpen = false"
-            style="display: none;"
-        ></div>
-
-        {{-- Sidebar --}}
+        {{-- Desktop sidebar --}}
         <aside
-            class="fixed inset-y-0 left-0 z-50 flex h-full flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground transition-[width,transform] duration-200 lg:static lg:translate-x-0"
-            :class="[
-                mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
-                sidebarOpen ? 'w-64' : 'w-64 lg:w-16'
-            ]"
+            class="hidden h-full shrink-0 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground transition-[width] duration-200 lg:flex"
+            :class="sidebarOpen ? 'w-64' : 'w-16'"
         >
             <div class="flex h-14 shrink-0 items-center gap-2 border-b border-sidebar-border px-3">
                 <a href="{{ route('dashboard') }}" class="flex min-w-0 items-center gap-2 overflow-hidden rounded-md px-1 py-1.5 hover:bg-sidebar-accent">
                     <img src="{{ asset('icons/nd-logo-transparent.webp') }}" alt="{{ config('app.name') }}" class="h-8 w-8 shrink-0 object-contain">
-                    <span class="truncate text-sm font-semibold" x-show="sidebarOpen || window.innerWidth < 1024" x-cloak>{{ config('app.name') }}</span>
+                    <span class="truncate text-sm font-semibold" x-show="sidebarOpen" x-cloak>{{ config('app.name') }}</span>
                 </a>
             </div>
 
@@ -68,7 +57,6 @@
                 @foreach (\App\Support\DashboardNav::mainItems() as $item)
                     <a
                         href="{{ route($item['route']) }}"
-                        @click="mobileOpen = false"
                         @class([
                             'flex items-center gap-3 rounded-md px-2.5 py-2 text-sm font-medium transition-colors',
                             'bg-sidebar-accent text-sidebar-accent-foreground' => \App\Support\DashboardNav::isActive($item),
@@ -77,7 +65,7 @@
                         title="{{ $item['label'] }}"
                     >
                         <x-dashboard.icon :name="$item['icon']" class="h-5 w-5 shrink-0" />
-                        <span class="truncate" x-show="sidebarOpen || window.innerWidth < 1024" x-cloak>{{ $item['label'] }}</span>
+                        <span class="truncate" x-show="sidebarOpen" x-cloak>{{ $item['label'] }}</span>
                     </a>
                 @endforeach
             </nav>
@@ -86,7 +74,6 @@
                 @foreach (\App\Support\DashboardNav::footerItems() as $item)
                     <a
                         href="{{ route($item['route']) }}"
-                        @click="mobileOpen = false"
                         @class([
                             'flex items-center gap-3 rounded-md px-2.5 py-2 text-sm font-medium transition-colors',
                             'bg-sidebar-accent text-sidebar-accent-foreground' => \App\Support\DashboardNav::isActive($item),
@@ -95,11 +82,11 @@
                         title="{{ $item['label'] }}"
                     >
                         <x-dashboard.icon :name="$item['icon']" class="h-5 w-5 shrink-0" />
-                        <span class="truncate" x-show="sidebarOpen || window.innerWidth < 1024" x-cloak>{{ $item['label'] }}</span>
+                        <span class="truncate" x-show="sidebarOpen" x-cloak>{{ $item['label'] }}</span>
                     </a>
                 @endforeach
 
-                <div class="mt-1 border-t border-sidebar-border pt-2" x-show="sidebarOpen || window.innerWidth < 1024" x-cloak>
+                <div class="mt-1 border-t border-sidebar-border pt-2" x-show="sidebarOpen" x-cloak>
                     <div class="flex items-center gap-2 px-2.5 py-2">
                         <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
                             {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
@@ -122,15 +109,7 @@
 
         {{-- Main --}}
         <div class="flex min-w-0 flex-1 flex-col">
-            <header class="flex h-14 shrink-0 items-center gap-3 border-b border-border bg-card/80 px-4 backdrop-blur">
-                <button
-                    type="button"
-                    class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background hover:bg-accent lg:hidden"
-                    @click="mobileOpen = true"
-                    aria-label="{{ __('dashboard.open_menu') }}"
-                >
-                    <x-dashboard.icon name="menu" class="h-5 w-5" />
-                </button>
+            <header class="dashboard-topbar flex h-14 shrink-0 items-center gap-3 border-b border-border bg-card/80 px-4 backdrop-blur">
                 <button
                     type="button"
                     class="hidden h-9 w-9 items-center justify-center rounded-md border border-border bg-background hover:bg-accent lg:inline-flex"
@@ -140,9 +119,13 @@
                     <x-dashboard.icon name="panel" class="h-5 w-5" />
                 </button>
 
+                <a href="{{ route('dashboard') }}" class="shrink-0 lg:hidden">
+                    <img src="{{ asset('icons/nd-logo-transparent.webp') }}" alt="{{ config('app.name') }}" class="h-8 w-8 object-contain">
+                </a>
+
                 <div class="min-w-0 flex-1">
                     @isset($breadcrumbs)
-                        <nav class="flex items-center gap-1.5 text-sm text-muted-foreground">
+                        <nav class="hidden items-center gap-1.5 text-sm text-muted-foreground sm:flex">
                             @foreach ($breadcrumbs as $crumb)
                                 @if (! $loop->last && ! empty($crumb['url']))
                                     <a href="{{ $crumb['url'] }}" class="hover:text-foreground">{{ $crumb['label'] }}</a>
@@ -152,6 +135,9 @@
                                 @endif
                             @endforeach
                         </nav>
+                        <h1 class="truncate text-sm font-semibold sm:hidden">
+                            {{ collect($breadcrumbs)->last()['label'] ?? ($title ?? __('dashboard.nav.overview')) }}
+                        </h1>
                     @else
                         <h1 class="truncate text-sm font-semibold">@isset($title){{ $title }}@else{{ __('dashboard.nav.overview') }}@endisset</h1>
                     @endisset
@@ -159,21 +145,33 @@
 
                 <div class="flex items-center gap-2">
                     @livewire(\App\Livewire\Dashboard\NotificationsBell::class)
-                    <x-dashboard.appearance-toggle />
+                    <div class="hidden lg:block">
+                        <x-dashboard.appearance-toggle />
+                    </div>
                     <a
                         href="/app"
-                        class="inline-flex shrink-0 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                        class="hidden shrink-0 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground lg:inline-flex"
                     >
                         {{ __('dashboard.classic_app') }}
+                    </a>
+                    <a
+                        href="{{ route('dashboard.more') }}"
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground lg:hidden"
+                        aria-label="{{ __('dashboard.nav.more') }}"
+                    >
+                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                     </a>
                 </div>
             </header>
 
-            <main class="min-h-0 flex-1 overflow-y-auto p-4 md:p-6">
+            <main class="dashboard-main min-h-0 flex-1 overflow-y-auto p-4 md:p-6">
+                <x-dashboard.wedding-subnav />
                 {{ $slot }}
             </main>
         </div>
     </div>
+
+    <x-dashboard.bottom-nav />
 
     @include('components.app.push-notifications')
     @include('components.app.support-bubble')

@@ -32,6 +32,12 @@
                     <x-dashboard.icon name="external" class="h-4 w-4" />
                     {{ __('app.preview_invitation') }}
                 </x-dashboard.button>
+                <span class="sm:hidden">
+                    <x-dashboard.button variant="secondary" :href="route('dashboard.guests')">
+                        <x-dashboard.icon name="users" class="h-4 w-4" />
+                        {{ __('dashboard.nav.guests') }}
+                    </x-dashboard.button>
+                </span>
             </div>
         </div>
 

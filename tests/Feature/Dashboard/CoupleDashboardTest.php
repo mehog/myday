@@ -58,7 +58,36 @@ class CoupleDashboardTest extends TestCase
             ->assertOk()
             ->assertSee('NasDan')
             ->assertSee(__('dashboard.classic_app'))
+            ->assertSee(__('dashboard.nav.more'))
+            ->assertSee('dashboard-bottom-nav', false)
             ->assertDontSee('id="locale-picker"', false);
+    }
+
+    public function test_more_page_lists_overflow_destinations(): void
+    {
+        $user = User::factory()->create(['is_admin' => false]);
+        WeddingEvent::factory()->create(['user_id' => $user->id]);
+
+        $this->actingAs($user)
+            ->get(route('dashboard.more'))
+            ->assertOk()
+            ->assertSee(__('dashboard.more_title'))
+            ->assertSee(__('dashboard.nav.checklist'))
+            ->assertSee(__('dashboard.nav.seating'))
+            ->assertSee(__('dashboard.classic_app'));
+    }
+
+    public function test_mobile_tab_items_cover_expected_sections(): void
+    {
+        $routes = collect(DashboardNav::tabItems())->pluck('route')->all();
+
+        $this->assertSame([
+            'dashboard',
+            'dashboard.guests',
+            'dashboard.wedding',
+            'dashboard.messages',
+            'dashboard.more',
+        ], $routes);
     }
 
     public function test_dashboard_home_marks_the_active_tab_pill(): void
@@ -101,6 +130,7 @@ class CoupleDashboardTest extends TestCase
             'dashboard.pricing',
             'dashboard.referrals',
             'dashboard.profile',
+            'dashboard.more',
         ];
 
         foreach ($routes as $name) {

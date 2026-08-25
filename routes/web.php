@@ -27,6 +27,7 @@ use App\Livewire\Dashboard\Home;
 use App\Livewire\Dashboard\Locations;
 use App\Livewire\Dashboard\Menus;
 use App\Livewire\Dashboard\Messages;
+use App\Livewire\Dashboard\More;
 use App\Livewire\Dashboard\Photos;
 use App\Livewire\Dashboard\Pricing;
 use App\Livewire\Dashboard\Profile;
@@ -193,6 +194,7 @@ Route::middleware(['auth', 'verified', EnsureCoupleUser::class])
         Route::get('/pricing', Pricing::class)->name('dashboard.pricing');
         Route::get('/referrals', Referrals::class)->name('dashboard.referrals');
         Route::get('/profile', Profile::class)->name('dashboard.profile');
+        Route::get('/more', More::class)->name('dashboard.more');
         Route::post('/logout', function (Request $request) {
             auth()->guard('web')->logout();
             $request->session()->invalidate();
