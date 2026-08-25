@@ -174,7 +174,6 @@
     <x-dashboard.bottom-nav />
 
     @include('components.app.push-notifications')
-    @include('components.app.support-bubble')
     @include('components.app.upgrade-required-modal')
 
     @livewireScripts

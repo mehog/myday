@@ -263,14 +263,17 @@
                 <input type="text" wire:model="name" class="{{ $controlClass }}">
                 @error('name') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
             </div>
-            <div class="grid gap-4 sm:grid-cols-2">
-                <div>
-                    <label class="mb-1 block text-sm font-medium">{{ __('guests.field_email') }}</label>
-                    <input type="email" wire:model="email" class="{{ $controlClass }}">
-                </div>
-                <div>
-                    <label class="mb-1 block text-sm font-medium">{{ __('guests.field_phone') }}</label>
-                    <input type="text" wire:model="phone" class="{{ $controlClass }}">
+            {{-- Email/phone kept in Livewire state for existing data; hidden until we drop them fully. --}}
+            <div class="hidden" aria-hidden="true">
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div>
+                        <label class="mb-1 block text-sm font-medium">{{ __('guests.field_email') }}</label>
+                        <input type="email" wire:model="email" class="{{ $controlClass }}" tabindex="-1">
+                    </div>
+                    <div>
+                        <label class="mb-1 block text-sm font-medium">{{ __('guests.field_phone') }}</label>
+                        <input type="text" wire:model="phone" class="{{ $controlClass }}" tabindex="-1">
+                    </div>
                 </div>
             </div>
             <div>
