@@ -28,10 +28,12 @@ class GuestForm
                     ->maxLength(255),
                 TextInput::make('email')
                     ->email()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->hidden(),
                 TextInput::make('phone')
                     ->tel()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->hidden(),
                 Select::make('invitation_locale')
                     ->label('Invitation language override')
                     ->helperText('Leave empty to use the wedding default invitation language.')

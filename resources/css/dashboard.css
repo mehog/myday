@@ -268,11 +268,14 @@
     padding: 1rem;
 }
 
-/* Keep support bubble above the tab bar on phones */
-@media (max-width: 1023px) {
-    .support-bubble,
-    [data-support-bubble],
-    .fi-support-bubble {
-        bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px)) !important;
+/* Support contact bubble — only mounted on More; sit above the mobile tab bar */
+.dashboard-support-bubble-host .spatie-support-bubble {
+    z-index: 45 !important;
+    bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+@media (min-width: 1024px) {
+    .dashboard-support-bubble-host .spatie-support-bubble {
+        bottom: 1rem !important;
     }
 }
