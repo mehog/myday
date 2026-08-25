@@ -12,7 +12,7 @@
 
     <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 class="text-xl font-semibold">{{ __('dashboard.guests_title') }}</h2>
-        <div class="flex flex-wrap gap-2">
+        <div class="hidden flex-wrap gap-2 sm:flex">
             <x-dashboard.button type="button" variant="secondary" wire:click="openPlaceCards">
                 {{ __('guests.place_cards_download') }}
             </x-dashboard.button>
@@ -22,6 +22,11 @@
                     {{ __('dashboard.guests_add') }}
                 </x-dashboard.button>
             @endif
+        </div>
+        <div class="flex gap-2 sm:hidden">
+            <x-dashboard.button type="button" variant="secondary" class="flex-1" wire:click="openPlaceCards">
+                {{ __('guests.place_cards_download') }}
+            </x-dashboard.button>
         </div>
     </div>
 
@@ -109,7 +114,63 @@
                         <p class="mt-1 text-sm text-muted-foreground">{{ __('guests.empty_description') }}</p>
                     </div>
                 @else
-                    <table class="min-w-full text-left text-sm">
+                    {{-- Mobile card list --}}
+                    <div class="space-y-3 p-3 md:hidden">
+                        @foreach ($guests as $guest)
+                            <article class="dashboard-guest-card" wire:key="guest-card-{{ $guest->id }}">
+                                <div class="flex items-start justify-between gap-3">
+                                    <div class="min-w-0">
+                                        <h3 class="truncate text-base font-semibold">{{ $guest->name }}</h3>
+                                        <p class="mt-0.5 text-sm text-muted-foreground">
+                                            {{ $guest->rsvp_status?->label() ?? __('guests.rsvp_pending') }}
+                                            @if ($guest->rsvp_manual_override)
+                                                <span class="text-[10px]">({{ __('guests.rsvp_manual_flag') }})</span>
+                                            @endif
+                                        </p>
+                                    </div>
+                                    <x-dashboard.guest-actions :guest="$guest" :locked="$locked" />
+                                </div>
+
+                                @if (($guest->labels ?? collect())->isNotEmpty())
+                                    <div class="flex flex-wrap gap-1">
+                                        @foreach ($guest->labels ?? [] as $label)
+                                            <span class="rounded-full bg-muted px-2 py-0.5 text-[10px]">{{ $label->label() }}</span>
+                                        @endforeach
+                                    </div>
+                                @endif
+
+                                <div class="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+                                    <div>
+                                        <p class="font-medium text-foreground/80">{{ __('guests.field_plus_one_name') }}</p>
+                                        <p>{{ $guest->plus_one_name ?: '—' }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-foreground/80">{{ __('guests.invite_sent') }}</p>
+                                        <p>
+                                            @if ($guest->invite_sent_at)
+                                                {{ $guest->invite_platform?->label() }} · {{ $guest->invite_sent_at->diffForHumans() }}
+                                            @else
+                                                —
+                                            @endif
+                                        </p>
+                                    </div>
+                                    <div class="col-span-2">
+                                        <p class="font-medium text-foreground/80">{{ __('guests.last_opened') }}</p>
+                                        <p>{{ $guest->last_visited_at ? \Illuminate\Support\Carbon::parse($guest->last_visited_at)->diffForHumans() : '—' }}</p>
+                                    </div>
+                                </div>
+
+                                @if (! $locked && $guest->rsvp_status === null)
+                                    <x-dashboard.button type="button" class="w-full" wire:click="openSendInvite({{ $guest->id }})">
+                                        {{ __('guests.send_invite') }}
+                                    </x-dashboard.button>
+                                @endif
+                            </article>
+                        @endforeach
+                    </div>
+
+                    {{-- Desktop table --}}
+                    <table class="hidden min-w-full text-left text-sm md:table">
                         <thead class="border-b border-border text-xs uppercase text-muted-foreground">
                             <tr>
                                 <th class="cursor-pointer px-3 py-3" wire:click="setSort('name')">{{ __('guests.field_name') }}</th>
@@ -176,52 +237,7 @@
                                         {{ $guest->last_visited_at ? \Illuminate\Support\Carbon::parse($guest->last_visited_at)->diffForHumans() : '—' }}
                                     </td>
                                     <td class="px-3 py-3">
-                                        <div class="relative" x-data="{ open: false }">
-                                            <button type="button" class="inline-flex items-center gap-1 rounded-md border border-border px-2 py-1 text-xs" @click="open = !open">
-                                                {{ __('guests.more_actions') }}
-                                                <x-dashboard.icon name="chevron-down" class="h-3 w-3" />
-                                            </button>
-                                            <div
-                                                x-show="open"
-                                                @click.outside="open = false"
-                                                x-cloak
-                                                class="absolute right-0 z-20 mt-1 w-52 rounded-md border border-border bg-popover p-1 shadow-lg"
-                                            >
-                                                <button type="button" class="inline-flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left text-xs hover:bg-accent"
-                                                    x-on:click="navigator.clipboard.writeText(@js($guest->personal_url)); open = false">
-                                                    <x-dashboard.icon name="link" class="h-3.5 w-3.5 shrink-0" />
-                                                    {{ __('guests.copy_link') }}
-                                                </button>
-                                                @if (! $locked)
-                                                    <button type="button" class="inline-flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left text-xs hover:bg-accent" wire:click="openMarkSent({{ $guest->id }})" @click="open = false">
-                                                        <x-dashboard.icon name="send" class="h-3.5 w-3.5 shrink-0" />
-                                                        {{ __('guests.mark_sent') }}
-                                                    </button>
-                                                    <button type="button" class="inline-flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left text-xs hover:bg-accent" wire:click="openMarkRsvp({{ $guest->id }})" @click="open = false">
-                                                        <x-dashboard.icon name="check" class="h-3.5 w-3.5 shrink-0" />
-                                                        {{ __('guests.mark_rsvp') }}
-                                                    </button>
-                                                    @if (filled($guest->plus_one_name))
-                                                        <button type="button" class="inline-flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left text-xs hover:bg-accent" wire:click="openSeatingName({{ $guest->id }})" @click="open = false">
-                                                            <x-dashboard.icon name="table" class="h-3.5 w-3.5 shrink-0" />
-                                                            {{ __('guests.seating_name') }}
-                                                        </button>
-                                                    @endif
-                                                    <button type="button" class="inline-flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left text-xs hover:bg-accent" wire:click="openChildren({{ $guest->id }})" @click="open = false">
-                                                        <x-dashboard.icon name="users" class="h-3.5 w-3.5 shrink-0" />
-                                                        {{ __('guests.children') }}
-                                                    </button>
-                                                    <button type="button" class="inline-flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left text-xs hover:bg-accent" wire:click="openEdit({{ $guest->id }})" @click="open = false">
-                                                        <x-dashboard.icon name="pencil" class="h-3.5 w-3.5 shrink-0" />
-                                                        {{ __('dashboard.edit') }}
-                                                    </button>
-                                                    <button type="button" class="inline-flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left text-xs text-red-600 hover:bg-accent" wire:click="deleteGuest({{ $guest->id }})" wire:confirm="{{ __('dashboard.guests_delete_confirm') }}" @click="open = false">
-                                                        <x-dashboard.icon name="trash" class="h-3.5 w-3.5 shrink-0" />
-                                                        {{ __('dashboard.delete') }}
-                                                    </button>
-                                                @endif
-                                            </div>
-                                        </div>
+                                        <x-dashboard.guest-actions :guest="$guest" :locked="$locked" />
                                     </td>
                                 </tr>
                             @endforeach
@@ -230,6 +246,13 @@
                 @endif
             </div>
         </div>
+    @endif
+
+    @if ($wedding && ! $locked)
+        <button type="button" class="dashboard-fab" wire:click="openCreate" aria-label="{{ __('dashboard.guests_add') }}">
+            <x-dashboard.icon name="plus" class="h-5 w-5" />
+            <span>{{ __('dashboard.guests_add') }}</span>
+        </button>
     @endif
 
     {{-- Create / Edit --}}

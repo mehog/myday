@@ -7,7 +7,7 @@
         <div>
             <h2 class="text-xl font-semibold">{{ __("seating.page_title") }}</h2>
         </div>
-        <div class="flex flex-wrap gap-2">
+        <div class="hidden flex-wrap gap-2 lg:flex">
             <x-dashboard.button type="button" x-on:click="window.seatingPlanEditor?.save(true)">
                 {{ __("seating.save") }}
             </x-dashboard.button>
@@ -23,6 +23,24 @@
         </div>
     </div>
 
+    <x-dashboard.card class="lg:hidden">
+        <div class="flex gap-3">
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-muted">
+                <x-dashboard.icon name="table" class="h-5 w-5" />
+            </span>
+            <div>
+                <h3 class="font-medium">{{ __('dashboard.seating_mobile_title') }}</h3>
+                <p class="mt-1 text-sm text-muted-foreground">{{ __('dashboard.seating_mobile_body') }}</p>
+                <div class="mt-4">
+                    <x-dashboard.button variant="secondary" :href="route('dashboard.guests')">
+                        {{ __('dashboard.seating_mobile_guests_cta') }}
+                    </x-dashboard.button>
+                </div>
+            </div>
+        </div>
+    </x-dashboard.card>
+
+    <div class="hidden lg:block">
     @vite(['resources/js/seating-plan.js'])
 
     <div
@@ -403,5 +421,6 @@
                 </div>
             </div>
         </template>
+    </div>
     </div>
 </div>
