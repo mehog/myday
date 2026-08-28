@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\ReferralPayout;
 use App\Models\User;
+use App\Models\WeddingEvent;
 use App\ReferralPayoutStatus;
 use App\Support\AdminDashboardMetrics;
 use Tests\Concerns\RefreshInMemoryDatabase;
@@ -21,6 +22,22 @@ class AdminDashboardMetricsTest extends TestCase
 
         $this->assertSame(1, AdminDashboardMetrics::unverifiedCouplesCount());
         $this->assertCount(1, AdminDashboardMetrics::unverifiedUsersQuery()->get());
+    }
+
+    public function test_unverified_users_query_eager_loads_wedding_event(): void
+    {
+        $user = User::factory()->unverified()->create(['is_admin' => false]);
+        WeddingEvent::factory()->create([
+            'user_id' => $user->id,
+            'motto' => 'Forever and always',
+            'hero_image' => 'onboarding/cover.jpg',
+        ]);
+
+        $loadedUser = AdminDashboardMetrics::unverifiedUsersQuery()->first();
+
+        $this->assertTrue($loadedUser->relationLoaded('weddingEvent'));
+        $this->assertSame('Forever and always', $loadedUser->weddingEvent?->motto);
+        $this->assertSame('onboarding/cover.jpg', $loadedUser->weddingEvent?->hero_image);
     }
 
     public function test_new_signups_count_includes_only_recent_non_admin_users(): void

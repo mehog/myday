@@ -20,14 +20,40 @@
             </h1>
 
             <p class="landing-body text-[#5c5246] mb-8">
-                {{ __('onboarding.verify_subtitle', ['email' => auth()->user()->email]) }}
+                {{ __('onboarding.verify_subtitle_post_grace', ['email' => auth()->user()->email]) }}
             </p>
 
-            @if ($resent || session('status') === 'verification-link-sent')
+            @if ($updated)
+                <p class="text-sm text-emerald-700 mb-6">
+                    {{ __('onboarding.verify_email_updated', ['email' => auth()->user()->email]) }}
+                </p>
+            @elseif ($resent || session('status') === 'verification-link-sent')
                 <p class="text-sm text-[#c9a227] mb-6">
                     {{ __('onboarding.verify_sent') }}
                 </p>
             @endif
+
+            <form wire:submit="updateEmail" class="mb-6 text-left space-y-3">
+                <div>
+                    <label class="mb-1 block text-sm font-medium text-[#1a1208]">{{ __('onboarding.verify_change_email_label') }}</label>
+                    <input
+                        type="email"
+                        wire:model="email"
+                        class="w-full rounded-xl border border-[#1a1208]/15 bg-white px-4 py-3 text-sm text-[#1a1208]"
+                        required
+                    >
+                    @error('email') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                    <p class="mt-1 text-xs text-[#5c5246]">{{ __('onboarding.verify_change_email_hint') }}</p>
+                </div>
+
+                <button
+                    type="submit"
+                    wire:loading.attr="disabled"
+                    class="w-full landing-btn-secondary py-4 rounded-xl landing-heading text-lg transition disabled:opacity-50"
+                >
+                    {{ __('onboarding.verify_change_email_submit') }}
+                </button>
+            </form>
 
             <div class="space-y-3">
                 <button

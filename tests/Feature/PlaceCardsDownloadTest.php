@@ -23,9 +23,9 @@ class PlaceCardsDownloadTest extends TestCase
             ->assertRedirect(route('login'));
     }
 
-    public function test_unverified_user_cannot_download_place_cards(): void
+    public function test_unverified_user_with_expired_grace_cannot_download_place_cards(): void
     {
-        $user = User::factory()->unverified()->create();
+        $user = User::factory()->verificationGraceExpired()->create();
 
         $this->actingAs($user)
             ->get(route('guests.place-cards.download'))

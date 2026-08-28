@@ -20,6 +20,7 @@ class AdminDashboardMetrics
     public static function unverifiedUsersQuery(): Builder
     {
         return User::query()
+            ->with('weddingEvent')
             ->whereNull('email_verified_at')
             ->where('is_admin', false)
             ->orderByDesc('created_at');

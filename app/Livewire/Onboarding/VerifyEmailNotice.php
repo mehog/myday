@@ -4,6 +4,7 @@ namespace App\Livewire\Onboarding;
 
 use App\Support\DashboardNav;
 use App\Support\Locale;
+use App\Support\UnverifiedEmail;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -12,6 +13,10 @@ use Livewire\Component;
 class VerifyEmailNotice extends Component
 {
     public bool $resent = false;
+
+    public bool $updated = false;
+
+    public string $email = '';
 
     public function mount(): void
     {
@@ -25,7 +30,17 @@ class VerifyEmailNotice extends Component
 
         if ($user->hasVerifiedEmail()) {
             $this->redirect(DashboardNav::homeUrl());
+
+            return;
         }
+
+        if ($user->hasEmailVerificationGrace()) {
+            $this->redirect(DashboardNav::homeUrl());
+
+            return;
+        }
+
+        $this->email = $user->email;
     }
 
     public function switchLocale(string $locale): void
@@ -41,8 +56,25 @@ class VerifyEmailNotice extends Component
             return;
         }
 
-        $user->sendEmailVerificationNotification();
+        UnverifiedEmail::resend($user);
         $this->resent = true;
+        $this->updated = false;
+    }
+
+    public function updateEmail(): void
+    {
+        $user = Auth::user();
+
+        if ($user === null || $user->hasVerifiedEmail()) {
+            return;
+        }
+
+        if (UnverifiedEmail::update($user, $this->email)) {
+            $this->updated = true;
+            $this->resent = false;
+        }
+
+        $this->email = $user->fresh()->email;
     }
 
     public function logout(): void

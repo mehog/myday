@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureEmailVerifiedOrGrace;
 use App\Http\Middleware\RedirectLegacyDomains;
 use App\Http\Middleware\SetAppLocale;
 use Illuminate\Foundation\Application;
@@ -23,6 +24,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             'webhooks/dodo',
             'support-bubble',
+        ]);
+
+        $middleware->alias([
+            'verified' => EnsureEmailVerifiedOrGrace::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

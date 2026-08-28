@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\WeddingEvent;
 use App\Models\WeddingLocation;
 use App\PlanTier;
+use App\Support\DashboardNav;
 use App\Support\Locale;
 use App\Support\MediaDisk;
 use App\Support\MetaPixel;
@@ -157,7 +158,7 @@ class WeddingOnboardingTest extends TestCase
             ->set('password_confirmation', 'password123')
             ->call('submit')
             ->assertHasNoErrors()
-            ->assertRedirect(route('verification.notice'));
+            ->assertRedirect(DashboardNav::homeUrl());
 
         $user = User::query()->where('email', 'amir@example.com')->first();
         $this->assertNotNull($user);
@@ -220,7 +221,7 @@ class WeddingOnboardingTest extends TestCase
             ->set('password_confirmation', 'password123')
             ->call('submit')
             ->assertHasNoErrors()
-            ->assertRedirect(route('verification.notice'));
+            ->assertRedirect(DashboardNav::homeUrl());
 
         $wedding = WeddingEvent::query()->where('groom_name', 'Amir')->first();
         $this->assertNotNull($wedding);
@@ -461,7 +462,7 @@ class WeddingOnboardingTest extends TestCase
             ->set('password_confirmation', 'password123')
             ->call('submit')
             ->assertHasNoErrors()
-            ->assertRedirect(route('verification.notice'));
+            ->assertRedirect(DashboardNav::homeUrl());
 
         $wedding = WeddingEvent::query()->where('groom_name', 'Amir')->first();
         $this->assertNotNull($wedding);

@@ -29,6 +29,7 @@ return [
     'no_invitation' => 'Vaša pozivnica nije još kreirana. Kontaktirajte :brand tim da vam je postavi.',
     'invitation_inactive_suffix' => '— link nije još aktivan',
     'email_readonly' => 'Email se ovde ne može menjati.',
+    'email_unverified_editable' => 'Email možete promeniti dok nije potvrđen.',
     'wedding_archived_badge' => 'Uspomene',
     'wedding_archived_readonly' => 'Ovo venčanje je arhivirano. Detalji pozivnice se više ne mogu menjati.',
     'wedding_archived_guest_lock' => 'Goste nije moguće dodavati ni menjati nakon što je prošao dan venčanja.',

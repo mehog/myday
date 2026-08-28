@@ -20,6 +20,7 @@ use App\Support\MetaPixel;
 use App\Support\OnboardingSongs;
 use App\Support\OnboardingSteps;
 use Carbon\Carbon;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -100,7 +101,7 @@ class WeddingOnboarding extends Component
         $user = Auth::user();
 
         if ($user !== null) {
-            if (! $user->hasVerifiedEmail()) {
+            if (! $user->hasVerifiedEmail() && ! $user->hasEmailVerificationGrace()) {
                 $this->redirectRoute('verification.notice');
 
                 return;
@@ -544,11 +545,12 @@ class WeddingOnboarding extends Component
         ]);
 
         Auth::login($user);
+        event(new Registered($user));
         $user->sendEmailVerificationNotification();
 
         MetaPixel::flashCompleteRegistration();
 
-        $this->redirectRoute('verification.notice');
+        $this->redirect(DashboardNav::homeUrl());
     }
 
     public function render()

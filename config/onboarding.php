@@ -230,4 +230,17 @@ return [
 
     'progress_session_key' => 'onboarding.progress',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Email verification grace period
+    |--------------------------------------------------------------------------
+    |
+    | New couples can use the app (including checkout) without verifying their
+    | email for this many hours after signup. After the grace period, unverified
+    | users are redirected to the verification notice screen.
+    |
+    */
+
+    'email_verification_grace_hours' => (int) env('EMAIL_VERIFICATION_GRACE_HOURS', 48),
+
 ];

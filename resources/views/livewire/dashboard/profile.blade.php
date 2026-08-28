@@ -19,8 +19,14 @@
 
             <div>
                 <label class="mb-1 block text-sm font-medium">{{ __('dashboard.profile_email') }}</label>
-                <input type="email" value="{{ $email }}" readonly class="{{ $controlClass }} h-10 opacity-80">
-                <p class="mt-1 text-xs text-muted-foreground">{{ __('app.email_readonly') }}</p>
+                @if ($emailEditable)
+                    <input type="email" wire:model="email" class="{{ $controlClass }} h-10">
+                    @error('email') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
+                    <p class="mt-1 text-xs text-muted-foreground">{{ __('app.email_unverified_editable') }}</p>
+                @else
+                    <input type="email" value="{{ $email }}" readonly class="{{ $controlClass }} h-10 opacity-80">
+                    <p class="mt-1 text-xs text-muted-foreground">{{ __('app.email_readonly') }}</p>
+                @endif
             </div>
 
             <div>

@@ -4,6 +4,7 @@ namespace App\Livewire\Dashboard;
 
 use App\Livewire\Dashboard\Concerns\RendersDashboard;
 use App\Support\Locale;
+use App\Support\UnverifiedEmail;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
@@ -40,9 +41,13 @@ class Profile extends Component
 
     public function render()
     {
+        $user = auth()->user();
+        abort_unless($user !== null, 403);
+
         return $this->dashboardView('livewire.dashboard.profile', [
             'locales' => Locale::options(),
             'devices' => $this->devices(),
+            'emailEditable' => ! $user->hasVerifiedEmail(),
         ], __('dashboard.profile_title'), [
             ['label' => __('dashboard.nav.profile'), 'url' => null],
         ]);
@@ -79,7 +84,19 @@ class Profile extends Component
             $rules['password'] = ['required', 'confirmed', Password::defaults()];
         }
 
-        $data = $this->validate($rules);
+        if (! $user->hasVerifiedEmail()) {
+            $rules['email'] = UnverifiedEmail::rules($user)['email'];
+        }
+
+        $data = $this->validate($rules, [
+            'email.unique' => __('onboarding.verify_email_taken'),
+        ]);
+
+        if (! $user->hasVerifiedEmail() && strcasecmp($data['email'], $user->email) !== 0) {
+            UnverifiedEmail::update($user, $data['email']);
+            $user->refresh();
+            $this->email = $user->email;
+        }
 
         $payload = [
             'name' => $data['name'],
