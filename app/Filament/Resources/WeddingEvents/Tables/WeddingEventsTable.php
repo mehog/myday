@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources\WeddingEvents\Tables;
 
+use App\Support\MediaDisk;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\TernaryFilter;
@@ -22,9 +24,23 @@ class WeddingEventsTable
                 ->withMax('linkVisits as last_visited_at', 'visited_at'))
             ->defaultSort('id', 'desc')
             ->columns([
+                ImageColumn::make('hero_image')
+                    ->label('Cover')
+                    ->disk(MediaDisk::name())
+                    ->height(56)
+                    ->width(56)
+                    ->square()
+                    ->placeholder('—'),
                 TextColumn::make('couple_names')
                     ->label('Couple')
                     ->searchable(['groom_name', 'bride_name']),
+                TextColumn::make('motto')
+                    ->label('Motto')
+                    ->limit(50)
+                    ->tooltip(fn ($record): ?string => $record->motto)
+                    ->placeholder('—')
+                    ->wrap()
+                    ->toggleable(),
                 TextColumn::make('slug')
                     ->searchable()
                     ->copyable()

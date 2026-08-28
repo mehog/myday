@@ -7,6 +7,7 @@ use App\Filament\App\Pages\Auth\Login;
 use App\Filament\App\Pages\Auth\ResetPassword;
 use App\Filament\App\Pages\PricingPage;
 use App\Filament\App\Pages\ReferralsPage;
+use App\Http\Middleware\EnsureEmailVerifiedOrGrace;
 use App\Http\Middleware\SetAppLocale;
 use App\Support\DashboardNav;
 use Filament\Actions\Action;
@@ -20,7 +21,6 @@ use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
-use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -116,7 +116,7 @@ class AppPanelProvider extends PanelProvider
             ->middleware([SetAppLocale::class], isPersistent: true)
             ->authMiddleware([
                 Authenticate::class,
-                EnsureEmailIsVerified::class,
+                EnsureEmailVerifiedOrGrace::class,
             ]);
     }
 }

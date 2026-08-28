@@ -4,6 +4,7 @@ namespace App\Filament\App\Pages\Auth;
 
 use App\Filament\App\Pages\AppDashboard;
 use App\Support\Locale;
+use App\Support\UnverifiedEmail;
 use Filament\Auth\Pages\EditProfile as BaseEditProfile;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -26,12 +27,16 @@ class EditProfile extends BaseEditProfile
 
     protected function getEmailFormComponent(): Component
     {
+        $user = auth()->user();
+        $isVerified = $user?->hasVerifiedEmail() ?? true;
+
         return TextInput::make('email')
             ->label(__('filament-panels::auth/pages/edit-profile.form.email.label'))
             ->email()
-            ->disabled()
-            ->dehydrated(false)
-            ->helperText(__('app.email_readonly'));
+            ->disabled($isVerified)
+            ->dehydrated(! $isVerified)
+            ->required(! $isVerified)
+            ->helperText($isVerified ? __('app.email_readonly') : __('app.email_unverified_editable'));
     }
 
     public function form(Schema $schema): Schema
@@ -66,7 +71,11 @@ class EditProfile extends BaseEditProfile
      */
     protected function mutateFormDataBeforeSave(#[SensitiveParameter] array $data): array
     {
-        unset($data['email']);
+        $user = auth()->user();
+
+        if ($user?->hasVerifiedEmail()) {
+            unset($data['email']);
+        }
 
         return $data;
     }
@@ -76,6 +85,14 @@ class EditProfile extends BaseEditProfile
      */
     protected function handleRecordUpdate(Model $record, #[SensitiveParameter] array $data): Model
     {
+        if (! $record->hasVerifiedEmail() && isset($data['email']) && is_string($data['email'])) {
+            if (strcasecmp($data['email'], $record->email) !== 0) {
+                UnverifiedEmail::update($record, $data['email']);
+            }
+
+            unset($data['email']);
+        }
+
         $record = parent::handleRecordUpdate($record, $data);
 
         if (isset($data['locale']) && is_string($data['locale']) && Locale::isSupported($data['locale'])) {

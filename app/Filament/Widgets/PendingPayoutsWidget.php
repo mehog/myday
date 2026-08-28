@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class PendingPayoutsWidget extends TableWidget
 {
-    protected int|string|array $columnSpan = 1;
+    protected int|string|array $columnSpan = 'full';
 
     public function table(Table $table): Table
     {

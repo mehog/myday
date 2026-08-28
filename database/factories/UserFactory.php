@@ -42,4 +42,13 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    public function verificationGraceExpired(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'email_verified_at' => null,
+            'created_at' => now()->subHours(49),
+            'updated_at' => now()->subHours(49),
+        ]);
+    }
 }

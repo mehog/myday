@@ -4,7 +4,9 @@ namespace App\Filament\Resources\WeddingEvents\Schemas;
 
 use App\LinkType;
 use App\Models\WeddingEvent;
+use App\Support\MediaDisk;
 use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -34,6 +36,20 @@ class WeddingEventInfolist
                         IconEntry::make('is_demo')
                             ->label('Demo invitation')
                             ->boolean(),
+                    ]),
+                Section::make('Design')
+                    ->columns(2)
+                    ->schema([
+                        ImageEntry::make('hero_image')
+                            ->label('Cover photo')
+                            ->disk(MediaDisk::name())
+                            ->height(160)
+                            ->columnSpanFull()
+                            ->placeholder('—'),
+                        TextEntry::make('motto')
+                            ->label('Wedding motto')
+                            ->placeholder('—')
+                            ->columnSpanFull(),
                     ]),
                 Section::make('Link Visits')
                     ->columns(4)

@@ -140,13 +140,23 @@ class CoupleDashboardTest extends TestCase
         }
     }
 
-    public function test_unverified_couple_is_redirected_from_dashboard(): void
+    public function test_unverified_couple_within_grace_can_view_dashboard(): void
     {
         $user = User::factory()->unverified()->create(['is_admin' => false]);
+        WeddingEvent::factory()->create(['user_id' => $user->id]);
 
         $this->actingAs($user)
             ->get(route('dashboard'))
-            ->assertRedirect();
+            ->assertOk();
+    }
+
+    public function test_unverified_couple_with_expired_grace_is_redirected_from_dashboard(): void
+    {
+        $user = User::factory()->verificationGraceExpired()->create(['is_admin' => false]);
+
+        $this->actingAs($user)
+            ->get(route('dashboard'))
+            ->assertRedirect(route('verification.notice'));
     }
 
     public function test_wedding_form_can_upload_replace_and_remove_hero_image(): void

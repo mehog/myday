@@ -29,6 +29,7 @@ return [
     'no_invitation' => 'Ihre Einladung wurde noch nicht erstellt. Kontaktieren Sie das :brand-Team, um sie einzurichten.',
     'invitation_inactive_suffix' => '— Link noch nicht aktiv',
     'email_readonly' => 'Die E-Mail-Adresse kann hier nicht geändert werden.',
+    'email_unverified_editable' => 'Sie können Ihre E-Mail ändern, bis sie bestätigt ist.',
     'wedding_archived_badge' => 'Erinnerungen',
     'wedding_archived_readonly' => 'Diese Hochzeit ist archiviert. Einladungsdetails können nicht mehr geändert werden.',
     'wedding_archived_guest_lock' => 'Gäste können nach dem Hochzeitstag nicht mehr hinzugefügt oder geändert werden.',

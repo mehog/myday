@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use NotificationChannels\WebPush\HasPushSubscriptions;
 use NotificationChannels\WebPush\PushSubscription;
 use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
@@ -129,6 +130,37 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLocale
     public function preferredLocale(): string
     {
         return Locale::resolve($this->locale);
+    }
+
+    public function hasEmailVerificationGrace(): bool
+    {
+        if ($this->hasVerifiedEmail()) {
+            return false;
+        }
+
+        $graceHours = (int) config('onboarding.email_verification_grace_hours', 48);
+
+        if ($graceHours <= 0) {
+            return false;
+        }
+
+        return $this->created_at !== null
+            && $this->created_at->greaterThan(now()->subHours($graceHours));
+    }
+
+    public function emailVerificationGraceExpiresAt(): ?Carbon
+    {
+        if ($this->hasVerifiedEmail() || $this->created_at === null) {
+            return null;
+        }
+
+        $graceHours = (int) config('onboarding.email_verification_grace_hours', 48);
+
+        if ($graceHours <= 0) {
+            return null;
+        }
+
+        return $this->created_at->copy()->addHours($graceHours);
     }
 
     public function ownsDemoInvitation(): bool

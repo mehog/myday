@@ -29,6 +29,7 @@ return [
     'no_invitation' => 'Your invitation has not been created yet. Contact the :brand team to set it up.',
     'invitation_inactive_suffix' => '— link not yet active',
     'email_readonly' => 'Email cannot be changed here.',
+    'email_unverified_editable' => 'You can update your email until it is verified.',
     'wedding_archived_badge' => 'Memories',
     'wedding_archived_readonly' => 'This wedding is archived. Invitation details can no longer be changed.',
     'wedding_archived_guest_lock' => 'Guests cannot be added or changed after the wedding day has passed.',

@@ -166,6 +166,11 @@
 
             <main class="dashboard-main min-h-0 flex-1 overflow-y-auto p-4 md:p-6">
                 <x-dashboard.wedding-subnav />
+                @auth
+                    @if (! auth()->user()->hasVerifiedEmail())
+                        @livewire(\App\Livewire\Dashboard\EmailVerificationBanner::class)
+                    @endif
+                @endauth
                 {{ $slot }}
             </main>
         </div>
