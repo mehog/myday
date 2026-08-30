@@ -27,7 +27,7 @@ class DiscountCampaignAudienceResolver
     {
         $query = User::query()
             ->where('is_admin', false)
-            ->whereDoesntHave('weddingEvent', fn (Builder $q) => $q->where('is_demo', true));
+            ->whereDoesntHave('weddingEvent', fn (Builder $q) => $q->suppressingOutboundMail());
 
         return match ($campaign->audience) {
             DiscountEmailAudience::UnpaidVerified => $query

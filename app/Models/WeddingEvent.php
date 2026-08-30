@@ -15,6 +15,7 @@ use App\Support\Locale;
 use App\Support\LocaleUrl;
 use App\Support\MediaDisk;
 use Database\Factories\WeddingEventFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -46,6 +47,7 @@ class WeddingEvent extends Model
         'accommodation_enabled',
         'is_active',
         'is_demo',
+        'is_marketing',
         'plan_tier',
         'guest_limit',
         'send_message',
@@ -66,6 +68,7 @@ class WeddingEvent extends Model
             'accommodation_enabled' => 'boolean',
             'is_active' => 'boolean',
             'is_demo' => 'boolean',
+            'is_marketing' => 'boolean',
             'plan_tier' => PlanTier::class,
             'guest_limit' => 'integer',
             'theme' => InvitationTheme::class,
@@ -211,12 +214,23 @@ class WeddingEvent extends Model
     }
 
     /**
-     * Demo invitations must never receive outbound product/marketing email
-     * (couple or guest). Landing demos and any wedding marked is_demo.
+     * Demo and marketing invitations must never receive outbound product/marketing email
+     * (couple or guest). Landing demos (is_demo) and screenshot/video accounts (is_marketing).
      */
     public function suppressesOutboundMail(): bool
     {
-        return (bool) $this->is_demo;
+        return (bool) $this->is_demo || (bool) $this->is_marketing;
+    }
+
+    /**
+     * @param  Builder<static>  $query
+     * @return Builder<static>
+     */
+    public function scopeSuppressingOutboundMail(Builder $query): Builder
+    {
+        return $query->where(function (Builder $q): void {
+            $q->where('is_demo', true)->orWhere('is_marketing', true);
+        });
     }
 
     public function hasFeature(PlanFeature $feature): bool

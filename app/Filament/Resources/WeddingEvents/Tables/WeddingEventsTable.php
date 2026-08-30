@@ -62,6 +62,9 @@ class WeddingEventsTable
                 ToggleColumn::make('is_demo')
                     ->label('Demo')
                     ->toggleable(isToggledHiddenByDefault: true),
+                ToggleColumn::make('is_marketing')
+                    ->label('Marketing')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('link_visits_count')
                     ->label('Views')
                     ->sortable()
@@ -85,6 +88,12 @@ class WeddingEventsTable
                     ->falseLabel('Hide demos')
                     ->boolean()
                     ->default(false),
+                TernaryFilter::make('is_marketing')
+                    ->label('Marketing')
+                    ->placeholder('All')
+                    ->trueLabel('Marketing only')
+                    ->falseLabel('Hide marketing')
+                    ->boolean(),
             ])
             ->recordActions([
                 ViewAction::make(),

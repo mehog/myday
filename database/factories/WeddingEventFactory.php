@@ -42,6 +42,7 @@ class WeddingEventFactory extends Factory
             'guest_limit' => 50,
             'is_active' => true,
             'is_demo' => false,
+            'is_marketing' => false,
         ];
     }
 
@@ -49,6 +50,14 @@ class WeddingEventFactory extends Factory
     {
         return $this->state(fn (): array => [
             'is_active' => false,
+        ]);
+    }
+
+    public function marketing(): static
+    {
+        return $this->state(fn (): array => [
+            'is_marketing' => true,
+            'is_demo' => false,
         ]);
     }
 

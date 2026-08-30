@@ -10,7 +10,7 @@ use Symfony\Component\Mime\Address;
 class PreventDemoInvitationMail
 {
     /**
-     * Cancel any outbound mail addressed to a demo invitation owner or guest.
+     * Cancel any outbound mail addressed to a demo/marketing invitation owner or guest.
      */
     public function handle(MessageSending $event): ?bool
     {
@@ -20,7 +20,7 @@ class PreventDemoInvitationMail
             return null;
         }
 
-        if ($this->targetsDemoInvitation($emails)) {
+        if ($this->targetsSuppressedInvitation($emails)) {
             return false;
         }
 
@@ -61,18 +61,18 @@ class PreventDemoInvitationMail
     /**
      * @param  list<string>  $emails
      */
-    private function targetsDemoInvitation(array $emails): bool
+    private function targetsSuppressedInvitation(array $emails): bool
     {
         if (Guest::query()
             ->whereIn('email', $emails)
-            ->whereHas('weddingEvent', fn ($query) => $query->where('is_demo', true))
+            ->whereHas('weddingEvent', fn ($query) => $query->suppressingOutboundMail())
             ->exists()) {
             return true;
         }
 
         return User::query()
             ->whereIn('email', $emails)
-            ->whereHas('weddingEvent', fn ($query) => $query->where('is_demo', true))
+            ->whereHas('weddingEvent', fn ($query) => $query->suppressingOutboundMail())
             ->exists();
     }
 }

@@ -31,11 +31,11 @@ class WeddingEventObserver
             $this->ensureWeddingTasks->handle($event);
         }
 
-        if ($event->wasChanged(['rsvp_deadline', 'wedding_date', 'is_active', 'is_demo'])) {
+        if ($event->wasChanged(['rsvp_deadline', 'wedding_date', 'is_active', 'is_demo', 'is_marketing'])) {
             $this->scheduledNotifications->syncEvent($event);
         }
 
-        if ($event->wasChanged(['is_active', 'wedding_date', 'user_id', 'is_demo'])) {
+        if ($event->wasChanged(['is_active', 'wedding_date', 'user_id', 'is_demo', 'is_marketing'])) {
             $this->scheduledNotifications->syncCoupleOnboarding($event);
             $this->scheduledNotifications->syncAdminAlertsForEvent($event);
         }

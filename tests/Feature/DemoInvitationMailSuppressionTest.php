@@ -78,6 +78,7 @@ class DemoInvitationMailSuppressionTest extends TestCase
     {
         $event = WeddingEvent::factory()->create([
             'is_demo' => false,
+            'is_marketing' => false,
             'is_active' => true,
         ]);
         Guest::factory()->for($event)->create([
@@ -93,6 +94,53 @@ class DemoInvitationMailSuppressionTest extends TestCase
         $result = app(PreventDemoInvitationMail::class)->handle(new MessageSending($message));
 
         $this->assertNull($result);
+    }
+
+    public function test_mail_listener_cancels_messages_to_marketing_guests(): void
+    {
+        $event = WeddingEvent::factory()->marketing()->create([
+            'is_active' => true,
+        ]);
+        Guest::factory()->for($event)->create([
+            'email' => 'marketing-guest@example.com',
+        ]);
+
+        $message = (new Email)
+            ->to('marketing-guest@example.com')
+            ->from('noreply@example.com')
+            ->subject('RSVP reminder')
+            ->text('Please respond');
+
+        $result = app(PreventDemoInvitationMail::class)->handle(new MessageSending($message));
+
+        $this->assertFalse($result);
+    }
+
+    public function test_mail_listener_cancels_messages_to_marketing_owners(): void
+    {
+        $user = User::factory()->create(['email' => 'marketing-owner@example.com']);
+        WeddingEvent::factory()->marketing()->for($user)->create([
+            'is_active' => true,
+        ]);
+
+        $message = (new Email)
+            ->to('marketing-owner@example.com')
+            ->from('noreply@example.com')
+            ->subject('Tip')
+            ->text('Onboarding tip');
+
+        $result = app(PreventDemoInvitationMail::class)->handle(new MessageSending($message));
+
+        $this->assertFalse($result);
+    }
+
+    public function test_marketing_wedding_suppresses_mail_without_being_demo(): void
+    {
+        $event = WeddingEvent::factory()->marketing()->create();
+
+        $this->assertTrue($event->suppressesOutboundMail());
+        $this->assertFalse($event->is_demo);
+        $this->assertTrue($event->is_marketing);
     }
 
     public function test_scheduled_guest_reminders_are_not_created_for_demo_events(): void
@@ -117,6 +165,58 @@ class DemoInvitationMailSuppressionTest extends TestCase
             ->count());
     }
 
+    public function test_scheduled_guest_reminders_are_not_created_for_marketing_events(): void
+    {
+        $event = WeddingEvent::factory()->marketing()->create([
+            'is_active' => true,
+            'rsvp_deadline' => now()->addWeeks(3)->toDateString(),
+            'wedding_date' => now()->addMonths(2),
+        ]);
+        $guest = Guest::factory()->for($event)->create([
+            'email' => 'marketing-scheduled@example.com',
+            'rsvp_status' => null,
+        ]);
+
+        app(WeddingScheduledNotificationService::class)->syncGuest($guest);
+
+        $this->assertSame(0, ScheduledNotificationModel::query()
+            ->where('target_type', Guest::class)
+            ->where('target_id', $guest->id)
+            ->whereNull('cancelled_at')
+            ->count());
+    }
+
+    public function test_flipping_is_marketing_cancels_pending_guest_reminders(): void
+    {
+        $event = WeddingEvent::factory()->create([
+            'is_demo' => false,
+            'is_marketing' => false,
+            'is_active' => true,
+            'rsvp_deadline' => now()->addWeeks(3)->toDateString(),
+            'wedding_date' => now()->addMonths(2),
+        ]);
+        $guest = Guest::factory()->for($event)->create([
+            'email' => 'will-be-marketing@example.com',
+            'rsvp_status' => null,
+        ]);
+
+        app(WeddingScheduledNotificationService::class)->syncGuest($guest);
+
+        $this->assertGreaterThan(0, ScheduledNotificationModel::query()
+            ->where('target_type', Guest::class)
+            ->where('target_id', $guest->id)
+            ->whereNull('cancelled_at')
+            ->count());
+
+        $event->update(['is_marketing' => true]);
+
+        $this->assertSame(0, ScheduledNotificationModel::query()
+            ->where('target_type', Guest::class)
+            ->where('target_id', $guest->id)
+            ->whereNull('cancelled_at')
+            ->count());
+    }
+
     public function test_couple_onboarding_interrupt_for_demo_owners(): void
     {
         $user = User::factory()->create();
@@ -127,6 +227,17 @@ class DemoInvitationMailSuppressionTest extends TestCase
 
         $this->assertTrue((new CoupleOnboardingTipNotification('day1'))->shouldInterrupt($user));
         $this->assertTrue((new CoupleActivationReminderNotification)->shouldInterrupt($user));
+    }
+
+    public function test_couple_onboarding_interrupt_for_marketing_owners(): void
+    {
+        $user = User::factory()->create();
+        WeddingEvent::factory()->marketing()->for($user)->create([
+            'is_active' => true,
+        ]);
+
+        $this->assertTrue($user->ownsDemoInvitation());
+        $this->assertTrue((new CoupleOnboardingTipNotification('day1'))->shouldInterrupt($user));
     }
 
     public function test_discount_audiences_exclude_demo_invitation_owners(): void
@@ -143,6 +254,7 @@ class DemoInvitationMailSuppressionTest extends TestCase
         $realPaid = User::factory()->create();
         WeddingEvent::factory()->for($realPaid)->create([
             'is_demo' => false,
+            'is_marketing' => false,
             'plan_tier' => PlanTier::Premium,
             'is_active' => true,
         ]);
@@ -163,6 +275,34 @@ class DemoInvitationMailSuppressionTest extends TestCase
         $allUsers = app(DiscountCampaignAudienceResolver::class)->resolve($allCampaign);
         $this->assertFalse($allUsers->contains('id', $demoPaid->id));
         $this->assertTrue($allUsers->contains('id', $realPaid->id));
+    }
+
+    public function test_discount_audiences_exclude_marketing_invitation_owners(): void
+    {
+        $this->seed(DiscountEmailTemplateSeeder::class);
+
+        $marketingPaid = User::factory()->create();
+        WeddingEvent::factory()->marketing()->for($marketingPaid)->create([
+            'plan_tier' => PlanTier::Premium,
+            'is_active' => true,
+        ]);
+
+        $realPaid = User::factory()->create();
+        WeddingEvent::factory()->for($realPaid)->create([
+            'is_demo' => false,
+            'is_marketing' => false,
+            'plan_tier' => PlanTier::Premium,
+            'is_active' => true,
+        ]);
+
+        $campaign = $this->makeCampaign([
+            'audience' => DiscountEmailAudience::Paid,
+        ]);
+
+        $users = app(DiscountCampaignAudienceResolver::class)->resolve($campaign);
+
+        $this->assertTrue($users->contains('id', $realPaid->id));
+        $this->assertFalse($users->contains('id', $marketingPaid->id));
     }
 
     public function test_discount_send_job_skips_demo_invitation_owners(): void

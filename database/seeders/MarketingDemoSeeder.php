@@ -113,6 +113,7 @@ class MarketingDemoSeeder extends Seeder
             [
                 'user_id' => $user->id,
                 'is_demo' => false,
+                'is_marketing' => true,
                 'bride_name' => $eventData['bride_name'],
                 'groom_name' => $eventData['groom_name'],
                 'wedding_date' => $weddingDate,

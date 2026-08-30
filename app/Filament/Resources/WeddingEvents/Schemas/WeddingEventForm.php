@@ -102,7 +102,10 @@ class WeddingEventForm
                             ->required(),
                         Toggle::make('is_demo')
                             ->label('Demo invitation')
-                            ->helperText('Shows a live theme and layout switcher on the public invitation page. Changes are preview-only and are not saved.'),
+                            ->helperText('Shows a live theme and layout switcher on the public invitation page. Changes are preview-only and are not saved. Also suppresses outbound email.'),
+                        Toggle::make('is_marketing')
+                            ->label('Marketing wedding')
+                            ->helperText('Screenshot/video accounts. Suppresses all outbound couple and guest email without enabling the demo invitation preview UI.'),
                         Select::make('plan_tier')
                             ->label('Plan tier')
                             ->options(collect(PlanTier::cases())->mapWithKeys(

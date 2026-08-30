@@ -36,6 +36,9 @@ class WeddingEventInfolist
                         IconEntry::make('is_demo')
                             ->label('Demo invitation')
                             ->boolean(),
+                        IconEntry::make('is_marketing')
+                            ->label('Marketing wedding')
+                            ->boolean(),
                     ]),
                 Section::make('Design')
                     ->columns(2)
