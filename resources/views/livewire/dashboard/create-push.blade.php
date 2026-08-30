@@ -10,7 +10,7 @@
     @endif
 
     <div class="flex flex-wrap items-center justify-between gap-3">
-        <h2 class="text-xl font-semibold">{{ __('dashboard.pushes_create') }}</h2>
+        <h2 class="hidden text-xl font-semibold lg:block">{{ __('dashboard.pushes_create') }}</h2>
         <x-dashboard.button variant="ghost" href="{{ route('dashboard.pushes') }}">{{ __('dashboard.back') }}</x-dashboard.button>
     </div>
 

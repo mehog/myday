@@ -22,7 +22,7 @@ class Pushes extends Component
             'subscriberCount' => $this->subscriberCount(),
         ], __('dashboard.pushes_title'), [
             ['label' => __('dashboard.nav.pushes'), 'url' => null],
-        ]);
+        ], backUrl: route('dashboard.more'));
     }
 
     protected function wedding(): ?WeddingEvent

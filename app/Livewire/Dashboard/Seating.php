@@ -156,7 +156,7 @@ class Seating extends Component
 
         return $this->dashboardView('livewire.dashboard.seating', [], __('seating.page_title'), [
             ['label' => __('seating.nav_label'), 'url' => null],
-        ]);
+        ], backUrl: route('dashboard.more'));
     }
 
     /**

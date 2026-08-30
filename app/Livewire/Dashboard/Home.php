@@ -48,7 +48,7 @@ class Home extends Component
             'memories' => $this->memories($wedding),
         ], $title, [
             ['label' => $title, 'url' => null],
-        ]);
+        ], largeTitle: true);
     }
 
     /**

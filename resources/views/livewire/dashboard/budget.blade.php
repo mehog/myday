@@ -40,7 +40,7 @@
         <div class="rounded-lg border border-emerald-300/50 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-100">{{ $flashMessage }}</div>
     @endif
     <div class="flex flex-wrap items-center justify-between gap-3">
-        <h2 class="text-xl font-semibold">{{ __('budget.page_title') }}</h2>
+        <h2 class="hidden text-xl font-semibold lg:block">{{ __('budget.page_title') }}</h2>
         <x-dashboard.button type="button" variant="secondary" wire:click="$set('showSettings', true)">{{ __('budget.settings') }}</x-dashboard.button>
     </div>
     @if ($locked)

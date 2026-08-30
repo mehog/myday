@@ -50,7 +50,7 @@ class CreatePush extends Component
         ], __('dashboard.pushes_create'), [
             ['label' => __('dashboard.nav.pushes'), 'url' => route('dashboard.pushes')],
             ['label' => __('dashboard.pushes_create'), 'url' => null],
-        ]);
+        ], backUrl: route('dashboard.pushes'));
     }
 
     protected function wedding(): ?WeddingEvent

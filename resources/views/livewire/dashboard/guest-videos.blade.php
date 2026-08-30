@@ -1,6 +1,6 @@
 <div class="space-y-6">
     <div class="flex flex-wrap items-center justify-between gap-3">
-        <h2 class="text-xl font-semibold">{{ __('app.guest_messages_all_videos_title') }}</h2>
+        <h2 class="hidden text-xl font-semibold lg:block">{{ __('app.guest_messages_all_videos_title') }}</h2>
         <x-dashboard.button variant="outline" href="{{ route('dashboard.messages') }}">
             {{ __('app.guest_messages_back') }}
         </x-dashboard.button>

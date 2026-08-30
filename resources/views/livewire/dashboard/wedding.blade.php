@@ -8,9 +8,9 @@
     @endif
 
     <div class="flex flex-wrap items-center justify-between gap-3">
-        <h2 class="text-xl font-semibold">{{ __('dashboard.wedding_title') }}</h2>
+        <h2 class="hidden text-xl font-semibold lg:block">{{ __('dashboard.wedding_title') }}</h2>
         @if ($wedding)
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-2 lg:ml-0 ml-auto">
                 <div class="hidden flex-wrap gap-2 lg:flex">
                     <x-dashboard.button variant="secondary" :href="route('dashboard.locations')">{{ __('locations.title') }}</x-dashboard.button>
                     <x-dashboard.button variant="secondary" :href="route('dashboard.menus')">{{ __('menu.title') }}</x-dashboard.button>

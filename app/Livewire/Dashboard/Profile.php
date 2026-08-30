@@ -50,7 +50,7 @@ class Profile extends Component
             'emailEditable' => ! $user->hasVerifiedEmail(),
         ], __('dashboard.profile_title'), [
             ['label' => __('dashboard.nav.profile'), 'url' => null],
-        ]);
+        ], backUrl: route('dashboard.more'));
     }
 
     /**

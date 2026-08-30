@@ -241,7 +241,7 @@
     <div class="sticky top-0 z-20 -mx-4 space-y-3 border-b border-border bg-background/95 px-4 py-3 backdrop-blur md:-mx-6 md:px-6 lg:static lg:z-auto lg:mx-0 lg:border-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
         <div class="flex flex-wrap items-center justify-between gap-3">
             <div class="min-w-0">
-                <h2 class="text-xl font-semibold">{{ __('seating.page_title') }}</h2>
+                <h2 class="hidden text-xl font-semibold lg:block">{{ __('seating.page_title') }}</h2>
                 <p class="mt-0.5 text-sm text-muted-foreground">
                     <span x-text="seatCount.assigned"></span>
                     /

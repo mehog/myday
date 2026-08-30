@@ -5,8 +5,8 @@
     $gallery = app(GuestMessageMediaGallery::class);
 @endphp
 
-<div class="space-y-6">
-    <div class="flex flex-wrap items-center justify-between gap-3">
+<div class="space-y-5 lg:space-y-6" x-data="{ messagesMenuOpen: false }">
+    <div class="hidden items-center justify-between gap-3 lg:flex">
         <h2 class="text-xl font-semibold">{{ __('dashboard.messages_title') }}</h2>
         @if ($wedding)
             <div class="flex flex-wrap gap-2">
@@ -29,6 +29,44 @@
         @endif
     </div>
 
+    @if ($wedding && ($hasPhotos || $hasVideos))
+        <div class="relative flex justify-end lg:hidden">
+            <button
+                type="button"
+                class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card"
+                @click="messagesMenuOpen = !messagesMenuOpen"
+                aria-label="{{ __('dashboard.actions') }}"
+            >
+                <x-dashboard.icon name="ellipsis" class="h-5 w-5" />
+            </button>
+            <div
+                x-show="messagesMenuOpen"
+                @click.outside="messagesMenuOpen = false"
+                x-cloak
+                class="absolute right-0 top-11 z-20 w-56 overflow-hidden rounded-xl border border-border bg-popover shadow-lg"
+            >
+                @if ($hasPhotos)
+                    <a href="{{ route('dashboard.messages.photos') }}" class="flex items-center gap-2 px-4 py-3 text-sm hover:bg-accent" @click="messagesMenuOpen = false">
+                        <x-dashboard.icon name="photo" class="h-4 w-4 shrink-0" />
+                        {{ __('app.guest_messages_view_all_photos') }}
+                    </a>
+                @endif
+                @if ($hasVideos)
+                    <a href="{{ route('dashboard.messages.videos') }}" class="flex items-center gap-2 px-4 py-3 text-sm hover:bg-accent" @click="messagesMenuOpen = false">
+                        <x-dashboard.icon name="photo" class="h-4 w-4 shrink-0" />
+                        {{ __('app.guest_messages_view_all_videos') }}
+                    </a>
+                @endif
+                @if ($hasPhotos)
+                    <a href="{{ route('guest-messages.photos.download') }}" target="_blank" class="flex items-center gap-2 px-4 py-3 text-sm hover:bg-accent" @click="messagesMenuOpen = false">
+                        <x-dashboard.icon name="external" class="h-4 w-4 shrink-0" />
+                        {{ __('dashboard.messages_download_zip') }}
+                    </a>
+                @endif
+            </div>
+        </div>
+    @endif
+
     @if (! $wedding)
         <x-dashboard.card>
             <p class="text-sm text-muted-foreground">{{ __('dashboard.no_wedding') }}</p>
@@ -38,7 +76,46 @@
             <p class="text-sm text-muted-foreground">{{ __('dashboard.empty') }}</p>
         </x-dashboard.card>
     @else
-        <div class="space-y-3">
+        {{-- Mobile grouped list --}}
+        <x-dashboard.list-group class="lg:hidden">
+            @foreach ($messages as $message)
+                <article class="dashboard-list-row" wire:key="message-m-{{ $message->id }}">
+                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-semibold">
+                        {{ strtoupper(mb_substr($message->sender_name ?: '?', 0, 1)) }}
+                    </span>
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-start justify-between gap-2">
+                            <p class="truncate text-[15px] font-semibold">{{ $message->sender_name }}</p>
+                            <p class="shrink-0 text-[11px] text-muted-foreground">{{ $message->created_at?->diffForHumans() }}</p>
+                        </div>
+                        <p class="mt-0.5 text-xs text-muted-foreground">{{ $message->type?->label() }}</p>
+                        @if ($message->type === GuestMessageType::Text)
+                            <p class="mt-1 line-clamp-3 whitespace-pre-wrap text-sm leading-relaxed text-foreground/90">{{ $message->content }}</p>
+                        @elseif ($message->type === GuestMessageType::Photo)
+                            <div class="mt-2">
+                                <x-dashboard.guest-message-photo-gallery
+                                    :photos="$gallery->photosForLightbox($message)"
+                                    :download-url="route('guest-messages.photos.download', ['message' => $message->id])"
+                                />
+                            </div>
+                        @elseif ($message->type === GuestMessageType::Audio)
+                            @if ($message->fileUrl())
+                                <audio controls class="mt-2 w-full" src="{{ $message->fileUrl() }}"></audio>
+                            @endif
+                        @elseif ($message->type === GuestMessageType::Video)
+                            <div class="mt-2 space-y-2">
+                                @foreach ($message->fileUrls() as $url)
+                                    <video controls class="w-full rounded-lg border border-border" src="{{ $url }}"></video>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+                </article>
+            @endforeach
+        </x-dashboard.list-group>
+
+        {{-- Desktop cards --}}
+        <div class="hidden space-y-3 lg:block">
             @foreach ($messages as $message)
                 <article class="dashboard-message-row" wire:key="message-{{ $message->id }}">
                     <div class="flex items-start justify-between gap-3">

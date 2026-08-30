@@ -40,7 +40,7 @@ class Pricing extends Component
             'hasReferralDiscount' => $this->hasReferralDiscount(),
         ], __('pricing.page_title'), [
             ['label' => __('pricing.nav_label'), 'url' => null],
-        ]);
+        ], backUrl: route('dashboard.more'));
     }
 
     public function getReferralDiscountPercent(): ?int

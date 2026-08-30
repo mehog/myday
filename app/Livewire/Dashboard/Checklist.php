@@ -63,7 +63,7 @@ class Checklist extends Component
             'isEmpty' => $rows->isEmpty(),
         ], __('checklist.title'), [
             ['label' => __('checklist.title'), 'url' => null],
-        ]);
+        ], backUrl: route('dashboard.more'));
     }
 
     public function isLocked(): bool

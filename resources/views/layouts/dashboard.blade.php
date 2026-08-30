@@ -109,7 +109,14 @@
 
         {{-- Main --}}
         <div class="flex min-w-0 flex-1 flex-col">
-            <header class="dashboard-topbar relative z-40 flex h-14 shrink-0 items-center gap-3 border-b border-border bg-card/80 px-4 backdrop-blur">
+            @php
+                $pageTitle = $title
+                    ?? (isset($breadcrumbs) ? (collect($breadcrumbs)->last()['label'] ?? null) : null)
+                    ?? __('dashboard.nav.overview');
+                $hasBack = filled($backUrl ?? null);
+                $hideMobileTitle = (bool) ($largeTitle ?? false);
+            @endphp
+            <header class="dashboard-topbar relative z-40 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-card/80 px-3 backdrop-blur sm:gap-3 sm:px-4">
                 <button
                     type="button"
                     class="hidden h-9 w-9 items-center justify-center rounded-md border border-border bg-background hover:bg-accent lg:inline-flex"
@@ -119,13 +126,23 @@
                     <x-dashboard.icon name="panel" class="h-5 w-5" />
                 </button>
 
-                <a href="{{ route('dashboard') }}" class="shrink-0 lg:hidden">
-                    <img src="{{ asset('icons/nd-logo-transparent.webp') }}" alt="{{ config('app.name') }}" class="h-8 w-8 object-contain">
-                </a>
+                @if ($hasBack)
+                    <a
+                        href="{{ $backUrl }}"
+                        class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-primary hover:bg-accent lg:hidden"
+                        aria-label="{{ __('dashboard.back') }}"
+                    >
+                        <x-dashboard.icon name="chevron-left" class="h-6 w-6" />
+                    </a>
+                @else
+                    <a href="{{ route('dashboard') }}" class="shrink-0 lg:hidden">
+                        <img src="{{ asset('icons/nd-logo-transparent.webp') }}" alt="{{ config('app.name') }}" class="h-8 w-8 object-contain">
+                    </a>
+                @endif
 
                 <div class="min-w-0 flex-1">
                     @isset($breadcrumbs)
-                        <nav class="hidden items-center gap-1.5 text-sm text-muted-foreground sm:flex">
+                        <nav class="hidden items-center gap-1.5 text-sm text-muted-foreground lg:flex">
                             @foreach ($breadcrumbs as $crumb)
                                 @if (! $loop->last && ! empty($crumb['url']))
                                     <a href="{{ $crumb['url'] }}" class="hover:text-foreground">{{ $crumb['label'] }}</a>
@@ -135,15 +152,24 @@
                                 @endif
                             @endforeach
                         </nav>
-                        <h1 class="truncate text-sm font-semibold sm:hidden">
-                            {{ collect($breadcrumbs)->last()['label'] ?? ($title ?? __('dashboard.nav.overview')) }}
-                        </h1>
-                    @else
-                        <h1 class="truncate text-sm font-semibold">@isset($title){{ $title }}@else{{ __('dashboard.nav.overview') }}@endisset</h1>
-                    @endisset
+                    @endif
+                    <h1 @class([
+                        'truncate text-[17px] font-semibold tracking-tight lg:hidden',
+                        'sr-only' => $hideMobileTitle && ! $hasBack,
+                    ])>
+                        {{ $pageTitle }}
+                    </h1>
+                    @unless(isset($breadcrumbs))
+                        <h1 class="hidden truncate text-sm font-semibold lg:block">{{ $pageTitle }}</h1>
+                    @endunless
                 </div>
 
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1.5 sm:gap-2">
+                    @isset($topbarActions)
+                        <div class="flex items-center gap-1 lg:hidden">
+                            {{ $topbarActions }}
+                        </div>
+                    @endisset
                     @livewire(\App\Livewire\Dashboard\NotificationsBell::class)
                     <div class="hidden lg:block">
                         <x-dashboard.appearance-toggle />
@@ -154,17 +180,19 @@
                     >
                         {{ __('dashboard.classic_app') }}
                     </a>
-                    <a
-                        href="{{ route('dashboard.more') }}"
-                        class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground lg:hidden"
-                        aria-label="{{ __('dashboard.nav.more') }}"
-                    >
-                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                    </a>
+                    @unless ($hasBack)
+                        <a
+                            href="{{ route('dashboard.more') }}"
+                            class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground lg:hidden"
+                            aria-label="{{ __('dashboard.nav.more') }}"
+                        >
+                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        </a>
+                    @endunless
                 </div>
             </header>
 
-            <main class="dashboard-main min-h-0 flex-1 overflow-y-auto p-4 md:p-6">
+            <main class="dashboard-main min-h-0 flex-1 overflow-y-auto px-3 py-4 md:p-6">
                 <x-dashboard.wedding-subnav />
                 @auth
                     @if (! auth()->user()->hasVerifiedEmail())

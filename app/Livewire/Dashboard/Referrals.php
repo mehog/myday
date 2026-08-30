@@ -39,7 +39,7 @@ class Referrals extends Component
             'payouts' => $this->getPayouts(),
         ], __('referrals.page_title'), [
             ['label' => __('referrals.nav_label'), 'url' => null],
-        ]);
+        ], backUrl: route('dashboard.more'));
     }
 
     public function getReferralLink(): string

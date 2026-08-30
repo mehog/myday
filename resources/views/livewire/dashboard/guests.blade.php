@@ -2,7 +2,7 @@
     $controlClass = 'block h-10 w-full rounded-md border border-border bg-background px-3 text-sm disabled:opacity-60';
 @endphp
 
-<div class="space-y-6">
+<div class="space-y-5 lg:space-y-6" x-data="{ guestsMenuOpen: false }">
     @if ($flashMessage)
         <div class="rounded-lg border border-emerald-300/50 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-100">{{ $flashMessage }}</div>
     @endif
@@ -10,9 +10,10 @@
         <div class="rounded-lg border border-red-300/50 bg-red-50 px-4 py-3 text-sm text-red-900 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-100">{{ $flashError }}</div>
     @endif
 
-    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    {{-- Desktop header --}}
+    <div class="hidden items-center justify-between gap-3 lg:flex">
         <h2 class="text-xl font-semibold">{{ __('dashboard.guests_title') }}</h2>
-        <div class="hidden flex-wrap gap-2 sm:flex">
+        <div class="flex flex-wrap gap-2">
             <x-dashboard.button type="button" variant="secondary" wire:click="openPlaceCards">
                 {{ __('guests.place_cards_download') }}
             </x-dashboard.button>
@@ -23,12 +24,37 @@
                 </x-dashboard.button>
             @endif
         </div>
-        <div class="flex gap-2 sm:hidden">
-            <x-dashboard.button type="button" variant="secondary" class="flex-1" wire:click="openPlaceCards">
-                {{ __('guests.place_cards_download') }}
-            </x-dashboard.button>
-        </div>
     </div>
+
+    {{-- Mobile overflow for place cards --}}
+    @if ($wedding)
+        <div class="relative flex justify-end lg:hidden">
+            <button
+                type="button"
+                class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground"
+                @click="guestsMenuOpen = !guestsMenuOpen"
+                aria-label="{{ __('dashboard.actions') }}"
+            >
+                <x-dashboard.icon name="ellipsis" class="h-5 w-5" />
+            </button>
+            <div
+                x-show="guestsMenuOpen"
+                @click.outside="guestsMenuOpen = false"
+                x-cloak
+                class="absolute right-0 top-11 z-20 w-56 overflow-hidden rounded-xl border border-border bg-popover shadow-lg"
+            >
+                <button
+                    type="button"
+                    class="flex w-full items-center gap-2 px-4 py-3 text-left text-sm hover:bg-accent"
+                    wire:click="openPlaceCards"
+                    @click="guestsMenuOpen = false"
+                >
+                    <x-dashboard.icon name="photo" class="h-4 w-4 shrink-0" />
+                    {{ __('guests.place_cards_download') }}
+                </button>
+            </div>
+        </div>
+    @endif
 
     @if (! $wedding)
         <div class="rounded-xl border border-border bg-card p-4 shadow-sm">
@@ -41,7 +67,92 @@
             </div>
         @endif
 
-        <div class="grid gap-3 rounded-xl border border-border bg-card p-4 shadow-sm md:grid-cols-3">
+        {{-- Mobile: search + chip filters --}}
+        <div class="space-y-3 lg:hidden">
+            <input
+                type="search"
+                wire:model.live.debounce.300ms="search"
+                placeholder="{{ __('dashboard.search') }}"
+                class="{{ $controlClass }} !h-11 rounded-xl"
+            >
+            <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-none" style="scrollbar-width: none">
+                <button
+                    type="button"
+                    wire:click="$set('filterRsvp', '')"
+                    @class([
+                        'shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-colors',
+                        'bg-foreground text-background' => $filterRsvp === '',
+                        'bg-muted text-muted-foreground' => $filterRsvp !== '',
+                    ])
+                >
+                    {{ __('dashboard.guests_trash_all') }}
+                </button>
+                <button
+                    type="button"
+                    wire:click="$set('filterRsvp', 'pending')"
+                    @class([
+                        'shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-colors',
+                        'bg-foreground text-background' => $filterRsvp === 'pending',
+                        'bg-muted text-muted-foreground' => $filterRsvp !== 'pending',
+                    ])
+                >
+                    {{ __('guests.rsvp_pending') }}
+                </button>
+                @foreach ($rsvpOptions as $value => $label)
+                    <button
+                        type="button"
+                        wire:click="$set('filterRsvp', '{{ $value }}')"
+                        @class([
+                            'shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-colors',
+                            'bg-foreground text-background' => $filterRsvp === $value,
+                            'bg-muted text-muted-foreground' => $filterRsvp !== $value,
+                        ])
+                    >
+                        {{ $label }}
+                    </button>
+                @endforeach
+                <div class="relative shrink-0" x-data="{ open: false }">
+                    <button
+                        type="button"
+                        class="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1.5 text-xs font-medium text-muted-foreground"
+                        @click="open = !open"
+                    >
+                        {{ __('guests.filter_labels') }}
+                        @if (count($filterLabels) > 0)
+                            <span class="rounded-full bg-primary px-1.5 text-[10px] text-primary-foreground">{{ count($filterLabels) }}</span>
+                        @endif
+                        <x-dashboard.icon name="chevron-down" class="h-3 w-3" />
+                    </button>
+                    <div
+                        x-show="open"
+                        @click.outside="open = false"
+                        x-cloak
+                        class="absolute right-0 z-20 mt-1 w-56 rounded-xl border border-border bg-popover p-1 shadow-lg"
+                    >
+                        <button
+                            type="button"
+                            class="block w-full rounded-lg px-2 py-1.5 text-left text-xs text-muted-foreground hover:bg-accent"
+                            wire:click="clearLabelFilter"
+                        >
+                            {{ __('guests.filter_labels_clear') }}
+                        </button>
+                        <label class="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 text-sm hover:bg-accent">
+                            <input type="checkbox" value="__none" wire:model.live="filterLabels" class="rounded border-border">
+                            {{ __('guests.labels_none') }}
+                        </label>
+                        @foreach ($labelOptions as $value => $label)
+                            <label class="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 text-sm hover:bg-accent">
+                                <input type="checkbox" value="{{ $value }}" wire:model.live="filterLabels" class="rounded border-border">
+                                {{ $label }}
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Desktop filters --}}
+        <div class="hidden gap-3 rounded-xl border border-border bg-card p-4 shadow-sm md:grid-cols-3 lg:grid">
             <div>
                 <label class="mb-1 block text-xs font-medium text-muted-foreground">{{ __('dashboard.search') }}</label>
                 <input type="search" wire:model.live.debounce.300ms="search" class="{{ $controlClass }}">
@@ -106,7 +217,7 @@
             </div>
         </div>
 
-        <div class="rounded-xl border border-border bg-card shadow-sm">
+        <div class="overflow-hidden rounded-2xl border border-border bg-card shadow-sm lg:rounded-xl">
             <div class="overflow-x-auto">
                 @if ($guests->isEmpty())
                     <div class="p-6">
@@ -114,63 +225,37 @@
                         <p class="mt-1 text-sm text-muted-foreground">{{ __('guests.empty_description') }}</p>
                     </div>
                 @else
-                    {{-- Mobile card list --}}
-                    <div class="space-y-3 p-3 md:hidden">
+                    {{-- Mobile contacts list --}}
+                    <div class="lg:hidden">
                         @foreach ($guests as $guest)
-                            <article class="dashboard-guest-card" wire:key="guest-card-{{ $guest->id }}">
-                                <div class="flex items-start justify-between gap-3">
-                                    <div class="min-w-0">
-                                        <h3 class="truncate text-base font-semibold">{{ $guest->name }}</h3>
-                                        <p class="mt-0.5 text-sm text-muted-foreground">
+                            <div class="dashboard-guest-row group" wire:key="guest-card-{{ $guest->id }}">
+                                <button
+                                    type="button"
+                                    class="flex min-w-0 flex-1 items-center gap-3 text-left"
+                                    @if (! $locked)
+                                        wire:click="openEdit({{ $guest->id }})"
+                                    @endif
+                                >
+                                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/15 text-sm font-semibold text-primary">
+                                        {{ strtoupper(mb_substr($guest->name, 0, 1)) }}
+                                    </span>
+                                    <span class="min-w-0 flex-1">
+                                        <span class="block truncate text-[15px] font-semibold">{{ $guest->name }}</span>
+                                        <span class="mt-0.5 block truncate text-xs text-muted-foreground">
                                             {{ $guest->rsvp_status?->label() ?? __('guests.rsvp_pending') }}
-                                            @if ($guest->rsvp_manual_override)
-                                                <span class="text-[10px]">({{ __('guests.rsvp_manual_flag') }})</span>
+                                            @if (($guest->labels ?? collect())->isNotEmpty())
+                                                · {{ $guest->labels->map->label()->implode(', ') }}
                                             @endif
-                                        </p>
-                                    </div>
-                                    <x-dashboard.guest-actions :guest="$guest" :locked="$locked" />
-                                </div>
-
-                                @if (($guest->labels ?? collect())->isNotEmpty())
-                                    <div class="flex flex-wrap gap-1">
-                                        @foreach ($guest->labels ?? [] as $label)
-                                            <span class="rounded-full bg-muted px-2 py-0.5 text-[10px]">{{ $label->label() }}</span>
-                                        @endforeach
-                                    </div>
-                                @endif
-
-                                <div class="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
-                                    <div>
-                                        <p class="font-medium text-foreground/80">{{ __('guests.field_plus_one_name') }}</p>
-                                        <p>{{ $guest->plus_one_name ?: '—' }}</p>
-                                    </div>
-                                    <div>
-                                        <p class="font-medium text-foreground/80">{{ __('guests.invite_sent') }}</p>
-                                        <p>
-                                            @if ($guest->invite_sent_at)
-                                                {{ $guest->invite_platform?->label() }} · {{ $guest->invite_sent_at->diffForHumans() }}
-                                            @else
-                                                —
-                                            @endif
-                                        </p>
-                                    </div>
-                                    <div class="col-span-2">
-                                        <p class="font-medium text-foreground/80">{{ __('guests.last_opened') }}</p>
-                                        <p>{{ $guest->last_visited_at ? \Illuminate\Support\Carbon::parse($guest->last_visited_at)->diffForHumans() : '—' }}</p>
-                                    </div>
-                                </div>
-
-                                @if (! $locked && $guest->rsvp_status === null)
-                                    <x-dashboard.button type="button" class="w-full" wire:click="openSendInvite({{ $guest->id }})">
-                                        {{ __('guests.send_invite') }}
-                                    </x-dashboard.button>
-                                @endif
-                            </article>
+                                        </span>
+                                    </span>
+                                </button>
+                                <x-dashboard.guest-actions :guest="$guest" :locked="$locked" compact />
+                            </div>
                         @endforeach
                     </div>
 
                     {{-- Desktop table --}}
-                    <table class="hidden min-w-full text-left text-sm md:table">
+                    <table class="hidden min-w-full text-left text-sm lg:table">
                         <thead class="border-b border-border text-xs uppercase text-muted-foreground">
                             <tr>
                                 <th class="cursor-pointer px-3 py-3" wire:click="setSort('name')">{{ __('guests.field_name') }}</th>

@@ -13,7 +13,7 @@
 
     <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
-            <h2 class="text-xl font-semibold">{{ __('menu.title') }}</h2>
+            <h2 class="hidden text-xl font-semibold lg:block">{{ __('menu.title') }}</h2>
             <p class="mt-1 text-sm text-muted-foreground">{{ __('menu.empty_description') }}</p>
         </div>
         @if (! $locked)

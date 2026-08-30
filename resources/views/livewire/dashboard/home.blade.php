@@ -1,14 +1,49 @@
 @php
     /** @var \App\Models\WeddingEvent|null $wedding */
+    $daysUntilLabel = __('app.stat_days_until');
+    $daysStat = collect($overviewStats ?? [])->first(
+        fn (array $stat): bool => ($stat['label'] ?? null) === $daysUntilLabel
+    );
 @endphp
 
-<div class="space-y-6">
+<div class="space-y-5 lg:space-y-6">
     @if (! $wedding)
         <x-dashboard.card>
             <p class="text-sm text-muted-foreground">{{ __('dashboard.no_wedding') }}</p>
         </x-dashboard.card>
     @else
-        <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        {{-- Mobile app hero --}}
+        <div class="dashboard-home-hero lg:hidden">
+            <div>
+                <p class="text-sm text-muted-foreground">
+                    @if ($wedding->isArchived())
+                        {{ __('app.wedding_archived_badge') }}
+                    @elseif (! $wedding->is_active)
+                        {{ __('app.invitation_inactive_suffix') }}
+                    @else
+                        {{ __('app.dashboard_title') }}
+                    @endif
+                </p>
+                <h2 class="mt-0.5 text-2xl font-semibold tracking-tight">{{ $wedding->couple_names }}</h2>
+                @if (! $wedding->isArchived() && $daysStat)
+                    <p class="mt-2 text-4xl font-semibold tabular-nums tracking-tight text-primary">{{ $daysStat['value'] }}</p>
+                    <p class="mt-0.5 text-xs font-medium uppercase tracking-wide text-muted-foreground">{{ $daysStat['label'] }}</p>
+                @endif
+            </div>
+            <div class="dashboard-home-actions">
+                <a href="{{ route('dashboard.wedding') }}">
+                    <x-dashboard.icon name="pencil" class="h-4 w-4" />
+                    {{ $wedding->isArchived() ? __('app.view_invitation') : __('app.edit_invitation') }}
+                </a>
+                <a href="{{ $wedding->public_url }}" target="_blank" rel="noopener">
+                    <x-dashboard.icon name="external" class="h-4 w-4" />
+                    {{ __('app.preview_invitation') }}
+                </a>
+            </div>
+        </div>
+
+        {{-- Desktop header --}}
+        <div class="hidden items-start justify-between gap-3 lg:flex">
             <div>
                 <h2 class="text-xl font-semibold tracking-tight">
                     {{ $wedding->isArchived() ? __('app.memories_dashboard_title') : __('app.dashboard_title') }}
@@ -32,12 +67,6 @@
                     <x-dashboard.icon name="external" class="h-4 w-4" />
                     {{ __('app.preview_invitation') }}
                 </x-dashboard.button>
-                <span class="sm:hidden">
-                    <x-dashboard.button variant="secondary" :href="route('dashboard.guests')">
-                        <x-dashboard.icon name="users" class="h-4 w-4" />
-                        {{ __('dashboard.nav.guests') }}
-                    </x-dashboard.button>
-                </span>
             </div>
         </div>
 
@@ -57,7 +86,26 @@
         @endif
 
         @if ($wedding->isArchived())
-            <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div class="dashboard-stat-scroll lg:hidden">
+                <div class="dashboard-stat-chip">
+                    <p class="label">{{ __('app.memories_stat_invited') }}</p>
+                    <p class="value">{{ $memories['invited'] }}</p>
+                </div>
+                <div class="dashboard-stat-chip">
+                    <p class="label">{{ __('app.memories_stat_responded') }}</p>
+                    <p class="value">{{ $memories['responded'] }}</p>
+                </div>
+                <div class="dashboard-stat-chip">
+                    <p class="label">{{ __('app.memories_stat_confirmed') }}</p>
+                    <p class="value text-emerald-600 dark:text-emerald-400">{{ $memories['confirmed'] }}</p>
+                </div>
+                <div class="dashboard-stat-chip">
+                    <p class="label">{{ __('app.memories_stat_days_since') }}</p>
+                    <p class="value">{{ $memories['days_since'] }}</p>
+                </div>
+            </div>
+
+            <div class="hidden gap-4 sm:grid-cols-2 xl:grid-cols-4 lg:grid">
                 <x-dashboard.stat :label="__('app.memories_stat_invited')" :value="(string) $memories['invited']" />
                 <x-dashboard.stat :label="__('app.memories_stat_responded')" :value="(string) $memories['responded']" />
                 <x-dashboard.stat
@@ -185,7 +233,7 @@
                 </x-dashboard.card>
             </div>
         @else
-            <div class="flex justify-center border-b border-border pb-3">
+            <div class="flex w-full min-w-0 justify-center border-b border-border pb-3">
                 <x-dashboard.pills
                     name="tab"
                     :selected="$tab"
@@ -199,7 +247,29 @@
             </div>
 
             @if ($tab === 'overview')
-                <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                {{-- Mobile snap stats (exclude days — shown in hero) --}}
+                <div class="dashboard-stat-scroll lg:hidden">
+                    @foreach ($overviewStats as $stat)
+                        @continue($daysStat && $stat['label'] === $daysStat['label'])
+                        @php
+                            $toneClass = match ($stat['tone'] ?? null) {
+                                'success' => 'text-emerald-600 dark:text-emerald-400',
+                                'warning' => 'text-amber-600 dark:text-amber-400',
+                                default => '',
+                            };
+                            $chipTag = ($stat['href'] ?? null) ? 'a' : 'div';
+                        @endphp
+                        <{{ $chipTag }}
+                            @if ($stat['href'] ?? null) href="{{ $stat['href'] }}" @endif
+                            class="dashboard-stat-chip"
+                        >
+                            <p class="label">{{ $stat['label'] }}</p>
+                            <p class="value {{ $toneClass }}">{{ $stat['value'] }}</p>
+                        </{{ $chipTag }}>
+                    @endforeach
+                </div>
+
+                <div class="hidden gap-4 sm:grid-cols-2 xl:grid-cols-3 lg:grid">
                     @foreach ($overviewStats as $stat)
                         <x-dashboard.stat
                             :label="$stat['label']"
@@ -212,7 +282,46 @@
                 </div>
 
                 @if ($checklist)
-                    <x-dashboard.card>
+                    <x-dashboard.list-group
+                        :title="__('checklist.summary_label')"
+                        :action="__('checklist.view_all')"
+                        :action-href="route('dashboard.checklist')"
+                        class="lg:hidden"
+                    >
+                        <div class="dashboard-list-row items-center">
+                            <div class="checklist-ring" style="--progress: {{ $checklist['percent'] }}" aria-hidden="true">
+                                <span class="checklist-ring-inner">{{ $checklist['percent'] }}%</span>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-base font-semibold tabular-nums">
+                                    {{ __('checklist.summary_value', ['completed' => $checklist['completed'], 'total' => $checklist['total']]) }}
+                                </p>
+                                <p class="mt-0.5 text-xs text-muted-foreground">{{ __('checklist.summary_percent', ['percent' => $checklist['percent']]) }}</p>
+                            </div>
+                        </div>
+                        @forelse ($checklist['next'] as $row)
+                            <div class="dashboard-list-row flex-col gap-0.5">
+                                <p class="text-sm font-medium">{{ $row['title'] }}</p>
+                                <p class="text-xs text-muted-foreground">
+                                    @if ($row['due_label'])
+                                        {{ $row['due_label'] }}
+                                    @endif
+                                    @if ($row['due_label'] && $row['progress'])
+                                        ·
+                                    @endif
+                                    @if ($row['progress'])
+                                        {{ $row['progress']['label'] }}
+                                    @endif
+                                </p>
+                            </div>
+                        @empty
+                            <div class="dashboard-list-row">
+                                <p class="text-sm text-muted-foreground">{{ __('checklist.next_empty') }}</p>
+                            </div>
+                        @endforelse
+                    </x-dashboard.list-group>
+
+                    <x-dashboard.card class="hidden lg:block">
                         <x-slot:header>
                             <div class="flex w-full items-center justify-between gap-2">
                                 <h3 class="font-medium">{{ __('checklist.summary_label') }}</h3>
@@ -254,7 +363,23 @@
                     </x-dashboard.card>
                 @endif
 
-                <x-dashboard.card>
+                <x-dashboard.list-group :title="__('app.recent_rsvp_notes_heading')" class="lg:hidden">
+                    @forelse ($recentNotes as $guest)
+                        <div class="dashboard-list-row flex-col gap-1">
+                            <div class="flex w-full items-center justify-between gap-2">
+                                <p class="text-sm font-medium">{{ $guest->name }}</p>
+                                <p class="text-xs text-muted-foreground">{{ $guest->rsvp_responded_at?->diffForHumans() }}</p>
+                            </div>
+                            <p class="text-sm text-muted-foreground">{{ $guest->rsvp_note }}</p>
+                        </div>
+                    @empty
+                        <div class="dashboard-list-row">
+                            <p class="text-sm text-muted-foreground">{{ __('app.recent_rsvp_notes_empty') }}</p>
+                        </div>
+                    @endforelse
+                </x-dashboard.list-group>
+
+                <x-dashboard.card class="hidden lg:block">
                     <x-slot:header>
                         <h3 class="font-medium">{{ __('app.recent_rsvp_notes_heading') }}</h3>
                     </x-slot:header>
@@ -333,7 +458,16 @@
             @endif
 
             @if ($tab === 'stats')
-                <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                <div class="dashboard-stat-scroll lg:hidden">
+                    @foreach ($visitStats as $stat)
+                        <div class="dashboard-stat-chip">
+                            <p class="label">{{ $stat['label'] }}</p>
+                            <p class="value">{{ $stat['value'] }}</p>
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="hidden gap-4 sm:grid-cols-2 xl:grid-cols-4 lg:grid">
                     @foreach ($visitStats as $stat)
                         <x-dashboard.stat
                             :label="$stat['label']"

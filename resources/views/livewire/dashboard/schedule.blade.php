@@ -8,7 +8,7 @@
     @endif
 
     <div class="flex flex-wrap items-center justify-between gap-3">
-        <h2 class="text-xl font-semibold">{{ __('schedule.title') }}</h2>
+        <h2 class="hidden text-xl font-semibold lg:block">{{ __('schedule.title') }}</h2>
         @if (! $locked)
             <x-dashboard.button type="button" wire:click="openCreate">
                 <x-dashboard.icon name="plus" class="h-4 w-4" />

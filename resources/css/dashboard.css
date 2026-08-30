@@ -219,7 +219,7 @@
 }
 
 .dashboard-main {
-    padding-bottom: calc(1rem + 3.5rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(1rem + 4rem + env(safe-area-inset-bottom, 0px));
 }
 
 @media (min-width: 1024px) {
@@ -231,7 +231,7 @@
 .dashboard-fab {
     position: fixed;
     right: max(1rem, env(safe-area-inset-right, 0px));
-    bottom: calc(4.25rem + env(safe-area-inset-bottom, 0px));
+    bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
     z-index: 30;
     display: inline-flex;
     height: 3.25rem;
@@ -265,11 +265,132 @@
     box-shadow: 0 1px 2px color-mix(in srgb, var(--foreground) 4%, transparent);
 }
 
+.dashboard-guest-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.dashboard-guest-row:last-child {
+    border-bottom: 0;
+}
+
+.dashboard-guest-row:active,
+.dashboard-guest-row:hover {
+    background: color-mix(in srgb, var(--muted) 70%, transparent);
+}
+
 .dashboard-message-row {
     border-radius: 1rem;
     border: 1px solid var(--border);
     background: var(--card);
     padding: 1rem;
+}
+
+.dashboard-list-group-body > :not(:last-child) {
+    border-bottom: 1px solid var(--border);
+}
+
+.dashboard-list-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    background: transparent;
+}
+
+.dashboard-stat-scroll {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 0.25rem;
+    margin-inline: -0.75rem;
+    padding-inline: 0.75rem;
+    scrollbar-width: none;
+}
+
+.dashboard-stat-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.dashboard-stat-chip {
+    scroll-snap-align: start;
+    flex: 0 0 auto;
+    min-width: 7.5rem;
+    border-radius: 1rem;
+    border: 1px solid var(--border);
+    background: var(--card);
+    padding: 0.875rem 1rem;
+    box-shadow: 0 1px 2px color-mix(in srgb, var(--foreground) 4%, transparent);
+}
+
+.dashboard-stat-chip .label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+}
+
+.dashboard-stat-chip .value {
+    margin-top: 0.35rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+}
+
+.dashboard-home-hero {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.dashboard-home-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.dashboard-home-actions a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    border-radius: 9999px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+@media (min-width: 1024px) {
+    .dashboard-stat-scroll {
+        display: none;
+    }
+}
+
+.dashboard-modal-footer {
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 1024px) {
+    .dashboard-modal-footer {
+        padding-bottom: 0.75rem;
+    }
 }
 
 /* Support contact bubble — only mounted on More; sit above the mobile tab bar */

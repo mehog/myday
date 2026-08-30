@@ -70,7 +70,7 @@ class Budget extends Component
     {
         return $this->dashboardView('livewire.dashboard.budget', [], __('budget.page_title'), [
             ['label' => __('budget.nav_label'), 'url' => null],
-        ]);
+        ], backUrl: route('dashboard.more'));
     }
 
     public function getWeddingProperty(): ?WeddingEvent

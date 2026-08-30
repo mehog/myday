@@ -73,6 +73,6 @@ class GuestVideos extends Component
         return $this->dashboardView('livewire.dashboard.guest-videos', [], __('app.guest_messages_all_videos_title'), [
             ['label' => __('dashboard.nav.messages'), 'url' => route('dashboard.messages')],
             ['label' => __('app.guest_messages_all_videos_title'), 'url' => null],
-        ]);
+        ], backUrl: route('dashboard.messages'));
     }
 }

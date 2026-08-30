@@ -1,15 +1,15 @@
-<div class="space-y-6">
-    <div>
+<div class="space-y-5 lg:space-y-6">
+    <div class="hidden lg:block">
         <h2 class="text-xl font-semibold tracking-tight">{{ __('dashboard.more_title') }}</h2>
         <p class="mt-1 text-sm text-muted-foreground">{{ __('dashboard.more_subtitle') }}</p>
     </div>
 
-    <div class="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+    <x-dashboard.list-group>
         @foreach ($items as $item)
             <a
                 href="{{ route($item['route']) }}"
                 @class([
-                    'flex items-center gap-3 border-b border-border px-4 py-3.5 transition-colors last:border-b-0',
+                    'flex items-center gap-3 px-4 py-3.5 transition-colors',
                     'bg-accent/60' => \App\Support\DashboardNav::isActive($item),
                     'hover:bg-muted/60' => ! \App\Support\DashboardNav::isActive($item),
                 ])
@@ -26,10 +26,10 @@
                 <x-dashboard.icon name="chevron-right" class="h-4 w-4 shrink-0 text-muted-foreground" />
             </a>
         @endforeach
-    </div>
+    </x-dashboard.list-group>
 
-    <div class="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-        <div class="flex items-center justify-between gap-3 border-b border-border px-4 py-3.5">
+    <x-dashboard.list-group>
+        <div class="flex items-center justify-between gap-3 px-4 py-3.5">
             <div class="min-w-0">
                 <p class="text-sm font-medium">{{ __('dashboard.appearance') }}</p>
                 <p class="mt-0.5 text-xs text-muted-foreground">{{ __('dashboard.more_desc_appearance') }}</p>
@@ -39,7 +39,7 @@
 
         <a
             href="/app"
-            class="flex items-center gap-3 border-b border-border px-4 py-3.5 transition-colors hover:bg-muted/60"
+            class="flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-muted/60"
         >
             <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted text-foreground">
                 <x-dashboard.icon name="panel" class="h-5 w-5" />
@@ -63,7 +63,7 @@
                 <span class="min-w-0 flex-1 text-sm font-medium">{{ __('dashboard.nav.logout') }}</span>
             </button>
         </form>
-    </div>
+    </x-dashboard.list-group>
 
     <div class="flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3.5 shadow-sm">
         <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">

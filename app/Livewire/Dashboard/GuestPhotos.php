@@ -73,6 +73,6 @@ class GuestPhotos extends Component
         return $this->dashboardView('livewire.dashboard.guest-photos', [], __('app.guest_messages_all_photos_title'), [
             ['label' => __('dashboard.nav.messages'), 'url' => route('dashboard.messages')],
             ['label' => __('app.guest_messages_all_photos_title'), 'url' => null],
-        ]);
+        ], backUrl: route('dashboard.messages'));
     }
 }

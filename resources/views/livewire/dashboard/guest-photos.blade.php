@@ -4,7 +4,7 @@
 
 <div class="space-y-6">
     <div class="flex flex-wrap items-center justify-between gap-3">
-        <h2 class="text-xl font-semibold">{{ __('app.guest_messages_all_photos_title') }}</h2>
+        <h2 class="hidden text-xl font-semibold lg:block">{{ __('app.guest_messages_all_photos_title') }}</h2>
         <div class="flex flex-wrap gap-2">
             @if ($totalPhotoCount > 0)
                 <x-dashboard.button variant="secondary" href="{{ $downloadBaseUrl }}" target="_blank">
