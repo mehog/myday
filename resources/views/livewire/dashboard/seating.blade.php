@@ -19,6 +19,9 @@
         expandedTables: {},
         unassignedSearch: '',
         addTableOpen: false,
+        floorFullscreen: false,
+        tableTypeMenuOpen: false,
+        viewOptionsMenuOpen: false,
         assignGuestTarget: null,
         emptySeatLabel: @js($emptySeatLabel),
         seatLabelPrefix: @js($seatLabelPrefix),
@@ -72,9 +75,16 @@
         },
         switchViewMode(mode) {
             this.viewMode = mode;
+            if (mode !== 'floor' && this.floorFullscreen) {
+                this.floorFullscreen = false;
+            }
             if (mode === 'floor') {
                 this.$nextTick(() => window.seatingPlanEditor?.resize());
             }
+        },
+        toggleFloorFullscreen() {
+            this.floorFullscreen = ! this.floorFullscreen;
+            this.$nextTick(() => window.seatingPlanEditor?.resize());
         },
         openChairModal(data) {
             this.assignGuestTarget = null;
@@ -222,6 +232,7 @@
     x-on:seating-zoom-changed.window="zoomLabel = $event.detail.label"
     x-on:seating-seats-changed.window="seatCount.assigned = $event.detail.assigned"
     x-on:seating-plan-changed.window="planTables = $event.detail.plan.tables; seatCount.assigned = window.seatingPlanEditor?.getAssignedIds()?.length ?? 0"
+    x-on:keydown.escape.window="if (floorFullscreen && !chairModal.open && !addTableOpen) { floorFullscreen = false; $nextTick(() => window.seatingPlanEditor?.resize()) }"
 >
     @if ($flashMessage)
         <div class="rounded-lg border border-emerald-300/50 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-100">{{ $flashMessage }}</div>
@@ -451,55 +462,103 @@
 
     {{-- Floor editor stays mounted (off-screen when list) so Konva keeps a real size --}}
     <div
-        class="-mx-1 flex flex-col overflow-hidden sm:-mx-6 lg:-mx-8"
+        class="flex flex-col overflow-hidden"
         x-bind:class="viewMode === 'floor'
-            ? 'relative h-[calc(100dvh-14rem)] opacity-100 lg:h-[calc(100vh-11rem)]'
+            ? (floorFullscreen
+                ? 'fixed inset-0 z-50 h-dvh bg-background opacity-100'
+                : 'relative -mx-1 h-[calc(100dvh-14rem)] opacity-100 sm:-mx-6 lg:-mx-8 lg:h-[calc(100vh-11rem)]')
             : 'pointer-events-none fixed left-[-9999px] top-0 h-[480px] w-[360px] opacity-0'"
     >
-        <div class="flex shrink-0 flex-wrap items-end gap-3 border-b border-border bg-card px-3 py-2 sm:gap-4 sm:px-4">
-            <div class="flex flex-col gap-1">
-                <span class="text-xs font-medium text-muted-foreground">{{ __('seating.select_table_type') }}</span>
-                <div class="flex flex-wrap items-center gap-2">
-                    <x-dashboard.button type="button" variant="secondary" class="!px-2 !py-1 text-xs sm:text-sm" x-on:click="window.seatingPlanEditor?.addTable('round')">
+        <div class="flex shrink-0 items-center gap-2 border-b border-border bg-card px-3 py-2 sm:px-4">
+            <div class="relative">
+                <button
+                    type="button"
+                    class="inline-flex h-9 items-center gap-1.5 rounded-md border border-border bg-background px-2.5 text-sm font-medium hover:bg-accent"
+                    x-on:click="tableTypeMenuOpen = !tableTypeMenuOpen; viewOptionsMenuOpen = false"
+                    x-bind:aria-expanded="tableTypeMenuOpen"
+                >
+                    {{ __('seating.select_table_type') }}
+                    <x-dashboard.icon name="chevron-down" class="h-3.5 w-3.5 text-muted-foreground" />
+                </button>
+                <div
+                    x-show="tableTypeMenuOpen"
+                    x-on:click.outside="tableTypeMenuOpen = false"
+                    x-cloak
+                    class="absolute left-0 z-30 mt-1 w-48 rounded-md border border-border bg-popover p-1 shadow-lg"
+                >
+                    <button type="button" class="flex w-full items-center rounded-sm px-2.5 py-2 text-left text-sm hover:bg-accent" x-on:click="window.seatingPlanEditor?.addTable('round'); tableTypeMenuOpen = false">
                         {{ __('seating.add_round') }}
-                    </x-dashboard.button>
-                    <x-dashboard.button type="button" variant="secondary" class="!px-2 !py-1 text-xs sm:text-sm" x-on:click="window.seatingPlanEditor?.addTable('rect')">
+                    </button>
+                    <button type="button" class="flex w-full items-center rounded-sm px-2.5 py-2 text-left text-sm hover:bg-accent" x-on:click="window.seatingPlanEditor?.addTable('rect'); tableTypeMenuOpen = false">
                         {{ __('seating.add_rect') }}
-                    </x-dashboard.button>
-                    <x-dashboard.button type="button" variant="secondary" class="!px-2 !py-1 text-xs sm:text-sm" x-on:click="window.seatingPlanEditor?.addTable('head')">
+                    </button>
+                    <button type="button" class="flex w-full items-center rounded-sm px-2.5 py-2 text-left text-sm hover:bg-accent" x-on:click="window.seatingPlanEditor?.addTable('head'); tableTypeMenuOpen = false">
                         {{ __('seating.add_head') }}
-                    </x-dashboard.button>
+                    </button>
                 </div>
             </div>
 
-            <div class="ml-auto flex flex-col gap-1">
-                <span class="text-right text-xs font-medium text-muted-foreground">{{ __('seating.zoom_controls') }}</span>
-                <div class="flex items-center gap-1">
+            <div class="ml-auto flex items-center gap-1">
+                <button
+                    type="button"
+                    class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent"
+                    x-on:click="window.seatingPlanEditor?.zoomOut()"
+                    aria-label="{{ __('seating.zoom_out') }}"
+                >
+                    <x-dashboard.icon name="minus" class="h-4 w-4" />
+                </button>
+                <span class="min-w-[3rem] text-center text-sm text-muted-foreground" x-text="zoomLabel"></span>
+                <button
+                    type="button"
+                    class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent"
+                    x-on:click="window.seatingPlanEditor?.zoomIn()"
+                    aria-label="{{ __('seating.zoom_in') }}"
+                >
+                    <x-dashboard.icon name="plus" class="h-4 w-4" />
+                </button>
+
+                <div class="relative">
                     <button
                         type="button"
                         class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent"
-                        x-on:click="window.seatingPlanEditor?.zoomOut()"
-                        aria-label="{{ __('seating.zoom_out') }}"
+                        x-on:click="viewOptionsMenuOpen = !viewOptionsMenuOpen; tableTypeMenuOpen = false"
+                        x-bind:aria-expanded="viewOptionsMenuOpen"
+                        aria-label="{{ __('seating.view_options') }}"
                     >
-                        <x-dashboard.icon name="minus" class="h-4 w-4" />
+                        <x-dashboard.icon name="more" class="h-4 w-4" />
                     </button>
-                    <span class="min-w-[3rem] text-center text-sm text-muted-foreground" x-text="zoomLabel"></span>
-                    <button
-                        type="button"
-                        class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent"
-                        x-on:click="window.seatingPlanEditor?.zoomIn()"
-                        aria-label="{{ __('seating.zoom_in') }}"
+                    <div
+                        x-show="viewOptionsMenuOpen"
+                        x-on:click.outside="viewOptionsMenuOpen = false"
+                        x-cloak
+                        class="absolute right-0 z-30 mt-1 w-48 rounded-md border border-border bg-popover p-1 shadow-lg"
                     >
-                        <x-dashboard.icon name="plus" class="h-4 w-4" />
-                    </button>
-                    <x-dashboard.button type="button" variant="secondary" class="!px-2 !py-1 text-xs sm:text-sm" x-on:click="window.seatingPlanEditor?.resetZoom()">
-                        {{ __('seating.reset_zoom') }}
-                    </x-dashboard.button>
+                        <button
+                            type="button"
+                            class="flex w-full items-center gap-2 rounded-sm px-2.5 py-2 text-left text-sm hover:bg-accent"
+                            x-on:click="window.seatingPlanEditor?.resetZoom(); viewOptionsMenuOpen = false"
+                        >
+                            {{ __('seating.reset_zoom') }}
+                        </button>
+                        <button
+                            type="button"
+                            class="flex w-full items-center gap-2 rounded-sm px-2.5 py-2 text-left text-sm hover:bg-accent"
+                            x-on:click="toggleFloorFullscreen(); viewOptionsMenuOpen = false"
+                        >
+                            <span class="inline-flex h-3.5 w-3.5 shrink-0" x-show="!floorFullscreen">
+                                <x-dashboard.icon name="maximize" class="h-3.5 w-3.5" />
+                            </span>
+                            <span class="inline-flex h-3.5 w-3.5 shrink-0" x-show="floorFullscreen" x-cloak>
+                                <x-dashboard.icon name="minimize" class="h-3.5 w-3.5" />
+                            </span>
+                            <span x-text="floorFullscreen ? @js(__('seating.exit_fullscreen')) : @js(__('seating.fullscreen'))"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <p class="shrink-0 border-b border-border bg-muted/40 px-3 py-1.5 text-xs text-muted-foreground lg:hidden">
+        <p class="shrink-0 border-b border-border bg-muted/40 px-3 py-1.5 text-xs text-muted-foreground lg:hidden" x-show="!floorFullscreen">
             {{ __('seating.floor_hint') }}
         </p>
 
@@ -569,10 +628,15 @@
         </div>
     </div>
 
-    <template x-if="addTableOpen">
-        <div class="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4" x-on:keydown.escape.window="addTableOpen = false">
+    <template x-teleport="body">
+        <div
+            x-show="addTableOpen"
+            x-cloak
+            class="fixed inset-0 z-50 flex items-center justify-center p-4"
+            x-on:keydown.escape.window="if (addTableOpen) addTableOpen = false"
+        >
             <div class="absolute inset-0 bg-black/50" x-on:click="addTableOpen = false"></div>
-            <div class="relative z-10 w-full max-w-sm rounded-t-2xl border border-border bg-card p-4 shadow-xl sm:rounded-2xl">
+            <div class="relative z-10 w-full max-w-sm rounded-2xl border border-border bg-card p-4 shadow-xl">
                 <h3 class="mb-3 text-base font-semibold">{{ __('seating.add_table') }}</h3>
                 <div class="grid gap-2">
                     <x-dashboard.button type="button" variant="secondary" class="w-full justify-center" x-on:click="addTable('round')">
@@ -589,14 +653,16 @@
         </div>
     </template>
 
-    <template x-if="chairModal.open">
+    <template x-teleport="body">
         <div
-            class="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4"
-            x-on:keydown.escape.window="closeChairModal()"
+            x-show="chairModal.open"
+            x-cloak
+            class="fixed inset-0 z-50 flex items-center justify-center p-4"
+            x-on:keydown.escape.window="if (chairModal.open) closeChairModal()"
         >
             <div class="absolute inset-0 bg-black/50" x-on:click="closeChairModal()"></div>
 
-            <div class="relative z-10 flex max-h-[85dvh] w-full max-w-sm flex-col overflow-hidden rounded-t-2xl border border-border bg-card shadow-xl sm:rounded-2xl">
+            <div class="relative z-10 flex max-h-[85dvh] w-full max-w-sm flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-xl">
                 <div class="flex items-center justify-between border-b border-border px-4 py-3">
                     <span class="text-sm font-semibold" x-text="assignGuestTarget ? @js(__('seating.choose_seat')) : @js(__('seating.assign_guest'))"></span>
                     <button type="button" class="text-muted-foreground hover:text-foreground" x-on:click="closeChairModal()">&times;</button>

@@ -22,7 +22,7 @@
         x-show="open"
         @click.outside="open = false"
         x-cloak
-        class="absolute right-0 z-30 mt-2 w-80 overflow-hidden rounded-md border border-border bg-popover shadow-lg"
+        class="absolute right-0 z-50 mt-2 w-80 overflow-hidden rounded-md border border-border bg-popover shadow-lg"
     >
         <div class="flex items-center justify-between gap-2 border-b border-border px-3 py-2">
             <p class="text-sm font-medium">{{ __('dashboard.notifications_title') }}</p>

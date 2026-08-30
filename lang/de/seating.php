@@ -45,6 +45,9 @@ return [
     'zoom_in' => 'Vergrößern',
     'zoom_out' => 'Verkleinern',
     'reset_zoom' => 'Zurücksetzen',
+    'view_options' => 'Ansichtsoptionen',
+    'fullscreen' => 'Vollbild',
+    'exit_fullscreen' => 'Vollbild beenden',
 
     'duplicate_guest' => 'Dieser Gast ist bereits platziert.',
     'remove_guest_confirm' => 'Gast von diesem Platz entfernen?',

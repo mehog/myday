@@ -109,7 +109,7 @@
 
         {{-- Main --}}
         <div class="flex min-w-0 flex-1 flex-col">
-            <header class="dashboard-topbar flex h-14 shrink-0 items-center gap-3 border-b border-border bg-card/80 px-4 backdrop-blur">
+            <header class="dashboard-topbar relative z-40 flex h-14 shrink-0 items-center gap-3 border-b border-border bg-card/80 px-4 backdrop-blur">
                 <button
                     type="button"
                     class="hidden h-9 w-9 items-center justify-center rounded-md border border-border bg-background hover:bg-accent lg:inline-flex"

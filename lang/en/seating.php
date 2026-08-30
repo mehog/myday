@@ -45,6 +45,9 @@ return [
     'zoom_in' => 'Zoom in',
     'zoom_out' => 'Zoom out',
     'reset_zoom' => 'Reset',
+    'view_options' => 'View options',
+    'fullscreen' => 'Fullscreen',
+    'exit_fullscreen' => 'Exit fullscreen',
 
     'duplicate_guest' => 'This guest is already seated.',
     'remove_guest_confirm' => 'Remove guest from this seat?',

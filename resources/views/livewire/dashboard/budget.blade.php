@@ -412,14 +412,16 @@
     </div>
 
 @if ($showSettings)
-    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" wire:click.self="$set('showSettings', false)">
-        <div class="w-full max-w-lg rounded-xl border border-border bg-card p-5 shadow-xl">
-            <div class="mb-4 flex items-center justify-between">
-                <h3 class="font-semibold">{{ __('budget.settings_heading') }}</h3>
-                <button type="button" class="text-sm text-muted-foreground" wire:click="$set('showSettings', false)">{{ __('budget.cancel') }}</button>
+    @teleport('body')
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" wire:click.self="$set('showSettings', false)">
+            <div class="w-full max-w-lg rounded-xl border border-border bg-card p-5 shadow-xl">
+                <div class="mb-4 flex items-center justify-between">
+                    <h3 class="font-semibold">{{ __('budget.settings_heading') }}</h3>
+                    <button type="button" class="text-sm text-muted-foreground" wire:click="$set('showSettings', false)">{{ __('budget.cancel') }}</button>
+                </div>
+                @include('livewire.dashboard.partials.budget-settings-modal', ['locked' => $locked])
             </div>
-            @include('livewire.dashboard.partials.budget-settings-modal', ['locked' => $locked])
         </div>
-    </div>
+    @endteleport
 @endif
 </div>

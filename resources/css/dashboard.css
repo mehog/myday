@@ -7,6 +7,10 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/spatie/laravel-support-bubble/resources/views/**/*.blade.php';
 
+[x-cloak] {
+    display: none !important;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme {

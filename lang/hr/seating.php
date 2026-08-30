@@ -45,6 +45,9 @@ return [
     'zoom_in' => 'Uvećaj',
     'zoom_out' => 'Umanji',
     'reset_zoom' => 'Resetiraj',
+    'view_options' => 'Opcije prikaza',
+    'fullscreen' => 'Cijeli zaslon',
+    'exit_fullscreen' => 'Izađi iz cijelog zaslona',
 
     'duplicate_guest' => 'Ovaj gost je već raspoređen.',
     'remove_guest_confirm' => 'Ukloniti gosta s ovog mjesta?',
