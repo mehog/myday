@@ -111,11 +111,72 @@
                         {{ $label }}
                     </button>
                 @endforeach
-                <div class="relative shrink-0" x-data="{ open: false }">
+                <div
+                    class="relative shrink-0"
+                    x-data="{
+                        open: false,
+                        menuStyle: '',
+                        toggle() {
+                            this.open = ! this.open;
+                            if (this.open) {
+                                this.place();
+                                this.$nextTick(() => this.place());
+                            }
+                        },
+                        place() {
+                            const button = this.$refs.trigger;
+                            const menu = this.$refs.menu;
+                            if (! button) {
+                                return;
+                            }
+
+                            const rect = button.getBoundingClientRect();
+                            const menuWidth = menu?.offsetWidth || 224;
+                            const menuHeight = menu?.offsetHeight || 280;
+                            const gap = 4;
+                            const margin = 8;
+                            let top = rect.bottom + gap;
+
+                            if (top + menuHeight > window.innerHeight - margin) {
+                                top = Math.max(margin, rect.top - gap - menuHeight);
+                            }
+
+                            let left = rect.right - menuWidth;
+                            left = Math.min(left, window.innerWidth - menuWidth - margin);
+                            left = Math.max(margin, left);
+
+                            this.menuStyle = `position:fixed;top:${top}px;left:${left}px;`;
+                        },
+                        closeIfOutside(event) {
+                            if (this.$refs.trigger?.contains(event.target)) {
+                                return;
+                            }
+                            this.open = false;
+                        },
+                        init() {
+                            this._reposition = () => {
+                                if (this.open) {
+                                    this.place();
+                                }
+                            };
+                            this._close = () => {
+                                this.open = false;
+                            };
+                            window.addEventListener('resize', this._reposition);
+                            document.querySelector('.dashboard-main')?.addEventListener('scroll', this._close, { passive: true });
+                        },
+                        destroy() {
+                            window.removeEventListener('resize', this._reposition);
+                            document.querySelector('.dashboard-main')?.removeEventListener('scroll', this._close);
+                        },
+                    }"
+                >
                     <button
                         type="button"
+                        x-ref="trigger"
                         class="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1.5 text-xs font-medium text-muted-foreground"
-                        @click="open = !open"
+                        @click="toggle()"
+                        :aria-expanded="open"
                     >
                         {{ __('guests.filter_labels') }}
                         @if (count($filterLabels) > 0)
@@ -123,30 +184,34 @@
                         @endif
                         <x-dashboard.icon name="chevron-down" class="h-3 w-3" />
                     </button>
-                    <div
-                        x-show="open"
-                        @click.outside="open = false"
-                        x-cloak
-                        class="absolute right-0 z-20 mt-1 w-56 rounded-xl border border-border bg-popover p-1 shadow-lg"
-                    >
-                        <button
-                            type="button"
-                            class="block w-full rounded-lg px-2 py-1.5 text-left text-xs text-muted-foreground hover:bg-accent"
-                            wire:click="clearLabelFilter"
+                    <template x-teleport="body">
+                        <div
+                            x-ref="menu"
+                            x-show="open"
+                            x-on:click.outside="closeIfOutside($event)"
+                            x-cloak
+                            :style="menuStyle"
+                            class="fixed z-50 max-h-[min(70dvh,24rem)] w-56 overflow-y-auto rounded-xl border border-border bg-popover p-1 shadow-lg"
                         >
-                            {{ __('guests.filter_labels_clear') }}
-                        </button>
-                        <label class="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 text-sm hover:bg-accent">
-                            <input type="checkbox" value="__none" wire:model.live="filterLabels" class="rounded border-border">
-                            {{ __('guests.labels_none') }}
-                        </label>
-                        @foreach ($labelOptions as $value => $label)
+                            <button
+                                type="button"
+                                class="block w-full rounded-lg px-2 py-1.5 text-left text-xs text-muted-foreground hover:bg-accent"
+                                wire:click="clearLabelFilter"
+                            >
+                                {{ __('guests.filter_labels_clear') }}
+                            </button>
                             <label class="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 text-sm hover:bg-accent">
-                                <input type="checkbox" value="{{ $value }}" wire:model.live="filterLabels" class="rounded border-border">
-                                {{ $label }}
+                                <input type="checkbox" value="__none" wire:model.live="filterLabels" class="rounded border-border">
+                                {{ __('guests.labels_none') }}
                             </label>
-                        @endforeach
-                    </div>
+                            @foreach ($labelOptions as $value => $label)
+                                <label class="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 text-sm hover:bg-accent">
+                                    <input type="checkbox" value="{{ $value }}" wire:model.live="filterLabels" class="rounded border-border">
+                                    {{ $label }}
+                                </label>
+                            @endforeach
+                        </div>
+                    </template>
                 </div>
             </div>
         </div>
@@ -228,14 +293,16 @@
                     {{-- Mobile contacts list --}}
                     <div class="lg:hidden">
                         @foreach ($guests as $guest)
-                            <div class="dashboard-guest-row group" wire:key="guest-card-{{ $guest->id }}">
-                                <button
-                                    type="button"
-                                    class="flex min-w-0 flex-1 items-center gap-3 text-left"
-                                    @if (! $locked)
-                                        wire:click="openEdit({{ $guest->id }})"
-                                    @endif
-                                >
+                            <div
+                                class="dashboard-guest-row group"
+                                wire:key="guest-card-{{ $guest->id }}"
+                                @if (! $locked)
+                                    wire:click="openGuestRowActions({{ $guest->id }})"
+                                    role="button"
+                                    tabindex="0"
+                                @endif
+                            >
+                                <div class="flex min-w-0 flex-1 items-center gap-3 text-left">
                                     <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/15 text-sm font-semibold text-primary">
                                         {{ strtoupper(mb_substr($guest->name, 0, 1)) }}
                                     </span>
@@ -248,8 +315,10 @@
                                             @endif
                                         </span>
                                     </span>
-                                </button>
-                                <x-dashboard.guest-actions :guest="$guest" :locked="$locked" compact />
+                                </div>
+                                <div @click.stop>
+                                    <x-dashboard.guest-actions :guest="$guest" :locked="$locked" compact />
+                                </div>
                             </div>
                         @endforeach
                     </div>
@@ -339,6 +408,36 @@
             <span>{{ __('dashboard.guests_add') }}</span>
         </button>
     @endif
+
+    {{-- Mobile row actions --}}
+    <x-dashboard.modal
+        :show="$modal === 'row_actions'"
+        :title="$activeGuest?->name ?? __('dashboard.actions')"
+        max-width="max-w-sm"
+    >
+        <div class="space-y-2">
+            @if ($activeGuest)
+                <x-dashboard.button
+                    type="button"
+                    variant="secondary"
+                    class="w-full justify-start gap-2"
+                    wire:click="openSendInvite({{ $activeGuest->id }})"
+                >
+                    <x-dashboard.icon name="send" class="h-4 w-4 shrink-0" />
+                    {{ $activeGuest->invite_sent_at ? __('guests.resend_invite') : __('guests.send_invite') }}
+                </x-dashboard.button>
+                <x-dashboard.button
+                    type="button"
+                    variant="secondary"
+                    class="w-full justify-start gap-2"
+                    wire:click="openEdit({{ $activeGuest->id }})"
+                >
+                    <x-dashboard.icon name="pencil" class="h-4 w-4 shrink-0" />
+                    {{ __('dashboard.edit') }}
+                </x-dashboard.button>
+            @endif
+        </div>
+    </x-dashboard.modal>
 
     {{-- Create / Edit --}}
     <x-dashboard.modal :show="$modal === 'form'" :title="$activeGuestId ? __('dashboard.edit') : __('dashboard.guests_add')" max-width="max-w-xl">

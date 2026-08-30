@@ -49,6 +49,7 @@ return [
     'rsvp_pending' => 'Pending',
 
     'send_invite' => 'Send invitation',
+    'resend_invite' => 'Resend invitation',
     'mark_sent' => 'Mark as sent',
     'copy_link' => 'Copy link',
     'close' => 'Close',

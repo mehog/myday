@@ -49,6 +49,7 @@ return [
     'rsvp_pending' => 'Ausstehend',
 
     'send_invite' => 'Einladung senden',
+    'resend_invite' => 'Einladung erneut senden',
     'mark_sent' => 'Als gesendet markieren',
     'copy_link' => 'Link kopieren',
     'close' => 'Schließen',

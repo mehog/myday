@@ -68,7 +68,7 @@
             'h-9 w-9 rounded-full text-muted-foreground hover:bg-accent hover:text-foreground' => $compact,
             'gap-1 rounded-md border border-border px-2.5 py-1.5 text-xs' => ! $compact,
         ])
-        @click="toggle()"
+        @click.stop="toggle()"
         aria-label="{{ __('guests.more_actions') }}"
         :aria-expanded="open"
     >

@@ -49,6 +49,7 @@ return [
     'rsvp_pending' => 'Na čekanju',
 
     'send_invite' => 'Pošalji pozivnicu',
+    'resend_invite' => 'Pošalji ponovno',
     'mark_sent' => 'Označi poslano',
     'copy_link' => 'Kopiraj link',
     'close' => 'Zatvori',

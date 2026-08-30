@@ -266,6 +266,17 @@ class Guests extends Component
         $this->modal = 'form';
     }
 
+    public function openGuestRowActions(int $id): void
+    {
+        $wedding = $this->wedding();
+        abort_unless($wedding instanceof WeddingEvent, 404);
+        $this->ensureWritable($wedding);
+
+        $guest = $wedding->guests()->whereKey($id)->firstOrFail();
+        $this->activeGuestId = $guest->id;
+        $this->modal = 'row_actions';
+    }
+
     public function openEdit(int $id): void
     {
         $wedding = $this->wedding();
