@@ -60,4 +60,19 @@ return [
     'default_table_head' => 'Tisch der Brautleute',
     'default_table_numbered' => 'Tisch :number',
 
+    'mode_list' => 'Liste',
+    'mode_floor' => 'Saal',
+    'tables_heading' => 'Tische',
+    'add_table' => 'Tisch hinzufügen',
+    'no_tables_yet' => 'Noch keine Tische. Fügen Sie einen hinzu, um Gäste zu setzen.',
+    'assign_to_table' => 'Setzen',
+    'unassigned_count_suffix' => 'noch zu setzen',
+    'no_unassigned' => 'Alle Gäste sind gesetzt.',
+    'empty_seat' => 'Freier Platz',
+    'seat' => 'Platz',
+    'choose_seat' => 'Platz wählen',
+    'no_empty_seats' => 'Keine freien Plätze. Fügen Sie zuerst Stühle an einen Tisch hinzu.',
+    'close_inspector' => 'Schließen',
+    'floor_hint' => 'Tippen Sie auf einen Tisch zum Verschieben. Tippen Sie auf einen Platz, um einen Gast zuzuweisen.',
+
 ];

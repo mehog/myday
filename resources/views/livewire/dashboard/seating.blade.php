@@ -1,167 +1,465 @@
-<div class="space-y-4">
+@vite(['resources/js/seating-plan.js'])
+
+@php
+    $emptySeatLabel = __('seating.empty_seat');
+    $seatLabelPrefix = __('seating.seat');
+@endphp
+
+<div
+    class="space-y-4"
+    x-data="{
+        viewMode: window.matchMedia('(min-width: 1024px)').matches ? 'floor' : 'list',
+        selectedTable: null,
+        inspectorOpen: false,
+        inspectorCollapsed: false,
+        zoomLabel: '100%',
+        seatCount: { assigned: 0, total: 0 },
+        planTables: @js(($seatingPlan['tables'] ?? [])),
+        allGuests: @js($this->getGuests()),
+        expandedTables: {},
+        unassignedSearch: '',
+        addTableOpen: false,
+        assignGuestTarget: null,
+        emptySeatLabel: @js($emptySeatLabel),
+        seatLabelPrefix: @js($seatLabelPrefix),
+        chairModal: {
+            open: false,
+            tableId: null,
+            seatIndex: null,
+            currentGuestId: null,
+            search: '',
+        },
+        inspectorLabel: '',
+        inspectorChairCount: 0,
+        inspectorRotation: 0,
+        init() {
+            this.seatCount.total = this.allGuests.length;
+            this.$nextTick(() => this.initEditor());
+        },
+        initEditor() {
+            if (! this.$refs.canvasContainer) {
+                return;
+            }
+
+            if (window.seatingPlanEditor) {
+                this.syncFromEditor();
+                this.$nextTick(() => window.seatingPlanEditor?.resize());
+                return;
+            }
+
+            window.seatingPlanEditor = window.createSeatingPlanEditor({
+                container: this.$refs.canvasContainer,
+                wire: $wire,
+                initialPlan: @js($seatingPlan),
+                guests: this.allGuests,
+                labels: @js($this->getEditorLabels()),
+                exportPdfUrl: @js(route('seating-plan.export-pdf')),
+                onSelectionChange: (table) => {
+                    this.selectedTable = table;
+                    this.inspectorOpen = table !== null;
+                },
+                onChairClick: (data) => this.openChairModal(data),
+            });
+
+            this.syncFromEditor();
+        },
+        syncFromEditor() {
+            const plan = window.seatingPlanEditor?.getPlan();
+            if (plan?.tables) {
+                this.planTables = plan.tables;
+            }
+            this.seatCount.assigned = window.seatingPlanEditor?.getAssignedIds()?.length ?? 0;
+        },
+        switchViewMode(mode) {
+            this.viewMode = mode;
+            if (mode === 'floor') {
+                this.$nextTick(() => window.seatingPlanEditor?.resize());
+            }
+        },
+        openChairModal(data) {
+            this.assignGuestTarget = null;
+            this.chairModal = {
+                open: true,
+                search: '',
+                tableId: data.tableId,
+                seatIndex: data.seatIndex,
+                currentGuestId: data.guestId ?? null,
+            };
+        },
+        openAssignForGuest(guestId) {
+            this.assignGuestTarget = guestId;
+            this.chairModal = {
+                open: true,
+                search: '',
+                tableId: null,
+                seatIndex: null,
+                currentGuestId: null,
+            };
+        },
+        closeChairModal() {
+            this.chairModal.open = false;
+            this.assignGuestTarget = null;
+        },
+        assignGuest(guestId) {
+            window.seatingPlanEditor?.assignToSeat(
+                this.chairModal.tableId,
+                this.chairModal.seatIndex,
+                guestId,
+            );
+            this.closeChairModal();
+        },
+        assignGuestToSeat(tableId, seatIndex) {
+            if (! this.assignGuestTarget) {
+                return;
+            }
+            window.seatingPlanEditor?.assignToSeat(tableId, seatIndex, this.assignGuestTarget);
+            this.closeChairModal();
+        },
+        clearSeat() {
+            window.seatingPlanEditor?.clearSeat(
+                this.chairModal.tableId,
+                this.chairModal.seatIndex,
+            );
+            this.closeChairModal();
+        },
+        guestName(guestId) {
+            if (guestId === null || guestId === undefined) {
+                return '';
+            }
+            return this.allGuests.find((guest) => guest.id === guestId)?.name
+                ?? window.seatingPlanEditor?.getGuestName?.(guestId)
+                ?? '';
+        },
+        occupiedCount(table) {
+            return (table.seats ?? []).filter(Boolean).length;
+        },
+        get filteredGuests() {
+            const query = this.chairModal.search.toLowerCase();
+            const assignedIds = window.seatingPlanEditor?.getAssignedIds() ?? [];
+
+            return this.allGuests.filter((guest) =>
+                ! assignedIds.includes(guest.id) &&
+                guest.name.toLowerCase().includes(query),
+            );
+        },
+        get unassignedGuests() {
+            const query = this.unassignedSearch.toLowerCase();
+            const assignedIds = window.seatingPlanEditor?.getAssignedIds() ?? [];
+
+            return this.allGuests.filter((guest) =>
+                ! assignedIds.includes(guest.id) &&
+                guest.name.toLowerCase().includes(query),
+            );
+        },
+        get emptySeatsByTable() {
+            return this.planTables
+                .map((table) => ({
+                    table,
+                    seats: (table.seats ?? [])
+                        .map((guestId, index) => ({ guestId, index }))
+                        .filter((seat) => seat.guestId === null || seat.guestId === undefined),
+                }))
+                .filter((entry) => entry.seats.length > 0);
+        },
+        get currentGuestName() {
+            if (! this.chairModal.currentGuestId) {
+                return '';
+            }
+
+            return this.guestName(this.chairModal.currentGuestId);
+        },
+        syncInspector() {
+            if (! this.selectedTable) {
+                return;
+            }
+            this.inspectorLabel = this.selectedTable.label ?? '';
+            this.inspectorChairCount = this.selectedTable.chair_count ?? 0;
+            this.inspectorRotation = this.selectedTable.rotation ?? 0;
+        },
+        updateLabel() {
+            window.seatingPlanEditor?.updateSelectedLabel(this.inspectorLabel);
+        },
+        updateTableLabel(tableId, label) {
+            window.seatingPlanEditor?.updateTableLabel(tableId, label);
+        },
+        addChair() {
+            window.seatingPlanEditor?.addChairToSelected();
+            this.syncInspector();
+        },
+        removeChair() {
+            window.seatingPlanEditor?.removeChairFromSelected();
+            this.syncInspector();
+        },
+        rotateTable(deg) {
+            window.seatingPlanEditor?.rotateSelected(deg);
+            this.syncInspector();
+        },
+        deleteTable() {
+            window.seatingPlanEditor?.deleteSelectedTable();
+            this.inspectorOpen = false;
+            this.selectedTable = null;
+        },
+        closeInspector() {
+            this.selectedTable = null;
+            this.inspectorOpen = false;
+        },
+        addTable(type) {
+            window.seatingPlanEditor?.addTable(type);
+            this.addTableOpen = false;
+            if (this.viewMode === 'list') {
+                const tables = window.seatingPlanEditor?.getPlan()?.tables ?? [];
+                const last = tables[tables.length - 1];
+                if (last) {
+                    this.expandedTables[last.id] = true;
+                }
+            }
+        },
+        toggleTable(tableId) {
+            this.expandedTables[tableId] = ! this.expandedTables[tableId];
+        },
+    }"
+    x-effect="syncInspector()"
+    x-on:seating-zoom-changed.window="zoomLabel = $event.detail.label"
+    x-on:seating-seats-changed.window="seatCount.assigned = $event.detail.assigned"
+    x-on:seating-plan-changed.window="planTables = $event.detail.plan.tables; seatCount.assigned = window.seatingPlanEditor?.getAssignedIds()?.length ?? 0"
+>
     @if ($flashMessage)
         <div class="rounded-lg border border-emerald-300/50 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-100">{{ $flashMessage }}</div>
     @endif
 
-    <div class="flex flex-wrap items-center justify-between gap-3">
-        <div>
-            <h2 class="text-xl font-semibold">{{ __("seating.page_title") }}</h2>
+    <div class="sticky top-0 z-20 -mx-4 space-y-3 border-b border-border bg-background/95 px-4 py-3 backdrop-blur md:-mx-6 md:px-6 lg:static lg:z-auto lg:mx-0 lg:border-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="min-w-0">
+                <h2 class="text-xl font-semibold">{{ __('seating.page_title') }}</h2>
+                <p class="mt-0.5 text-sm text-muted-foreground">
+                    <span x-text="seatCount.assigned"></span>
+                    /
+                    <span x-text="seatCount.total"></span>
+                    {{ __('seating.seats_label') }}
+                </p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <x-dashboard.button type="button" x-on:click="window.seatingPlanEditor?.save(true)">
+                    {{ __('seating.save') }}
+                </x-dashboard.button>
+                @if ($this->canExportSeatingPdf())
+                    <x-dashboard.button type="button" variant="secondary" id="seating-export-pdf-btn" x-on:click="window.seatingPlanEditor?.exportPdf()">
+                        {{ __('seating.export_pdf') }}
+                    </x-dashboard.button>
+                @else
+                    <x-dashboard.button type="button" variant="secondary" id="seating-export-pdf-btn" x-on:click="Livewire.dispatch('open-upgrade-modal')">
+                        {{ __('seating.export_pdf') }}
+                    </x-dashboard.button>
+                @endif
+            </div>
         </div>
-        <div class="hidden flex-wrap gap-2 lg:flex">
-            <x-dashboard.button type="button" x-on:click="window.seatingPlanEditor?.save(true)">
-                {{ __("seating.save") }}
-            </x-dashboard.button>
-            @if ($this->canExportSeatingPdf())
-                <x-dashboard.button type="button" variant="secondary" id="seating-export-pdf-btn" x-on:click="window.seatingPlanEditor?.exportPdf()">
-                    {{ __('seating.export_pdf') }}
-                </x-dashboard.button>
-            @else
-                <x-dashboard.button type="button" variant="secondary" id="seating-export-pdf-btn" x-on:click="Livewire.dispatch('open-upgrade-modal')">
-                    {{ __('seating.export_pdf') }}
-                </x-dashboard.button>
-            @endif
+
+        <div class="grid max-w-md grid-cols-2 gap-1 rounded-xl bg-muted p-1" role="tablist">
+            <button
+                type="button"
+                role="tab"
+                class="rounded-lg px-3 py-2 text-sm font-medium transition"
+                :class="viewMode === 'list' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'"
+                x-on:click="switchViewMode('list')"
+            >
+                {{ __('seating.mode_list') }}
+            </button>
+            <button
+                type="button"
+                role="tab"
+                class="rounded-lg px-3 py-2 text-sm font-medium transition"
+                :class="viewMode === 'floor' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'"
+                x-on:click="switchViewMode('floor')"
+            >
+                {{ __('seating.mode_floor') }}
+            </button>
         </div>
     </div>
 
-    <x-dashboard.card class="lg:hidden">
-        <div class="flex gap-3">
-            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-muted">
-                <x-dashboard.icon name="table" class="h-5 w-5" />
-            </span>
-            <div>
-                <h3 class="font-medium">{{ __('dashboard.seating_mobile_title') }}</h3>
-                <p class="mt-1 text-sm text-muted-foreground">{{ __('dashboard.seating_mobile_body') }}</p>
-                <div class="mt-4">
-                    <x-dashboard.button variant="secondary" :href="route('dashboard.guests')">
-                        {{ __('dashboard.seating_mobile_guests_cta') }}
-                    </x-dashboard.button>
+    {{-- List mode --}}
+    <div class="space-y-4" x-show="viewMode === 'list'" x-cloak>
+        <x-dashboard.card>
+            <div class="flex items-center justify-between gap-3">
+                <div>
+                    <h3 class="font-medium">{{ __('seating.unassigned') }}</h3>
+                    <p class="text-xs text-muted-foreground">
+                        <span x-text="unassignedGuests.length"></span>
+                        {{ __('seating.unassigned_count_suffix') }}
+                    </p>
                 </div>
+                <x-dashboard.button type="button" variant="secondary" class="!px-2 !py-1 text-xs" x-on:click="addTableOpen = true">
+                    {{ __('seating.add_table') }}
+                </x-dashboard.button>
+            </div>
+
+            <div class="mt-3">
+                <input
+                    type="search"
+                    x-model="unassignedSearch"
+                    class="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
+                    placeholder="{{ __('seating.search_guest') }}"
+                />
+            </div>
+
+            <ul class="mt-3 max-h-56 divide-y divide-border overflow-y-auto rounded-lg border border-border lg:max-h-72">
+                <template x-for="guest in unassignedGuests" :key="'u-' + guest.id">
+                    <li>
+                        <button
+                            type="button"
+                            class="flex w-full items-start justify-between gap-2 px-3 py-2.5 text-left text-sm hover:bg-accent"
+                            x-on:click="openAssignForGuest(guest.id)"
+                        >
+                            <span class="min-w-0">
+                                <span
+                                    class="block font-medium"
+                                    :class="{
+                                        'text-rose-600 dark:text-rose-400': guest.is_couple,
+                                        'text-muted-foreground': guest.is_plus_one || guest.is_child,
+                                    }"
+                                    x-text="guest.name"
+                                ></span>
+                                <template x-if="guest.labels?.length">
+                                    <span class="mt-0.5 block text-xs text-muted-foreground" x-text="guest.labels.join(' · ')"></span>
+                                </template>
+                            </span>
+                            <span class="shrink-0 text-xs font-medium text-primary">{{ __('seating.assign_to_table') }}</span>
+                        </button>
+                    </li>
+                </template>
+                <template x-if="unassignedGuests.length === 0">
+                    <li class="px-3 py-4 text-center text-sm text-muted-foreground">
+                        {{ __('seating.no_unassigned') }}
+                    </li>
+                </template>
+            </ul>
+        </x-dashboard.card>
+
+        <div class="space-y-3">
+            <div class="flex items-center justify-between">
+                <h3 class="font-medium">{{ __('seating.tables_heading') }}</h3>
+                <x-dashboard.button type="button" class="!px-2 !py-1 text-xs" x-on:click="addTableOpen = true">
+                    {{ __('seating.add_table') }}
+                </x-dashboard.button>
+            </div>
+
+            <template x-if="planTables.length === 0">
+                <x-dashboard.card>
+                    <p class="text-sm text-muted-foreground">{{ __('seating.no_tables_yet') }}</p>
+                    <div class="mt-3">
+                        <x-dashboard.button type="button" x-on:click="addTableOpen = true">
+                            {{ __('seating.add_table') }}
+                        </x-dashboard.button>
+                    </div>
+                </x-dashboard.card>
+            </template>
+
+            <div class="grid gap-3 lg:grid-cols-2">
+                <template x-for="table in planTables" :key="table.id">
+                    <div class="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+                        <button
+                            type="button"
+                            class="flex w-full items-center justify-between gap-3 px-4 py-3 text-left"
+                            x-on:click="toggleTable(table.id)"
+                        >
+                            <div class="min-w-0">
+                                <p class="truncate font-medium" x-text="table.label"></p>
+                                <p class="text-xs text-muted-foreground">
+                                    <span x-text="occupiedCount(table)"></span>
+                                    /
+                                    <span x-text="table.chair_count"></span>
+                                    {{ __('seating.seats_label') }}
+                                </p>
+                            </div>
+                            <x-dashboard.icon
+                                name="chevron-down"
+                                class="h-4 w-4 shrink-0 text-muted-foreground transition"
+                                x-bind:class="expandedTables[table.id] ? 'rotate-180' : ''"
+                            />
+                        </button>
+
+                        <div
+                            x-show="expandedTables[table.id]"
+                            x-cloak
+                            class="space-y-3 border-t border-border px-4 py-3"
+                        >
+                            <div>
+                                <label class="mb-1 block text-xs font-medium text-muted-foreground">{{ __('seating.table_label') }}</label>
+                                <input
+                                    type="text"
+                                    class="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
+                                    :value="table.label"
+                                    x-on:change="updateTableLabel(table.id, $event.target.value)"
+                                />
+                            </div>
+
+                            <div class="flex items-center justify-between gap-3">
+                                <span class="text-xs font-medium text-muted-foreground">{{ __('seating.chairs') }}</span>
+                                <div class="flex items-center gap-2">
+                                    <button
+                                        type="button"
+                                        class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border"
+                                        x-on:click="window.seatingPlanEditor?.removeChairFromTable(table.id)"
+                                        aria-label="{{ __('seating.remove_chair') }}"
+                                    >
+                                        <x-dashboard.icon name="minus" class="h-4 w-4" />
+                                    </button>
+                                    <span class="min-w-[2rem] text-center text-sm font-semibold" x-text="table.chair_count"></span>
+                                    <button
+                                        type="button"
+                                        class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border"
+                                        x-on:click="window.seatingPlanEditor?.addChairToTable(table.id)"
+                                        aria-label="{{ __('seating.add_chair') }}"
+                                    >
+                                        <x-dashboard.icon name="plus" class="h-4 w-4" />
+                                    </button>
+                                </div>
+                            </div>
+
+                            <ul class="divide-y divide-border overflow-hidden rounded-lg border border-border">
+                                <template x-for="(guestId, seatIndex) in table.seats" :key="table.id + '-seat-' + seatIndex">
+                                    <li>
+                                        <button
+                                            type="button"
+                                            class="flex w-full items-center justify-between gap-2 px-3 py-2.5 text-left text-sm hover:bg-accent"
+                                            x-on:click="openChairModal({ tableId: table.id, seatIndex, guestId })"
+                                        >
+                                            <span class="text-xs text-muted-foreground" x-text="seatLabelPrefix + ' ' + (seatIndex + 1)"></span>
+                                            <span
+                                                class="min-w-0 flex-1 truncate font-medium"
+                                                :class="guestId ? 'text-foreground' : 'text-muted-foreground'"
+                                                x-text="guestId ? guestName(guestId) : emptySeatLabel"
+                                            ></span>
+                                        </button>
+                                    </li>
+                                </template>
+                            </ul>
+
+                            <x-dashboard.button
+                                type="button"
+                                variant="destructive"
+                                class="w-full"
+                                x-on:click="window.seatingPlanEditor?.deleteTable(table.id)"
+                            >
+                                {{ __('seating.delete_table') }}
+                            </x-dashboard.button>
+                        </div>
+                    </div>
+                </template>
             </div>
         </div>
-    </x-dashboard.card>
+    </div>
 
-    <div class="hidden lg:block">
-    @vite(['resources/js/seating-plan.js'])
-
+    {{-- Floor editor stays mounted (off-screen when list) so Konva keeps a real size --}}
     <div
-        class="-mx-1 flex h-[calc(100vh-10rem)] flex-col overflow-hidden sm:-mx-6 lg:-mx-8"
-        x-data="{
-            selectedTable: null,
-            inspectorOpen: false,
-            inspectorCollapsed: false,
-            zoomLabel: '100%',
-            seatCount: { assigned: 0, total: 0 },
-            allGuests: @js($this->getGuests()),
-            chairModal: {
-                open: false,
-                tableId: null,
-                seatIndex: null,
-                currentGuestId: null,
-                search: '',
-            },
-            init() {
-                window.seatingPlanEditor = window.createSeatingPlanEditor({
-                    container: this.$refs.canvasContainer,
-                    wire: $wire,
-                    initialPlan: @js($seatingPlan),
-                    guests: this.allGuests,
-                    labels: @js($this->getEditorLabels()),
-                    exportPdfUrl: @js(route('seating-plan.export-pdf')),
-                    onSelectionChange: (table) => {
-                        this.selectedTable = table;
-                        this.inspectorOpen = table !== null;
-                    },
-                    onChairClick: (data) => this.openChairModal(data),
-                });
-                this.seatCount.total = this.allGuests.length;
-                this.seatCount.assigned = window.seatingPlanEditor.getAssignedIds().length;
-            },
-            openChairModal(data) {
-                this.chairModal = {
-                    open: true,
-                    search: '',
-                    tableId: data.tableId,
-                    seatIndex: data.seatIndex,
-                    currentGuestId: data.guestId,
-                };
-            },
-            closeChairModal() {
-                this.chairModal.open = false;
-            },
-            assignGuest(guestId) {
-                window.seatingPlanEditor?.assignToSeat(
-                    this.chairModal.tableId,
-                    this.chairModal.seatIndex,
-                    guestId,
-                );
-                this.closeChairModal();
-            },
-            clearSeat() {
-                window.seatingPlanEditor?.clearSeat(
-                    this.chairModal.tableId,
-                    this.chairModal.seatIndex,
-                );
-                this.closeChairModal();
-            },
-            get filteredGuests() {
-                const query = this.chairModal.search.toLowerCase();
-                const assignedIds = window.seatingPlanEditor?.getAssignedIds() ?? [];
-
-                return this.allGuests.filter((guest) =>
-                    !assignedIds.includes(guest.id) &&
-                    guest.name.toLowerCase().includes(query),
-                );
-            },
-            get currentGuestName() {
-                if (!this.chairModal.currentGuestId) {
-                    return '';
-                }
-
-                return this.allGuests.find((guest) => guest.id === this.chairModal.currentGuestId)?.name ?? '';
-            },
-            inspectorLabel: '',
-            inspectorChairCount: 0,
-            inspectorRotation: 0,
-            syncInspector() {
-                if (! this.selectedTable) {
-                    return;
-                }
-                this.inspectorLabel = this.selectedTable.label ?? '';
-                this.inspectorChairCount = this.selectedTable.chair_count ?? 0;
-                this.inspectorRotation = this.selectedTable.rotation ?? 0;
-            },
-            updateLabel() {
-                window.seatingPlanEditor?.updateSelectedLabel(this.inspectorLabel);
-            },
-            addChair() {
-                window.seatingPlanEditor?.addChairToSelected();
-                this.syncInspector();
-            },
-            removeChair() {
-                window.seatingPlanEditor?.removeChairFromSelected();
-                this.syncInspector();
-            },
-            rotateTable(deg) {
-                window.seatingPlanEditor?.rotateSelected(deg);
-                this.syncInspector();
-            },
-            deleteTable() {
-                window.seatingPlanEditor?.deleteSelectedTable();
-                this.inspectorOpen = false;
-                this.selectedTable = null;
-            },
-        }"
-        x-effect="syncInspector()"
-        x-on:seating-zoom-changed.window="zoomLabel = $event.detail.label"
-        x-on:seating-seats-changed.window="seatCount.assigned = $event.detail.assigned"
+        class="-mx-1 flex flex-col overflow-hidden sm:-mx-6 lg:-mx-8"
+        x-bind:class="viewMode === 'floor'
+            ? 'relative h-[calc(100dvh-14rem)] opacity-100 lg:h-[calc(100vh-11rem)]'
+            : 'pointer-events-none fixed left-[-9999px] top-0 h-[480px] w-[360px] opacity-0'"
     >
-        {{-- Toolbar --}}
-        <div class="flex shrink-0 flex-wrap items-end gap-4 border-b border-gray-200 bg-white px-4 py-2 dark:border-white/10 dark:bg-gray-900">
+        <div class="flex shrink-0 flex-wrap items-end gap-3 border-b border-border bg-card px-3 py-2 sm:gap-4 sm:px-4">
             <div class="flex flex-col gap-1">
-                <span class="text-xs font-medium text-gray-500 dark:text-gray-400">
-                    {{ __('seating.select_table_type') }}
-                </span>
-                <div class="flex items-center gap-2">
+                <span class="text-xs font-medium text-muted-foreground">{{ __('seating.select_table_type') }}</span>
+                <div class="flex flex-wrap items-center gap-2">
                     <x-dashboard.button type="button" variant="secondary" class="!px-2 !py-1 text-xs sm:text-sm" x-on:click="window.seatingPlanEditor?.addTable('round')">
                         {{ __('seating.add_round') }}
                     </x-dashboard.button>
@@ -175,22 +473,20 @@
             </div>
 
             <div class="ml-auto flex flex-col gap-1">
-                <span class="text-xs font-medium text-gray-500 dark:text-gray-400 text-right">
-                    {{ __('seating.zoom_controls') }}
-                </span>
+                <span class="text-right text-xs font-medium text-muted-foreground">{{ __('seating.zoom_controls') }}</span>
                 <div class="flex items-center gap-1">
                     <button
                         type="button"
-                        class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent"
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent"
                         x-on:click="window.seatingPlanEditor?.zoomOut()"
                         aria-label="{{ __('seating.zoom_out') }}"
                     >
                         <x-dashboard.icon name="minus" class="h-4 w-4" />
                     </button>
-                    <span class="min-w-[3rem] text-center text-sm text-gray-600 dark:text-gray-300" x-text="zoomLabel"></span>
+                    <span class="min-w-[3rem] text-center text-sm text-muted-foreground" x-text="zoomLabel"></span>
                     <button
                         type="button"
-                        class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent"
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent"
                         x-on:click="window.seatingPlanEditor?.zoomIn()"
                         aria-label="{{ __('seating.zoom_in') }}"
                     >
@@ -203,144 +499,49 @@
             </div>
         </div>
 
-        <div class="flex min-h-0 flex-1">
-            {{-- Canvas --}}
-            <div class="relative min-w-0 flex-1 bg-[#f8f9fb] dark:bg-gray-950">
+        <p class="shrink-0 border-b border-border bg-muted/40 px-3 py-1.5 text-xs text-muted-foreground lg:hidden">
+            {{ __('seating.floor_hint') }}
+        </p>
+
+        <div class="relative flex min-h-0 flex-1">
+            <div class="relative min-w-0 flex-1 touch-none bg-[#f8f9fb] dark:bg-gray-950">
                 <div
                     x-ref="canvasContainer"
                     class="h-full w-full"
                     wire:ignore
                 ></div>
 
-                {{-- Floating inspector --}}
-                <div class="absolute right-3 top-3 z-10 w-64">
+                <div class="absolute right-3 top-3 z-10 hidden w-64 lg:block">
                     <div
-                        class="flex items-center justify-between border border-gray-200 bg-white px-3 py-2 shadow-lg dark:border-white/10 dark:bg-gray-900"
+                        class="flex items-center justify-between border border-border bg-card px-3 py-2 shadow-lg"
                         :class="inspectorCollapsed ? 'rounded-xl' : 'rounded-t-xl'"
                     >
-                        <span class="text-sm font-semibold text-gray-950 dark:text-white">
-                            {{ __('seating.inspector_heading') }}
-                        </span>
+                        <span class="text-sm font-semibold">{{ __('seating.inspector_heading') }}</span>
                         <button
                             type="button"
-                            class="rounded-md p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/10 dark:hover:text-gray-200"
+                            class="rounded-md p-1 text-muted-foreground hover:bg-accent"
                             x-on:click="inspectorCollapsed = !inspectorCollapsed"
                         >
-                            <svg x-show="!inspectorCollapsed" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
-                            </svg>
-                            <svg x-show="inspectorCollapsed" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                            </svg>
+                            <x-dashboard.icon name="chevron-down" class="h-4 w-4" x-bind:class="inspectorCollapsed ? '' : 'rotate-180'" />
                         </button>
                     </div>
 
                     <div
                         x-show="!inspectorCollapsed"
                         x-transition
-                        class="max-h-[calc(100vh-12rem)] overflow-y-auto rounded-b-xl border-x border-b border-gray-200 bg-white shadow-lg dark:border-white/10 dark:bg-gray-900"
+                        class="max-h-[calc(100vh-12rem)] overflow-y-auto rounded-b-xl border-x border-b border-border bg-card shadow-lg"
                     >
                         <template x-if="inspectorOpen">
                             <div class="flex flex-col gap-4 p-4">
-                                <div>
-                                    <label class="mb-1 block text-xs font-medium text-gray-500 dark:text-gray-400">
-                                        {{ __('seating.table_label') }}
-                                    </label>
-                                    <input
-                                        type="text"
-                                        class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 dark:border-white/10 dark:bg-gray-800 dark:text-white"
-                                        x-model="inspectorLabel"
-                                        x-on:change="updateLabel()"
-                                        x-on:blur="updateLabel()"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label class="mb-2 block text-xs font-medium text-gray-500 dark:text-gray-400">
-                                        {{ __('seating.chairs') }}
-                                    </label>
-                                    <div class="flex items-center gap-3">
-                                        <button
-                                            type="button"
-                                            class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent"
-                                            x-on:click="removeChair()"
-                                            aria-label="{{ __('seating.remove_chair') }}"
-                                        >
-                                            <x-dashboard.icon name="minus" class="h-4 w-4" />
-                                        </button>
-                                        <span class="min-w-[2rem] text-center text-lg font-semibold text-gray-900 dark:text-white" x-text="inspectorChairCount"></span>
-                                        <button
-                                            type="button"
-                                            class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent"
-                                            x-on:click="addChair()"
-                                            aria-label="{{ __('seating.add_chair') }}"
-                                        >
-                                            <x-dashboard.icon name="plus" class="h-4 w-4" />
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <template x-if="selectedTable && selectedTable.type !== 'round'">
-                                    <div>
-                                        <label class="mb-2 block text-xs font-medium text-gray-500 dark:text-gray-400">
-                                            {{ __('seating.rotation') }}
-                                        </label>
-                                        <div class="flex items-center gap-2">
-                                            <button
-                                                type="button"
-                                                class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent"
-                                                x-on:click="rotateTable(-15)"
-                                                aria-label="{{ __('seating.rotate_left') }}"
-                                            >
-                                                <x-dashboard.icon name="rotate-left" class="h-4 w-4" />
-                                            </button>
-                                            <span class="min-w-[3rem] text-center text-sm font-semibold text-gray-900 dark:text-white" x-text="inspectorRotation + '°'"></span>
-                                            <button
-                                                type="button"
-                                                class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent"
-                                                x-on:click="rotateTable(15)"
-                                                aria-label="{{ __('seating.rotate_right') }}"
-                                            >
-                                                <x-dashboard.icon name="rotate-right" class="h-4 w-4" />
-                                            </button>
-                                            <x-dashboard.button
-                                                type="button"
-                                                variant="secondary"
-                                                class="!px-2 !py-1 text-xs"
-                                                x-on:click="rotateTable(-inspectorRotation)"
-                                            >
-                                                {{ __('seating.reset_rotation') }}
-                                            </x-dashboard.button>
-                                        </div>
-                                    </div>
-                                </template>
-
-                                <div>
-                                    <x-dashboard.button
-                                        type="button"
-                                        variant="destructive"
-                                        class="w-full"
-                                        x-on:click="deleteTable()"
-                                    >
-                                        {{ __('seating.delete_table') }}
-                                    </x-dashboard.button>
-                                </div>
+                                @include('livewire.dashboard.partials.seating-inspector-fields')
                             </div>
                         </template>
-
                         <template x-if="!inspectorOpen">
                             <div class="flex flex-col gap-4 p-4">
-                                <p class="text-center text-sm text-gray-500 dark:text-gray-400">
-                                    {{ __('seating.select_table') }}
-                                </p>
-                                <div class="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-white/10">
-                                    <span class="text-xs font-medium text-gray-500 dark:text-gray-400">
-                                        {{ __('seating.seats_label') }}
-                                    </span>
-                                    <span
-                                        class="text-sm font-semibold text-gray-900 dark:text-white"
-                                        x-text="seatCount.assigned + ' / ' + seatCount.total"
-                                    ></span>
+                                <p class="text-center text-sm text-muted-foreground">{{ __('seating.select_table') }}</p>
+                                <div class="flex items-center justify-between border-t border-border pt-4">
+                                    <span class="text-xs font-medium text-muted-foreground">{{ __('seating.seats_label') }}</span>
+                                    <span class="text-sm font-semibold" x-text="seatCount.assigned + ' / ' + seatCount.total"></span>
                                 </div>
                             </div>
                         </template>
@@ -349,78 +550,131 @@
             </div>
         </div>
 
-        <template x-if="chairModal.open">
-            <div
-                class="fixed inset-0 z-50 flex items-center justify-center p-4"
-                x-on:keydown.escape.window="closeChairModal()"
-            >
-                <div class="absolute inset-0 bg-black/50" x-on:click="closeChairModal()"></div>
-
-                <div class="relative z-10 w-full max-w-sm rounded-xl border border-gray-200 bg-white shadow-xl dark:border-white/10 dark:bg-gray-900">
-                    <div class="flex items-center justify-between border-b border-gray-200 px-4 py-3 dark:border-white/10">
-                        <span class="text-sm font-semibold text-gray-950 dark:text-white">
-                            {{ __('seating.assign_guest') }}
-                        </span>
-                        <button
-                            type="button"
-                            class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
-                            x-on:click="closeChairModal()"
-                        >
-                            &times;
-                        </button>
-                    </div>
-
-                    <template x-if="chairModal.currentGuestId">
-                        <div class="flex items-center justify-between bg-primary-50 px-4 py-2 dark:bg-primary-500/10">
-                            <span class="text-sm text-primary-800 dark:text-primary-200" x-text="currentGuestName"></span>
-                            <x-dashboard.button type="button" variant="destructive" class="!px-2 !py-1 text-xs" x-on:click="clearSeat()">
-                                {{ __('seating.remove_guest') }}
-                            </x-dashboard.button>
-                        </div>
-                    </template>
-
-                    <div class="border-b border-gray-200 px-4 py-2 dark:border-white/10">
-                        <input
-                            type="text"
-                            x-model="chairModal.search"
-                            class="w-full rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 dark:border-white/10 dark:bg-gray-800 dark:text-white"
-                            placeholder="{{ __('seating.search_guest') }}"
-                            x-init="$el.focus()"
-                        />
-                    </div>
-
-                    <ul class="max-h-48 overflow-y-auto py-1">
-                        <template x-for="guest in filteredGuests" :key="guest.id">
-                            <li
-                                class="cursor-pointer px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-white/5"
-                                x-on:click="assignGuest(guest.id)"
-                            >
-                                <div
-                                    class="font-medium"
-                                    :class="{
-                                        'text-rose-600 dark:text-rose-400': guest.is_couple,
-                                        'text-gray-500 dark:text-gray-400': (guest.is_plus_one || guest.is_child) && !guest.is_couple,
-                                        'text-gray-900 dark:text-white': !guest.is_plus_one && !guest.is_child && !guest.is_couple,
-                                    }"
-                                    x-text="guest.name"
-                                ></div>
-                                <template x-if="guest.labels?.length">
-                                    <div
-                                        class="mt-0.5 text-xs text-gray-500 dark:text-gray-400"
-                                        x-text="guest.labels.join(' · ')"
-                                    ></div>
-                                </template>
-                            </li>
-                        </template>
-                        <template x-if="filteredGuests.length === 0">
-                            <li class="px-4 py-2 text-sm text-gray-400 dark:text-gray-500">
-                                {{ __('seating.no_guests_available') }}
-                            </li>
-                        </template>
-                    </ul>
+        <div
+            class="lg:hidden"
+            x-show="inspectorOpen && viewMode === 'floor'"
+            x-cloak
+        >
+            <div class="border-t border-border bg-card px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 shadow-[0_-8px_24px_rgba(0,0,0,0.08)]">
+                <div class="mb-3 flex items-center justify-between">
+                    <span class="text-sm font-semibold">{{ __('seating.inspector_heading') }}</span>
+                    <button type="button" class="text-sm text-muted-foreground" x-on:click="closeInspector()">
+                        {{ __('seating.close_inspector') }}
+                    </button>
+                </div>
+                <div class="max-h-56 space-y-4 overflow-y-auto">
+                    @include('livewire.dashboard.partials.seating-inspector-fields')
                 </div>
             </div>
-        </template>
+        </div>
     </div>
-    </div>
+
+    <template x-if="addTableOpen">
+        <div class="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4" x-on:keydown.escape.window="addTableOpen = false">
+            <div class="absolute inset-0 bg-black/50" x-on:click="addTableOpen = false"></div>
+            <div class="relative z-10 w-full max-w-sm rounded-t-2xl border border-border bg-card p-4 shadow-xl sm:rounded-2xl">
+                <h3 class="mb-3 text-base font-semibold">{{ __('seating.add_table') }}</h3>
+                <div class="grid gap-2">
+                    <x-dashboard.button type="button" variant="secondary" class="w-full justify-center" x-on:click="addTable('round')">
+                        {{ __('seating.add_round') }}
+                    </x-dashboard.button>
+                    <x-dashboard.button type="button" variant="secondary" class="w-full justify-center" x-on:click="addTable('rect')">
+                        {{ __('seating.add_rect') }}
+                    </x-dashboard.button>
+                    <x-dashboard.button type="button" variant="secondary" class="w-full justify-center" x-on:click="addTable('head')">
+                        {{ __('seating.add_head') }}
+                    </x-dashboard.button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template x-if="chairModal.open">
+        <div
+            class="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4"
+            x-on:keydown.escape.window="closeChairModal()"
+        >
+            <div class="absolute inset-0 bg-black/50" x-on:click="closeChairModal()"></div>
+
+            <div class="relative z-10 flex max-h-[85dvh] w-full max-w-sm flex-col overflow-hidden rounded-t-2xl border border-border bg-card shadow-xl sm:rounded-2xl">
+                <div class="flex items-center justify-between border-b border-border px-4 py-3">
+                    <span class="text-sm font-semibold" x-text="assignGuestTarget ? @js(__('seating.choose_seat')) : @js(__('seating.assign_guest'))"></span>
+                    <button type="button" class="text-muted-foreground hover:text-foreground" x-on:click="closeChairModal()">&times;</button>
+                </div>
+
+                <template x-if="assignGuestTarget">
+                    <div class="min-h-0 flex-1 overflow-y-auto">
+                        <div class="border-b border-border bg-muted/40 px-4 py-2 text-sm" x-text="guestName(assignGuestTarget)"></div>
+                        <template x-if="emptySeatsByTable.length === 0">
+                            <p class="px-4 py-6 text-center text-sm text-muted-foreground">{{ __('seating.no_empty_seats') }}</p>
+                        </template>
+                        <template x-for="entry in emptySeatsByTable" :key="'empty-' + entry.table.id">
+                            <div class="border-b border-border">
+                                <p class="bg-muted/30 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground" x-text="entry.table.label"></p>
+                                <ul>
+                                    <template x-for="seat in entry.seats" :key="entry.table.id + '-e-' + seat.index">
+                                        <li>
+                                            <button
+                                                type="button"
+                                                class="w-full px-4 py-3 text-left text-sm hover:bg-accent"
+                                                x-on:click="assignGuestToSeat(entry.table.id, seat.index)"
+                                                x-text="seatLabelPrefix + ' ' + (seat.index + 1)"
+                                            ></button>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <template x-if="!assignGuestTarget">
+                    <div class="min-h-0 flex-1 overflow-hidden">
+                        <template x-if="chairModal.currentGuestId">
+                            <div class="flex items-center justify-between bg-primary/10 px-4 py-2">
+                                <span class="text-sm" x-text="currentGuestName"></span>
+                                <x-dashboard.button type="button" variant="destructive" class="!px-2 !py-1 text-xs" x-on:click="clearSeat()">
+                                    {{ __('seating.remove_guest') }}
+                                </x-dashboard.button>
+                            </div>
+                        </template>
+
+                        <div class="border-b border-border px-4 py-2">
+                            <input
+                                type="search"
+                                x-model="chairModal.search"
+                                class="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
+                                placeholder="{{ __('seating.search_guest') }}"
+                                x-init="$el.focus()"
+                            />
+                        </div>
+
+                        <ul class="max-h-64 overflow-y-auto py-1 sm:max-h-48">
+                            <template x-for="guest in filteredGuests" :key="guest.id">
+                                <li
+                                    class="cursor-pointer px-4 py-2.5 text-sm hover:bg-accent"
+                                    x-on:click="assignGuest(guest.id)"
+                                >
+                                    <div
+                                        class="font-medium"
+                                        :class="{
+                                            'text-rose-600 dark:text-rose-400': guest.is_couple,
+                                            'text-muted-foreground': (guest.is_plus_one || guest.is_child) && !guest.is_couple,
+                                        }"
+                                        x-text="guest.name"
+                                    ></div>
+                                    <template x-if="guest.labels?.length">
+                                        <div class="mt-0.5 text-xs text-muted-foreground" x-text="guest.labels.join(' · ')"></div>
+                                    </template>
+                                </li>
+                            </template>
+                            <template x-if="filteredGuests.length === 0">
+                                <li class="px-4 py-2 text-sm text-muted-foreground">{{ __('seating.no_guests_available') }}</li>
+                            </template>
+                        </ul>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </template>
 </div>

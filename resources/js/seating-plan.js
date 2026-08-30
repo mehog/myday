@@ -31,14 +31,22 @@ function chairFillForGuest(guestId) {
 }
 
 const CHAIR_RADIUS = 12;
+const CHAIR_HIT_PADDING = 16;
 const CHAIR_OFFSET = 22;
 const RECT_CHAIR_INSET = 28;
 const MIN_RECT_WIDTH = 80;
 const MIN_ROUND_RADIUS = 30;
 const HANDLE_WIDTH = 8;
 const HANDLE_HEIGHT = 32;
+const TOUCH_HANDLE_WIDTH = 16;
+const TOUCH_HANDLE_HEIGHT = 40;
 const LABEL_WIDTH = 200;
 const LABEL_HEIGHT = 10;
+
+function isTouchPrimary() {
+    return window.matchMedia('(pointer: coarse)').matches
+        || ('ontouchstart' in window && navigator.maxTouchPoints > 0);
+}
 
 function generateId() {
     return `t_${Math.random().toString(36).slice(2, 10)}`;
@@ -192,13 +200,16 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
     let scale = 1;
     let tableCounter = plan.tables.length + 1;
     let savedPlanJson = JSON.stringify(plan);
+    const touchMode = isTouchPrimary();
+    const handleWidth = touchMode ? TOUCH_HANDLE_WIDTH : HANDLE_WIDTH;
+    const handleHeight = touchMode ? TOUCH_HANDLE_HEIGHT : HANDLE_HEIGHT;
 
     const guestMap = new Map(guests.map((guest) => [guest.id, guest.name]));
 
     const stage = new Konva.Stage({
         container,
-        width: container.clientWidth,
-        height: container.clientHeight,
+        width: container.clientWidth || 320,
+        height: container.clientHeight || 480,
         draggable: true,
     });
 
@@ -243,6 +254,15 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
                 detail: { assigned: getAssignedGuestIds(plan).length },
             }),
         );
+    }
+
+    function emitPlanChanged() {
+        window.dispatchEvent(
+            new CustomEvent('seating-plan-changed', {
+                detail: { plan: deepClone(plan) },
+            }),
+        );
+        emitSeats();
     }
 
     function applyZoom(newScale, anchor) {
@@ -411,8 +431,18 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
                 fill: chairFillForGuest(guestId),
                 stroke: COLORS.chairStroke,
                 strokeWidth: 1,
+                hitStrokeWidth: touchMode ? CHAIR_HIT_PADDING : 0,
                 name: 'chair',
             });
+
+            if (touchMode) {
+                chair.hitFunc((context) => {
+                    context.beginPath();
+                    context.arc(0, 0, CHAIR_RADIUS + CHAIR_HIT_PADDING, 0, Math.PI * 2, false);
+                    context.closePath();
+                    context.fillStrokeShape(chair);
+                });
+            }
 
             chair.setAttr('tableId', tableData.id);
             chair.setAttr('seatIndex', index);
@@ -461,7 +491,7 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
             const handle = new Konva.Circle({
                 x: tableData.radius,
                 y: 0,
-                radius: HANDLE_WIDTH,
+                radius: handleWidth,
                 fill: COLORS.handle,
                 draggable: true,
                 name: 'resize-handle-round',
@@ -492,10 +522,10 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
         const height = tableData.height;
 
         const leftHandle = new Konva.Rect({
-            x: -width / 2 - HANDLE_WIDTH / 2,
-            y: -HANDLE_HEIGHT / 2,
-            width: HANDLE_WIDTH,
-            height: HANDLE_HEIGHT,
+            x: -width / 2 - handleWidth / 2,
+            y: -handleHeight / 2,
+            width: handleWidth,
+            height: handleHeight,
             fill: COLORS.handle,
             cornerRadius: 3,
             draggable: true,
@@ -504,10 +534,10 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
         });
 
         const rightHandle = new Konva.Rect({
-            x: width / 2 - HANDLE_WIDTH / 2,
-            y: -HANDLE_HEIGHT / 2,
-            width: HANDLE_WIDTH,
-            height: HANDLE_HEIGHT,
+            x: width / 2 - handleWidth / 2,
+            y: -handleHeight / 2,
+            width: handleWidth,
+            height: handleHeight,
             fill: COLORS.handle,
             cornerRadius: 3,
             draggable: true,
@@ -519,23 +549,23 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
         rightHandle.on('dragstart', () => group.draggable(false));
 
         leftHandle.on('dragmove', () => {
-            const delta = leftHandle.x() - (-width / 2 - HANDLE_WIDTH / 2);
+            const delta = leftHandle.x() - (-width / 2 - handleWidth / 2);
             const newWidth = Math.max(MIN_RECT_WIDTH, width - delta * 2);
             tableData.width = newWidth;
             renderChairs(group, tableData);
             updateTableShape(group, tableData);
             repositionResizeHandles(group, tableData);
-            leftHandle.x(-newWidth / 2 - HANDLE_WIDTH / 2);
+            leftHandle.x(-newWidth / 2 - handleWidth / 2);
         });
 
         rightHandle.on('dragmove', () => {
-            const delta = rightHandle.x() - (width / 2 - HANDLE_WIDTH / 2);
+            const delta = rightHandle.x() - (width / 2 - handleWidth / 2);
             const newWidth = Math.max(MIN_RECT_WIDTH, width + delta * 2);
             tableData.width = newWidth;
             renderChairs(group, tableData);
             updateTableShape(group, tableData);
             repositionResizeHandles(group, tableData);
-            rightHandle.x(newWidth / 2 - HANDLE_WIDTH / 2);
+            rightHandle.x(newWidth / 2 - handleWidth / 2);
         });
 
         const endResize = () => {
@@ -567,8 +597,8 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
             return;
         }
 
-        left.x(-tableData.width / 2 - HANDLE_WIDTH / 2);
-        right.x(tableData.width / 2 - HANDLE_WIDTH / 2);
+        left.x(-tableData.width / 2 - handleWidth / 2);
+        right.x(tableData.width / 2 - handleWidth / 2);
         left.visible(tableData.id === selectedTableId);
         right.visible(tableData.id === selectedTableId);
     }
@@ -614,11 +644,13 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
     }
 
     function createTableGroup(tableData) {
+        const isSelected = tableData.id === selectedTableId;
         const group = new Konva.Group({
             x: tableData.x,
             y: tableData.y,
             rotation: tableData.rotation ?? 0,
-            draggable: true,
+            // On touch, only the selected table is draggable so one-finger pan works.
+            draggable: ! touchMode || isSelected,
             name: 'table-group',
         });
 
@@ -677,6 +709,7 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
         group.on('dragend', () => {
             tableData.x = group.x();
             tableData.y = group.y();
+            emitPlanChanged();
         });
 
         group.on('click tap', (event) => {
@@ -721,7 +754,7 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
 
         table.seats[seatIndex] = guestId;
         renderAll();
-        emitSeats();
+        emitPlanChanged();
         return true;
     }
 
@@ -747,6 +780,58 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
         applyZoom(newScale, pointer);
     });
 
+    let lastPinchDistance = null;
+    let lastPinchCenter = null;
+
+    function getTouchDistance(touches) {
+        const dx = touches[0].clientX - touches[1].clientX;
+        const dy = touches[0].clientY - touches[1].clientY;
+
+        return Math.hypot(dx, dy);
+    }
+
+    function getTouchCenter(touches) {
+        const rect = container.getBoundingClientRect();
+
+        return {
+            x: (touches[0].clientX + touches[1].clientX) / 2 - rect.left,
+            y: (touches[0].clientY + touches[1].clientY) / 2 - rect.top,
+        };
+    }
+
+    container.addEventListener('touchstart', (event) => {
+        if (event.touches.length === 2) {
+            stage.draggable(false);
+            lastPinchDistance = getTouchDistance(event.touches);
+            lastPinchCenter = getTouchCenter(event.touches);
+        }
+    }, { passive: true });
+
+    container.addEventListener('touchmove', (event) => {
+        if (event.touches.length !== 2 || lastPinchDistance === null) {
+            return;
+        }
+
+        event.preventDefault();
+
+        const distance = getTouchDistance(event.touches);
+        const center = getTouchCenter(event.touches);
+        const ratio = distance / lastPinchDistance;
+        const newScale = Math.min(3, Math.max(0.3, scale * ratio));
+
+        applyZoom(newScale, center);
+        lastPinchDistance = distance;
+        lastPinchCenter = center;
+    }, { passive: false });
+
+    container.addEventListener('touchend', () => {
+        if (lastPinchDistance !== null) {
+            lastPinchDistance = null;
+            lastPinchCenter = null;
+            stage.draggable(true);
+        }
+    }, { passive: true });
+
     const resizeObserver = new ResizeObserver(() => resizeStage());
     resizeObserver.observe(container);
 
@@ -758,9 +843,13 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
     const api = {
         addTable(type) {
             const { x: centerX, y: centerY } = getStageCenterCoords();
-            const table = defaultTable(type, tableCounter++, centerX, centerY, labels);
+            const offset = plan.tables.length * 24;
+            const table = defaultTable(type, tableCounter++, centerX + offset, centerY + offset, labels);
             plan.tables.push(table);
             selectTable(table.id);
+            emitPlanChanged();
+
+            return table.id;
         },
 
         updateSelectedLabel(label) {
@@ -771,6 +860,18 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
 
             table.label = label;
             renderAll();
+            emitPlanChanged();
+        },
+
+        updateTableLabel(tableId, label) {
+            const table = getTableById(tableId);
+            if (!table) {
+                return;
+            }
+
+            table.label = label;
+            renderAll();
+            emitPlanChanged();
         },
 
         addChairToSelected() {
@@ -783,10 +884,31 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
             table.seats.push(null);
             renderAll();
             onSelectionChange?.(table);
+            emitPlanChanged();
+        },
+
+        addChairToTable(tableId) {
+            const table = getTableById(tableId);
+            if (!table) {
+                return;
+            }
+
+            table.chair_count += 1;
+            table.seats.push(null);
+            renderAll();
+            if (selectedTableId === tableId) {
+                onSelectionChange?.(table);
+            }
+            emitPlanChanged();
         },
 
         removeChairFromSelected() {
-            const table = getSelectedTable();
+            this.removeChairFromTable(selectedTableId);
+            onSelectionChange?.(getSelectedTable());
+        },
+
+        removeChairFromTable(tableId) {
+            const table = getTableById(tableId);
             if (!table || table.chair_count <= 0) {
                 return;
             }
@@ -795,13 +917,13 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
                 table.seats.push(null);
             }
 
-            const emptyIndex = table.seats.findIndex((seat) => seat === null);
+            const emptySeatIndex = table.seats.findIndex((seat) => seat === null);
 
-            if (emptyIndex !== -1) {
-                table.seats.splice(emptyIndex, 1);
+            if (emptySeatIndex !== -1) {
+                table.seats.splice(emptySeatIndex, 1);
                 table.chair_count -= 1;
                 renderAll();
-                onSelectionChange?.(table);
+                emitPlanChanged();
                 return;
             }
 
@@ -812,8 +934,7 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
             table.chair_count -= 1;
             table.seats.pop();
             renderAll();
-            emitSeats();
-            onSelectionChange?.(table);
+            emitPlanChanged();
         },
 
         deleteSelectedTable() {
@@ -821,9 +942,17 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
                 return;
             }
 
-            plan.tables = plan.tables.filter((table) => table.id !== selectedTableId);
-            deselectTable();
-            emitSeats();
+            this.deleteTable(selectedTableId);
+        },
+
+        deleteTable(tableId) {
+            plan.tables = plan.tables.filter((table) => table.id !== tableId);
+            if (selectedTableId === tableId) {
+                deselectTable();
+            } else {
+                renderAll();
+            }
+            emitPlanChanged();
         },
 
         rotateSelected(degrees) {
@@ -835,6 +964,7 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
             table.rotation = ((table.rotation ?? 0) + degrees + 360) % 360;
             renderAll();
             onSelectionChange?.(table);
+            emitPlanChanged();
         },
 
         assignToSeat(tableId, seatIndex, guestId) {
@@ -849,11 +979,23 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
 
             table.seats[seatIndex] = null;
             renderAll();
-            emitSeats();
+            emitPlanChanged();
         },
 
         getAssignedIds() {
             return getAssignedGuestIds(plan);
+        },
+
+        getPlan() {
+            return deepClone(plan);
+        },
+
+        getGuestName(guestId) {
+            return guestMap.get(guestId) ?? '';
+        },
+
+        resize() {
+            resizeStage();
         },
 
         save,
@@ -861,7 +1003,8 @@ window.createSeatingPlanEditor = function createSeatingPlanEditor(config) {
         isDirty,
 
         exportPdf() {
-            const exportButton = document.getElementById('seating-export-pdf-btn');
+            const exportButton = document.getElementById('seating-export-pdf-btn')
+                ?? document.getElementById('seating-export-pdf-btn-mobile');
             if (exportButton?.disabled) {
                 return;
             }

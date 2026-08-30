@@ -60,4 +60,19 @@ return [
     'default_table_head' => 'Head table',
     'default_table_numbered' => 'Table :number',
 
+    'mode_list' => 'List',
+    'mode_floor' => 'Floor',
+    'tables_heading' => 'Tables',
+    'add_table' => 'Add table',
+    'no_tables_yet' => 'No tables yet. Add one to start seating guests.',
+    'assign_to_table' => 'Seat',
+    'unassigned_count_suffix' => 'left to seat',
+    'no_unassigned' => 'Everyone is seated.',
+    'empty_seat' => 'Empty seat',
+    'seat' => 'Seat',
+    'choose_seat' => 'Choose a seat',
+    'no_empty_seats' => 'No empty seats. Add chairs to a table first.',
+    'close_inspector' => 'Close',
+    'floor_hint' => 'Tap a table to move it. Tap a seat to assign a guest.',
+
 ];

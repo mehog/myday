@@ -60,4 +60,19 @@ return [
     'default_table_head' => 'Glavni stol',
     'default_table_numbered' => 'Stol :number',
 
+    'mode_list' => 'Lista',
+    'mode_floor' => 'Sala',
+    'tables_heading' => 'Stolovi',
+    'add_table' => 'Dodaj stol',
+    'no_tables_yet' => 'Još nema stolova. Dodajte prvi da rasporedite goste.',
+    'assign_to_table' => 'Posjedi',
+    'unassigned_count_suffix' => 'za rasporediti',
+    'no_unassigned' => 'Svi gosti su raspoređeni.',
+    'empty_seat' => 'Prazno mjesto',
+    'seat' => 'Mjesto',
+    'choose_seat' => 'Odaberite mjesto',
+    'no_empty_seats' => 'Nema praznih mjesta. Prvo dodajte stolice na stol.',
+    'close_inspector' => 'Zatvori',
+    'floor_hint' => 'Dodirnite stol da ga pomaknete. Dodirnite mjesto da dodijelite gosta.',
+
 ];

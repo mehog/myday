@@ -61,7 +61,7 @@
     @endif
 
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=cormorant-garamond:400,500,600,600i,700,700i" rel="stylesheet">
+    <link href="https://fonts.bunny.net/css?family=eb-garamond:400,500,600,600i,700,700i" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
