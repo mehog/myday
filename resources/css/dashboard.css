@@ -222,6 +222,18 @@
     padding-bottom: calc(1rem + 4rem + env(safe-area-inset-bottom, 0px));
 }
 
+.dashboard-main.dashboard-main-locked {
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
+@media (max-width: 1023px) {
+    .dashboard-main.dashboard-main-locked {
+        padding-top: 0.75rem;
+        padding-bottom: calc(4rem + env(safe-area-inset-bottom, 0px));
+    }
+}
+
 @media (min-width: 1024px) {
     .dashboard-main {
         padding-bottom: 1.5rem;
@@ -390,6 +402,55 @@
 @media (min-width: 1024px) {
     .dashboard-modal-footer {
         padding-bottom: 0.75rem;
+    }
+}
+
+.dashboard-modal-overlay {
+    --sheet-overlay-opacity: 1;
+    background: color-mix(in srgb, black calc(var(--sheet-overlay-opacity) * 40%), transparent);
+    transition: background 0.2s ease;
+}
+
+.dashboard-modal-overlay.is-dragging {
+    transition: none;
+}
+
+.dashboard-modal-panel {
+    will-change: transform;
+    transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.dashboard-modal-panel.is-dragging {
+    transition: none;
+}
+
+.dashboard-modal-drag {
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.dashboard-modal-drag[aria-hidden="true"] {
+    min-height: 1.75rem;
+    cursor: grab;
+}
+
+@media (min-width: 1024px) {
+    .dashboard-modal-overlay {
+        background: rgb(0 0 0 / 0.4);
+        transition: none;
+    }
+
+    .dashboard-modal-panel {
+        will-change: auto;
+        transition: none;
+    }
+
+    .dashboard-modal-drag {
+        touch-action: auto;
+        user-select: auto;
+        -webkit-user-select: auto;
+        cursor: auto;
     }
 }
 

@@ -7,20 +7,37 @@
 @if ($show)
     @teleport('body')
         <div
-            class="dashboard-modal-overlay fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-0 lg:items-center lg:p-4"
+            class="dashboard-modal-overlay fixed inset-0 z-50 flex items-end justify-center p-0 lg:items-center lg:p-4"
             wire:click.self="$dispatch('close-dashboard-modal')"
-            x-data
+            x-data="dashboardSheet"
+            x-ref="overlay"
             x-on:keydown.escape.window="$wire.dispatch('close-dashboard-modal')"
             role="dialog"
             aria-modal="true"
         >
             <div
                 class="dashboard-modal-panel flex w-full {{ $maxWidth }} max-h-[90dvh] flex-col overflow-hidden rounded-t-2xl border border-border bg-card text-card-foreground shadow-xl lg:max-h-[90vh] lg:rounded-xl"
+                x-ref="panel"
             >
-                <div class="flex shrink-0 justify-center pt-2 lg:hidden" aria-hidden="true">
+                <div
+                    class="dashboard-modal-drag flex shrink-0 justify-center pt-2.5 pb-1 lg:hidden"
+                    data-sheet-drag
+                    aria-hidden="true"
+                    x-on:pointerdown="onPointerDown($event)"
+                    x-on:pointermove="onPointerMove($event)"
+                    x-on:pointerup="onPointerUp($event)"
+                    x-on:pointercancel="onPointerCancel($event)"
+                >
                     <span class="h-1 w-10 rounded-full bg-muted-foreground/35"></span>
                 </div>
-                <div class="flex shrink-0 items-start justify-between gap-3 border-b border-border px-4 py-3 md:px-5">
+                <div
+                    class="dashboard-modal-drag flex shrink-0 items-start justify-between gap-3 border-b border-border px-4 py-3 md:px-5"
+                    data-sheet-drag
+                    x-on:pointerdown="onPointerDown($event)"
+                    x-on:pointermove="onPointerMove($event)"
+                    x-on:pointerup="onPointerUp($event)"
+                    x-on:pointercancel="onPointerCancel($event)"
+                >
                     <h3 class="text-base font-semibold">{{ $title }}</h3>
                     <button
                         type="button"

@@ -7,6 +7,7 @@
 
 <div
     class="space-y-4"
+    x-bind:class="viewMode === 'floor' ? 'flex h-full min-h-0 flex-col overflow-hidden' : ''"
     x-data="{
         viewMode: window.matchMedia('(min-width: 1024px)').matches ? 'floor' : 'list',
         selectedTable: null,
@@ -37,7 +38,25 @@
         inspectorRotation: 0,
         init() {
             this.seatCount.total = this.allGuests.length;
+            this.lockFloorPageScroll();
             this.$nextTick(() => this.initEditor());
+        },
+        destroy() {
+            this.lockFloorPageScroll(false);
+        },
+        lockFloorPageScroll(force) {
+            const main = document.querySelector('.dashboard-main');
+            if (! main) {
+                return;
+            }
+
+            const lock = force === false ? false : this.viewMode === 'floor';
+            main.classList.toggle('dashboard-main-locked', lock);
+            main.style.overflow = lock ? 'hidden' : '';
+            main.style.overscrollBehavior = lock ? 'none' : '';
+            if (lock) {
+                main.scrollTop = 0;
+            }
         },
         initEditor() {
             if (! this.$refs.canvasContainer) {
@@ -78,6 +97,7 @@
             if (mode !== 'floor' && this.floorFullscreen) {
                 this.floorFullscreen = false;
             }
+            this.lockFloorPageScroll();
             if (mode === 'floor') {
                 this.$nextTick(() => window.seatingPlanEditor?.resize());
             }
@@ -228,7 +248,7 @@
             this.expandedTables[tableId] = ! this.expandedTables[tableId];
         },
     }"
-    x-effect="syncInspector()"
+    x-effect="syncInspector(); lockFloorPageScroll()"
     x-on:seating-zoom-changed.window="zoomLabel = $event.detail.label"
     x-on:seating-seats-changed.window="seatCount.assigned = $event.detail.assigned"
     x-on:seating-plan-changed.window="planTables = $event.detail.plan.tables; seatCount.assigned = window.seatingPlanEditor?.getAssignedIds()?.length ?? 0"
@@ -238,7 +258,7 @@
         <div class="rounded-lg border border-emerald-300/50 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-100">{{ $flashMessage }}</div>
     @endif
 
-    <div class="sticky top-0 z-20 -mx-4 space-y-3 border-b border-border bg-background/95 px-4 py-3 backdrop-blur md:-mx-6 md:px-6 lg:static lg:z-auto lg:mx-0 lg:border-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
+    <div class="sticky top-0 z-20 -mx-4 shrink-0 space-y-3 border-b border-border bg-background/95 px-4 py-3 backdrop-blur md:-mx-6 md:px-6 lg:static lg:z-auto lg:mx-0 lg:border-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
         <div class="flex flex-wrap items-center justify-between gap-3">
             <div class="min-w-0">
                 <h2 class="hidden text-xl font-semibold lg:block">{{ __('seating.page_title') }}</h2>
@@ -466,7 +486,7 @@
         x-bind:class="viewMode === 'floor'
             ? (floorFullscreen
                 ? 'fixed inset-0 z-50 h-dvh bg-background opacity-100'
-                : 'relative -mx-1 h-[calc(100dvh-14rem)] opacity-100 sm:-mx-6 lg:-mx-8 lg:h-[calc(100vh-11rem)]')
+                : 'relative -mx-1 min-h-0 flex-1 overscroll-none opacity-100 sm:-mx-6 lg:-mx-8')
             : 'pointer-events-none fixed left-[-9999px] top-0 h-[480px] w-[360px] opacity-0'"
     >
         <div class="flex shrink-0 items-center gap-2 border-b border-border bg-card px-3 py-2 sm:px-4">
