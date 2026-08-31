@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Models\WeddingEvent;
 use App\Notifications\AdminInactiveWeddingReminderNotification;
 use App\Notifications\AdminNewSignupNotification;
-use App\Notifications\CoupleActivationReminderNotification;
 use App\Notifications\CoupleOnboardingTipNotification;
 use App\Notifications\DispatchScheduledGuestPushNotification;
 use App\Notifications\GuestPhotoUploadReminderNotification;
@@ -140,7 +139,7 @@ class WeddingScheduledNotificationService
         }
     }
 
-    public function syncCoupleOnboarding(WeddingEvent $event): void
+    public function syncCoupleOnboarding(WeddingEvent $event, ?CarbonInterface $anchor = null): void
     {
         $event->loadMissing('user');
 
@@ -152,11 +151,11 @@ class WeddingScheduledNotificationService
 
         $this->cancelCoupleOnboarding($user);
 
-        if ($event->is_active || $event->suppressesOutboundMail()) {
+        if ($event->suppressesOutboundMail()) {
             return;
         }
 
-        $anchor = $user->created_at->copy();
+        $anchorAt = ($anchor ?? $user->created_at)->copy();
 
         foreach (config('notifications.couple_onboarding_hours', [
             'day1' => 6,
@@ -177,22 +176,10 @@ class WeddingScheduledNotificationService
             $this->scheduleIfFuture(
                 notifiable: $user,
                 notification: new CoupleOnboardingTipNotification($variant),
-                sendAt: $this->hoursAfter($anchor, (int) $hours),
+                sendAt: $this->hoursAfter($anchorAt, (int) $hours),
                 meta: $type->meta(weddingEventId: $event->id, userId: $user->id),
             );
         }
-
-        $activationHours = (int) config('notifications.couple_activation_reminder_hours', 42);
-
-        $this->scheduleIfFuture(
-            notifiable: $user,
-            notification: new CoupleActivationReminderNotification,
-            sendAt: $this->hoursAfter($anchor, $activationHours),
-            meta: ScheduledNotificationType::CoupleActivationReminder->meta(
-                weddingEventId: $event->id,
-                userId: $user->id,
-            ),
-        );
     }
 
     public function cancelCoupleOnboarding(User $user): void
@@ -204,7 +191,7 @@ class WeddingScheduledNotificationService
 
     public function notifyAdminsOfNewSignup(WeddingEvent $event): void
     {
-        if (! AdminNotifier::hasRecipients() || $event->is_active || $event->suppressesOutboundMail()) {
+        if (! AdminNotifier::hasRecipients() || $event->suppressesOutboundMail()) {
             return;
         }
 
@@ -215,7 +202,7 @@ class WeddingScheduledNotificationService
     {
         $this->cancelAdminInactiveWeddingReminder($event);
 
-        if ($event->is_active || $event->suppressesOutboundMail() || ! AdminNotifier::hasRecipients()) {
+        if ($event->hasPaidPlan() || $event->suppressesOutboundMail() || ! AdminNotifier::hasRecipients()) {
             return;
         }
 

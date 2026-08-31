@@ -21,7 +21,7 @@ class CoupleActivationReminderNotification extends Notification implements Shoul
 
         $event = $notifiable->weddingEvent;
 
-        return $event === null || $event->is_active || $event->suppressesOutboundMail();
+        return $event === null || $event->hasPaidPlan() || $event->suppressesOutboundMail();
     }
 
     /**

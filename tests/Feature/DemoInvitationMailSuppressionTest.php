@@ -240,6 +240,94 @@ class DemoInvitationMailSuppressionTest extends TestCase
         $this->assertTrue((new CoupleOnboardingTipNotification('day1'))->shouldInterrupt($user));
     }
 
+    public function test_couple_onboarding_does_not_interrupt_active_non_demo_owners(): void
+    {
+        $user = User::factory()->create();
+        WeddingEvent::factory()->for($user)->create([
+            'is_demo' => false,
+            'is_marketing' => false,
+            'is_active' => true,
+            'plan_tier' => PlanTier::Free,
+        ]);
+
+        $this->assertFalse((new CoupleOnboardingTipNotification('day1'))->shouldInterrupt($user));
+    }
+
+    public function test_backfill_couple_onboarding_dry_run_writes_nothing(): void
+    {
+        $user = User::factory()->create(['created_at' => now()->subDays(10)]);
+        WeddingEvent::factory()->for($user)->create([
+            'is_active' => true,
+            'plan_tier' => PlanTier::Free,
+            'wedding_date' => now()->addMonths(3),
+        ]);
+
+        $this->artisan('notifications:backfill-couple-onboarding', ['--dry-run' => true])
+            ->assertSuccessful();
+
+        $this->assertSame(0, ScheduledNotificationModel::query()
+            ->where('target_type', User::class)
+            ->where('target_id', $user->id)
+            ->count());
+    }
+
+    public function test_backfill_couple_onboarding_skips_demo_marketing_and_archived(): void
+    {
+        $realUser = User::factory()->create(['created_at' => now()->subDays(10)]);
+        WeddingEvent::factory()->for($realUser)->create([
+            'is_active' => true,
+            'plan_tier' => PlanTier::Free,
+            'wedding_date' => now()->addMonths(3),
+        ]);
+
+        $demoUser = User::factory()->create(['created_at' => now()->subDays(10)]);
+        WeddingEvent::factory()->for($demoUser)->create([
+            'is_demo' => true,
+            'is_active' => true,
+            'wedding_date' => now()->addMonths(3),
+        ]);
+
+        $marketingUser = User::factory()->create(['created_at' => now()->subDays(10)]);
+        WeddingEvent::factory()->marketing()->for($marketingUser)->create([
+            'is_active' => true,
+            'wedding_date' => now()->addMonths(3),
+        ]);
+
+        $archivedUser = User::factory()->create(['created_at' => now()->subDays(10)]);
+        WeddingEvent::factory()->for($archivedUser)->create([
+            'is_active' => true,
+            'plan_tier' => PlanTier::Free,
+            'wedding_date' => now()->subDays(2),
+        ]);
+
+        $this->artisan('notifications:backfill-couple-onboarding')
+            ->assertSuccessful();
+
+        $this->assertSame(3, ScheduledNotificationModel::query()
+            ->whereNull('cancelled_at')
+            ->where('target_type', User::class)
+            ->where('target_id', $realUser->id)
+            ->count());
+
+        $this->assertSame(0, ScheduledNotificationModel::query()
+            ->whereNull('cancelled_at')
+            ->where('target_type', User::class)
+            ->where('target_id', $demoUser->id)
+            ->count());
+
+        $this->assertSame(0, ScheduledNotificationModel::query()
+            ->whereNull('cancelled_at')
+            ->where('target_type', User::class)
+            ->where('target_id', $marketingUser->id)
+            ->count());
+
+        $this->assertSame(0, ScheduledNotificationModel::query()
+            ->whereNull('cancelled_at')
+            ->where('target_type', User::class)
+            ->where('target_id', $archivedUser->id)
+            ->count());
+    }
+
     public function test_discount_audiences_exclude_demo_invitation_owners(): void
     {
         $this->seed(DiscountEmailTemplateSeeder::class);

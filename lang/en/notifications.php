@@ -36,12 +36,12 @@ return [
 
     'admin_new_signup_greeting' => 'New couple signup',
     'admin_new_signup_subject' => 'New signup — :couple',
-    'admin_new_signup_body' => ':couple signed up (:name, :email). Wedding date: :date. The invitation is pending activation.',
+    'admin_new_signup_body' => ':couple signed up (:name, :email). Wedding date: :date.',
     'admin_new_signup_action' => 'Review in admin',
 
-    'admin_inactive_wedding_greeting' => 'Inactive invitation alert',
-    'admin_inactive_wedding_subject' => ':couple wedding in :days days — still inactive',
-    'admin_inactive_wedding_body' => ':couple\'s wedding is on :date (:days days away) but the invitation is still inactive. Contact: :email.',
+    'admin_inactive_wedding_greeting' => 'Unpaid wedding alert',
+    'admin_inactive_wedding_subject' => ':couple wedding in :days days — still on Free',
+    'admin_inactive_wedding_body' => ':couple\'s wedding is on :date (:days days away) but they are still on the Free plan. Contact: :email.',
     'admin_inactive_wedding_action' => 'Open wedding in admin',
 
     'discount_email_greeting' => 'Hi :name,',

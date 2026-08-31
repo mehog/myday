@@ -37,6 +37,9 @@ class WeddingEventObserver
 
         if ($event->wasChanged(['is_active', 'wedding_date', 'user_id', 'is_demo', 'is_marketing'])) {
             $this->scheduledNotifications->syncCoupleOnboarding($event);
+        }
+
+        if ($event->wasChanged(['is_active', 'wedding_date', 'user_id', 'is_demo', 'is_marketing', 'plan_tier'])) {
             $this->scheduledNotifications->syncAdminAlertsForEvent($event);
         }
     }

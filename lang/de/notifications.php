@@ -36,12 +36,12 @@ return [
 
     'admin_new_signup_greeting' => 'Neue Paar-Registrierung',
     'admin_new_signup_subject' => 'Neue Registrierung — :couple',
-    'admin_new_signup_body' => ':couple hat sich registriert (:name, :email). Hochzeit: :date. Einladung wartet auf Aktivierung.',
+    'admin_new_signup_body' => ':couple hat sich registriert (:name, :email). Hochzeit: :date.',
     'admin_new_signup_action' => 'Im Admin prüfen',
 
-    'admin_inactive_wedding_greeting' => 'Hinweis: inaktive Einladung',
-    'admin_inactive_wedding_subject' => ':couple Hochzeit in :days Tagen — noch inaktiv',
-    'admin_inactive_wedding_body' => 'Die Hochzeit von :couple ist am :date (in :days Tagen), die Einladung ist noch inaktiv. Kontakt: :email.',
+    'admin_inactive_wedding_greeting' => 'Hinweis: unbezahlt / Free-Plan',
+    'admin_inactive_wedding_subject' => ':couple Hochzeit in :days Tagen — noch Free',
+    'admin_inactive_wedding_body' => 'Die Hochzeit von :couple ist am :date (in :days Tagen), sie sind noch auf dem Free-Plan. Kontakt: :email.',
     'admin_inactive_wedding_action' => 'Hochzeit im Admin öffnen',
 
     'discount_email_greeting' => 'Hallo :name,',

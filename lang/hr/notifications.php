@@ -36,12 +36,12 @@ return [
 
     'admin_new_signup_greeting' => 'Nova registracija para',
     'admin_new_signup_subject' => 'Nova registracija — :couple',
-    'admin_new_signup_body' => ':couple se registrirao/la (:name, :email). Datum vjenčanja: :date. Pozivnica čeka aktivaciju.',
+    'admin_new_signup_body' => ':couple se registrirao/la (:name, :email). Datum vjenčanja: :date.',
     'admin_new_signup_action' => 'Pregled u adminu',
 
-    'admin_inactive_wedding_greeting' => 'Upozorenje o neaktivnoj pozivnici',
-    'admin_inactive_wedding_subject' => 'Vjenčanje :couple za :days dana — još neaktivno',
-    'admin_inactive_wedding_body' => 'Vjenčanje :couple je :date (za :days dana), ali pozivnica je još neaktivna. Kontakt: :email.',
+    'admin_inactive_wedding_greeting' => 'Upozorenje o neplaćenom planu',
+    'admin_inactive_wedding_subject' => 'Vjenčanje :couple za :days dana — još na Free planu',
+    'admin_inactive_wedding_body' => 'Vjenčanje :couple je :date (za :days dana), ali su još na Free planu. Kontakt: :email.',
     'admin_inactive_wedding_action' => 'Otvori vjenčanje u adminu',
 
     'discount_email_greeting' => 'Bok :name,',
