@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\WeddingEvents\RelationManagers;
 
+use App\Filament\Resources\WeddingEvents\RelationManagers\Concerns\ShowsRelationshipCountBadge;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -18,6 +19,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ScheduleItemsRelationManager extends RelationManager
 {
+    use ShowsRelationshipCountBadge;
+
     protected static string $relationship = 'scheduleItems';
 
     protected static ?string $title = null;

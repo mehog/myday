@@ -75,7 +75,7 @@ class WeddingTaskProgress
      */
     protected function finishSeating(WeddingEvent $event): array
     {
-        $assigned = $this->assignedSeatingCount($event);
+        $assigned = $event->assignedSeatingCount();
         $confirmed = $event->confirmedHeadcount();
 
         return [
@@ -194,20 +194,7 @@ class WeddingTaskProgress
 
     public function assignedSeatingCount(WeddingEvent $event): int
     {
-        $tables = $event->seating_plan['tables'] ?? [];
-        $count = 0;
-
-        foreach ($tables as $table) {
-            foreach ($table['seats'] ?? [] as $seat) {
-                if ($seat === null || $seat === '' || $seat === 'bride' || $seat === 'groom') {
-                    continue;
-                }
-
-                $count++;
-            }
-        }
-
-        return $count;
+        return $event->assignedSeatingCount();
     }
 
     protected function formatMoney(string|float|int $amount, WeddingEvent $event): string

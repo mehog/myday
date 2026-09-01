@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\WeddingEvents\RelationManagers;
 
 use App\Filament\Imports\GuestImporter;
+use App\Filament\Resources\WeddingEvents\RelationManagers\Concerns\ShowsRelationshipCountBadge;
 use App\GuestLabel;
 use App\InvitePlatform;
 use App\Models\Guest;
@@ -53,6 +54,8 @@ use Illuminate\Support\HtmlString;
 
 class GuestsRelationManager extends RelationManager
 {
+    use ShowsRelationshipCountBadge;
+
     protected static string $relationship = 'guests';
 
     protected static ?string $title = null;

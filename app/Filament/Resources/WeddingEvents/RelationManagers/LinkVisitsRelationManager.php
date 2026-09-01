@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\WeddingEvents\RelationManagers;
 
+use App\Filament\Resources\WeddingEvents\RelationManagers\Concerns\ShowsRelationshipCountBadge;
 use App\LinkType;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
@@ -11,6 +12,8 @@ use Filament\Tables\Table;
 
 class LinkVisitsRelationManager extends RelationManager
 {
+    use ShowsRelationshipCountBadge;
+
     protected static string $relationship = 'linkVisits';
 
     protected static ?string $title = 'Link visits';

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\WeddingEvents\Schemas;
 
+use App\BudgetGuestMode;
 use App\LinkType;
 use App\Models\WeddingEvent;
 use App\Support\MediaDisk;
@@ -76,6 +77,75 @@ class WeddingEventInfolist
                                     : null;
                             })
                             ->placeholder('—'),
+                    ]),
+                Section::make('Planning')
+                    ->columns(4)
+                    ->schema([
+                        TextEntry::make('budget_currency')
+                            ->label(__('budget.currency'))
+                            ->getStateUsing(fn (WeddingEvent $record): string => $record->budgetCurrency())
+                            ->placeholder('—'),
+                        TextEntry::make('budget_guest_mode')
+                            ->label(__('budget.guest_mode'))
+                            ->formatStateUsing(fn (?BudgetGuestMode $state): string => match ($state) {
+                                BudgetGuestMode::Manual => __('budget.guest_mode_manual'),
+                                BudgetGuestMode::Confirmed => __('budget.guest_mode_confirmed'),
+                                BudgetGuestMode::Invited => __('budget.guest_mode_invited'),
+                                default => __('budget.guest_mode_confirmed'),
+                            }),
+                        TextEntry::make('budget_guest_count_display')
+                            ->label(__('budget.stat_guests'))
+                            ->getStateUsing(fn (WeddingEvent $record): int => $record->budgetGuestCount()),
+                        TextEntry::make('budget_target')
+                            ->label(__('budget.stat_target'))
+                            ->getStateUsing(fn (WeddingEvent $record): ?string => filled($record->budget_target)
+                                ? number_format((float) $record->budget_target, 2, '.', '').' '.$record->budgetCurrency()
+                                : null)
+                            ->placeholder('—'),
+                        TextEntry::make('budget_total')
+                            ->label(__('budget.stat_total'))
+                            ->getStateUsing(fn (WeddingEvent $record): string => number_format(
+                                (float) $record->budgetTotals()['total'],
+                                2,
+                                '.',
+                                '',
+                            ).' '.$record->budgetCurrency()),
+                        TextEntry::make('budget_paid')
+                            ->label(__('budget.stat_paid'))
+                            ->getStateUsing(fn (WeddingEvent $record): string => number_format(
+                                (float) $record->budgetTotals()['paid'],
+                                2,
+                                '.',
+                                '',
+                            ).' '.$record->budgetCurrency()),
+                        TextEntry::make('budget_unpaid')
+                            ->label(__('budget.stat_unpaid'))
+                            ->getStateUsing(fn (WeddingEvent $record): string => number_format(
+                                (float) $record->budgetTotals()['unpaid'],
+                                2,
+                                '.',
+                                '',
+                            ).' '.$record->budgetCurrency()),
+                        TextEntry::make('budget_items_count')
+                            ->label('Budget items')
+                            ->getStateUsing(fn (WeddingEvent $record): int => (int) ($record->budget_items_count ?? $record->budgetItems()->count())),
+                        TextEntry::make('tasks_summary')
+                            ->label(__('checklist.summary_label'))
+                            ->getStateUsing(function (WeddingEvent $record): string {
+                                $total = (int) ($record->tasks_count ?? $record->tasks()->count());
+                                $completed = $record->completedTasksCount();
+
+                                return __('checklist.summary_value', [
+                                    'completed' => $completed,
+                                    'total' => $total,
+                                ]);
+                            }),
+                        TextEntry::make('seating_tables_count')
+                            ->label('Seating tables')
+                            ->getStateUsing(fn (WeddingEvent $record): int => $record->seatingTablesCount()),
+                        TextEntry::make('seating_assigned_count')
+                            ->label('Assigned seats')
+                            ->getStateUsing(fn (WeddingEvent $record): int => $record->assignedSeatingCount()),
                     ]),
             ]);
     }

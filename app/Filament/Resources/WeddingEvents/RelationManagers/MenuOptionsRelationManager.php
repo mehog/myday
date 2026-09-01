@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\WeddingEvents\RelationManagers;
 
+use App\Filament\Resources\WeddingEvents\RelationManagers\Concerns\ShowsRelationshipCountBadge;
 use App\Models\WeddingMenuOption;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -21,6 +22,8 @@ use Illuminate\Support\Facades\DB;
 
 class MenuOptionsRelationManager extends RelationManager
 {
+    use ShowsRelationshipCountBadge;
+
     protected static string $relationship = 'menuOptions';
 
     protected static ?string $title = null;

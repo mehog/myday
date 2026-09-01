@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\WeddingEvents\RelationManagers;
 
+use App\Filament\Resources\WeddingEvents\RelationManagers\Concerns\ShowsRelationshipCountBadge;
 use App\GuestMessageType;
 use App\Models\GuestMessage;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class GuestMessagesRelationManager extends RelationManager
 {
+    use ShowsRelationshipCountBadge;
+
     protected static string $relationship = 'guestMessages';
 
     protected static ?string $title = 'Guest messages';

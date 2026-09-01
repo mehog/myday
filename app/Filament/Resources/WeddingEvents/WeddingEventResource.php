@@ -6,13 +6,17 @@ use App\Filament\Resources\WeddingEvents\Pages\CreateWeddingEvent;
 use App\Filament\Resources\WeddingEvents\Pages\EditWeddingEvent;
 use App\Filament\Resources\WeddingEvents\Pages\ListWeddingEvents;
 use App\Filament\Resources\WeddingEvents\Pages\ViewWeddingEvent;
+use App\Filament\Resources\WeddingEvents\RelationManagers\BudgetItemsRelationManager;
+use App\Filament\Resources\WeddingEvents\RelationManagers\DodoPaymentsRelationManager;
 use App\Filament\Resources\WeddingEvents\RelationManagers\EventPhotosRelationManager;
 use App\Filament\Resources\WeddingEvents\RelationManagers\GuestMessagesRelationManager;
 use App\Filament\Resources\WeddingEvents\RelationManagers\GuestsRelationManager;
 use App\Filament\Resources\WeddingEvents\RelationManagers\LinkVisitsRelationManager;
 use App\Filament\Resources\WeddingEvents\RelationManagers\LocationsRelationManager;
 use App\Filament\Resources\WeddingEvents\RelationManagers\MenuOptionsRelationManager;
+use App\Filament\Resources\WeddingEvents\RelationManagers\PushNotificationLogsRelationManager;
 use App\Filament\Resources\WeddingEvents\RelationManagers\ScheduleItemsRelationManager;
+use App\Filament\Resources\WeddingEvents\RelationManagers\TasksRelationManager;
 use App\Filament\Resources\WeddingEvents\Schemas\WeddingEventForm;
 use App\Filament\Resources\WeddingEvents\Schemas\WeddingEventInfolist;
 use App\Filament\Resources\WeddingEvents\Tables\WeddingEventsTable;
@@ -22,6 +26,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class WeddingEventResource extends Resource
 {
@@ -59,10 +64,32 @@ class WeddingEventResource extends Resource
             MenuOptionsRelationManager::class,
             ScheduleItemsRelationManager::class,
             EventPhotosRelationManager::class,
+            TasksRelationManager::class,
+            BudgetItemsRelationManager::class,
             GuestsRelationManager::class,
             GuestMessagesRelationManager::class,
             LinkVisitsRelationManager::class,
+            PushNotificationLogsRelationManager::class,
+            DodoPaymentsRelationManager::class,
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->withCount([
+            'locations',
+            'menuOptions',
+            'scheduleItems',
+            'eventPhotos',
+            'guests',
+            'guestMessages',
+            'linkVisits',
+            'budgetItems',
+            'tasks',
+            'pushNotificationLogs',
+            'dodoPayments',
+            'tasks as completed_tasks_count' => fn (Builder $query) => $query->whereNotNull('completed_at'),
+        ]);
     }
 
     public static function getPages(): array

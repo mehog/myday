@@ -359,6 +359,38 @@ class WeddingEvent extends Model
         ];
     }
 
+    public function seatingTablesCount(): int
+    {
+        return count($this->seating_plan['tables'] ?? []);
+    }
+
+    public function assignedSeatingCount(): int
+    {
+        $tables = $this->seating_plan['tables'] ?? [];
+        $count = 0;
+
+        foreach ($tables as $table) {
+            foreach ($table['seats'] ?? [] as $seat) {
+                if ($seat === null || $seat === '' || $seat === 'bride' || $seat === 'groom') {
+                    continue;
+                }
+
+                $count++;
+            }
+        }
+
+        return $count;
+    }
+
+    public function completedTasksCount(): int
+    {
+        if (array_key_exists('completed_tasks_count', $this->getAttributes())) {
+            return (int) $this->getAttributes()['completed_tasks_count'];
+        }
+
+        return $this->tasks()->whereNotNull('completed_at')->count();
+    }
+
     public function remainingGuestSlots(): ?int
     {
         if ($this->plan_tier === null) {
