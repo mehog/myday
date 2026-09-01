@@ -24,7 +24,7 @@ use NotificationChannels\WebPush\PushSubscription;
 use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 use Thomasjohnkane\Snooze\Traits\SnoozeNotifiable;
 
-#[Fillable(['name', 'email', 'password', 'is_admin', 'locale', 'signup_ipstack', 'signup_ip', 'referral_fee_percentage', 'paypal_email', 'bank_account_info'])]
+#[Fillable(['name', 'email', 'password', 'is_admin', 'email_notifications_enabled', 'backfill_onboarding_emails', 'locale', 'signup_ipstack', 'signup_ip', 'referral_fee_percentage', 'paypal_email', 'bank_account_info'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser, HasAvatar, HasLocalePreference, MustVerifyEmail
 {
@@ -49,6 +49,8 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLocale
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
+            'email_notifications_enabled' => 'boolean',
+            'backfill_onboarding_emails' => 'boolean',
             'referral_fee_percentage' => 'decimal:2',
             'signup_ipstack' => 'object',
         ];
@@ -161,6 +163,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLocale
         }
 
         return $this->created_at->copy()->addHours($graceHours);
+    }
+
+    public function wantsProductEmail(): bool
+    {
+        return (bool) $this->email_notifications_enabled;
     }
 
     public function ownsDemoInvitation(): bool

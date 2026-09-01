@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard;
 
 use App\Livewire\Dashboard\Concerns\RendersDashboard;
+use App\Services\WeddingScheduledNotificationService;
 use App\Support\Locale;
 use App\Support\UnverifiedEmail;
 use Illuminate\Support\Collection;
@@ -21,6 +22,8 @@ class Profile extends Component
 
     public string $locale = '';
 
+    public bool $email_notifications_enabled = true;
+
     public string $current_password = '';
 
     public string $password = '';
@@ -37,6 +40,7 @@ class Profile extends Component
         $this->name = $user->name;
         $this->email = $user->email;
         $this->locale = Locale::resolve($user->locale);
+        $this->email_notifications_enabled = $user->wantsProductEmail();
     }
 
     public function render()
@@ -77,6 +81,7 @@ class Profile extends Component
         $rules = [
             'name' => ['required', 'string', 'max:255'],
             'locale' => ['required', Rule::in(array_keys(Locale::options()))],
+            'email_notifications_enabled' => ['boolean'],
         ];
 
         if ($changingPassword) {
@@ -98,9 +103,12 @@ class Profile extends Component
             $this->email = $user->email;
         }
 
+        $wasEnabled = $user->wantsProductEmail();
+
         $payload = [
             'name' => $data['name'],
             'locale' => $data['locale'],
+            'email_notifications_enabled' => (bool) $data['email_notifications_enabled'],
         ];
 
         if ($changingPassword) {
@@ -108,6 +116,10 @@ class Profile extends Component
         }
 
         $user->update($payload);
+
+        if ($wasEnabled && ! $user->wantsProductEmail()) {
+            app(WeddingScheduledNotificationService::class)->cancelCoupleOnboarding($user);
+        }
 
         session(['locale' => $data['locale']]);
         Locale::apply($data['locale']);

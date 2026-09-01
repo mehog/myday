@@ -47,4 +47,7 @@ return [
     'discount_email_greeting' => 'Bok :name,',
     'discount_email_code_line' => 'Vaš kod za popust: :code',
     'discount_email_action' => 'Pogledaj cijene',
+
+    'unsubscribe_prompt' => 'Možete upravljati ili isključiti ove emailove u postavkama profila.',
+    'unsubscribe_action' => 'Upravljaj email obavijestima',
 ];

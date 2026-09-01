@@ -3,11 +3,14 @@
 namespace App\Filament\App\Pages\Auth;
 
 use App\Filament\App\Pages\AppDashboard;
+use App\Models\User;
+use App\Services\WeddingScheduledNotificationService;
 use App\Support\Locale;
 use App\Support\UnverifiedEmail;
 use Filament\Auth\Pages\EditProfile as BaseEditProfile;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Model;
@@ -23,6 +26,14 @@ class EditProfile extends BaseEditProfile
             ->label(__('locale.label'))
             ->options(Locale::options())
             ->required();
+    }
+
+    protected function getEmailNotificationsFormComponent(): Component
+    {
+        return Toggle::make('email_notifications_enabled')
+            ->label(__('dashboard.profile_email_notifications'))
+            ->helperText(__('dashboard.profile_email_notifications_hint'))
+            ->default(true);
     }
 
     protected function getEmailFormComponent(): Component
@@ -46,6 +57,7 @@ class EditProfile extends BaseEditProfile
                 $this->getLocaleFormComponent(),
                 $this->getNameFormComponent(),
                 $this->getEmailFormComponent(),
+                $this->getEmailNotificationsFormComponent(),
                 $this->getPasswordFormComponent(),
                 $this->getPasswordConfirmationFormComponent(),
                 $this->getCurrentPasswordFormComponent(),
@@ -93,7 +105,13 @@ class EditProfile extends BaseEditProfile
             unset($data['email']);
         }
 
+        $wasEnabled = $record instanceof User && $record->wantsProductEmail();
+
         $record = parent::handleRecordUpdate($record, $data);
+
+        if ($wasEnabled && $record instanceof User && ! $record->wantsProductEmail()) {
+            app(WeddingScheduledNotificationService::class)->cancelCoupleOnboarding($record);
+        }
 
         if (isset($data['locale']) && is_string($data['locale']) && Locale::isSupported($data['locale'])) {
             session(['locale' => $data['locale']]);

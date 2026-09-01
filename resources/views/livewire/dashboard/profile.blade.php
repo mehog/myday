@@ -61,6 +61,27 @@
     </x-dashboard.card>
 
     <x-dashboard.card>
+        <h3 class="font-medium">{{ __('dashboard.profile_email_notifications_heading') }}</h3>
+        <p class="mt-1 text-sm text-muted-foreground">{{ __('dashboard.profile_email_notifications_help') }}</p>
+        <form wire:submit="save" class="mt-4">
+            <label class="flex items-start gap-3 text-sm">
+                <input
+                    type="checkbox"
+                    wire:model="email_notifications_enabled"
+                    class="mt-0.5 h-4 w-4 rounded border-border"
+                >
+                <span>
+                    <span class="font-medium">{{ __('dashboard.profile_email_notifications') }}</span>
+                    <span class="mt-0.5 block text-muted-foreground">{{ __('dashboard.profile_email_notifications_hint') }}</span>
+                </span>
+            </label>
+            <div class="mt-4">
+                <x-dashboard.button type="submit" variant="secondary">{{ __('dashboard.save') }}</x-dashboard.button>
+            </div>
+        </form>
+    </x-dashboard.card>
+
+    <x-dashboard.card>
         <div class="flex flex-wrap items-start justify-between gap-3">
             <div>
                 <h3 class="font-medium">{{ __('app.push_devices_heading') }}</h3>

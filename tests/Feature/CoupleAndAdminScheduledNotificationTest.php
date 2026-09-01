@@ -161,6 +161,20 @@ class CoupleAndAdminScheduledNotificationTest extends TestCase
         $this->assertSame(0, $this->pendingCountForUser($marketingUser));
     }
 
+    public function test_it_skips_couple_onboarding_when_user_opted_out(): void
+    {
+        $user = User::factory()->optedOutOfProductEmail()->create(['created_at' => now()]);
+        $event = WeddingEvent::withoutEvents(fn () => WeddingEvent::factory()->for($user)->create([
+            'is_active' => true,
+            'plan_tier' => PlanTier::Free,
+            'wedding_date' => now()->addMonths(4),
+        ]));
+
+        $this->service->syncCoupleOnboarding($event);
+
+        $this->assertSame(0, $this->pendingCountForUser($user));
+    }
+
     public function test_it_schedules_admin_unpaid_wedding_reminder_for_free_active_event(): void
     {
         $event = WeddingEvent::withoutEvents(fn () => WeddingEvent::factory()->create([

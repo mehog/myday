@@ -47,4 +47,7 @@ return [
     'discount_email_greeting' => 'Hallo :name,',
     'discount_email_code_line' => 'Ihr Rabattcode: :code',
     'discount_email_action' => 'Preise ansehen',
+
+    'unsubscribe_prompt' => 'Sie können diese E-Mails in Ihren Profileinstellungen verwalten oder deaktivieren.',
+    'unsubscribe_action' => 'E-Mail-Benachrichtigungen verwalten',
 ];

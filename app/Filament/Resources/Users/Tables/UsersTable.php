@@ -63,6 +63,14 @@ class UsersTable
                 IconColumn::make('is_admin')
                     ->label('Admin')
                     ->boolean(),
+                IconColumn::make('email_notifications_enabled')
+                    ->label('Emails')
+                    ->boolean()
+                    ->toggleable(),
+                IconColumn::make('backfill_onboarding_emails')
+                    ->label('Backfill')
+                    ->boolean()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('weddingEvent.couple_names')
                     ->label('Wedding')
                     ->placeholder('—'),
@@ -83,6 +91,18 @@ class UsersTable
                     ->placeholder('All')
                     ->trueLabel('Admins')
                     ->falseLabel('Customers')
+                    ->boolean(),
+                TernaryFilter::make('email_notifications_enabled')
+                    ->label('Email notifications')
+                    ->placeholder('All')
+                    ->trueLabel('Enabled')
+                    ->falseLabel('Opted out')
+                    ->boolean(),
+                TernaryFilter::make('backfill_onboarding_emails')
+                    ->label('Backfill onboarding')
+                    ->placeholder('All')
+                    ->trueLabel('Marked for backfill')
+                    ->falseLabel('Not marked')
                     ->boolean(),
                 TernaryFilter::make('has_wedding')
                     ->label('Has wedding')

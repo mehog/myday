@@ -24,7 +24,10 @@ class BackfillCoupleOnboardingCommand extends Command
             ->where('is_demo', false)
             ->where('is_marketing', false)
             ->whereDate('wedding_date', '>=', now()->toDateString())
-            ->whereHas('user')
+            ->whereHas('user', function ($q): void {
+                $q->where('backfill_onboarding_emails', true)
+                    ->where('email_notifications_enabled', true);
+            })
             ->orderBy('id');
 
         $scheduled = 0;
@@ -34,7 +37,12 @@ class BackfillCoupleOnboardingCommand extends Command
         $query->each(function (WeddingEvent $event) use ($scheduler, $dryRun, $anchor, &$scheduled, &$skipped, &$rows): void {
             $user = $event->user;
 
-            if ($user === null || $event->suppressesOutboundMail() || $event->isArchived()) {
+            if ($user === null
+                || $event->suppressesOutboundMail()
+                || $event->isArchived()
+                || ! $user->backfill_onboarding_emails
+                || ! $user->wantsProductEmail()
+            ) {
                 $skipped++;
 
                 return;

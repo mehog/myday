@@ -27,6 +27,7 @@ class DiscountCampaignAudienceResolver
     {
         $query = User::query()
             ->where('is_admin', false)
+            ->where('email_notifications_enabled', true)
             ->whereDoesntHave('weddingEvent', fn (Builder $q) => $q->suppressingOutboundMail());
 
         return match ($campaign->audience) {

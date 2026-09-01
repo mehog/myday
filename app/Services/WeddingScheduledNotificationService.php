@@ -151,7 +151,7 @@ class WeddingScheduledNotificationService
 
         $this->cancelCoupleOnboarding($user);
 
-        if ($event->suppressesOutboundMail()) {
+        if ($event->suppressesOutboundMail() || ! $user->wantsProductEmail()) {
             return;
         }
 

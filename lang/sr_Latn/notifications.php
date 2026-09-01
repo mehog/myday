@@ -47,4 +47,7 @@ return [
     'discount_email_greeting' => 'Zdravo :name,',
     'discount_email_code_line' => 'Vaš kod za popust: :code',
     'discount_email_action' => 'Pogledaj cene',
+
+    'unsubscribe_prompt' => 'Možete upravljati ili isključiti ove emailove u podešavanjima profila.',
+    'unsubscribe_action' => 'Upravljaj email obaveštenjima',
 ];

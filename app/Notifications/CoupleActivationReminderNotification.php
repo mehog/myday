@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Filament\App\Resources\MyWeddingResource;
 use App\Models\User;
+use App\Notifications\Concerns\BuildsProductMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -11,11 +12,16 @@ use Illuminate\Notifications\Notification;
 
 class CoupleActivationReminderNotification extends Notification implements ShouldQueue
 {
+    use BuildsProductMail;
     use Queueable;
 
     public function shouldInterrupt(object $notifiable): bool
     {
         if (! $notifiable instanceof User) {
+            return true;
+        }
+
+        if (! $notifiable->wantsProductEmail()) {
             return true;
         }
 
@@ -38,14 +44,16 @@ class CoupleActivationReminderNotification extends Notification implements Shoul
         $event = $notifiable->weddingEvent;
         $appUrl = MyWeddingResource::getUrl('edit', ['record' => $event->id], panel: 'app');
 
-        return (new MailMessage)
-            ->subject(__('notifications.couple_activation_subject'))
-            ->greeting(__('notifications.couple_onboarding_greeting', [
-                'name' => $notifiable->name,
-            ]))
-            ->line(__('notifications.couple_activation_body', [
-                'couple' => $event->couple_names,
-            ]))
-            ->action(__('notifications.couple_onboarding_action'), $appUrl);
+        return $this->withUnsubscribeLink(
+            (new MailMessage)
+                ->subject(__('notifications.couple_activation_subject'))
+                ->greeting(__('notifications.couple_onboarding_greeting', [
+                    'name' => $notifiable->name,
+                ]))
+                ->line(__('notifications.couple_activation_body', [
+                    'couple' => $event->couple_names,
+                ]))
+                ->action(__('notifications.couple_onboarding_action'), $appUrl)
+        );
     }
 }

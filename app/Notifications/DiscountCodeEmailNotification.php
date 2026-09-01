@@ -6,6 +6,7 @@ use App\Filament\App\Pages\PricingPage;
 use App\Models\DiscountCode;
 use App\Models\DiscountEmailCampaign;
 use App\Models\User;
+use App\Notifications\Concerns\BuildsProductMail;
 use App\Support\DiscountEmailPlaceholders;
 use App\Support\Locale;
 use Illuminate\Bus\Queueable;
@@ -15,6 +16,7 @@ use Illuminate\Notifications\Notification;
 
 class DiscountCodeEmailNotification extends Notification implements ShouldQueue
 {
+    use BuildsProductMail;
     use Queueable;
 
     public function __construct(
@@ -74,10 +76,11 @@ class DiscountCodeEmailNotification extends Notification implements ShouldQueue
             ]));
         }
 
-        return $message
-            ->action(
+        return $this->withUnsubscribeLink(
+            $message->action(
                 __('notifications.discount_email_action'),
                 PricingPage::getUrl(panel: 'app'),
-            );
+            )
+        );
     }
 }

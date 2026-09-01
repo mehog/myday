@@ -253,9 +253,22 @@ class DemoInvitationMailSuppressionTest extends TestCase
         $this->assertFalse((new CoupleOnboardingTipNotification('day1'))->shouldInterrupt($user));
     }
 
+    public function test_couple_onboarding_interrupts_when_email_notifications_disabled(): void
+    {
+        $user = User::factory()->optedOutOfProductEmail()->create();
+        WeddingEvent::factory()->for($user)->create([
+            'is_demo' => false,
+            'is_marketing' => false,
+            'is_active' => true,
+            'plan_tier' => PlanTier::Free,
+        ]);
+
+        $this->assertTrue((new CoupleOnboardingTipNotification('day1'))->shouldInterrupt($user));
+    }
+
     public function test_backfill_couple_onboarding_dry_run_writes_nothing(): void
     {
-        $user = User::factory()->create(['created_at' => now()->subDays(10)]);
+        $user = User::factory()->markedForOnboardingBackfill()->create(['created_at' => now()->subDays(10)]);
         WeddingEvent::factory()->for($user)->create([
             'is_active' => true,
             'plan_tier' => PlanTier::Free,
@@ -271,29 +284,76 @@ class DemoInvitationMailSuppressionTest extends TestCase
             ->count());
     }
 
+    public function test_backfill_couple_onboarding_requires_admin_flag(): void
+    {
+        $marked = User::factory()->markedForOnboardingBackfill()->create(['created_at' => now()->subDays(10)]);
+        WeddingEvent::factory()->for($marked)->create([
+            'is_active' => true,
+            'plan_tier' => PlanTier::Free,
+            'wedding_date' => now()->addMonths(3),
+        ]);
+
+        $unmarked = User::factory()->create(['created_at' => now()->subDays(10)]);
+        WeddingEvent::factory()->for($unmarked)->create([
+            'is_active' => true,
+            'plan_tier' => PlanTier::Free,
+            'wedding_date' => now()->addMonths(3),
+        ]);
+
+        $optedOut = User::factory()->markedForOnboardingBackfill()->optedOutOfProductEmail()->create([
+            'created_at' => now()->subDays(10),
+        ]);
+        WeddingEvent::factory()->for($optedOut)->create([
+            'is_active' => true,
+            'plan_tier' => PlanTier::Free,
+            'wedding_date' => now()->addMonths(3),
+        ]);
+
+        $this->artisan('notifications:backfill-couple-onboarding')
+            ->assertSuccessful();
+
+        $this->assertSame(3, ScheduledNotificationModel::query()
+            ->whereNull('cancelled_at')
+            ->where('target_type', User::class)
+            ->where('target_id', $marked->id)
+            ->count());
+
+        $this->assertSame(0, ScheduledNotificationModel::query()
+            ->whereNull('cancelled_at')
+            ->where('target_type', User::class)
+            ->where('target_id', $unmarked->id)
+            ->count());
+
+        $this->assertSame(0, ScheduledNotificationModel::query()
+            ->whereNull('cancelled_at')
+            ->where('target_type', User::class)
+            ->where('target_id', $optedOut->id)
+            ->count());
+    }
+
     public function test_backfill_couple_onboarding_skips_demo_marketing_and_archived(): void
     {
-        $realUser = User::factory()->create(['created_at' => now()->subDays(10)]);
+        $realUser = User::factory()->markedForOnboardingBackfill()->create(['created_at' => now()->subDays(10)]);
         WeddingEvent::factory()->for($realUser)->create([
             'is_active' => true,
             'plan_tier' => PlanTier::Free,
             'wedding_date' => now()->addMonths(3),
         ]);
 
-        $demoUser = User::factory()->create(['created_at' => now()->subDays(10)]);
+        $demoUser = User::factory()->markedForOnboardingBackfill()->create(['created_at' => now()->subDays(10)]);
         WeddingEvent::factory()->for($demoUser)->create([
             'is_demo' => true,
             'is_active' => true,
             'wedding_date' => now()->addMonths(3),
         ]);
 
-        $marketingUser = User::factory()->create(['created_at' => now()->subDays(10)]);
+        $marketingUser = User::factory()->markedForOnboardingBackfill()->create(['created_at' => now()->subDays(10)]);
         WeddingEvent::factory()->marketing()->for($marketingUser)->create([
             'is_active' => true,
             'wedding_date' => now()->addMonths(3),
         ]);
 
-        $archivedUser = User::factory()->create(['created_at' => now()->subDays(10)]);
+        $archivedUser = User::factory()->markedForOnboardingBackfill()->create(['created_at' => now()->subDays(10)]);
         WeddingEvent::factory()->for($archivedUser)->create([
             'is_active' => true,
             'plan_tier' => PlanTier::Free,

@@ -63,6 +63,15 @@ class SendDiscountCampaignEmailsJob implements ShouldQueue
                 continue;
             }
 
+            if (! $recipient->user->wantsProductEmail()) {
+                $recipient->update([
+                    'status' => DiscountEmailRecipientStatus::Skipped,
+                    'error' => 'Email notifications disabled',
+                ]);
+
+                continue;
+            }
+
             $locale = Locale::resolve(
                 $campaign->send_locale ?? $recipient->user->preferredLocale()
             );

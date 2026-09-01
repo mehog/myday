@@ -40,6 +40,14 @@ class UserForm
                     ->helperText('Admins access /admin. Customers access /app.')
                     ->default(false)
                     ->live(),
+                Toggle::make('email_notifications_enabled')
+                    ->label('Email notifications')
+                    ->helperText('Product emails (onboarding tips, discount campaigns). Does not affect password reset or email verification.')
+                    ->default(true),
+                Toggle::make('backfill_onboarding_emails')
+                    ->label('Backfill onboarding emails')
+                    ->helperText('Include this user when running notifications:backfill-couple-onboarding. Does not affect new signups.')
+                    ->default(false),
                 Toggle::make('is_partner')
                     ->label(__('referrals.admin_partner_toggle'))
                     ->helperText(__('referrals.admin_partner_toggle_helper'))
