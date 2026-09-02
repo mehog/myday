@@ -23,7 +23,7 @@ return [
     'label_older' => 'Stariji gost',
 
     'field_plus_one_allowed' => 'Pratnja',
-    'field_plus_one_allowed_helper' => 'Označite ako gost može dovesti pratnju',
+    'field_plus_one_allowed_helper' => 'Ako je uključeno, gost može pri potvrdi dolaska unijeti ime pratnje.',
     'field_plus_one_name' => 'Ime pratnje',
     'field_plus_one_seating_name' => 'Formalno ime pratnje',
     'field_plus_one_seating_name_helper' => 'Koristi se na rasporedu sjedenja i karticama za stolove. Ostavite prazno da se zadrži ime koje je gost unio.',

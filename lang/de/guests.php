@@ -23,7 +23,7 @@ return [
     'label_older' => 'Älterer Gast',
 
     'field_plus_one_allowed' => 'Begleitung',
-    'field_plus_one_allowed_helper' => 'Diesem Gast erlauben, eine Begleitung mitzubringen',
+    'field_plus_one_allowed_helper' => 'Wenn aktiviert, kann der Gast beim RSVP den Namen der Begleitung angeben.',
     'field_plus_one_name' => 'Name der Begleitung',
     'field_plus_one_seating_name' => 'Formeller Name der Begleitung',
     'field_plus_one_seating_name_helper' => 'Wird im Sitzplan und auf den Tischkarten verwendet. Leer lassen, um den vom Gast eingegebenen Namen zu behalten.',
