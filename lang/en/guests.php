@@ -23,7 +23,7 @@ return [
     'label_older' => 'Older guest',
 
     'field_plus_one_allowed' => 'Plus one',
-    'field_plus_one_allowed_helper' => 'Allow this guest to bring a plus one',
+    'field_plus_one_allowed_helper' => 'If enabled, the guest can enter a companion name when they RSVP.',
     'field_plus_one_name' => 'Companion name',
     'field_plus_one_seating_name' => 'Formal companion name',
     'field_plus_one_seating_name_helper' => 'Used on the seating plan and place cards. Leave empty to keep the name the guest entered.',

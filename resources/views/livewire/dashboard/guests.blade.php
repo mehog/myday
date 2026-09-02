@@ -469,10 +469,13 @@
                     @endforeach
                 </select>
             </div>
-            <label class="inline-flex items-center gap-2 text-sm">
-                <input type="checkbox" wire:model="plus_one_allowed" class="rounded border-border">
-                {{ __('guests.field_plus_one_allowed') }}
-            </label>
+            <div>
+                <label class="inline-flex items-center gap-2 text-sm">
+                    <input type="checkbox" wire:model="plus_one_allowed" class="rounded border-border">
+                    {{ __('guests.field_plus_one_allowed') }}
+                </label>
+                <p class="mt-1 pl-6 text-xs text-muted-foreground">{{ __('guests.field_plus_one_allowed_helper') }}</p>
+            </div>
             <div>
                 <label class="mb-1 block text-sm font-medium">{{ __('guests.field_labels') }}</label>
                 <div class="grid gap-2 sm:grid-cols-2">
