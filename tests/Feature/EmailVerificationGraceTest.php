@@ -177,6 +177,84 @@ class EmailVerificationGraceTest extends TestCase
 
         $this->assertSame($ip, $user->signup_ip);
         $this->assertSame('BA', $user->signupCountryCode());
+        $this->assertSame('bs', $user->locale);
+    }
+
+    public function test_user_signup_ip_capture_sets_locale_from_language(): void
+    {
+        Config::set('app.env', 'production');
+        Config::set('services.ipstack.access_key', 'test-access-key');
+
+        $ip = '203.0.113.31';
+
+        Http::fake([
+            'api.ipstack.com/*' => Http::response([
+                'ip' => $ip,
+                'country_code' => 'US',
+                'country_name' => 'United States',
+                'location' => [
+                    'languages' => [
+                        ['code' => 'de', 'name' => 'German'],
+                    ],
+                ],
+            ]),
+        ]);
+
+        $user = User::factory()->unverified()->create(['locale' => null]);
+
+        UserSignupIp::capture($user, $ip);
+
+        $this->assertSame('de', $user->fresh()->locale);
+    }
+
+    public function test_user_signup_ip_capture_does_not_overwrite_existing_locale(): void
+    {
+        Config::set('app.env', 'production');
+        Config::set('services.ipstack.access_key', 'test-access-key');
+
+        $ip = '203.0.113.32';
+
+        Http::fake([
+            'api.ipstack.com/*' => Http::response([
+                'ip' => $ip,
+                'country_code' => 'DE',
+                'country_name' => 'Germany',
+            ]),
+        ]);
+
+        $user = User::factory()->unverified()->create(['locale' => 'en']);
+
+        UserSignupIp::capture($user, $ip);
+
+        $user->refresh();
+
+        $this->assertSame('en', $user->locale);
+        $this->assertSame('DE', $user->signupCountryCode());
+    }
+
+    public function test_user_signup_ip_capture_leaves_locale_null_when_unmatched(): void
+    {
+        Config::set('app.env', 'production');
+        Config::set('services.ipstack.access_key', 'test-access-key');
+
+        $ip = '203.0.113.33';
+
+        Http::fake([
+            'api.ipstack.com/*' => Http::response([
+                'ip' => $ip,
+                'country_code' => 'US',
+                'country_name' => 'United States',
+            ]),
+        ]);
+
+        $user = User::factory()->unverified()->create(['locale' => null]);
+
+        UserSignupIp::capture($user, $ip);
+
+        $user->refresh();
+
+        $this->assertNull($user->locale);
+        $this->assertSame('US', $user->signupCountryCode());
     }
 
     public function test_unverified_user_within_grace_can_access_filament_app(): void

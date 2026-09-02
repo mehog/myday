@@ -460,6 +460,7 @@ class WeddingOnboarding extends Component
                     'email' => $this->email,
                     'password' => $this->password,
                     'is_admin' => false,
+                    'locale' => Locale::canonicalize(Locale::current()),
                 ]);
 
                 $wedding = WeddingEvent::query()->create([

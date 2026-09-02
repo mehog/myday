@@ -47,8 +47,39 @@ class TrackUserIpOnVerificationTest extends TestCase
         $this->assertSame('US', $user->signupCountryCode());
         $this->assertSame('EUR', $user->pricingCurrency());
         $this->assertSame('United States', $user->signup_ipstack->country_name ?? null);
+        $this->assertNull($user->locale);
 
         Http::assertSent(fn ($request): bool => str_contains($request->url(), 'api.ipstack.com/'.$ip));
+    }
+
+    public function test_production_verification_sets_locale_from_ipstack_when_empty(): void
+    {
+        Config::set('app.env', 'production');
+        Config::set('services.ipstack.access_key', 'test-access-key');
+
+        $ip = '203.0.113.11';
+
+        Http::fake([
+            'api.ipstack.com/*' => Http::response([
+                'ip' => $ip,
+                'country_code' => 'HR',
+                'country_name' => 'Croatia',
+                'location' => [
+                    'languages' => [
+                        ['code' => 'hr', 'name' => 'Croatian'],
+                    ],
+                ],
+            ]),
+        ]);
+
+        $user = User::factory()->unverified()->create(['locale' => null]);
+        WeddingEvent::factory()->inactive()->create(['user_id' => $user->id]);
+
+        $this->withServerVariables(['REMOTE_ADDR' => $ip])
+            ->get($this->verificationUrl($user))
+            ->assertRedirect(DashboardNav::homeUrl());
+
+        $this->assertSame('hr', $user->fresh()->locale);
     }
 
     public function test_non_production_verification_skips_ipstack_api(): void

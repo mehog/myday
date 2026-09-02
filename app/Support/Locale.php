@@ -21,6 +21,9 @@ class Locale
         'sr_latn_rs' => 'sr_Latn',
         'sr_cyrl' => 'sr_Latn',
         'sr_cyrl_rs' => 'sr_Latn',
+        // ISO country codes used as ipstack country_code fallback.
+        'ba' => 'bs',
+        'rs' => 'sr_Latn',
     ];
 
     /**
@@ -163,6 +166,45 @@ class Locale
             if ($canonical !== null) {
                 return $canonical;
             }
+        }
+
+        return null;
+    }
+
+    /**
+     * Derive a supported app locale from an ipstack Location-module payload.
+     *
+     * Prefers location.languages[].code, then falls back to country_code.
+     * Returns null when nothing maps to a supported locale.
+     */
+    public static function fromIpstack(?object $ipstack): ?string
+    {
+        if ($ipstack === null) {
+            return null;
+        }
+
+        $languages = $ipstack->location->languages ?? null;
+
+        if (is_array($languages) || $languages instanceof \Traversable) {
+            foreach ($languages as $language) {
+                $code = is_object($language) ? ($language->code ?? null) : null;
+
+                if (! is_string($code) || $code === '') {
+                    continue;
+                }
+
+                $canonical = self::canonicalize($code);
+
+                if ($canonical !== null) {
+                    return $canonical;
+                }
+            }
+        }
+
+        $countryCode = $ipstack->country_code ?? null;
+
+        if (is_string($countryCode) && $countryCode !== '') {
+            return self::canonicalize($countryCode);
         }
 
         return null;

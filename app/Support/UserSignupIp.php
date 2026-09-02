@@ -28,14 +28,27 @@ class UserSignupIp
             $ipstack = IpStackCacheHelper::getOrFetch($ip);
 
             if ($ipstack && isset($ipstack->ip)) {
-                $user->update([
+                $attributes = [
                     'signup_ipstack' => $ipstack,
                     'signup_ip' => $ip,
-                ]);
+                ];
+
+                $existingLocale = is_string($user->locale) ? Locale::canonicalize($user->locale) : null;
+
+                if ($existingLocale === null) {
+                    $fromIpstack = Locale::fromIpstack($ipstack);
+
+                    if ($fromIpstack !== null) {
+                        $attributes['locale'] = $fromIpstack;
+                    }
+                }
+
+                $user->update($attributes);
 
                 Log::info('UserSignupIp: Applied IPStack data to user', [
                     'user_id' => $user->id,
                     'country_code' => $ipstack->country_code ?? 'unknown',
+                    'locale' => $attributes['locale'] ?? $user->locale,
                 ]);
 
                 return;
