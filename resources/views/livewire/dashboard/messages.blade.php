@@ -5,7 +5,13 @@
     $gallery = app(GuestMessageMediaGallery::class);
 @endphp
 
-<div class="space-y-5 lg:space-y-6" x-data="{ messagesMenuOpen: false }">
+<div
+    @class([
+        'space-y-5 lg:space-y-6',
+        'flex min-h-full flex-col' => $wedding && $messages->isEmpty(),
+    ])
+    x-data="{ messagesMenuOpen: false }"
+>
     <div class="hidden items-center justify-between gap-3 lg:flex">
         <h2 class="text-xl font-semibold">{{ __('dashboard.messages_title') }}</h2>
         @if ($wedding)
@@ -72,9 +78,13 @@
             <p class="text-sm text-muted-foreground">{{ __('dashboard.no_wedding') }}</p>
         </x-dashboard.card>
     @elseif ($messages->isEmpty())
-        <x-dashboard.card>
-            <p class="text-sm text-muted-foreground">{{ __('dashboard.empty') }}</p>
-        </x-dashboard.card>
+        <div class="flex flex-1 flex-col items-center justify-center px-6 py-12 text-center min-h-[calc(100dvh-5rem-env(safe-area-inset-bottom,0px))] lg:min-h-[calc(100dvh-9rem)]">
+            <span class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-muted">
+                <x-dashboard.icon name="message" class="h-7 w-7 text-muted-foreground" />
+            </span>
+            <p class="text-lg font-semibold">{{ __('app.guest_messages_empty_heading') }}</p>
+            <p class="mt-2 max-w-sm text-sm text-muted-foreground">{{ __('app.guest_messages_empty_desc') }}</p>
+        </div>
     @else
         {{-- Mobile grouped list --}}
         <x-dashboard.list-group class="lg:hidden">
