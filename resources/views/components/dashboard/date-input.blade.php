@@ -8,12 +8,15 @@
     $type = in_array($type, ['date', 'datetime-local', 'time'], true) ? $type : 'date';
     $icon = $type === 'time' ? 'clock' : 'calendar';
     $isLanding = $variant === 'landing';
+    $wrapperClasses = $isLanding
+        ? 'dashboard-date-field relative w-full min-w-0 max-w-full'
+        : 'dashboard-date-field relative h-10 w-full min-w-0 max-w-full overflow-hidden rounded-md border border-border bg-background';
     $inputClasses = $isLanding
-        ? 'landing-input landing-date-input dashboard-date-input w-full min-w-0 max-w-full pr-10'
-        : 'dashboard-date-input block h-10 w-full min-w-0 max-w-full rounded-md border border-border bg-background px-3 pr-10 text-sm disabled:opacity-60';
+        ? 'dashboard-date-input landing-date-input w-full min-w-0 max-w-full'
+        : 'dashboard-date-input block h-full w-full min-w-0 max-w-full border-0 bg-transparent px-3 pr-10 text-sm disabled:opacity-60';
 @endphp
 
-<div class="dashboard-date-field relative w-full min-w-0 max-w-full" data-variant="{{ $variant }}">
+<div class="{{ $wrapperClasses }}" data-variant="{{ $variant }}">
     <input
         type="{{ $type }}"
         @disabled($disabled)

@@ -1,5 +1,5 @@
 @php
-    $controlClass = 'block w-full rounded-md border border-border bg-background px-3 py-2 text-sm disabled:opacity-60';
+    $controlClass = 'block w-full min-w-0 max-w-full rounded-md border border-border bg-background px-3 py-2 text-sm disabled:opacity-60';
 @endphp
 
 <div class="space-y-6">
@@ -36,22 +36,22 @@
             <x-dashboard.card>
                 <h3 class="mb-4 font-medium">{{ __('app.section_couple') }}</h3>
                 <div class="grid gap-4 sm:grid-cols-2">
-                    <div>
+                    <div class="min-w-0">
                         <label class="mb-1 block text-sm font-medium">{{ __('app.groom_name') }}</label>
                         <input type="text" wire:model="groom_name" class="{{ $controlClass }} h-10" @disabled($locked)>
                         @error('groom_name') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
                     </div>
-                    <div>
+                    <div class="min-w-0">
                         <label class="mb-1 block text-sm font-medium">{{ __('app.bride_name') }}</label>
                         <input type="text" wire:model="bride_name" class="{{ $controlClass }} h-10" @disabled($locked)>
                         @error('bride_name') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
                     </div>
-                    <div class="sm:col-span-2 min-w-0">
+                    <div class="min-w-0 sm:col-span-2">
                         <label class="mb-1 block text-sm font-medium">{{ __('app.wedding_datetime') }}</label>
                         <x-dashboard.date-input type="datetime-local" wire:model="wedding_date" min="{{ now()->format('Y-m-d\TH:i') }}" :disabled="$locked" />
                         @error('wedding_date') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
                     </div>
-                    <div class="sm:col-span-2">
+                    <div class="min-w-0 sm:col-span-2">
                         <label class="mb-1 block text-sm font-medium">{{ __('app.invitation_link') }}</label>
                         <input type="text" value="{{ $wedding->public_url }}" readonly class="{{ $controlClass }} h-10 opacity-80">
                     </div>
@@ -72,7 +72,7 @@
                         />
                         @error('template') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
                     </div>
-                    <div>
+                    <div class="min-w-0">
                         <label class="mb-1 block text-sm font-medium">{{ __('app.theme') }}</label>
                         <select wire:model="theme" class="{{ $controlClass }} h-10" @disabled($locked)>
                             @foreach ($themes as $themeOption)
@@ -81,7 +81,7 @@
                         </select>
                         @error('theme') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
                     </div>
-                    <div>
+                    <div class="min-w-0">
                         <label class="mb-1 block text-sm font-medium">{{ __('app.reveal_animation') }}</label>
                         <select wire:model="reveal_animation" class="{{ $controlClass }} h-10" @disabled($locked)>
                             <option value="">{{ __('app.reveal_none') }}</option>
@@ -131,7 +131,7 @@
                         <x-dashboard.date-input type="date" wire:model="rsvp_deadline" :disabled="$locked" />
                         @error('rsvp_deadline') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
                     </div>
-                    <div>
+                    <div class="min-w-0">
                         <label class="mb-1 block text-sm font-medium">{{ __('app.invitation_locale') }}</label>
                         <select wire:model="invitation_locale" class="{{ $controlClass }} h-10" @disabled($locked)>
                             @foreach ($locales as $value => $label)
