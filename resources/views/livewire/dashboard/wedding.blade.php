@@ -46,9 +46,9 @@
                         <input type="text" wire:model="bride_name" class="{{ $controlClass }} h-10" @disabled($locked)>
                         @error('bride_name') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
                     </div>
-                    <div class="sm:col-span-2">
+                    <div class="sm:col-span-2 min-w-0">
                         <label class="mb-1 block text-sm font-medium">{{ __('app.wedding_datetime') }}</label>
-                        <input type="datetime-local" wire:model="wedding_date" min="{{ now()->format('Y-m-d\TH:i') }}" class="{{ $controlClass }} h-10" @disabled($locked)>
+                        <x-dashboard.date-input type="datetime-local" wire:model="wedding_date" min="{{ now()->format('Y-m-d\TH:i') }}" :disabled="$locked" />
                         @error('wedding_date') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
                     </div>
                     <div class="sm:col-span-2">
@@ -126,9 +126,9 @@
             <x-dashboard.card>
                 <h3 class="mb-4 font-medium">{{ __('app.section_rsvp') }}</h3>
                 <div class="grid gap-4 sm:grid-cols-2">
-                    <div>
+                    <div class="min-w-0">
                         <label class="mb-1 block text-sm font-medium">{{ __('app.rsvp_deadline') }}</label>
-                        <input type="date" wire:model="rsvp_deadline" class="{{ $controlClass }} h-10" @disabled($locked)>
+                        <x-dashboard.date-input type="date" wire:model="rsvp_deadline" :disabled="$locked" />
                         @error('rsvp_deadline') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
                     </div>
                     <div>

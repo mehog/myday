@@ -34,7 +34,7 @@
 
             <div>
                 <label class="mb-1 block text-sm font-medium">{{ __('dashboard.pushes_scheduled') }}</label>
-                <input type="datetime-local" wire:model="scheduled_at" class="{{ $controlClass }} h-10">
+                <x-dashboard.date-input type="datetime-local" wire:model="scheduled_at" />
                 <p class="mt-1 text-xs text-muted-foreground">{{ __('app.push_notifications_field_scheduled_at_helper') }}</p>
                 @error('scheduled_at') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
             </div>

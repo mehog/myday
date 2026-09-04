@@ -529,3 +529,43 @@
         bottom: 1rem !important;
     }
 }
+
+/* Native date/time inputs: contain Safari intrinsic min-width + calendar affordance */
+.dashboard-date-field {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.dashboard-date-input {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.dashboard-date-input::-webkit-datetime-edit {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.dashboard-date-input::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.dashboard-date-field__icon {
+    color: var(--muted-foreground);
+}
+
+.dashboard-date-field[data-variant='landing'] .dashboard-date-field__icon {
+    color: #5c5246;
+}
