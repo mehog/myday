@@ -157,4 +157,75 @@ document.addEventListener('alpine:init', () => {
             this.velocity = 0;
         },
     }));
+
+    Alpine.data('guestContactPicker', (config = {}) => ({
+        error: '',
+        unsupportedMsg: config.unsupportedMsg || '',
+        failedMsg: config.failedMsg || '',
+
+        supportsContacts() {
+            return typeof navigator !== 'undefined'
+                && 'contacts' in navigator
+                && 'ContactsManager' in window
+                && window.isSecureContext;
+        },
+
+        firstNonEmpty(arr) {
+            if (! Array.isArray(arr)) {
+                return null;
+            }
+
+            const value = arr.find((entry) => typeof entry === 'string' && entry.trim());
+
+            return value ? value.trim() : null;
+        },
+
+        async pickFromContacts() {
+            this.error = '';
+
+            if (! this.supportsContacts()) {
+                this.error = this.unsupportedMsg;
+
+                return;
+            }
+
+            try {
+                const available = await navigator.contacts.getProperties();
+                const wanted = ['name', 'email', 'tel'].filter((prop) => available.includes(prop));
+
+                if (wanted.length === 0) {
+                    this.error = this.failedMsg;
+
+                    return;
+                }
+
+                const contacts = await navigator.contacts.select(wanted, { multiple: false });
+
+                if (! contacts?.length) {
+                    return;
+                }
+
+                const contact = contacts[0];
+                const name = this.firstNonEmpty(contact.name);
+                const email = this.firstNonEmpty(contact.email);
+                const phone = this.firstNonEmpty(contact.tel);
+
+                if (name) {
+                    await this.$wire.set('name', name);
+                }
+                if (email) {
+                    await this.$wire.set('email', email);
+                }
+                if (phone) {
+                    await this.$wire.set('phone', phone);
+                }
+            } catch (error) {
+                if (error?.name === 'AbortError') {
+                    return;
+                }
+
+                this.error = this.failedMsg;
+            }
+        },
+    }));
 });

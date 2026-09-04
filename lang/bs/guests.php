@@ -3,8 +3,11 @@
 return [
     'title' => 'Gosti',
     'field_name' => 'Ime',
-    'field_email' => 'Email',
-    'field_phone' => 'Telefon',
+    'field_email' => 'Email (opciono)',
+    'field_phone' => 'Telefon (opciono)',
+    'from_contacts' => 'Uvezi iz kontakata',
+    'from_contacts_unsupported' => 'Uvođenje iz kontakata nije dostupno u ovom pregledniku. Unesite gosta ručno ispod.',
+    'from_contacts_failed' => 'Nije moguće otvoriti kontakte. Unesite gosta ručno.',
     'field_invitation_locale' => 'Jezik pozivnice',
     'field_invitation_locale_helper' => 'Nadjačajte podrazumijevani jezik vjenčanja za link pozivnice ovog gosta.',
     'field_invitation_locale_default' => 'Koristi jezik vjenčanja',

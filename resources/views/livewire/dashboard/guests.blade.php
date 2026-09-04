@@ -440,23 +440,45 @@
 
     {{-- Create / Edit --}}
     <x-dashboard.modal :show="$modal === 'form'" :title="$activeGuestId ? __('dashboard.edit') : __('dashboard.guests_add')" max-width="max-w-xl">
-        <form wire:submit="saveGuest" class="space-y-4">
+        <form
+            wire:submit="saveGuest"
+            class="space-y-4"
+            x-data="guestContactPicker({
+                unsupportedMsg: @js(__('guests.from_contacts_unsupported')),
+                failedMsg: @js(__('guests.from_contacts_failed')),
+            })"
+        >
+            @if (! $activeGuestId)
+                <div class="space-y-2">
+                    <div class="flex justify-end">
+                        <x-dashboard.button type="button" variant="secondary" x-on:click="pickFromContacts()">
+                            <x-dashboard.icon name="user" class="h-4 w-4" />
+                            {{ __('guests.from_contacts') }}
+                        </x-dashboard.button>
+                    </div>
+                    <div
+                        x-show="error"
+                        x-cloak
+                        class="rounded-lg border border-red-300/50 bg-red-50 px-4 py-3 text-sm text-red-900 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-100"
+                        x-text="error"
+                    ></div>
+                </div>
+            @endif
             <div>
                 <label class="mb-1 block text-sm font-medium">{{ __('guests.field_name') }}</label>
                 <input type="text" wire:model="name" class="{{ $controlClass }}">
                 @error('name') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
             </div>
-            {{-- Email/phone kept in Livewire state for existing data; hidden until we drop them fully. --}}
-            <div class="hidden" aria-hidden="true">
-                <div class="grid gap-4 sm:grid-cols-2">
-                    <div>
-                        <label class="mb-1 block text-sm font-medium">{{ __('guests.field_email') }}</label>
-                        <input type="email" wire:model="email" class="{{ $controlClass }}" tabindex="-1">
-                    </div>
-                    <div>
-                        <label class="mb-1 block text-sm font-medium">{{ __('guests.field_phone') }}</label>
-                        <input type="text" wire:model="phone" class="{{ $controlClass }}" tabindex="-1">
-                    </div>
+            <div class="grid gap-4 sm:grid-cols-2">
+                <div>
+                    <label class="mb-1 block text-sm font-medium">{{ __('guests.field_email') }}</label>
+                    <input type="email" wire:model="email" class="{{ $controlClass }}">
+                    @error('email') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="mb-1 block text-sm font-medium">{{ __('guests.field_phone') }}</label>
+                    <input type="text" wire:model="phone" class="{{ $controlClass }}">
+                    @error('phone') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
                 </div>
             </div>
             <div>

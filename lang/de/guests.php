@@ -3,8 +3,11 @@
 return [
     'title' => 'Gäste',
     'field_name' => 'Name',
-    'field_email' => 'E-Mail',
-    'field_phone' => 'Telefon',
+    'field_email' => 'E-Mail (optional)',
+    'field_phone' => 'Telefon (optional)',
+    'from_contacts' => 'Aus Kontakten importieren',
+    'from_contacts_unsupported' => 'Kontaktimport ist in diesem Browser nicht verfügbar. Geben Sie den Gast manuell ein.',
+    'from_contacts_failed' => 'Kontakte konnten nicht geöffnet werden. Bitte geben Sie den Gast manuell ein.',
     'field_invitation_locale' => 'Einladungssprache',
     'field_invitation_locale_helper' => 'Überschreiben Sie die Standard-Einladungssprache der Hochzeit für den Link dieses Gastes.',
     'field_invitation_locale_default' => 'Hochzeitssprache verwenden',

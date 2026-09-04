@@ -3,8 +3,11 @@
 return [
     'title' => 'Guests',
     'field_name' => 'Name',
-    'field_email' => 'Email',
-    'field_phone' => 'Phone',
+    'field_email' => 'Email (optional)',
+    'field_phone' => 'Phone (optional)',
+    'from_contacts' => 'Import from contacts',
+    'from_contacts_unsupported' => 'Contact import isn\'t available in this browser. Enter the guest manually below.',
+    'from_contacts_failed' => 'Couldn\'t open contacts. Please enter the guest manually.',
     'field_invitation_locale' => 'Invitation language',
     'field_invitation_locale_helper' => 'Override the wedding default language for this guest\'s invite link.',
     'field_invitation_locale_default' => 'Use wedding default',
