@@ -809,7 +809,7 @@ input.landing-input[type="datetime-local"]::-webkit-datetime-edit {
     position: relative;
     border: 0;
     background: transparent;
-    line-height: normal;
+    line-height: 2.5rem;
     padding-top: 0;
     padding-bottom: 0;
 }
@@ -840,6 +840,17 @@ input.landing-input[type="datetime-local"]::-webkit-datetime-edit {
     line-height: normal;
 }
 
+/* iOS Safari renders the formatted value in this pseudo-element (top-aligned by default) */
+.dashboard-date-input::-webkit-date-and-time-value {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    line-height: normal;
+    text-align: left;
+}
+
 .dashboard-date-input::-webkit-calendar-picker-indicator {
     opacity: 0;
     position: absolute;
@@ -862,6 +873,8 @@ input.landing-input[type="datetime-local"]::-webkit-datetime-edit {
     color: var(--landing-text);
     font-size: 1.125rem;
     font-weight: 500;
+    line-height: normal;
+    height: auto;
 }
 
 .dashboard-date-field__icon {
