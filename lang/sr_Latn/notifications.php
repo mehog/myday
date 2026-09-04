@@ -40,8 +40,8 @@ return [
     'admin_new_signup_action' => 'Pregled u adminu',
 
     'admin_inactive_wedding_greeting' => 'Upozorenje o neplaćenom planu',
-    'admin_inactive_wedding_subject' => 'Venčanje :couple za :days dana — još na Free planu',
-    'admin_inactive_wedding_body' => 'Venčanje :couple je :date (za :days dana), ali su još na Free planu. Kontakt: :email.',
+    'admin_inactive_wedding_subject' => 'Venčanje :couple za :days dana — još na besplatnom paketu',
+    'admin_inactive_wedding_body' => 'Venčanje :couple je :date (za :days dana), ali su još na besplatnom paketu. Kontakt: :email.',
     'admin_inactive_wedding_action' => 'Otvori venčanje u adminu',
 
     'discount_email_greeting' => 'Zdravo :name,',

@@ -55,7 +55,7 @@ return [
     'checkout_policies_prefix' => 'Nastavkom na checkout prihvatate naše',
     'checkout_policies_and' => 'i',
     'checkout_faq_prefix' => 'Pogledajte i',
-    'referral_discount_applied' => 'Referral popust: :percent% primenjen na naplati.',
+    'referral_discount_applied' => 'Popust od preporuke: :percent% primenjen na naplati.',
     'upgrade_modal_title' => 'Otključajte ovo plaćenim paketom',
     'upgrade_modal_body' => 'Basic, Plus i Premium uključuju sve premium alate. Jednokratna uplata — bez pretplate.',
     'upgrade_modal_cta' => 'Pogledaj pakete',

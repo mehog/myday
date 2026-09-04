@@ -23,7 +23,7 @@ return [
     'photo_reminder_push_body_day25' => 'Das Fotoalbum schließt in wenigen Tagen — jetzt Fotos hochladen.',
 
     'couple_onboarding_greeting' => 'Hallo :name,',
-    'couple_onboarding_action' => 'Dashboard öffnen',
+    'couple_onboarding_action' => 'Übersicht öffnen',
     'couple_onboarding_subject_day1' => 'Willkommen bei :brand — erste Gäste hinzufügen',
     'couple_onboarding_body_day1' => 'Ihre Einladung für :couple ist bereit. Beginnen Sie mit Gästen und persönlichen RSVP-Links.',
     'couple_onboarding_subject_day3' => 'Tipp: Push-Benachrichtigungen für Gäste',
@@ -39,9 +39,9 @@ return [
     'admin_new_signup_body' => ':couple hat sich registriert (:name, :email). Hochzeit: :date.',
     'admin_new_signup_action' => 'Im Admin prüfen',
 
-    'admin_inactive_wedding_greeting' => 'Hinweis: unbezahlt / Free-Plan',
-    'admin_inactive_wedding_subject' => ':couple Hochzeit in :days Tagen — noch Free',
-    'admin_inactive_wedding_body' => 'Die Hochzeit von :couple ist am :date (in :days Tagen), sie sind noch auf dem Free-Plan. Kontakt: :email.',
+    'admin_inactive_wedding_greeting' => 'Hinweis: unbezahlt / kostenloser Plan',
+    'admin_inactive_wedding_subject' => ':couple Hochzeit in :days Tagen — noch kostenlos',
+    'admin_inactive_wedding_body' => 'Die Hochzeit von :couple ist am :date (in :days Tagen), sie sind noch auf dem kostenlosen Plan. Kontakt: :email.',
     'admin_inactive_wedding_action' => 'Hochzeit im Admin öffnen',
 
     'discount_email_greeting' => 'Hallo :name,',

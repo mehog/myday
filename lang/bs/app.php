@@ -182,7 +182,7 @@ return [
     'push_notifications_rsvp_pending' => 'Čeka potvrdu',
 
     'push_install_title' => 'Omogućite na iPhoneu',
-    'push_install_step1' => '1. Dodirnite Share dugme na dnu Safarija.',
+    'push_install_step1' => '1. Dodirnite dugme Podijeli na dnu Safarija.',
     'push_install_step2' => '2. Odaberite "Dodaj na početni ekran".',
     'push_install_step3' => '3. Otvorite aplikaciju s početnog ekrana i uključite obavijesti.',
     'push_ios_update' => 'Ažurirajte iOS na verziju 16.4 ili noviju da biste primali obavijesti.',

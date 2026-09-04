@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'title' => 'Locations',
+    'title' => 'Orte',
     'field_label' => 'Bezeichnung',
     'field_label_helper' => 'Optionale kurze Bezeichnung, z. B. Standesamt oder Moschee.',
     'field_name' => 'Name der Location',

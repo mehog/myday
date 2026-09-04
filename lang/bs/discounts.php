@@ -78,7 +78,7 @@ return [
     'expires_never' => 'Bez isteka',
     'expires_clause' => ' do :date',
 
-    'helper_placeholders' => 'Placeholders: {{code}}, {{discount_label}}, {{expires}}, {{expires_clause}}, {{name}}. {{expires_clause}} je prazan kad kod nema datum isteka.',
+    'helper_placeholders' => 'Rezervisana mjesta: {{code}}, {{discount_label}}, {{expires}}, {{expires_clause}}, {{name}}. {{expires_clause}} je prazan kad kod nema datum isteka.',
     'helper_amount_percentage' => 'Postotak popusta, npr. 15 za 15%',
     'helper_amount_flat' => 'Fiksni iznos, npr. 20',
     'helper_manual_users' => 'Pretraži i odaberi parove koji treba da prime email.',

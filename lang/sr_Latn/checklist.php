@@ -4,7 +4,7 @@ return [
     'title' => 'Lista obaveza',
     'add' => 'Dodaj obavezu',
     'empty_heading' => 'Još nema obaveza',
-    'empty_description' => 'Ovde će biti vaša wedding checklista. Dodajte sopstvene obaveze ili pratite predložene.',
+    'empty_description' => 'Ovde će biti vaša lista zadataka za venčanje. Dodajte sopstvene obaveze ili pratite predložene.',
     'empty_filtered' => 'Ništa u ovom prikazu.',
     'tabs' => [
         'all' => 'Sve obaveze',

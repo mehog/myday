@@ -5,7 +5,7 @@ return [
     'meta_description' => 'Sie sind eingeladen, die Hochzeit von :couple zu feiern.',
     'meta_og_description' => 'Feiern Sie mit uns am :date unseren besonderen Tag.',
 
-    'save_the_date' => 'Save the date',
+    'save_the_date' => 'Datum vormerken',
     'today_is_the_day_eyebrow' => 'Heute ist der Tag',
     'today_is_the_day_title' => 'Heute heiraten wir!',
     'today_is_the_day_subtitle' => 'Willkommen und danke, dass ihr dabei seid.',

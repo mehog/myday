@@ -23,7 +23,7 @@ return [
     'qr_pdf_heading' => 'Planen Sie Ihre Hochzeit mit :brand',
     'qr_pdf_instructions' => 'Scannen Sie diesen Code, um :brand zu entdecken und sich über unser Empfehlungsprogramm anzumelden — Paare erhalten :percent% Rabatt auf jedes Paket.',
     'qr_pdf_link_label' => 'Oder besuchen Sie diesen Link',
-    'qr_pdf_footer' => 'Powered by :brand',
+    'qr_pdf_footer' => 'Bereitgestellt von :brand',
 
     'how_it_works_heading' => 'So funktioniert es',
     'step_1_title' => 'Link teilen',

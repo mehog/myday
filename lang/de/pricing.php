@@ -10,7 +10,7 @@ return [
     'guests_unlimited' => 'Unbegrenzte Gäste',
     'guests_up_to' => 'Bis zu :count Gäste',
     'cta_buy' => 'Jetzt bezahlen',
-    'cta_upgrade' => 'Upgrade',
+    'cta_upgrade' => 'Upgraden',
     'cta_current' => 'Aktueller Plan',
     'cta_too_small' => 'Zu klein für Ihre Gästeliste',
     'cta_lower' => 'Niedriger als aktueller Plan',
