@@ -1,5 +1,5 @@
 @php
-    $controlClass = 'block w-full rounded-md border border-border bg-background px-3 py-2 text-sm disabled:opacity-60';
+    $controlClass = 'block w-full min-w-0 max-w-full rounded-md border border-border bg-background px-3 py-2 text-sm disabled:opacity-60';
 @endphp
 
 <div class="space-y-6">
@@ -33,7 +33,7 @@
                         />
                         @error('template') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
                     </div>
-                    <div>
+                    <div class="min-w-0">
                         <label class="mb-1 block text-sm font-medium">{{ __('app.theme') }}</label>
                         <select wire:model="theme" class="{{ $controlClass }} h-10" @disabled($locked)>
                             @foreach ($themes as $themeOption)
@@ -42,7 +42,7 @@
                         </select>
                         @error('theme') <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
                     </div>
-                    <div>
+                    <div class="min-w-0">
                         <label class="mb-1 block text-sm font-medium">{{ __('app.reveal_animation') }}</label>
                         <select wire:model="reveal_animation" class="{{ $controlClass }} h-10" @disabled($locked)>
                             <option value="">{{ __('app.reveal_none') }}</option>
