@@ -13,7 +13,7 @@
         : 'dashboard-date-field relative h-10 w-full min-w-0 max-w-full overflow-hidden rounded-md border border-border bg-background';
     $inputClasses = $isLanding
         ? 'dashboard-date-input landing-date-input w-full min-w-0 max-w-full'
-        : 'dashboard-date-input block h-full w-full min-w-0 max-w-full border-0 bg-transparent px-3 pr-10 text-sm disabled:opacity-60';
+        : 'dashboard-date-input flex h-full w-full min-w-0 max-w-full items-center border-0 bg-transparent px-3 pr-10 text-sm leading-10 disabled:opacity-60';
 @endphp
 
 <div class="{{ $wrapperClasses }}" data-variant="{{ $variant }}">

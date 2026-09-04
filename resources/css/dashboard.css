@@ -554,18 +554,34 @@
 }
 
 .dashboard-date-input {
-    display: block;
+    display: flex;
+    align-items: center;
     width: 100%;
+    height: 100%;
     min-width: 0;
     max-width: 100%;
     box-sizing: border-box;
     position: relative;
     border: 0;
     background: transparent;
+    line-height: 2.5rem;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .dashboard-date-input::-webkit-datetime-edit,
-.dashboard-date-input::-webkit-datetime-edit-fields-wrapper,
+.dashboard-date-input::-webkit-datetime-edit-fields-wrapper {
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+    min-height: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    padding: 0;
+    line-height: 2.5rem;
+}
+
 .dashboard-date-input::-webkit-datetime-edit-text,
 .dashboard-date-input::-webkit-datetime-edit-month-field,
 .dashboard-date-input::-webkit-datetime-edit-day-field,
@@ -576,6 +592,20 @@
     min-width: 0;
     max-width: 100%;
     overflow: hidden;
+    padding: 0;
+    line-height: 2.5rem;
+}
+
+/* iOS Safari renders the formatted value in this pseudo-element (top-aligned by default) */
+.dashboard-date-input::-webkit-date-and-time-value {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    line-height: 2.5rem;
+    text-align: left;
+    vertical-align: middle;
 }
 
 .dashboard-date-input::-webkit-calendar-picker-indicator {
@@ -604,6 +634,8 @@
     color: var(--landing-text);
     font-size: 1.125rem;
     font-weight: 500;
+    line-height: normal;
+    height: auto;
 }
 
 .dashboard-date-field[data-variant='landing'] .dashboard-date-field__icon {
