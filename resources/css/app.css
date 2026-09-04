@@ -819,11 +819,12 @@ input.landing-input[type="datetime-local"]::-webkit-datetime-edit {
     display: inline-flex;
     align-items: center;
     height: 100%;
+    min-height: 100%;
     min-width: 0;
     max-width: 100%;
     overflow: hidden;
     padding: 0;
-    line-height: normal;
+    line-height: 2.5rem;
 }
 
 .dashboard-date-input::-webkit-datetime-edit-text,
@@ -837,7 +838,7 @@ input.landing-input[type="datetime-local"]::-webkit-datetime-edit {
     max-width: 100%;
     overflow: hidden;
     padding: 0;
-    line-height: normal;
+    line-height: 2.5rem;
 }
 
 /* iOS Safari renders the formatted value in this pseudo-element (top-aligned by default) */
@@ -847,8 +848,9 @@ input.landing-input[type="datetime-local"]::-webkit-datetime-edit {
     height: 100%;
     margin: 0;
     padding: 0;
-    line-height: normal;
+    line-height: 2.5rem;
     text-align: left;
+    vertical-align: middle;
 }
 
 .dashboard-date-input::-webkit-calendar-picker-indicator {
