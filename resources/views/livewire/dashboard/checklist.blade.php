@@ -200,7 +200,7 @@
             </div>
             <div>
                 <label class="mb-1 block text-sm font-medium">{{ __('checklist.field_due_date') }}</label>
-                <input type="date" wire:model="due_date" class="{{ $controlClass }}">
+                <x-dashboard.date-input type="date" wire:model="due_date" />
                 @error('due_date') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>

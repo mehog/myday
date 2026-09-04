@@ -58,7 +58,7 @@
         <form wire:submit="save" class="space-y-4">
             <div>
                 <label class="mb-1 block text-sm font-medium">{{ __('schedule.field_time') }}</label>
-                <input type="time" wire:model="time" class="{{ $controlClass }}">
+                <x-dashboard.date-input type="time" wire:model="time" />
                 @error('time') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>

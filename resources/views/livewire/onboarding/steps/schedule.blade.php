@@ -32,7 +32,7 @@
                 <div class="grid grid-cols-2 gap-3 min-w-0">
                     <div class="min-w-0">
                         <label class="block text-sm text-[#5c5246] mb-1">{{ __('onboarding.schedule_time') }} *</label>
-                        <input type="time" wire:model="scheduleItems.{{ $index }}.time" class="landing-input w-full min-w-0 max-w-full">
+                        <x-dashboard.date-input type="time" variant="landing" wire:model="scheduleItems.{{ $index }}.time" />
                     </div>
                     <div class="min-w-0">
                         <label class="block text-sm text-[#5c5246] mb-1">{{ __('onboarding.schedule_item_title') }} *</label>
