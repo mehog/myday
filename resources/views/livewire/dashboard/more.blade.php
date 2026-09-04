@@ -4,29 +4,31 @@
         <p class="mt-1 text-sm text-muted-foreground">{{ __('dashboard.more_subtitle') }}</p>
     </div>
 
-    <x-dashboard.list-group>
-        @foreach ($items as $item)
-            <a
-                href="{{ route($item['route']) }}"
-                @class([
-                    'flex items-center gap-3 px-4 py-3.5 transition-colors',
-                    'bg-accent/60' => \App\Support\DashboardNav::isActive($item),
-                    'hover:bg-muted/60' => ! \App\Support\DashboardNav::isActive($item),
-                ])
-            >
-                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted text-foreground">
-                    <x-dashboard.icon :name="$item['icon']" class="h-5 w-5" />
-                </span>
-                <span class="min-w-0 flex-1">
-                    <span class="block text-sm font-medium">{{ $item['label'] }}</span>
-                    @if (! empty($item['description']))
-                        <span class="mt-0.5 block text-xs text-muted-foreground">{{ $item['description'] }}</span>
-                    @endif
-                </span>
-                <x-dashboard.icon name="chevron-right" class="h-4 w-4 shrink-0 text-muted-foreground" />
-            </a>
-        @endforeach
-    </x-dashboard.list-group>
+    @foreach ($groups as $group)
+        <x-dashboard.list-group :title="$group['title']">
+            @foreach ($group['items'] as $item)
+                <a
+                    href="{{ route($item['route']) }}"
+                    @class([
+                        'flex items-center gap-3 px-4 py-3.5 transition-colors',
+                        'bg-accent/60' => \App\Support\DashboardNav::isActive($item),
+                        'hover:bg-muted/60' => ! \App\Support\DashboardNav::isActive($item),
+                    ])
+                >
+                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted text-foreground">
+                        <x-dashboard.icon :name="$item['icon']" class="h-5 w-5" />
+                    </span>
+                    <span class="min-w-0 flex-1">
+                        <span class="block text-sm font-medium">{{ $item['label'] }}</span>
+                        @if (! empty($item['description']))
+                            <span class="mt-0.5 block text-xs text-muted-foreground">{{ $item['description'] }}</span>
+                        @endif
+                    </span>
+                    <x-dashboard.icon name="chevron-right" class="h-4 w-4 shrink-0 text-muted-foreground" />
+                </a>
+            @endforeach
+        </x-dashboard.list-group>
+    @endforeach
 
     <x-dashboard.list-group>
         <div class="flex items-center justify-between gap-3 px-4 py-3.5">

@@ -24,7 +24,7 @@ class SeedPartnerDemoWedding
 
     public function handle(User $user): ?WeddingEvent
     {
-        if ($user->weddingEvent !== null) {
+        if ($user->ownedWeddingEvent !== null) {
             return null;
         }
 

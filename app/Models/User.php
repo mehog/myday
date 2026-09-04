@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -56,9 +57,79 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLocale
         ];
     }
 
-    public function weddingEvent(): HasOne
+    public function ownedWeddingEvent(): HasOne
     {
         return $this->hasOne(WeddingEvent::class);
+    }
+
+    /** @deprecated Use ownedWeddingEvent() for ownership queries; property access resolves accessible wedding. */
+    public function weddingEvent(): HasOne
+    {
+        return $this->ownedWeddingEvent();
+    }
+
+    public function weddingMembership(): HasOne
+    {
+        return $this->hasOne(WeddingMember::class);
+    }
+
+    public function memberWeddingEvent(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            WeddingEvent::class,
+            WeddingMember::class,
+            'user_id',
+            'id',
+            'id',
+            'wedding_event_id',
+        );
+    }
+
+    public function accessibleWedding(): ?WeddingEvent
+    {
+        $owned = $this->relationLoaded('ownedWeddingEvent')
+            ? $this->ownedWeddingEvent
+            : $this->ownedWeddingEvent()->first();
+
+        if ($owned instanceof WeddingEvent) {
+            return $owned;
+        }
+
+        if ($this->relationLoaded('memberWeddingEvent')) {
+            return $this->memberWeddingEvent;
+        }
+
+        if ($this->relationLoaded('weddingMembership')) {
+            return $this->weddingMembership?->weddingEvent;
+        }
+
+        return $this->memberWeddingEvent()->first();
+    }
+
+    public function getWeddingEventAttribute(): ?WeddingEvent
+    {
+        return $this->accessibleWedding();
+    }
+
+    public function hasWeddingAccess(): bool
+    {
+        return $this->accessibleWedding() !== null;
+    }
+
+    public function canJoinWedding(): bool
+    {
+        return ! $this->hasWeddingAccess();
+    }
+
+    public function isPartnerOf(WeddingEvent $wedding): bool
+    {
+        if ($this->relationLoaded('weddingMembership')) {
+            return $this->weddingMembership?->wedding_event_id === $wedding->id;
+        }
+
+        return $this->weddingMembership()
+            ->where('wedding_event_id', $wedding->id)
+            ->exists();
     }
 
     public function dodoPayments(): HasMany
@@ -112,7 +183,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLocale
 
     public function hasPaidPlan(): bool
     {
-        return $this->weddingEvent?->hasPaidPlan() ?? false;
+        return $this->accessibleWedding()?->hasPaidPlan() ?? false;
     }
 
     public function canAccessPanel(Panel $panel): bool
@@ -172,7 +243,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLocale
 
     public function ownsDemoInvitation(): bool
     {
-        return $this->weddingEvent?->suppressesOutboundMail() === true;
+        return $this->accessibleWedding()?->suppressesOutboundMail() === true;
     }
 
     public function ownsPushSubscription(PushSubscription $subscription): bool

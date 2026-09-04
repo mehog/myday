@@ -86,7 +86,7 @@ class Wedding extends Component
 
     protected function wedding(): ?WeddingEvent
     {
-        return auth()->user()?->weddingEvent;
+        return auth()->user()?->accessibleWedding();
     }
 
     public function isLocked(): bool

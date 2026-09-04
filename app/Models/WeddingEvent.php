@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Support\Str;
 
 class WeddingEvent extends Model
@@ -110,6 +112,40 @@ class WeddingEvent extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function members(): HasMany
+    {
+        return $this->hasMany(WeddingMember::class);
+    }
+
+    public function partnerMember(): HasOne
+    {
+        return $this->hasOne(WeddingMember::class);
+    }
+
+    public function partnerInvites(): HasMany
+    {
+        return $this->hasMany(WeddingPartnerInvite::class);
+    }
+
+    public function pendingPartnerInvite(): HasOne
+    {
+        return $this->hasOne(WeddingPartnerInvite::class)
+            ->usable()
+            ->latestOfMany();
+    }
+
+    public function partner(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            User::class,
+            WeddingMember::class,
+            'wedding_event_id',
+            'id',
+            'id',
+            'user_id',
+        );
     }
 
     public function guests(): HasMany
@@ -533,13 +569,51 @@ class WeddingEvent extends Model
             && $this->user_id === $user->id;
     }
 
+    public function isAccessibleBy(?User $user): bool
+    {
+        if ($user === null) {
+            return false;
+        }
+
+        if ($this->isOwnedBy($user)) {
+            return true;
+        }
+
+        if ($this->relationLoaded('members')) {
+            return $this->members->contains(fn (WeddingMember $member): bool => $member->user_id === $user->id);
+        }
+
+        return $this->members()->where('user_id', $user->id)->exists();
+    }
+
+    public function hasPartner(): bool
+    {
+        if ($this->relationLoaded('partnerMember')) {
+            return $this->partnerMember !== null;
+        }
+
+        return $this->partnerMember()->exists();
+    }
+
+    /**
+     * @param  Builder<static>  $query
+     * @return Builder<static>
+     */
+    public function scopeAccessibleBy(Builder $query, User $user): Builder
+    {
+        return $query->where(function (Builder $inner) use ($user): void {
+            $inner->where('user_id', $user->id)
+                ->orWhereHas('members', fn (Builder $members) => $members->where('user_id', $user->id));
+        });
+    }
+
     public function canPreviewPublicLink(?User $user): bool
     {
         if ($user === null) {
             return false;
         }
 
-        return $user->is_admin || $this->isOwnedBy($user);
+        return $user->is_admin || $this->isAccessibleBy($user);
     }
 
     public function canBeViewedBy(?User $user): bool

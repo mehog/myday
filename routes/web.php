@@ -29,6 +29,7 @@ use App\Livewire\Dashboard\Menus;
 use App\Livewire\Dashboard\Messages;
 use App\Livewire\Dashboard\More;
 use App\Livewire\Dashboard\Photos;
+use App\Livewire\Dashboard\PlanningPartner;
 use App\Livewire\Dashboard\Pricing;
 use App\Livewire\Dashboard\Profile;
 use App\Livewire\Dashboard\Pushes;
@@ -43,6 +44,7 @@ use App\Livewire\InvitationPage;
 use App\Livewire\LandingPage;
 use App\Livewire\Onboarding\OnboardingPreview;
 use App\Livewire\Onboarding\VerifyEmailNotice;
+use App\Livewire\PartnerInviteAccept;
 use App\Livewire\Onboarding\WeddingOnboarding;
 use App\Livewire\StartLandingPage;
 use App\Support\DashboardNav;
@@ -88,6 +90,8 @@ Route::get('/'.(config('referral.route_prefix') ?: 'ref').'/{code}', ReferralLin
 
 Route::get('/onboarding', WeddingOnboarding::class)->name('onboarding');
 Route::get('/onboarding/preview', OnboardingPreview::class)->name('onboarding.preview');
+
+Route::get('/partner-invite/{token}', PartnerInviteAccept::class)->name('partner-invite.show');
 
 Route::redirect('/login', '/app/login')->name('login');
 
@@ -193,6 +197,7 @@ Route::middleware(['auth', 'verified', EnsureCoupleUser::class])
         Route::get('/pushes/create', CreatePush::class)->name('dashboard.pushes.create');
         Route::get('/pricing', Pricing::class)->name('dashboard.pricing');
         Route::get('/referrals', Referrals::class)->name('dashboard.referrals');
+        Route::get('/partner', PlanningPartner::class)->name('dashboard.partner');
         Route::get('/profile', Profile::class)->name('dashboard.profile');
         Route::get('/more', More::class)->name('dashboard.more');
         Route::post('/logout', function (Request $request) {

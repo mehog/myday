@@ -113,7 +113,7 @@ class AdminCreatePartnerUserTest extends TestCase
     public function test_seed_partner_demo_wedding_is_noop_when_user_already_has_wedding(): void
     {
         $user = User::factory()->create();
-        $existing = $user->weddingEvent()->create([
+        $existing = $user->ownedWeddingEvent()->create([
             'slug' => 'existing-wedding',
             'bride_name' => 'Existing',
             'groom_name' => 'Couple',

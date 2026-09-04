@@ -13,7 +13,7 @@ class More extends Component
     public function render()
     {
         return $this->dashboardView('livewire.dashboard.more', [
-            'items' => DashboardNav::moreItems(),
+            'groups' => DashboardNav::moreItemGroups(),
         ], __('dashboard.more_title'), [
             ['label' => __('dashboard.more_title'), 'url' => null],
         ]);

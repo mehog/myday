@@ -124,6 +124,7 @@ return [
     'stat_responded_desc' => ':responded of :total guests',
     'stat_days_until' => 'Until the wedding',
     'stat_days_value' => ':days days',
+    'stat_days_left' => 'days left',
     'stat_days_passed' => 'Passed',
 
     // Visit stats widget

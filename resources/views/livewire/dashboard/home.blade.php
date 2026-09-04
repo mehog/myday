@@ -4,6 +4,24 @@
     $daysStat = collect($overviewStats ?? [])->first(
         fn (array $stat): bool => ($stat['label'] ?? null) === $daysUntilLabel
     );
+
+    $daysLeft = null;
+    $countdownProgress = 0;
+    $countdownCircumference = 2 * M_PI * 88;
+
+    if ($wedding && ! $wedding->isArchived() && $wedding->wedding_date) {
+        $daysLeft = max(
+            0,
+            (int) now()->startOfDay()->diffInDays($wedding->wedding_date->copy()->startOfDay(), false)
+        );
+        $totalDays = max(
+            1,
+            (int) $wedding->created_at->copy()->startOfDay()->diffInDays($wedding->wedding_date->copy()->startOfDay())
+        );
+        $countdownProgress = min(100, max(0, ($daysLeft / $totalDays) * 100));
+    }
+
+    $countdownDashoffset = $countdownCircumference * (1 - ($countdownProgress / 100));
 @endphp
 
 <div class="space-y-5 lg:space-y-6">
@@ -12,61 +30,45 @@
             <p class="text-sm text-muted-foreground">{{ __('dashboard.no_wedding') }}</p>
         </x-dashboard.card>
     @else
-        {{-- Mobile app hero --}}
-        <div class="dashboard-home-hero lg:hidden">
-            <div>
-                <p class="text-sm text-muted-foreground">
-                    @if ($wedding->isArchived())
-                        {{ __('app.wedding_archived_badge') }}
-                    @elseif (! $wedding->is_active)
-                        {{ __('app.invitation_inactive_suffix') }}
-                    @else
-                        {{ __('app.dashboard_title') }}
-                    @endif
-                </p>
-                <h2 class="mt-0.5 text-2xl font-semibold tracking-tight">{{ $wedding->couple_names }}</h2>
-                @if (! $wedding->isArchived() && $daysStat)
-                    <p class="mt-2 text-4xl font-semibold tabular-nums tracking-tight text-primary">{{ $daysStat['value'] }}</p>
-                    <p class="mt-0.5 text-xs font-medium uppercase tracking-wide text-muted-foreground">{{ $daysStat['label'] }}</p>
-                @endif
-            </div>
-            <div class="dashboard-home-actions">
-                <a href="{{ route('dashboard.wedding') }}">
-                    <x-dashboard.icon name="pencil" class="h-4 w-4" />
-                    {{ $wedding->isArchived() ? __('app.view_invitation') : __('app.edit_invitation') }}
-                </a>
-                <a href="{{ $wedding->public_url }}" target="_blank" rel="noopener">
-                    <x-dashboard.icon name="external" class="h-4 w-4" />
-                    {{ __('app.preview_invitation') }}
-                </a>
-            </div>
-        </div>
+        <div class="dashboard-home-hero">
+            @if ($daysLeft !== null)
+                <div class="dashboard-countdown" aria-label="{{ $daysLeft }} {{ __('app.stat_days_left') }}">
+                    <svg class="dashboard-countdown-ring" viewBox="0 0 200 200" aria-hidden="true">
+                        <circle class="dashboard-countdown-track-outer" cx="100" cy="100" r="96" />
+                        <circle class="dashboard-countdown-track" cx="100" cy="100" r="88" />
+                        <circle
+                            class="dashboard-countdown-progress"
+                            cx="100"
+                            cy="100"
+                            r="88"
+                            style="stroke-dasharray: {{ $countdownCircumference }}; stroke-dashoffset: {{ $countdownDashoffset }};"
+                        />
+                    </svg>
+                    <div class="dashboard-countdown-content">
+                        <p class="dashboard-countdown-value">{{ $daysLeft }}</p>
+                        <p class="dashboard-countdown-label">{{ __('app.stat_days_left') }}</p>
+                    </div>
+                </div>
+            @endif
 
-        {{-- Desktop header --}}
-        <div class="hidden items-start justify-between gap-3 lg:flex">
-            <div>
-                <h2 class="text-xl font-semibold tracking-tight">
-                    {{ $wedding->isArchived() ? __('app.memories_dashboard_title') : __('app.dashboard_title') }}
+            <div class="text-center">
+                <h2 class="dashboard-home-names">
+                    {{ $wedding->couple_names }}
                 </h2>
-                <p class="mt-1 text-sm text-muted-foreground">
-                    @if ($wedding->isArchived())
-                        {{ $wedding->couple_names }} — {{ __('app.wedding_archived_badge') }}
-                    @elseif (! $wedding->is_active)
-                        {{ $wedding->couple_names }} {{ __('app.invitation_inactive_suffix') }}
-                    @else
-                        {{ $wedding->couple_names }}
-                    @endif
-                </p>
-            </div>
-            <div class="flex flex-wrap gap-2">
-                <x-dashboard.button variant="secondary" :href="route('dashboard.wedding')">
-                    <x-dashboard.icon name="pencil" class="h-4 w-4" />
-                    {{ $wedding->isArchived() ? __('app.view_invitation') : __('app.edit_invitation') }}
-                </x-dashboard.button>
-                <x-dashboard.button variant="outline" :href="$wedding->public_url" target="_blank" rel="noopener">
-                    <x-dashboard.icon name="external" class="h-4 w-4" />
-                    {{ __('app.preview_invitation') }}
-                </x-dashboard.button>
+                @if ($wedding->wedding_date)
+                    <p class="mt-1 text-sm text-muted-foreground">
+                        {{ $wedding->wedding_date->translatedFormat('d F Y') }}
+                    </p>
+                @endif
+                @if ($wedding->isArchived())
+                    <p class="mt-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                        {{ __('app.wedding_archived_badge') }}
+                    </p>
+                @elseif (! $wedding->is_active)
+                    <p class="mt-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                        {{ __('app.invitation_inactive_suffix') }}
+                    </p>
+                @endif
             </div>
         </div>
 

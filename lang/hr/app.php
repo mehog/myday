@@ -124,6 +124,7 @@ return [
     'stat_responded_desc' => ':responded od :total gostiju',
     'stat_days_until' => 'Do vjenčanja',
     'stat_days_value' => ':days dana',
+    'stat_days_left' => 'dana preostalo',
     'stat_days_passed' => 'Prošlo',
 
     // Visit stats widget

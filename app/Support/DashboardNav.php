@@ -140,6 +140,7 @@ class DashboardNav
                     'dashboard.pushes.*',
                     'dashboard.pricing',
                     'dashboard.referrals',
+                    'dashboard.partner',
                     'dashboard.profile',
                 ],
             ],
@@ -190,11 +191,35 @@ class DashboardNav
     /**
      * Overflow destinations shown on the mobile More screen.
      *
-     * @return list<array{label: string, route: string, icon: string, match: list<string>, description?: string}>
+     * @return list<array{title: string, items: list<array{label: string, route: string, icon: string, match: list<string>, description?: string}>}>
      */
-    public static function moreItems(): array
+    public static function moreItemGroups(): array
     {
         return [
+            [
+                'title' => __('dashboard.more_group_wedding'),
+                'items' => self::moreWeddingItems(),
+            ],
+            [
+                'title' => __('dashboard.more_group_account'),
+                'items' => self::moreAccountItems(),
+            ],
+        ];
+    }
+
+    /**
+     * @return list<array{label: string, route: string, icon: string, match: list<string>, description?: string}>
+     */
+    public static function moreWeddingItems(): array
+    {
+        return [
+            [
+                'label' => __('dashboard.nav.partner'),
+                'route' => 'dashboard.partner',
+                'icon' => 'users',
+                'match' => ['dashboard.partner'],
+                'description' => __('dashboard.more_desc_partner'),
+            ],
             [
                 'label' => __('dashboard.nav.checklist'),
                 'route' => 'dashboard.checklist',
@@ -223,6 +248,15 @@ class DashboardNav
                 'match' => ['dashboard.pushes', 'dashboard.pushes.*'],
                 'description' => __('dashboard.more_desc_pushes'),
             ],
+        ];
+    }
+
+    /**
+     * @return list<array{label: string, route: string, icon: string, match: list<string>, description?: string}>
+     */
+    public static function moreAccountItems(): array
+    {
+        return [
             [
                 'label' => __('dashboard.nav.pricing'),
                 'route' => 'dashboard.pricing',
@@ -248,6 +282,14 @@ class DashboardNav
     }
 
     /**
+     * @return list<array{label: string, route: string, icon: string, match: list<string>, description?: string}>
+     */
+    public static function moreItems(): array
+    {
+        return array_merge(self::moreWeddingItems(), self::moreAccountItems());
+    }
+
+    /**
      * @return list<array{label: string, route: string, icon: string, match: list<string>}>
      */
     public static function footerItems(): array
@@ -264,6 +306,12 @@ class DashboardNav
                 'route' => 'dashboard.referrals',
                 'icon' => 'gift',
                 'match' => ['dashboard.referrals'],
+            ],
+            [
+                'label' => __('dashboard.nav.partner'),
+                'route' => 'dashboard.partner',
+                'icon' => 'users',
+                'match' => ['dashboard.partner'],
             ],
             [
                 'label' => __('dashboard.nav.profile'),

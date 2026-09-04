@@ -124,6 +124,7 @@ return [
     'stat_responded_desc' => ':responded von :total Gästen',
     'stat_days_until' => 'Bis zur Hochzeit',
     'stat_days_value' => ':days Tage',
+    'stat_days_left' => 'Tage übrig',
     'stat_days_passed' => 'Vorbei',
 
     // Visit stats widget
