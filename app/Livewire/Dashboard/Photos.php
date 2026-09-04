@@ -41,7 +41,7 @@ class Photos extends Component
         ], __('photos.title'), [
             ['label' => __('dashboard.nav.wedding'), 'url' => route('dashboard.wedding')],
             ['label' => __('photos.title'), 'url' => null],
-        ]);
+        ], backUrl: route('dashboard.wedding'));
     }
 
     protected function wedding(): ?WeddingEvent

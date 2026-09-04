@@ -155,8 +155,9 @@ class Seating extends Component
         abort_unless(auth()->user()?->weddingEvent, 404);
 
         return $this->dashboardView('livewire.dashboard.seating', [], __('seating.page_title'), [
+            ['label' => __('dashboard.nav.wedding'), 'url' => route('dashboard.wedding')],
             ['label' => __('seating.nav_label'), 'url' => null],
-        ], backUrl: route('dashboard.more'));
+        ], backUrl: route('dashboard.wedding'));
     }
 
     /**

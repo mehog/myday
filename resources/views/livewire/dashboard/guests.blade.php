@@ -402,12 +402,11 @@
         </div>
     @endif
 
-    @if ($wedding && ! $locked)
-        <button type="button" class="dashboard-fab" wire:click="openCreate" aria-label="{{ __('dashboard.guests_add') }}">
-            <x-dashboard.icon name="plus" class="h-5 w-5" />
-            <span>{{ __('dashboard.guests_add') }}</span>
-        </button>
-    @endif
+    <x-dashboard.fab
+        wire:click="openCreate"
+        :label="__('dashboard.guests_add')"
+        :show="$wedding && ! $locked"
+    />
 
     {{-- Mobile row actions --}}
     <x-dashboard.modal

@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\WeddingEvent;
 use App\Models\WeddingPartnerInvite;
 use App\Services\WeddingPartnerInviteService;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class PlanningPartner extends Component
@@ -16,6 +17,8 @@ class PlanningPartner extends Component
     public string $partner_email = '';
 
     public ?string $partnerMessage = null;
+
+    public ?string $confirmModal = null;
 
     public function mount(): void
     {
@@ -116,6 +119,42 @@ class PlanningPartner extends Component
 
         $this->partner_email = '';
         $this->partnerMessage = __('dashboard.partner_invite_cancelled');
+    }
+
+    public function openRemovePartnerConfirm(): void
+    {
+        $this->confirmModal = 'remove_partner';
+    }
+
+    public function openLeaveWeddingConfirm(): void
+    {
+        $this->confirmModal = 'leave_wedding';
+    }
+
+    #[On('close-dashboard-modal')]
+    public function closeConfirmModal(): void
+    {
+        $this->confirmModal = null;
+    }
+
+    public function confirmRemovePartner(WeddingPartnerInviteService $service): void
+    {
+        if ($this->confirmModal !== 'remove_partner') {
+            return;
+        }
+
+        $this->closeConfirmModal();
+        $this->removePartner($service);
+    }
+
+    public function confirmLeaveWedding(WeddingPartnerInviteService $service): void
+    {
+        if ($this->confirmModal !== 'leave_wedding') {
+            return;
+        }
+
+        $this->closeConfirmModal();
+        $this->leaveWedding($service);
     }
 
     public function removePartner(WeddingPartnerInviteService $service): void

@@ -115,10 +115,15 @@ class DashboardNav
                 'icon' => 'heart',
                 'match' => [
                     'dashboard.wedding',
+                    'dashboard.wedding.details',
+                    'dashboard.wedding.design',
                     'dashboard.locations',
                     'dashboard.menus',
                     'dashboard.schedule',
                     'dashboard.photos',
+                    'dashboard.checklist',
+                    'dashboard.budget',
+                    'dashboard.seating',
                 ],
             ],
             [
@@ -133,9 +138,7 @@ class DashboardNav
                 'icon' => 'more',
                 'match' => [
                     'dashboard.more',
-                    'dashboard.checklist',
-                    'dashboard.budget',
-                    'dashboard.seating',
+                    'dashboard.notifications',
                     'dashboard.pushes',
                     'dashboard.pushes.*',
                     'dashboard.pricing',
@@ -195,7 +198,13 @@ class DashboardNav
      */
     public static function moreItemGroups(): array
     {
+        $unreadCount = auth()->user()?->unreadNotifications()->count() ?? 0;
+
         return [
+            [
+                'title' => __('dashboard.more_group_activity'),
+                'items' => self::moreActivityItems($unreadCount),
+            ],
             [
                 'title' => __('dashboard.more_group_wedding'),
                 'items' => self::moreWeddingItems(),
@@ -203,6 +212,109 @@ class DashboardNav
             [
                 'title' => __('dashboard.more_group_account'),
                 'items' => self::moreAccountItems(),
+            ],
+        ];
+    }
+
+    /**
+     * @return list<array{label: string, route: string, icon: string, match: list<string>, description?: string, badge?: int}>
+     */
+    public static function moreActivityItems(int $unreadCount = 0): array
+    {
+        return [
+            [
+                'label' => __('dashboard.nav.notifications'),
+                'route' => 'dashboard.notifications',
+                'icon' => 'bell',
+                'match' => ['dashboard.notifications'],
+                'description' => $unreadCount > 0
+                    ? __('dashboard.more_desc_notifications_unread', ['count' => $unreadCount])
+                    : __('dashboard.more_desc_notifications'),
+                'badge' => $unreadCount > 0 ? $unreadCount : null,
+            ],
+        ];
+    }
+
+    /**
+     * Mobile wedding hub grouped destinations.
+     *
+     * @return list<array{title: string, items: list<array{label: string, route: string, icon: string, match: list<string>, description?: string}>}>
+     */
+    public static function weddingHubGroups(): array
+    {
+        return [
+            [
+                'title' => __('dashboard.more_group_wedding_setup'),
+                'items' => [
+                    [
+                        'label' => __('dashboard.nav.wedding_details'),
+                        'route' => 'dashboard.wedding.details',
+                        'icon' => 'users',
+                        'match' => ['dashboard.wedding.details'],
+                        'description' => __('dashboard.more_desc_wedding_details'),
+                    ],
+                    [
+                        'label' => __('dashboard.nav.wedding_design'),
+                        'route' => 'dashboard.wedding.design',
+                        'icon' => 'pencil',
+                        'match' => ['dashboard.wedding.design'],
+                        'description' => __('dashboard.more_desc_wedding_design'),
+                    ],
+                    [
+                        'label' => __('dashboard.nav.locations'),
+                        'route' => 'dashboard.locations',
+                        'icon' => 'map',
+                        'match' => ['dashboard.locations'],
+                        'description' => __('dashboard.more_desc_locations'),
+                    ],
+                    [
+                        'label' => __('dashboard.nav.menus'),
+                        'route' => 'dashboard.menus',
+                        'icon' => 'cake',
+                        'match' => ['dashboard.menus'],
+                        'description' => __('dashboard.more_desc_menus'),
+                    ],
+                    [
+                        'label' => __('dashboard.nav.schedule'),
+                        'route' => 'dashboard.schedule',
+                        'icon' => 'clock',
+                        'match' => ['dashboard.schedule'],
+                        'description' => __('dashboard.more_desc_schedule'),
+                    ],
+                    [
+                        'label' => __('dashboard.nav.photos'),
+                        'route' => 'dashboard.photos',
+                        'icon' => 'photo',
+                        'match' => ['dashboard.photos'],
+                        'description' => __('dashboard.more_desc_photos'),
+                    ],
+                ],
+            ],
+            [
+                'title' => __('dashboard.more_group_planning'),
+                'items' => [
+                    [
+                        'label' => __('dashboard.nav.seating'),
+                        'route' => 'dashboard.seating',
+                        'icon' => 'table',
+                        'match' => ['dashboard.seating'],
+                        'description' => __('dashboard.more_desc_seating'),
+                    ],
+                    [
+                        'label' => __('dashboard.nav.checklist'),
+                        'route' => 'dashboard.checklist',
+                        'icon' => 'checklist',
+                        'match' => ['dashboard.checklist'],
+                        'description' => __('dashboard.more_desc_checklist'),
+                    ],
+                    [
+                        'label' => __('dashboard.nav.budget'),
+                        'route' => 'dashboard.budget',
+                        'icon' => 'calculator',
+                        'match' => ['dashboard.budget'],
+                        'description' => __('dashboard.more_desc_budget'),
+                    ],
+                ],
             ],
         ];
     }
@@ -219,27 +331,6 @@ class DashboardNav
                 'icon' => 'users',
                 'match' => ['dashboard.partner'],
                 'description' => __('dashboard.more_desc_partner'),
-            ],
-            [
-                'label' => __('dashboard.nav.checklist'),
-                'route' => 'dashboard.checklist',
-                'icon' => 'checklist',
-                'match' => ['dashboard.checklist'],
-                'description' => __('dashboard.more_desc_checklist'),
-            ],
-            [
-                'label' => __('dashboard.nav.budget'),
-                'route' => 'dashboard.budget',
-                'icon' => 'calculator',
-                'match' => ['dashboard.budget'],
-                'description' => __('dashboard.more_desc_budget'),
-            ],
-            [
-                'label' => __('dashboard.nav.seating'),
-                'route' => 'dashboard.seating',
-                'icon' => 'table',
-                'match' => ['dashboard.seating'],
-                'description' => __('dashboard.more_desc_seating'),
             ],
             [
                 'label' => __('dashboard.nav.pushes'),
@@ -286,7 +377,34 @@ class DashboardNav
      */
     public static function moreItems(): array
     {
-        return array_merge(self::moreWeddingItems(), self::moreAccountItems());
+        $unreadCount = auth()->user()?->unreadNotifications()->count() ?? 0;
+
+        return array_merge(
+            self::moreActivityItems($unreadCount),
+            self::moreWeddingItems(),
+            self::moreAccountItems(),
+        );
+    }
+
+    public static function unreadNotificationCount(): int
+    {
+        return auth()->user()?->unreadNotifications()->count() ?? 0;
+    }
+
+    public static function isMobileRootTab(): bool
+    {
+        return request()->routeIs([
+            'dashboard',
+            'dashboard.guests',
+            'dashboard.wedding',
+            'dashboard.messages',
+            'dashboard.more',
+        ]);
+    }
+
+    public static function usesMobileHeader(): bool
+    {
+        return ! self::isMobileRootTab();
     }
 
     /**
@@ -337,6 +455,8 @@ class DashboardNav
     {
         return request()->routeIs([
             'dashboard.wedding',
+            'dashboard.wedding.details',
+            'dashboard.wedding.design',
             'dashboard.locations',
             'dashboard.menus',
             'dashboard.schedule',

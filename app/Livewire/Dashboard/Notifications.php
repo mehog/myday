@@ -3,29 +3,32 @@
 namespace App\Livewire\Dashboard;
 
 use App\Livewire\Dashboard\Concerns\PresentsDatabaseNotifications;
-use Illuminate\Support\Collection;
+use App\Livewire\Dashboard\Concerns\RendersDashboard;
 use Livewire\Component;
 
-class NotificationsBell extends Component
+class Notifications extends Component
 {
     use PresentsDatabaseNotifications;
+    use RendersDashboard;
 
     public function render()
     {
         $user = auth()->user();
+        abort_unless($user !== null, 403);
 
-        $notifications = $user === null
-            ? collect()
-            : $user->notifications()
-                ->orderByRaw('read_at is null desc')
-                ->latest()
-                ->limit(20)
-                ->get();
+        $notifications = $user->notifications()
+            ->orderByRaw('read_at is null desc')
+            ->latest()
+            ->limit(50)
+            ->get();
 
-        return view('livewire.dashboard.notifications-bell', [
-            'unreadCount' => $user?->unreadNotifications()->count() ?? 0,
+        return $this->dashboardView('livewire.dashboard.notifications', [
+            'unreadCount' => $user->unreadNotifications()->count(),
             'items' => $this->presentNotifications($notifications),
-        ]);
+        ], __('dashboard.notifications_title'), [
+            ['label' => __('dashboard.nav.more'), 'url' => route('dashboard.more')],
+            ['label' => __('dashboard.notifications_title'), 'url' => null],
+        ], backUrl: route('dashboard.more'));
     }
 
     public function openNotification(string $id): void

@@ -115,8 +115,12 @@
                     ?? __('dashboard.nav.overview');
                 $hasBack = filled($backUrl ?? null);
                 $hideMobileTitle = (bool) ($largeTitle ?? false);
+                $isMobileRootTab = \App\Support\DashboardNav::isMobileRootTab();
             @endphp
-            <header class="dashboard-topbar relative z-40 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-card/80 px-3 backdrop-blur sm:gap-3 sm:px-4">
+            <header @class([
+                'dashboard-topbar relative z-40 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-card/80 px-3 backdrop-blur sm:gap-3 sm:px-4',
+                'hidden lg:flex' => $isMobileRootTab,
+            ])>
                 <button
                     type="button"
                     class="hidden h-9 w-9 items-center justify-center rounded-md border border-border bg-background hover:bg-accent lg:inline-flex"
@@ -170,7 +174,9 @@
                             {{ $topbarActions }}
                         </div>
                     @endisset
-                    @livewire(\App\Livewire\Dashboard\NotificationsBell::class)
+                    <div class="hidden lg:block">
+                        @livewire(\App\Livewire\Dashboard\NotificationsBell::class)
+                    </div>
                     <div class="hidden lg:block">
                         <x-dashboard.appearance-toggle />
                     </div>
@@ -183,7 +189,7 @@
                     @unless ($hasBack)
                         <a
                             href="{{ route('dashboard.more') }}"
-                            class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground lg:hidden"
+                            class="hidden h-9 w-9 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground lg:inline-flex"
                             aria-label="{{ __('dashboard.nav.more') }}"
                         >
                             {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
@@ -192,7 +198,10 @@
                 </div>
             </header>
 
-            <main class="dashboard-main min-h-0 flex-1 overflow-y-auto px-3 py-4 md:p-6">
+            <main @class([
+                'dashboard-main min-h-0 flex-1 overflow-y-auto px-3 py-4 md:p-6',
+                'dashboard-main-mobile-root' => $isMobileRootTab,
+            ])>
                 <x-dashboard.wedding-subnav />
                 @auth
                     @if (! auth()->user()->hasVerifiedEmail())

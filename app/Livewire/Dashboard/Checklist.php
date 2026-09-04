@@ -62,8 +62,9 @@ class Checklist extends Component
             'grouped' => $grouped,
             'isEmpty' => $rows->isEmpty(),
         ], __('checklist.title'), [
+            ['label' => __('dashboard.nav.wedding'), 'url' => route('dashboard.wedding')],
             ['label' => __('checklist.title'), 'url' => null],
-        ], backUrl: route('dashboard.more'));
+        ], backUrl: route('dashboard.wedding'));
     }
 
     public function isLocked(): bool

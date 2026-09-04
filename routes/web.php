@@ -28,6 +28,7 @@ use App\Livewire\Dashboard\Locations;
 use App\Livewire\Dashboard\Menus;
 use App\Livewire\Dashboard\Messages;
 use App\Livewire\Dashboard\More;
+use App\Livewire\Dashboard\Notifications;
 use App\Livewire\Dashboard\Photos;
 use App\Livewire\Dashboard\PlanningPartner;
 use App\Livewire\Dashboard\Pricing;
@@ -37,6 +38,8 @@ use App\Livewire\Dashboard\Referrals;
 use App\Livewire\Dashboard\Schedule;
 use App\Livewire\Dashboard\Seating;
 use App\Livewire\Dashboard\Wedding;
+use App\Livewire\Dashboard\WeddingDesign;
+use App\Livewire\Dashboard\WeddingDetails;
 use App\Livewire\DemoExamplesPage;
 use App\Livewire\GuestContactPage;
 use App\Livewire\GuestPushNotificationsPage;
@@ -183,6 +186,8 @@ Route::middleware(['auth', 'verified', EnsureCoupleUser::class])
         Route::get('/', Home::class)->name('dashboard');
         Route::get('/checklist', Checklist::class)->name('dashboard.checklist');
         Route::get('/wedding', Wedding::class)->name('dashboard.wedding');
+        Route::get('/wedding/details', WeddingDetails::class)->name('dashboard.wedding.details');
+        Route::get('/wedding/design', WeddingDesign::class)->name('dashboard.wedding.design');
         Route::get('/locations', Locations::class)->name('dashboard.locations');
         Route::get('/menus', Menus::class)->name('dashboard.menus');
         Route::get('/schedule', Schedule::class)->name('dashboard.schedule');
@@ -198,6 +203,7 @@ Route::middleware(['auth', 'verified', EnsureCoupleUser::class])
         Route::get('/pricing', Pricing::class)->name('dashboard.pricing');
         Route::get('/referrals', Referrals::class)->name('dashboard.referrals');
         Route::get('/partner', PlanningPartner::class)->name('dashboard.partner');
+        Route::get('/notifications', Notifications::class)->name('dashboard.notifications');
         Route::get('/profile', Profile::class)->name('dashboard.profile');
         Route::get('/more', More::class)->name('dashboard.more');
         Route::post('/logout', function (Request $request) {

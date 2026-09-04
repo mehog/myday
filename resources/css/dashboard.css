@@ -222,6 +222,16 @@
     padding-bottom: calc(1rem + 4rem + env(safe-area-inset-bottom, 0px));
 }
 
+.dashboard-main-mobile-root {
+    padding-top: calc(1rem + env(safe-area-inset-top, 0px));
+}
+
+@media (min-width: 1024px) {
+    .dashboard-main-mobile-root {
+        padding-top: unset;
+    }
+}
+
 .dashboard-main.dashboard-main-locked {
     overflow: hidden;
     overscroll-behavior: none;

@@ -41,7 +41,7 @@ class Menus extends Component
         ], __('menu.title'), [
             ['label' => __('dashboard.nav.wedding'), 'url' => route('dashboard.wedding')],
             ['label' => __('menu.title'), 'url' => null],
-        ]);
+        ], backUrl: route('dashboard.wedding'));
     }
 
     protected function wedding(): ?WeddingEvent

@@ -13,10 +13,12 @@
     <div class="flex flex-wrap items-center justify-between gap-3">
         <h2 class="hidden text-xl font-semibold lg:block">{{ __('photos.title') }}</h2>
         @if (! $locked)
-            <x-dashboard.button type="button" wire:click="openCreate">
-                <x-dashboard.icon name="plus" class="h-4 w-4" />
-                {{ __('dashboard.create') }}
-            </x-dashboard.button>
+            <div class="hidden lg:flex">
+                <x-dashboard.button type="button" wire:click="openCreate">
+                    <x-dashboard.icon name="plus" class="h-4 w-4" />
+                    {{ __('dashboard.create') }}
+                </x-dashboard.button>
+            </div>
         @endif
     </div>
 
@@ -55,6 +57,8 @@
             @endif
         </div>
     </div>
+
+    <x-dashboard.fab wire:click="openCreate" :label="__('dashboard.create')" :show="! $locked" />
 
     <x-dashboard.modal :show="$showModal" :title="$editingId ? __('dashboard.edit') : __('dashboard.create')">
         <form wire:submit="save" class="space-y-4">

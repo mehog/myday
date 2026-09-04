@@ -25,7 +25,7 @@
                     {{ __('start.nav_login') }}
                 </a>
             @else
-                <a href="/app" class="text-sm text-[#5c5246] hover:text-[#c9a227] transition sm:inline">
+                <a href="/dashboard" class="text-sm text-[#5c5246] hover:text-[#c9a227] transition sm:inline">
                     {{ __('start.nav_panel') }}
                 </a>
             @endguest

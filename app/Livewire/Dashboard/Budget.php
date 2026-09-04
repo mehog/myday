@@ -69,8 +69,9 @@ class Budget extends Component
     public function render()
     {
         return $this->dashboardView('livewire.dashboard.budget', [], __('budget.page_title'), [
+            ['label' => __('dashboard.nav.wedding'), 'url' => route('dashboard.wedding')],
             ['label' => __('budget.nav_label'), 'url' => null],
-        ], backUrl: route('dashboard.more'));
+        ], backUrl: route('dashboard.wedding'));
     }
 
     public function getWeddingProperty(): ?WeddingEvent

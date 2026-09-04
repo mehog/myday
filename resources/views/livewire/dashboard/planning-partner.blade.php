@@ -20,11 +20,11 @@
                     <p class="text-sm"><span class="font-medium">{{ $partner->name }}</span> · {{ $partner->email }}</p>
                     <div class="flex flex-wrap gap-2">
                         @if ($isOwner)
-                            <x-dashboard.button type="button" variant="secondary" wire:click="removePartner" wire:confirm="{{ __('dashboard.partner_remove_confirm') }}">
+                            <x-dashboard.button type="button" variant="secondary" wire:click="openRemovePartnerConfirm">
                                 {{ __('dashboard.partner_remove') }}
                             </x-dashboard.button>
                         @elseif ($isPartner)
-                            <x-dashboard.button type="button" variant="secondary" wire:click="leaveWedding" wire:confirm="{{ __('dashboard.partner_leave_confirm') }}">
+                            <x-dashboard.button type="button" variant="secondary" wire:click="openLeaveWeddingConfirm">
                                 {{ __('dashboard.partner_leave') }}
                             </x-dashboard.button>
                         @endif
@@ -71,4 +71,20 @@
             @endif
         </x-dashboard.card>
     @endif
+
+    <x-dashboard.confirm-modal
+        :show="$confirmModal === 'remove_partner'"
+        :title="__('dashboard.partner_remove_confirm')"
+        :description="__('dashboard.partner_remove_confirm_body')"
+        :confirm-label="__('dashboard.partner_remove')"
+        wire:click="confirmRemovePartner"
+    />
+
+    <x-dashboard.confirm-modal
+        :show="$confirmModal === 'leave_wedding'"
+        :title="__('dashboard.partner_leave_confirm')"
+        :description="__('dashboard.partner_leave_confirm_body')"
+        :confirm-label="__('dashboard.partner_leave')"
+        wire:click="confirmLeaveWedding"
+    />
 </div>

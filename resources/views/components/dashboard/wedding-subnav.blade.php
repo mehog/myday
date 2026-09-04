@@ -1,5 +1,5 @@
 @if (\App\Support\DashboardNav::isWeddingSection())
-    <div class="dashboard-wedding-subnav -mx-1 mb-4 overflow-x-auto px-1 lg:mx-0">
+    <div class="dashboard-wedding-subnav -mx-1 mb-4 hidden overflow-x-auto px-1 lg:mx-0 lg:block">
         <div class="dashboard-pills !max-w-none">
             @foreach (\App\Support\DashboardNav::weddingSubItems() as $item)
                 @php $active = \App\Support\DashboardNav::isActive($item); @endphp

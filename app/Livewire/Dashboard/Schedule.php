@@ -38,7 +38,7 @@ class Schedule extends Component
         ], __('schedule.title'), [
             ['label' => __('dashboard.nav.wedding'), 'url' => route('dashboard.wedding')],
             ['label' => __('schedule.title'), 'url' => null],
-        ]);
+        ], backUrl: route('dashboard.wedding'));
     }
 
     protected function wedding(): ?WeddingEvent

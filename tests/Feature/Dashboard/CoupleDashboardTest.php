@@ -71,10 +71,62 @@ class CoupleDashboardTest extends TestCase
         $this->actingAs($user)
             ->get(route('dashboard.more'))
             ->assertOk()
-            ->assertSee(__('dashboard.more_title'))
-            ->assertSee(__('dashboard.nav.checklist'))
-            ->assertSee(__('dashboard.nav.seating'))
+            ->assertSee(__('dashboard.nav.notifications'))
+            ->assertSee(__('dashboard.nav.partner'))
+            ->assertSee(__('dashboard.nav.pushes'))
             ->assertSee(__('dashboard.classic_app'));
+    }
+
+    public function test_mobile_root_tabs_hide_topbar_on_small_screens(): void
+    {
+        $user = User::factory()->create(['is_admin' => false]);
+        WeddingEvent::factory()->create(['user_id' => $user->id]);
+
+        $this->actingAs($user)
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertSeeHtml('dashboard-topbar relative z-40 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-card/80 px-3 backdrop-blur sm:gap-3 sm:px-4 hidden lg:flex');
+    }
+
+    public function test_wedding_hub_shows_grouped_destinations_on_mobile(): void
+    {
+        $user = User::factory()->create(['is_admin' => false]);
+        WeddingEvent::factory()->create(['user_id' => $user->id]);
+
+        $this->actingAs($user)
+            ->get(route('dashboard.wedding'))
+            ->assertOk()
+            ->assertSee(__('dashboard.more_group_wedding_setup'))
+            ->assertSee(__('dashboard.nav.wedding_details'))
+            ->assertSee(__('dashboard.more_group_planning'))
+            ->assertSee(__('dashboard.nav.checklist'));
+    }
+
+    public function test_notifications_page_lists_items_and_marks_all_read(): void
+    {
+        $user = User::factory()->create(['is_admin' => false]);
+        $wedding = WeddingEvent::factory()->create(['user_id' => $user->id]);
+        $guest = Guest::factory()->create(['wedding_event_id' => $wedding->id]);
+
+        GuestMessage::query()->create([
+            'wedding_event_id' => $wedding->id,
+            'guest_id' => $guest->id,
+            'sender_name' => 'Ivana',
+            'type' => GuestMessageType::Text,
+            'content' => 'See you at the party',
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('dashboard.notifications'))
+            ->assertOk()
+            ->assertSee(__('dashboard.notifications_title'));
+
+        Livewire::actingAs($user)
+            ->test(\App\Livewire\Dashboard\Notifications::class)
+            ->assertSee('Ivana')
+            ->call('markAllAsRead');
+
+        $this->assertSame(0, $user->fresh()->unreadNotifications()->count());
     }
 
     public function test_mobile_tab_items_cover_expected_sections(): void
@@ -115,6 +167,8 @@ class CoupleDashboardTest extends TestCase
             'dashboard',
             'dashboard.checklist',
             'dashboard.wedding',
+            'dashboard.wedding.details',
+            'dashboard.wedding.design',
             'dashboard.locations',
             'dashboard.menus',
             'dashboard.schedule',
@@ -129,6 +183,7 @@ class CoupleDashboardTest extends TestCase
             'dashboard.pushes.create',
             'dashboard.pricing',
             'dashboard.referrals',
+            'dashboard.notifications',
             'dashboard.profile',
             'dashboard.more',
         ];

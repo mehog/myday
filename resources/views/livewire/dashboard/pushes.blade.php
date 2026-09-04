@@ -13,9 +13,11 @@
             </p>
         </div>
         @if ($wedding)
-            <x-dashboard.button href="{{ route('dashboard.pushes.create') }}">
-                {{ __('dashboard.pushes_create') }}
-            </x-dashboard.button>
+            <div class="hidden lg:flex">
+                <x-dashboard.button href="{{ route('dashboard.pushes.create') }}">
+                    {{ __('dashboard.pushes_create') }}
+                </x-dashboard.button>
+            </div>
         @endif
     </div>
 
@@ -69,4 +71,10 @@
             </div>
         </x-dashboard.card>
     @endif
+
+    <x-dashboard.fab
+        :href="route('dashboard.pushes.create')"
+        :label="__('dashboard.pushes_create')"
+        :show="(bool) $wedding"
+    />
 </div>

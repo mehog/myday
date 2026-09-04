@@ -10,10 +10,12 @@
     <div class="flex flex-wrap items-center justify-between gap-3">
         <h2 class="hidden text-xl font-semibold lg:block">{{ __('checklist.title') }}</h2>
         @if (! $locked)
-            <x-dashboard.button type="button" wire:click="openCreate" class="ml-auto lg:ml-0">
-                <x-dashboard.icon name="plus" class="h-4 w-4" />
-                {{ __('checklist.add') }}
-            </x-dashboard.button>
+            <div class="hidden lg:ml-auto lg:flex">
+                <x-dashboard.button type="button" wire:click="openCreate">
+                    <x-dashboard.icon name="plus" class="h-4 w-4" />
+                    {{ __('checklist.add') }}
+                </x-dashboard.button>
+            </div>
         @endif
     </div>
 
@@ -24,7 +26,7 @@
     @endif
 
     <x-dashboard.card>
-        <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+        <div class="flex flex-col gap-4 sm:flex-row items-center justify-center text-center">
             <div
                 class="checklist-ring"
                 style="--progress: {{ $summary['percent'] }}"
@@ -186,6 +188,8 @@
             @endforeach
         </div>
     @endif
+
+    <x-dashboard.fab wire:click="openCreate" :label="__('checklist.add')" :show="! $locked" />
 
     <x-dashboard.modal :show="$showModal" :title="$editingId ? __('dashboard.edit') : __('checklist.add')">
         <form wire:submit="save" class="space-y-4">
