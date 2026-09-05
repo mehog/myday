@@ -2,8 +2,6 @@
 
 namespace App\Support;
 
-use Illuminate\Support\Facades\Route;
-
 class DashboardNav
 {
     /**
@@ -466,19 +464,11 @@ class DashboardNav
 
     public static function homeUrl(): string
     {
-        if (config('dashboard.default') && Route::has('dashboard')) {
-            return route('dashboard');
-        }
-
-        return url('/app');
+        return route('dashboard');
     }
 
     public static function pricingUrl(): string
     {
-        if (config('dashboard.default') && Route::has('dashboard.pricing')) {
-            return route('dashboard.pricing');
-        }
-
-        return url('/app/pricing');
+        return route('dashboard.pricing');
     }
 }

@@ -57,12 +57,12 @@ class AppPanelProvider extends PanelProvider
                 Action::make('pricing')
                     ->label(fn (): string => __('pricing.nav_label'))
                     ->icon(Heroicon::OutlinedCreditCard)
-                    ->url(fn (): string => PricingPage::getUrl())
+                    ->url(fn (): string => route('dashboard.pricing'))
                     ->sort(0),
                 Action::make('referrals')
                     ->label(fn (): string => __('referrals.nav_label'))
                     ->icon(Heroicon::OutlinedUserPlus)
-                    ->url(fn (): string => ReferralsPage::getUrl())
+                    ->url(fn (): string => route('dashboard.referrals'))
                     ->sort(1),
             ])
             ->colors([

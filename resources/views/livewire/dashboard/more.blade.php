@@ -21,20 +21,6 @@
             <x-dashboard.appearance-toggle />
         </div>
 
-        <a
-            href="/app"
-            class="flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-muted/60"
-        >
-            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted text-foreground">
-                <x-dashboard.icon name="panel" class="h-5 w-5" />
-            </span>
-            <span class="min-w-0 flex-1">
-                <span class="block text-sm font-medium">{{ __('dashboard.classic_app') }}</span>
-                <span class="mt-0.5 block text-xs text-muted-foreground">{{ __('dashboard.more_desc_classic') }}</span>
-            </span>
-            <x-dashboard.icon name="chevron-right" class="h-4 w-4 shrink-0 text-muted-foreground" />
-        </a>
-
         <form method="POST" action="{{ route('dashboard.logout') }}">
             @csrf
             <button

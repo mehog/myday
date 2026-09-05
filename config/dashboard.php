@@ -4,14 +4,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Couple dashboard v2
+    | Couple dashboard
     |--------------------------------------------------------------------------
     |
-    | When enabled, verified couples land on /dashboard after login instead of
-    | the Filament /app panel. Filament /app remains available as a fallback.
+    | Verified couples use the Livewire dashboard at /dashboard. Login remains
+    | on the Filament panel at /app/login.
     |
     */
 
-    'default' => (bool) env('DASHBOARD_V2_DEFAULT', true),
+    'default' => true,
 
 ];

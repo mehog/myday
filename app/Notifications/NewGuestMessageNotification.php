@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use App\Filament\App\Resources\GuestMessagesResource;
 use App\Models\GuestMessage;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
@@ -36,11 +35,7 @@ class NewGuestMessageNotification extends Notification
             ->actions([
                 Action::make('view')
                     ->label(__('app.notification_view_message'))
-                    ->url(
-                        config('dashboard.default')
-                            ? route('dashboard.messages')
-                            : GuestMessagesResource::getUrl('view', ['record' => $this->message->id], panel: 'app')
-                    )
+                    ->url(route('dashboard.messages'))
                     ->markAsRead(),
             ])
             ->getDatabaseMessage();

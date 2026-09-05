@@ -180,12 +180,6 @@
                     <div class="hidden lg:block">
                         <x-dashboard.appearance-toggle />
                     </div>
-                    <a
-                        href="/app"
-                        class="hidden shrink-0 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground lg:inline-flex"
-                    >
-                        {{ __('dashboard.classic_app') }}
-                    </a>
                     @unless ($hasBack)
                         <a
                             href="{{ route('dashboard.more') }}"

@@ -57,7 +57,6 @@ class CoupleDashboardTest extends TestCase
             ->get(route('dashboard'))
             ->assertOk()
             ->assertSee('NasDan')
-            ->assertSee(__('dashboard.classic_app'))
             ->assertSee(__('dashboard.nav.more'))
             ->assertSee('dashboard-bottom-nav', false)
             ->assertDontSee('id="locale-picker"', false);
@@ -73,8 +72,7 @@ class CoupleDashboardTest extends TestCase
             ->assertOk()
             ->assertSee(__('dashboard.nav.notifications'))
             ->assertSee(__('dashboard.nav.partner'))
-            ->assertSee(__('dashboard.nav.pushes'))
-            ->assertSee(__('dashboard.classic_app'));
+            ->assertSee(__('dashboard.nav.pushes'));
     }
 
     public function test_mobile_root_tabs_hide_topbar_on_small_screens(): void

@@ -41,10 +41,10 @@ class AppPanelUserMenuTest extends TestCase
         $this->assertSame(route('dashboard'), $menuItems[0]->getUrl());
 
         $this->assertSame(__('pricing.nav_label'), $menuItems[2]->getLabel());
-        $this->assertSame(PricingPage::getUrl(), $menuItems[2]->getUrl());
+        $this->assertSame(route('dashboard.pricing'), $menuItems[2]->getUrl());
 
         $this->assertSame(__('referrals.nav_label'), $menuItems[3]->getLabel());
-        $this->assertSame(ReferralsPage::getUrl(), $menuItems[3]->getUrl());
+        $this->assertSame(route('dashboard.referrals'), $menuItems[3]->getUrl());
 
         $navigationUrls = collect(Filament::getNavigation())
             ->flatMap(fn (NavigationGroup $group) => $group->getItems())

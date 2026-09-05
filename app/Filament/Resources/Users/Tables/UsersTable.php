@@ -44,6 +44,9 @@ class UsersTable
                     })
                     ->placeholder('—')
                     ->toggleable(),
+                TextColumn::make('weddingEvent.couple_names')
+                    ->label('Wedding')
+                    ->placeholder('—'),
                 TextColumn::make('pricing_region')
                     ->label('Pricing region')
                     ->getStateUsing(fn (User $record): string => $record->pricingRegion()->label())
@@ -59,21 +62,20 @@ class UsersTable
                     ->toggleable(),
                 IconColumn::make('email_verified_at')
                     ->label('Verified')
-                    ->boolean(),
+                    ->boolean()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 IconColumn::make('is_admin')
                     ->label('Admin')
-                    ->boolean(),
+                    ->boolean()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 IconColumn::make('email_notifications_enabled')
                     ->label('Emails')
                     ->boolean()
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 IconColumn::make('backfill_onboarding_emails')
                     ->label('Backfill')
                     ->boolean()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('weddingEvent.couple_names')
-                    ->label('Wedding')
-                    ->placeholder('—'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
